@@ -7,6 +7,7 @@ vi.mock('framer-motion', () => ({
     h3: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
     path: (props: any) => <path {...props} />,
     g: ({ children, ...props }: any) => <g {...props}>{children}</g>,
+    ellipse: (props: any) => <ellipse {...props} />,
     create: (tag: string) => ({ children, ...props }: any) => {
       const Tag = tag as any;
       return <Tag {...props}>{children}</Tag>;

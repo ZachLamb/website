@@ -23,56 +23,140 @@ const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>
 };
 
 const trailPath =
-  'M 80 50 Q 200 30 320 120 T 560 180 Q 680 220 720 320 T 600 450 Q 480 500 360 460 T 160 520 Q 80 560 120 650';
+  'M 60 80 C 120 40 180 60 240 110 S 340 160 400 130 S 500 80 560 120 S 640 200 620 280 S 560 360 480 380 S 380 400 320 440 S 240 500 200 560 S 160 620 220 660';
 
-const trailMarkers = [
-  { x: 80, y: 50, delay: 1.8, icon: 'pine' as const },
-  { x: 320, y: 120, delay: 2.2, icon: 'compass' as const },
-  { x: 560, y: 180, delay: 2.6, icon: 'mountain' as const },
-  { x: 600, y: 450, delay: 3.0, icon: 'pine' as const },
-  { x: 160, y: 520, delay: 3.4, icon: 'flag' as const },
+type MarkerIcon = 'peak' | 'pine' | 'compass' | 'lake' | 'campfire' | 'elk' | 'columbine' | 'flag';
+
+interface TrailMarker {
+  x: number;
+  y: number;
+  delay: number;
+  icon: MarkerIcon;
+  label?: string;
+}
+
+const trailMarkers: TrailMarker[] = [
+  { x: 60, y: 80, delay: 1.6, icon: 'compass', label: 'Trailhead' },
+  { x: 240, y: 110, delay: 2.0, icon: 'pine', label: 'Bear Lake' },
+  { x: 400, y: 130, delay: 2.3, icon: 'elk' },
+  { x: 560, y: 120, delay: 2.6, icon: 'peak', label: "Longs Peak" },
+  { x: 620, y: 280, delay: 2.9, icon: 'columbine' },
+  { x: 480, y: 380, delay: 3.2, icon: 'lake', label: 'Dream Lake' },
+  { x: 320, y: 440, delay: 3.5, icon: 'pine' },
+  { x: 200, y: 560, delay: 3.8, icon: 'campfire', label: 'Base Camp' },
+  { x: 220, y: 660, delay: 4.1, icon: 'flag', label: "Summit" },
 ];
+
+function PeakIcon() {
+  return (
+    <>
+      <path
+        d="M-12 8 L-4-10 L0-2 L4-10 L12 8 Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M-2-6 L0-2 L2-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="0.8"
+        opacity="0.6"
+      />
+    </>
+  );
+}
 
 function PineIcon() {
   return (
-    <path
-      d="M0-10 L4 0 L2 0 L5 6 L-5 6 L-2 0 L-4 0 Z M-1 6 L1 6 L1 10 L-1 10 Z"
-      fill="currentColor"
-    />
+    <>
+      <path d="M0-10 L3-3 L1.5-3 L4 2 L-4 2 L-1.5-3 L-3-3 Z" fill="currentColor" opacity="0.8" />
+      <rect x="-0.8" y="2" width="1.6" height="4" fill="currentColor" opacity="0.6" />
+    </>
   );
 }
 
 function CompassIcon() {
   return (
     <>
-      <circle cx="0" cy="0" r="7" fill="none" stroke="currentColor" strokeWidth="1" />
-      <path d="M0-5 L2 0 L0 5 L-2 0 Z" fill="currentColor" />
+      <circle cx="0" cy="0" r="8" fill="none" stroke="currentColor" strokeWidth="1" />
+      <path d="M0-6 L1.5 0 L0 6 L-1.5 0 Z" fill="currentColor" opacity="0.7" />
+      <line x1="-6" y1="0" x2="6" y2="0" stroke="currentColor" strokeWidth="0.5" opacity="0.4" />
     </>
   );
 }
 
-function MountainIcon() {
+function LakeIcon() {
   return (
-    <path
-      d="M-8 6 L-2-6 L0-2 L2-6 L8 6 Z"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.2"
-      strokeLinejoin="round"
-    />
+    <>
+      <ellipse cx="0" cy="0" rx="10" ry="5" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.7" />
+      <path d="M-6 1 Q-3-1 0 1 Q3 3 6 1" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5" />
+    </>
+  );
+}
+
+function CampfireIcon() {
+  return (
+    <>
+      <path d="M0-8 Q3-4 1 0 Q4 2 0 6 Q-4 2 -1 0 Q-3-4 0-8 Z" fill="currentColor" opacity="0.6" />
+      <line x1="-5" y1="6" x2="5" y2="6" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="-4" y1="8" x2="4" y2="8" stroke="currentColor" strokeWidth="0.8" opacity="0.6" />
+    </>
+  );
+}
+
+function ElkIcon() {
+  return (
+    <g transform="scale(0.9)">
+      <ellipse cx="0" cy="2" rx="6" ry="3.5" fill="currentColor" opacity="0.6" />
+      <circle cx="-5" cy="-2" r="2.5" fill="currentColor" opacity="0.6" />
+      <path d="M-7-4 L-10-10 M-7-4 L-8-11 M-7-4 L-6-10" stroke="currentColor" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <line x1="-3" y1="5" x2="-3" y2="9" stroke="currentColor" strokeWidth="0.8" />
+      <line x1="3" y1="5" x2="3" y2="9" stroke="currentColor" strokeWidth="0.8" />
+    </g>
+  );
+}
+
+function ColumbineIcon() {
+  return (
+    <g transform="scale(0.8)">
+      {[0, 72, 144, 216, 288].map((angle) => (
+        <ellipse
+          key={angle}
+          cx="0"
+          cy="-6"
+          rx="2.5"
+          ry="5"
+          fill="currentColor"
+          opacity="0.5"
+          transform={`rotate(${angle})`}
+        />
+      ))}
+      <circle cx="0" cy="0" r="2" fill="currentColor" opacity="0.8" />
+    </g>
   );
 }
 
 function FlagIcon() {
   return (
     <>
-      <line x1="0" y1="-8" x2="0" y2="8" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M0-8 L8-4 L0 0 Z" fill="currentColor" />
+      <line x1="0" y1="-9" x2="0" y2="9" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M0-9 L9-5 L0-1 Z" fill="currentColor" opacity="0.7" />
     </>
   );
 }
 
-const markerIcons = { pine: PineIcon, compass: CompassIcon, mountain: MountainIcon, flag: FlagIcon };
+const markerIcons: Record<MarkerIcon, React.FC> = {
+  peak: PeakIcon,
+  pine: PineIcon,
+  compass: CompassIcon,
+  lake: LakeIcon,
+  campfire: CampfireIcon,
+  elk: ElkIcon,
+  columbine: ColumbineIcon,
+  flag: FlagIcon,
+};
 
 export function Hero() {
   return (
@@ -82,21 +166,21 @@ export function Hero() {
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <svg
-          viewBox="0 0 800 700"
+          viewBox="0 0 800 750"
           fill="none"
           preserveAspectRatio="xMidYMid slice"
           className="absolute inset-0 h-full w-full"
         >
           <motion.path
             d={trailPath}
-            stroke="rgba(245,240,232,0.12)"
+            stroke="rgba(245,240,232,0.10)"
             strokeWidth="2"
             strokeDasharray="8 6"
             strokeLinecap="round"
             fill="none"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 3, ease: 'easeInOut', delay: 0.5 }}
+            transition={{ duration: 3.5, ease: 'easeInOut', delay: 0.5 }}
           />
 
           {trailMarkers.map((marker) => {
@@ -106,14 +190,47 @@ export function Hero() {
                 key={`${marker.x}-${marker.y}`}
                 transform={`translate(${marker.x}, ${marker.y})`}
                 className="text-parchment/10"
-                initial={{ opacity: 0, scale: 0.5 }}
+                initial={{ opacity: 0, scale: 0.4 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: marker.delay }}
+                transition={{ duration: 0.6, delay: marker.delay, ease: 'easeOut' }}
               >
                 <Icon />
+                {marker.label && (
+                  <text
+                    y={marker.icon === 'peak' ? -16 : 18}
+                    textAnchor="middle"
+                    fill="currentColor"
+                    fontSize="9"
+                    fontFamily="var(--font-serif)"
+                    letterSpacing="0.05em"
+                    opacity="0.7"
+                  >
+                    {marker.label}
+                  </text>
+                )}
               </motion.g>
             );
           })}
+
+          {/* Elevation contour hints */}
+          <motion.ellipse
+            cx="540" cy="140" rx="80" ry="40"
+            fill="none" stroke="rgba(245,240,232,0.04)" strokeWidth="0.8"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 2.5 }}
+          />
+          <motion.ellipse
+            cx="540" cy="140" rx="55" ry="28"
+            fill="none" stroke="rgba(245,240,232,0.03)" strokeWidth="0.8"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 2.7 }}
+          />
+          <motion.ellipse
+            cx="470" cy="390" rx="50" ry="25"
+            fill="none" stroke="rgba(245,240,232,0.03)" strokeWidth="0.8"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 3.1 }}
+          />
         </svg>
       </div>
 
