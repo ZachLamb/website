@@ -58,7 +58,7 @@ jobs:
           retention-days: 14
 
   build:
-    name: Build
+    name: Build verification
     needs: [quality, test]
     runs-on: ubuntu-latest
     steps:
@@ -73,3 +73,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+# Deployment is handled by Vercel (auto-deploys on push to main, preview deploys on PRs).
+# Set RESEND_API_KEY in Vercel project settings > Environment Variables.

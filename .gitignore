@@ -10,7 +10,7 @@ next-env.d.ts
 dist/
 tsconfig.tsbuildinfo
 
-# Gatsby (legacy)
+# Legacy
 .cache/
 
 # Testing
