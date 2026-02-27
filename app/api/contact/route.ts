@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResendClient() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 const TO_EMAIL = 'hello@zachlamb.com';
 const MAX_NAME_LENGTH = 200;
@@ -36,7 +38,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { error } = await resend.emails.send({
+    const { error } = await getResendClient().emails.send({
       from: 'Portfolio Contact <onboarding@resend.dev>',
       to: TO_EMAIL,
       replyTo: email,
