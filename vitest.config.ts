@@ -14,7 +14,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'lcov'],
       include: ['components/**', 'data/**', 'lib/**'],
-      exclude: ['**/*.test.*', '**/*.d.ts'],
+      exclude: ['**/*.test.*', '**/*.d.ts', 'lib/fonts.ts'],
       thresholds: {
         statements: 80,
         branches: 70,

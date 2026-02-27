@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { Github, Linkedin } from 'lucide-react'
-import { siteConfig } from '@/data/site'
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { Github, Linkedin } from 'lucide-react';
+import { siteConfig } from '@/data/site';
 
 export function Footer() {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-40px' })
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-40px' });
 
   return (
     <footer className="bg-charcoal text-parchment">
@@ -18,19 +18,19 @@ export function Footer() {
         transition={{ duration: 0.6 }}
         className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-8"
       >
-        <p className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-stone/60">
+        <p className="text-stone/60 flex items-center gap-2 text-xs tracking-[0.25em] uppercase">
           <motion.span
             initial={{ width: 0 }}
             animate={isInView ? { width: 24 } : { width: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="inline-block h-px bg-stone/30"
+            className="bg-stone/30 inline-block h-px"
           />
           End of Trail
           <motion.span
             initial={{ width: 0 }}
             animate={isInView ? { width: 24 } : { width: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="inline-block h-px bg-stone/30"
+            className="bg-stone/30 inline-block h-px"
           />
         </p>
 
@@ -40,7 +40,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
-            className="text-stone transition-all duration-300 hover:scale-110 hover:text-gold"
+            className="text-stone hover:text-gold transition-all duration-300 hover:scale-110"
           >
             <Github className="h-5 w-5" />
           </a>
@@ -49,16 +49,16 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="text-stone transition-all duration-300 hover:scale-110 hover:text-gold"
+            className="text-stone hover:text-gold transition-all duration-300 hover:scale-110"
           >
             <Linkedin className="h-5 w-5" />
           </a>
         </div>
 
-        <p className="text-sm text-stone">
+        <p className="text-stone text-sm">
           &copy; {new Date().getFullYear()} {siteConfig.name}
         </p>
       </motion.div>
     </footer>
-  )
+  );
 }

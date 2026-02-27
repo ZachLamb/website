@@ -5,10 +5,12 @@ vi.mock('framer-motion', () => ({
     h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
     h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
     h3: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
-    create: (tag: string) => ({ children, ...props }: any) => {
-      const Tag = tag as any;
-      return <Tag {...props}>{children}</Tag>;
-    },
+    create:
+      (tag: string) =>
+      ({ children, ...props }: any) => {
+        const Tag = tag as any;
+        return <Tag {...props}>{children}</Tag>;
+      },
   },
   useInView: () => true,
   AnimatePresence: ({ children }: any) => children,

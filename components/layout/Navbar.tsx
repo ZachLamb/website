@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { Menu, X, Compass } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { siteConfig } from '@/data/site'
+import { useState } from 'react';
+import { Menu, X, Compass } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { siteConfig } from '@/data/site';
 
 const navLinks = [
   { label: 'Trail Guide', href: '#about' },
@@ -12,19 +12,19 @@ const navLinks = [
   { label: 'Lodge', href: '#services' },
   { label: 'Credentials', href: '#education' },
   { label: 'Contact', href: '#contact' },
-]
+];
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-parchment/90 backdrop-blur-md border-b border-bark/10">
+    <header className="bg-parchment/90 border-bark/10 sticky top-0 z-50 border-b backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
         <a
           href="#"
-          className="group flex items-center gap-2 font-serif text-xl font-semibold text-forest transition-colors hover:text-forest/80"
+          className="group text-forest hover:text-forest/80 flex items-center gap-2 font-serif text-xl font-semibold transition-colors"
         >
-          <Compass className="h-5 w-5 text-gold transition-transform duration-500 group-hover:rotate-45" />
+          <Compass className="text-gold h-5 w-5 transition-transform duration-500 group-hover:rotate-45" />
           {siteConfig.name}
         </a>
 
@@ -34,7 +34,7 @@ export function Navbar() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="relative text-sm text-bark transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:text-gold hover:after:w-full"
+                className="text-bark after:bg-gold hover:text-gold relative text-sm transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-px after:w-0 after:transition-all after:duration-300 hover:after:w-full"
               >
                 {link.label}
               </a>
@@ -57,7 +57,7 @@ export function Navbar() {
       {/* Mobile dropdown */}
       <div
         className={cn(
-          'overflow-hidden border-b border-bark/10 md:hidden',
+          'border-bark/10 overflow-hidden border-b md:hidden',
           mobileOpen ? 'block' : 'hidden',
         )}
       >
@@ -66,7 +66,7 @@ export function Navbar() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="block rounded-md px-3 py-2 text-sm text-bark transition-colors hover:bg-sand/50 hover:text-gold"
+                className="text-bark hover:bg-sand/50 hover:text-gold block rounded-md px-3 py-2 text-sm transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
@@ -76,5 +76,5 @@ export function Navbar() {
         </ul>
       </div>
     </header>
-  )
+  );
 }

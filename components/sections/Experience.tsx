@@ -8,13 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { experiences } from '@/data/experience';
 
-function TimelineCard({
-  entry,
-  index,
-}: {
-  entry: (typeof experiences)[number];
-  index: number;
-}) {
+function TimelineCard({ entry, index }: { entry: (typeof experiences)[number]; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
   const isLeft = index % 2 === 0;
@@ -42,9 +36,9 @@ function TimelineCard({
       {/* Center trail line + waypoint marker */}
       <div className="relative flex justify-center">
         <div className="absolute inset-0 flex justify-center">
-          <div className="w-px border-l border-dashed border-gold/40" />
+          <div className="border-gold/40 w-px border-l border-dashed" />
         </div>
-        <div className="relative z-10 mt-6 h-3.5 w-3.5 rounded-full border-2 border-gold bg-parchment" />
+        <div className="border-gold bg-parchment relative z-10 mt-6 h-3.5 w-3.5 rounded-full border-2" />
       </div>
 
       {/* Right column: shows card for odd indices on desktop, all cards on mobile */}
@@ -87,24 +81,20 @@ function CardContent({
 
   return (
     <div className={isRight ? 'text-right' : ''}>
-      <h3 className="font-serif text-xl font-semibold text-forest">
-        {entry.company}
-      </h3>
-      <p className="text-sm text-bark">{entry.position}</p>
-      <p className="text-xs text-stone">
+      <h3 className="text-forest font-serif text-xl font-semibold">{entry.company}</h3>
+      <p className="text-bark text-sm">{entry.position}</p>
+      <p className="text-stone text-xs">
         {entry.startDate} — {entry.endDate}
       </p>
 
-      <ul className="mt-3 list-inside space-y-1 text-sm leading-relaxed text-bark">
+      <ul className="text-bark mt-3 list-inside space-y-1 text-sm leading-relaxed">
         {entry.description.map((item) => (
           <li key={item}>• {item}</li>
         ))}
       </ul>
 
       {entry.techStack.length > 0 && (
-        <div
-          className={`mt-3 flex flex-wrap gap-2 ${isRight ? 'justify-end' : ''}`}
-        >
+        <div className={`mt-3 flex flex-wrap gap-2 ${isRight ? 'justify-end' : ''}`}>
           {entry.techStack.map((tech) => (
             <Badge key={tech}>{tech}</Badge>
           ))}

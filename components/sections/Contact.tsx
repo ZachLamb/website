@@ -62,10 +62,7 @@ export function Contact() {
 
   return (
     <Section variant="dark" id="contact">
-      <AnimatedHeading
-        subtitle="VI."
-        className="[&_h2]:text-parchment [&_p]:text-gold"
-      >
+      <AnimatedHeading subtitle="VI." className="[&_h2]:text-parchment [&_p]:text-gold">
         Leave a Note at Camp
       </AnimatedHeading>
 
@@ -73,10 +70,10 @@ export function Contact() {
         initial={{ opacity: 0, y: 12 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="mt-4 text-lg text-stone"
+        className="text-stone mt-4 text-lg"
       >
-        Whether it&rsquo;s about code, the trail ahead, or Oreos — drop a
-        note and I&rsquo;ll get back to you from base camp.
+        Whether it&rsquo;s about code, the trail ahead, or Oreos — drop a note and I&rsquo;ll get
+        back to you from base camp.
       </motion.p>
 
       <div ref={ref} className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-2">
@@ -88,7 +85,7 @@ export function Contact() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <div>
-            <label htmlFor="name" className="mb-1 block text-sm font-medium text-parchment">
+            <label htmlFor="name" className="text-parchment mb-1 block text-sm font-medium">
               Name
             </label>
             <input
@@ -103,7 +100,7 @@ export function Contact() {
           </div>
 
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-parchment">
+            <label htmlFor="email" className="text-parchment mb-1 block text-sm font-medium">
               Email
             </label>
             <input
@@ -118,7 +115,7 @@ export function Contact() {
           </div>
 
           <div>
-            <label htmlFor="message" className="mb-1 block text-sm font-medium text-parchment">
+            <label htmlFor="message" className="text-parchment mb-1 block text-sm font-medium">
               Message
             </label>
             <textarea
@@ -138,9 +135,7 @@ export function Contact() {
           </Button>
 
           <div aria-live="polite" aria-atomic="true">
-            {status === 'success' && (
-              <p className="text-center text-sm text-gold">Message sent!</p>
-            )}
+            {status === 'success' && <p className="text-gold text-center text-sm">Message sent!</p>}
             {status === 'error' && (
               <p className="text-center text-sm text-red-400">
                 Something went wrong. Please try again.
@@ -154,7 +149,7 @@ export function Contact() {
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <h3 className="mb-6 font-serif text-xl font-semibold text-parchment">
+          <h3 className="text-parchment mb-6 font-serif text-xl font-semibold">
             Or reach out directly
           </h3>
 
@@ -168,9 +163,9 @@ export function Contact() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-parchment transition-colors hover:text-gold"
+                  className="text-parchment hover:text-gold flex items-center gap-3 transition-colors"
                 >
-                  <Icon className="h-5 w-5 text-gold" />
+                  <Icon className="text-gold h-5 w-5" />
                   <span className="font-medium">{link.platform}</span>
                 </a>
               );
@@ -178,9 +173,9 @@ export function Contact() {
 
             <a
               href={`mailto:${contactEmail}`}
-              className="flex items-center gap-3 text-parchment transition-colors hover:text-gold"
+              className="text-parchment hover:text-gold flex items-center gap-3 transition-colors"
             >
-              <Mail className="h-5 w-5 text-gold" />
+              <Mail className="text-gold h-5 w-5" />
               <span className="font-medium">{contactEmail}</span>
             </a>
           </div>

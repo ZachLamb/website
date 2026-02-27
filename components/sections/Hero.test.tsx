@@ -8,10 +8,12 @@ vi.mock('framer-motion', () => ({
     path: (props: any) => <path {...props} />,
     g: ({ children, ...props }: any) => <g {...props}>{children}</g>,
     ellipse: (props: any) => <ellipse {...props} />,
-    create: (tag: string) => ({ children, ...props }: any) => {
-      const Tag = tag as any;
-      return <Tag {...props}>{children}</Tag>;
-    },
+    create:
+      (tag: string) =>
+      ({ children, ...props }: any) => {
+        const Tag = tag as any;
+        return <Tag {...props}>{children}</Tag>;
+      },
   },
   useInView: () => true,
   useScroll: () => ({ scrollYProgress: { current: 0 } }),

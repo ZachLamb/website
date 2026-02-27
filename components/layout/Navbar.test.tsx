@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Navbar } from './Navbar';
 
 describe('Navbar', () => {
@@ -19,6 +19,15 @@ describe('Navbar', () => {
     render(<Navbar />);
     const btn = screen.getByLabelText('Menu');
     expect(btn).toBeInTheDocument();
+    expect(btn).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('toggles mobile menu on button click', () => {
+    render(<Navbar />);
+    const btn = screen.getByLabelText('Menu');
+    fireEvent.click(btn);
+    expect(btn).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.click(btn);
     expect(btn).toHaveAttribute('aria-expanded', 'false');
   });
 });

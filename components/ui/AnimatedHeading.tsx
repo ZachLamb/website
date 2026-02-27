@@ -39,9 +39,9 @@ export function AnimatedHeading({
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
-          className="flex items-center gap-2 text-sm uppercase tracking-[0.2em] text-stone"
+          className="text-stone flex items-center gap-2 text-sm tracking-[0.2em] uppercase"
         >
-          <span className="inline-block h-3 w-1.5 rounded-sm bg-gold" aria-hidden="true" />
+          <span className="bg-gold inline-block h-3 w-1.5 rounded-sm" aria-hidden="true" />
           {subtitle}
         </motion.p>
       )}
@@ -49,7 +49,7 @@ export function AnimatedHeading({
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.6, delay: subtitle ? 0.1 : 0 }}
-        className="font-serif text-3xl font-semibold text-forest md:text-4xl"
+        className="text-forest font-serif text-3xl font-semibold md:text-4xl"
       >
         {children}
       </MotionTag>

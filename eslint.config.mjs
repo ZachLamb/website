@@ -27,12 +27,6 @@ export default [
     },
   },
   {
-    ignores: [
-      '_gatsby_src/**',
-      '_gatsby_*',
-      'gatsby-*',
-      '.next/**',
-      'node_modules/**',
-    ],
+    ignores: ['_gatsby_src/**', '_gatsby_*', 'gatsby-*', '.next/**', 'node_modules/**'],
   },
 ];

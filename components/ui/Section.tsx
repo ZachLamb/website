@@ -7,12 +7,7 @@ interface SectionProps {
   variant?: 'light' | 'dark';
 }
 
-export function Section({
-  id,
-  children,
-  className,
-  variant = 'light',
-}: SectionProps) {
+export function Section({ id, children, className, variant = 'light' }: SectionProps) {
   return (
     <section
       id={id}

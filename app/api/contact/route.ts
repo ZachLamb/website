@@ -20,13 +20,14 @@ export async function POST(request: Request) {
   const { name, email, message } = body;
 
   if (!name?.trim() || !email?.trim() || !message?.trim()) {
-    return NextResponse.json(
-      { error: 'Name, email, and message are required' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'Name, email, and message are required' }, { status: 400 });
   }
 
-  if (name.length > MAX_NAME_LENGTH || email.length > MAX_EMAIL_LENGTH || message.length > MAX_MESSAGE_LENGTH) {
+  if (
+    name.length > MAX_NAME_LENGTH ||
+    email.length > MAX_EMAIL_LENGTH ||
+    message.length > MAX_MESSAGE_LENGTH
+  ) {
     return NextResponse.json({ error: 'Input exceeds maximum length' }, { status: 400 });
   }
 

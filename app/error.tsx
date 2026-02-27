@@ -9,10 +9,8 @@ export default function ErrorBoundary({
   reset: () => void;
 }) {
   return (
-    <div className="flex min-h-[80vh] flex-col items-center justify-center gap-4 bg-parchment px-6">
-      <h1 className="font-serif text-3xl text-forest">
-        Something went wrong
-      </h1>
+    <div className="bg-parchment flex min-h-[80vh] flex-col items-center justify-center gap-4 px-6">
+      <h1 className="text-forest font-serif text-3xl">Something went wrong</h1>
       <p className="text-bark">An unexpected error occurred.</p>
       <Button onClick={reset}>Try Again</Button>
     </div>
