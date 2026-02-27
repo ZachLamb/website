@@ -2,10 +2,14 @@ import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
 function getResendClient() {
-  return new Resend(process.env.RESEND_API_KEY);
+  const key = process.env.RESEND_API_KEY;
+  if (!key) {
+    throw new Error('RESEND_API_KEY is not configured');
+  }
+  return new Resend(key);
 }
 
-const TO_EMAIL = 'hello@zachlamb.com';
+const TO_EMAIL = process.env.CONTACT_EMAIL ?? 'hello@zachlamb.com';
 const MAX_NAME_LENGTH = 200;
 const MAX_EMAIL_LENGTH = 320;
 const MAX_MESSAGE_LENGTH = 5000;
@@ -39,7 +43,7 @@ export async function POST(request: Request) {
 
   try {
     const { error } = await getResendClient().emails.send({
-      from: 'Portfolio Contact <onboarding@resend.dev>',
+      from: `Portfolio Contact <${process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'}>`,
       to: TO_EMAIL,
       replyTo: email,
       subject: `Portfolio message from ${name}`,

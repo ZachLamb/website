@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: `${siteConfig.name} | ${siteConfig.title}`,
   description: siteConfig.description,
   openGraph: {
@@ -14,11 +15,16 @@ export const metadata: Metadata = {
     url: siteConfig.url,
     siteName: siteConfig.name,
     type: 'website',
+    images: [{ url: siteConfig.ogImage, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: `${siteConfig.name} | ${siteConfig.title}`,
     description: siteConfig.description,
+    images: [siteConfig.ogImage],
+  },
+  other: {
+    'theme-color': '#2C3E2D',
   },
 };
 

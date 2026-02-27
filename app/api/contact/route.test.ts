@@ -8,6 +8,8 @@ vi.mock('resend', () => ({
   },
 }));
 
+vi.stubEnv('RESEND_API_KEY', 'test_key');
+
 import { POST } from './route';
 
 function makeRequest(body: Record<string, unknown>) {
