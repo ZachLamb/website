@@ -61,8 +61,12 @@ export function Contact() {
   const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <Section variant="dark" id="contact">
-      <AnimatedHeading subtitle="VI." className="[&_h2]:text-parchment [&_p]:text-gold">
+    <Section variant="dark" id="contact" nature={{ fireflies: true }}>
+      <AnimatedHeading
+        sectionId="contact"
+        subtitle="VI."
+        className="[&_h2]:text-parchment [&_p]:text-gold"
+      >
         Leave a Note at Camp
       </AnimatedHeading>
 
@@ -153,7 +157,7 @@ export function Contact() {
             Or reach out directly
           </h3>
 
-          <div className="space-y-4">
+          <div className="space-y-1">
             {socialLinks.map((link) => {
               const Icon = iconMap[link.icon];
               if (!Icon) return null;
@@ -163,9 +167,9 @@ export function Contact() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-parchment hover:text-gold flex items-center gap-3 transition-colors"
+                  className="text-parchment hover:text-gold flex min-h-11 touch-manipulation items-center gap-3 rounded-md py-3 transition-colors"
                 >
-                  <Icon className="text-gold h-5 w-5" />
+                  <Icon className="text-gold h-5 w-5 shrink-0" />
                   <span className="font-medium">{link.platform}</span>
                 </a>
               );
@@ -173,9 +177,9 @@ export function Contact() {
 
             <a
               href={`mailto:${contactEmail}`}
-              className="text-parchment hover:text-gold flex items-center gap-3 transition-colors"
+              className="text-parchment hover:text-gold flex min-h-11 touch-manipulation items-center gap-3 rounded-md py-3 transition-colors"
             >
-              <Mail className="text-gold h-5 w-5" />
+              <Mail className="text-gold h-5 w-5 shrink-0" />
               <span className="font-medium">{contactEmail}</span>
             </a>
           </div>

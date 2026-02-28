@@ -5,6 +5,7 @@ vi.mock('framer-motion', () => ({
     h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
     h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
     h3: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
+    svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
     create:
       (tag: string) =>
       ({ children, ...props }: any) => {
@@ -43,5 +44,12 @@ describe('AnimatedHeading', () => {
     );
     const wrapper = container.firstElementChild!;
     expect(wrapper).toHaveClass('text-center');
+  });
+
+  it('renders heading as link when sectionId is provided', () => {
+    render(<AnimatedHeading sectionId="about">Trail Guide</AnimatedHeading>);
+    const link = screen.getByRole('link', { name: 'Trail Guide' });
+    expect(link).toHaveAttribute('href', '#about');
+    expect(screen.getByRole('heading', { level: 2 })).toHaveAttribute('id', 'about-heading');
   });
 });

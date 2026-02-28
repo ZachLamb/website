@@ -2,6 +2,8 @@ vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+    svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
+    path: (props: any) => <path {...props} />,
   },
   useInView: () => true,
 }));

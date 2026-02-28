@@ -3,6 +3,7 @@ import { inter, cormorantGaramond } from '@/lib/fonts';
 import { siteConfig } from '@/data/site';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { TrailExtension } from '@/components/ui/TrailExtension';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -28,6 +29,12 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${cormorantGaramond.variable}`}>
@@ -38,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <TrailExtension />
         <Navbar />
         <main id="main-content">{children}</main>
         <Footer />

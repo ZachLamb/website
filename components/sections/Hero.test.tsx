@@ -6,8 +6,11 @@ vi.mock('framer-motion', () => ({
     h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
     h3: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
     path: (props: any) => <path {...props} />,
+    rect: (props: any) => <rect {...props} />,
     g: ({ children, ...props }: any) => <g {...props}>{children}</g>,
     ellipse: (props: any) => <ellipse {...props} />,
+    circle: (props: any) => <circle {...props} />,
+    svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
     create:
       (tag: string) =>
       ({ children, ...props }: any) => {

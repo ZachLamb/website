@@ -1,3 +1,18 @@
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+  },
+  useInView: () => true,
+}));
+
+vi.mock('./NatureElements', () => ({
+  FloatingLeaves: () => null,
+  Fireflies: () => null,
+  PineTreeSilhouette: () => null,
+  BirdSilhouettes: () => null,
+}));
+
 import { render, screen } from '@testing-library/react';
 import { Section } from './Section';
 

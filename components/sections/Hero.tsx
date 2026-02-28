@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { MistLayer } from '@/components/ui/NatureElements';
 import { socialLinks } from '@/data/social';
 
 const stagger = {
@@ -24,6 +25,12 @@ const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>
 
 const trailPath =
   'M 60 80 C 120 40 180 60 240 110 S 340 160 400 130 S 500 80 560 120 S 640 200 620 280 S 560 360 480 380 S 380 400 320 440 S 240 500 200 560 S 160 620 220 660';
+
+const secondTrailPath =
+  'M 740 60 C 700 120 720 180 680 240 S 640 280 660 340 S 620 400 580 460 S 520 500 500 560 S 440 600 400 640 S 340 680 300 720';
+
+const thirdTrailPath =
+  'M 120 200 Q 280 120 420 180 T 660 260 T 720 380 Q 680 520 520 580 T 280 620';
 
 type MarkerIcon = 'peak' | 'pine' | 'compass' | 'lake' | 'campfire' | 'elk' | 'columbine' | 'flag';
 
@@ -47,148 +54,147 @@ const trailMarkers: TrailMarker[] = [
   { x: 220, y: 660, delay: 4.1, icon: 'flag', label: 'Summit' },
 ];
 
-function PeakIcon() {
+/** Trail sign: post with horizontal bar and rectangular sign (trailhead style) */
+function TrailSignPost() {
   return (
-    <>
-      <path
-        d="M-12 8 L-4-10 L0-2 L4-10 L12 8 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.2"
-        strokeLinejoin="round"
-      />
-      <path d="M-2-6 L0-2 L2-6" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6" />
-    </>
-  );
-}
-
-function PineIcon() {
-  return (
-    <>
-      <path d="M0-10 L3-3 L1.5-3 L4 2 L-4 2 L-1.5-3 L-3-3 Z" fill="currentColor" opacity="0.8" />
-      <rect x="-0.8" y="2" width="1.6" height="4" fill="currentColor" opacity="0.6" />
-    </>
-  );
-}
-
-function CompassIcon() {
-  return (
-    <>
-      <circle cx="0" cy="0" r="8" fill="none" stroke="currentColor" strokeWidth="1" />
-      <path d="M0-6 L1.5 0 L0 6 L-1.5 0 Z" fill="currentColor" opacity="0.7" />
-      <line x1="-6" y1="0" x2="6" y2="0" stroke="currentColor" strokeWidth="0.5" opacity="0.4" />
-    </>
-  );
-}
-
-function LakeIcon() {
-  return (
-    <>
-      <ellipse
-        cx="0"
-        cy="0"
-        rx="10"
-        ry="5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1"
-        opacity="0.7"
-      />
-      <path
-        d="M-6 1 Q-3-1 0 1 Q3 3 6 1"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="0.8"
-        opacity="0.5"
-      />
-    </>
-  );
-}
-
-function CampfireIcon() {
-  return (
-    <>
-      <path d="M0-8 Q3-4 1 0 Q4 2 0 6 Q-4 2 -1 0 Q-3-4 0-8 Z" fill="currentColor" opacity="0.6" />
-      <line x1="-5" y1="6" x2="5" y2="6" stroke="currentColor" strokeWidth="1.2" />
-      <line x1="-4" y1="8" x2="4" y2="8" stroke="currentColor" strokeWidth="0.8" opacity="0.6" />
-    </>
-  );
-}
-
-function ElkIcon() {
-  return (
-    <g transform="scale(0.9)">
-      <ellipse cx="0" cy="2" rx="6" ry="3.5" fill="currentColor" opacity="0.6" />
-      <circle cx="-5" cy="-2" r="2.5" fill="currentColor" opacity="0.6" />
-      <path
-        d="M-7-4 L-10-10 M-7-4 L-8-11 M-7-4 L-6-10"
-        stroke="currentColor"
-        strokeWidth="0.8"
-        fill="none"
-        opacity="0.5"
-      />
-      <line x1="-3" y1="5" x2="-3" y2="9" stroke="currentColor" strokeWidth="0.8" />
-      <line x1="3" y1="5" x2="3" y2="9" stroke="currentColor" strokeWidth="0.8" />
+    <g stroke="currentColor" fill="none" strokeWidth="0.8" strokeLinejoin="round">
+      <rect x="-4" y="-14" width="8" height="10" rx="0.5" fill="currentColor" fillOpacity="0.12" />
+      <line x1="0" y1="-4" x2="0" y2="8" strokeWidth="1" />
+      <line x1="-5" y1="2" x2="5" y2="2" strokeWidth="0.8" opacity="0.8" />
     </g>
   );
 }
 
-function ColumbineIcon() {
+/** Trail sign: classic rectangular blaze */
+function TrailSignBlaze() {
   return (
-    <g transform="scale(0.8)">
-      {[0, 72, 144, 216, 288].map((angle) => (
-        <ellipse
-          key={angle}
-          cx="0"
-          cy="-6"
-          rx="2.5"
-          ry="5"
-          fill="currentColor"
-          opacity="0.5"
-          transform={`rotate(${angle})`}
-        />
-      ))}
-      <circle cx="0" cy="0" r="2" fill="currentColor" opacity="0.8" />
+    <g stroke="currentColor" fill="currentColor" fillOpacity="0.15" strokeWidth="0.7">
+      <rect x="-3" y="-10" width="6" height="14" rx="0.5" />
     </g>
   );
 }
 
-function FlagIcon() {
+/** Trail sign: diamond (direction / waypoint) */
+function TrailSignDiamond() {
   return (
-    <>
-      <line x1="0" y1="-9" x2="0" y2="9" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M0-9 L9-5 L0-1 Z" fill="currentColor" opacity="0.7" />
-    </>
+    <g stroke="currentColor" fill="currentColor" fillOpacity="0.12" strokeWidth="0.8">
+      <path d="M0 -12 L7 0 L0 12 L-7 0 Z" />
+    </g>
   );
 }
 
 const markerIcons: Record<MarkerIcon, React.FC> = {
-  peak: PeakIcon,
-  pine: PineIcon,
-  compass: CompassIcon,
-  lake: LakeIcon,
-  campfire: CampfireIcon,
-  elk: ElkIcon,
-  columbine: ColumbineIcon,
-  flag: FlagIcon,
+  peak: TrailSignPost,
+  pine: TrailSignBlaze,
+  compass: TrailSignPost,
+  lake: TrailSignBlaze,
+  campfire: TrailSignPost,
+  elk: TrailSignDiamond,
+  columbine: TrailSignDiamond,
+  flag: TrailSignPost,
 };
+
+function MountainBackdrop() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0">
+      <svg
+        viewBox="0 0 1200 200"
+        preserveAspectRatio="none"
+        className="block w-full"
+        style={{ height: '180px' }}
+      >
+        {/* Far mountains */}
+        <motion.path
+          d="M0 200 L0 120 L100 80 L200 110 L300 60 L400 100 L500 50 L600 90 L700 40 L800 85 L900 55 L1000 95 L1100 70 L1200 100 L1200 200Z"
+          fill="rgba(245,240,232,0.03)"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.5, delay: 0.3 }}
+        />
+        {/* Near mountains */}
+        <motion.path
+          d="M0 200 L0 150 L80 120 L160 145 L260 100 L340 135 L450 90 L540 130 L650 105 L740 140 L840 110 L940 145 L1050 120 L1140 150 L1200 135 L1200 200Z"
+          fill="rgba(245,240,232,0.05)"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.5, delay: 0.6 }}
+        />
+        {/* Treeline silhouette */}
+        <motion.path
+          d="M0 200 L0 170 L20 168 L35 155 L38 168 L55 150 L58 168 L75 158 L78 168 L95 145 L98 168 L120 160 L140 148 L143 168 L165 155 L168 168 L190 162 L210 142 L213 168 L240 158 L260 148 L263 168 L285 155 L305 140 L308 168 L330 160 L350 150 L353 168 L375 155 L395 145 L398 168 L420 160 L440 152 L443 168 L465 155 L485 142 L488 168 L510 158 L530 148 L533 168 L555 155 L575 140 L578 168 L600 162 L620 150 L623 168 L645 155 L665 145 L668 168 L690 160 L710 148 L713 168 L735 155 L755 142 L758 168 L780 160 L800 150 L803 168 L825 155 L845 145 L848 168 L870 160 L890 152 L893 168 L915 155 L935 142 L938 168 L960 158 L980 148 L983 168 L1005 155 L1025 140 L1028 168 L1050 162 L1070 150 L1073 168 L1095 155 L1115 145 L1118 168 L1140 160 L1160 152 L1163 168 L1185 158 L1200 165 L1200 200Z"
+          fill="rgba(245,240,232,0.04)"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.9 }}
+        />
+      </svg>
+    </div>
+  );
+}
 
 export function Hero() {
   return (
     <section
       id="hero"
-      className="bg-forest text-parchment relative flex min-h-screen items-center justify-center overflow-hidden"
+      className="bg-forest text-parchment relative flex min-h-screen flex-col items-center justify-center overflow-x-hidden overflow-y-auto"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      {/* Background layer: clip decorations only so content is never clipped */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <svg
           viewBox="0 0 800 750"
           fill="none"
           preserveAspectRatio="xMidYMid slice"
           className="absolute inset-0 h-full w-full"
+          aria-hidden
         >
+          {/* Map frame – reads as a trail map */}
+          <motion.rect
+            x="24"
+            y="24"
+            width="752"
+            height="702"
+            rx="8"
+            fill="none"
+            stroke="rgba(245,240,232,0.08)"
+            strokeWidth="1.5"
+            strokeDasharray="12 8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, delay: 0.8 }}
+          />
+          {/* Trail map label */}
+          <motion.g
+            transform="translate(48, 52)"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
+          >
+            <rect
+              x="0"
+              y="-6"
+              width="88"
+              height="20"
+              rx="3"
+              fill="rgba(245,240,232,0.06)"
+              stroke="rgba(245,240,232,0.12)"
+              strokeWidth="0.8"
+            />
+            <text
+              x="44"
+              y="6"
+              textAnchor="middle"
+              fill="rgba(245,240,232,0.5)"
+              fontSize="9"
+              fontFamily="var(--font-serif)"
+              letterSpacing="0.15em"
+            >
+              TRAIL MAP
+            </text>
+            <path d="M68 0 L72 0 L70 -3 Z" fill="rgba(245,240,232,0.35)" />
+          </motion.g>
           <motion.path
             d={trailPath}
-            stroke="rgba(245,240,232,0.10)"
+            stroke="rgba(245,240,232,0.14)"
             strokeWidth="2"
             strokeDasharray="8 6"
             strokeLinecap="round"
@@ -204,7 +210,7 @@ export function Hero() {
               <motion.g
                 key={`${marker.x}-${marker.y}`}
                 transform={`translate(${marker.x}, ${marker.y})`}
-                className="text-parchment/10"
+                className="text-parchment/15"
                 initial={{ opacity: 0, scale: 0.4 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: marker.delay, ease: 'easeOut' }}
@@ -212,13 +218,13 @@ export function Hero() {
                 <Icon />
                 {marker.label && (
                   <text
-                    y={marker.icon === 'peak' ? -16 : 18}
+                    y={20}
                     textAnchor="middle"
                     fill="currentColor"
                     fontSize="9"
                     fontFamily="var(--font-serif)"
                     letterSpacing="0.05em"
-                    opacity="0.7"
+                    opacity="0.85"
                   >
                     {marker.label}
                   </text>
@@ -258,11 +264,65 @@ export function Hero() {
             rx="50"
             ry="25"
             fill="none"
-            stroke="rgba(245,240,232,0.03)"
+            stroke="rgba(245,240,232,0.04)"
             strokeWidth="0.8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 3.1 }}
+          />
+
+          {/* Second trail path (dotted) */}
+          <motion.path
+            d={secondTrailPath}
+            stroke="rgba(245,240,232,0.07)"
+            strokeWidth="1.5"
+            strokeDasharray="4 8"
+            strokeLinecap="round"
+            fill="none"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 4, ease: 'easeInOut', delay: 1.2 }}
+          />
+          {/* Third trail path (dotted, alternate route) */}
+          <motion.path
+            d={thirdTrailPath}
+            stroke="rgba(245,240,232,0.08)"
+            strokeWidth="1.5"
+            strokeDasharray="6 6"
+            strokeLinecap="round"
+            fill="none"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 3.8, ease: 'easeInOut', delay: 1.8 }}
+          />
+          {/* Trail continues down off the map — follow the path */}
+          <motion.path
+            d="M 220 660 L 220 760"
+            stroke="rgba(245,240,232,0.12)"
+            strokeWidth="1.5"
+            strokeDasharray="6 6"
+            strokeLinecap="round"
+            fill="none"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1.2, ease: 'easeOut', delay: 4 }}
+          />
+        </svg>
+        <MountainBackdrop />
+        <MistLayer />
+      </div>
+
+      {/* Transition ridge into next section */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-20">
+        <svg
+          viewBox="0 0 1200 40"
+          preserveAspectRatio="none"
+          className="block w-full"
+          style={{ height: '40px' }}
+        >
+          <path
+            d="M0 40 L0 30 L80 18 L160 28 L260 10 L340 22 L440 8 L540 20 L640 12 L740 25 L840 15 L940 28 L1040 10 L1120 22 L1200 18 L1200 40Z"
+            fill="var(--color-parchment)"
           />
         </svg>
       </div>
@@ -271,7 +331,7 @@ export function Hero() {
         variants={stagger}
         initial="hidden"
         animate="visible"
-        className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 text-center"
+        className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-4 py-12 text-center sm:px-6 md:px-8"
       >
         <motion.p
           variants={fadeUp}
@@ -294,15 +354,17 @@ export function Hero() {
 
         <motion.div
           variants={fadeUp}
-          className="mt-8 flex flex-wrap items-center justify-center gap-4"
+          className="mt-8 flex w-full min-w-0 flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-4"
         >
-          <Button href="#about">Begin the Journey</Button>
-          <Button variant="secondary" href="#contact">
+          <Button href="#about" className="w-full sm:w-auto sm:min-w-0">
+            Begin the Journey
+          </Button>
+          <Button variant="secondary" href="#contact" className="w-full sm:w-auto sm:min-w-0">
             Leave a Note at Camp
           </Button>
         </motion.div>
 
-        <motion.div variants={fadeUp} className="mt-6 flex items-center gap-5">
+        <motion.div variants={fadeUp} className="mt-6 flex items-center gap-2">
           {socialLinks.map((link) => {
             const Icon = iconMap[link.icon];
             if (!Icon) return null;
@@ -313,7 +375,7 @@ export function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={link.platform}
-                className="text-stone hover:text-gold transition-colors"
+                className="text-stone hover:text-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-colors"
               >
                 <Icon className="h-5 w-5" />
               </a>

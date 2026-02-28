@@ -21,8 +21,10 @@ export function Services() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <Section variant="light" id="services">
-      <AnimatedHeading subtitle="IV.">Services at the Lodge</AnimatedHeading>
+    <Section variant="light" id="services" nature={{ leaves: true }}>
+      <AnimatedHeading sectionId="services" subtitle="IV.">
+        Services at the Lodge
+      </AnimatedHeading>
 
       <div ref={ref} className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
         {services.map((service, i) => {

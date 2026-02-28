@@ -9,7 +9,15 @@ describe('Navbar', () => {
 
   it('renders navigation links', () => {
     render(<Navbar />);
-    const links = ['Trail Guide', 'Trail Log', 'Gear', 'Lodge', 'Credentials', 'Contact'];
+    const links = [
+      'Trail Guide',
+      'Trail Log',
+      'Recommendations',
+      'Gear',
+      'Lodge',
+      'Credentials',
+      'Contact',
+    ];
     for (const label of links) {
       expect(screen.getAllByText(label).length).toBeGreaterThanOrEqual(1);
     }
@@ -17,14 +25,14 @@ describe('Navbar', () => {
 
   it('renders mobile menu button with aria-expanded', () => {
     render(<Navbar />);
-    const btn = screen.getByLabelText('Menu');
+    const btn = screen.getByRole('button', { name: /open menu/i });
     expect(btn).toBeInTheDocument();
     expect(btn).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('toggles mobile menu on button click', () => {
     render(<Navbar />);
-    const btn = screen.getByLabelText('Menu');
+    const btn = screen.getByRole('button', { name: /open menu/i });
     fireEvent.click(btn);
     expect(btn).toHaveAttribute('aria-expanded', 'true');
     fireEvent.click(btn);

@@ -10,8 +10,8 @@ export function About() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <Section variant="light" id="about">
-      <AnimatedHeading subtitle="I." className="mb-8">
+    <Section variant="light" id="about" nature={{ leaves: true, birds: true }}>
+      <AnimatedHeading sectionId="about" subtitle="I." className="mb-8">
         Trail Guide
       </AnimatedHeading>
 

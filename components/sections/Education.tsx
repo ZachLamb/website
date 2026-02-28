@@ -14,8 +14,10 @@ export function Education() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <Section variant="light" id="education">
-      <AnimatedHeading subtitle="V.">Ranger Credentials</AnimatedHeading>
+    <Section variant="light" id="education" nature={{ leaves: true, pines: true }}>
+      <AnimatedHeading sectionId="education" subtitle="V.">
+        Ranger Credentials
+      </AnimatedHeading>
 
       <div ref={ref} className="mt-12 space-y-6">
         {education.map((entry, i) => (

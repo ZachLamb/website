@@ -1,10 +1,15 @@
 vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    li: ({ children, ...props }: any) => <li {...props}>{children}</li>,
+    span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
     p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
     h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
     h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
     h3: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
+    svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
+    path: (props: any) => <path {...props} />,
+    circle: (props: any) => <circle {...props} />,
     create:
       (tag: string) =>
       ({ children, ...props }: any) => {
@@ -15,6 +20,14 @@ vi.mock('framer-motion', () => ({
   useInView: () => true,
   useScroll: () => ({ scrollYProgress: { current: 0 } }),
   AnimatePresence: ({ children }: any) => children,
+}));
+
+vi.mock('@/components/ui/NatureElements', () => ({
+  FloatingLeaves: () => null,
+  Fireflies: () => null,
+  PineTreeSilhouette: () => null,
+  BirdSilhouettes: () => null,
+  MistLayer: () => null,
 }));
 
 import { render, screen } from '@testing-library/react';

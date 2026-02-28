@@ -1,6 +1,7 @@
 import { Hero } from '@/components/sections/Hero';
 import { About } from '@/components/sections/About';
 import { Experience } from '@/components/sections/Experience';
+import { Endorsements } from '@/components/sections/Endorsements';
 import { Skills } from '@/components/sections/Skills';
 import { Services } from '@/components/sections/Services';
 import { Education } from '@/components/sections/Education';
@@ -12,14 +13,16 @@ export default function Home() {
     <>
       <Hero />
       <About />
-      <Divider />
+      <Divider variant="mountains" />
       <Experience />
+      <Divider variant="trail" />
+      <Endorsements />
       <Skills />
-      <Divider className="border-bark/10" />
+      <Divider variant="treeline" flip />
       <Services />
-      <Divider />
+      <Divider variant="trail" />
       <Education />
-      <Divider />
+      <Divider variant="mountains" flip />
       <Contact />
     </>
   );

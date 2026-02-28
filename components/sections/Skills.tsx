@@ -11,8 +11,12 @@ export function Skills() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <Section variant="dark" id="skills">
-      <AnimatedHeading subtitle="III." className="[&_p]:text-gold [&_h2]:text-parchment">
+    <Section variant="dark" id="skills" nature={{ fireflies: true }}>
+      <AnimatedHeading
+        sectionId="skills"
+        subtitle="III."
+        className="[&_p]:text-gold [&_h2]:text-parchment"
+      >
         Gear &amp; Provisions
       </AnimatedHeading>
 

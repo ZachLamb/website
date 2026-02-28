@@ -8,6 +8,7 @@ import { siteConfig } from '@/data/site';
 const navLinks = [
   { label: 'Trail Guide', href: '#about' },
   { label: 'Trail Log', href: '#experience' },
+  { label: 'Recommendations', href: '#endorsements' },
   { label: 'Gear', href: '#skills' },
   { label: 'Lodge', href: '#services' },
   { label: 'Credentials', href: '#education' },
@@ -19,10 +20,14 @@ export function Navbar() {
 
   return (
     <header className="bg-parchment/90 border-bark/10 sticky top-0 z-50 border-b backdrop-blur-md">
-      <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
+      <nav
+        aria-label="Main navigation"
+        className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6"
+      >
         <a
-          href="#"
+          href="#hero"
           className="group text-forest hover:text-forest/80 flex items-center gap-2 font-serif text-xl font-semibold transition-colors"
+          aria-label="Zach Lamb – back to top"
         >
           <Compass className="text-gold h-5 w-5 transition-transform duration-500 group-hover:rotate-45" />
           {siteConfig.name}
@@ -42,12 +47,12 @@ export function Navbar() {
           ))}
         </ul>
 
-        {/* Mobile toggle */}
+        {/* Mobile toggle – 44px min touch target */}
         <button
           type="button"
-          className="text-bark md:hidden"
+          className="text-bark flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-md md:hidden"
           onClick={() => setMobileOpen((prev) => !prev)}
-          aria-label="Menu"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
         >
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -61,12 +66,12 @@ export function Navbar() {
           mobileOpen ? 'block' : 'hidden',
         )}
       >
-        <ul className="mx-auto flex max-w-5xl flex-col gap-1 px-6 pb-4">
+        <ul className="mx-auto flex max-w-5xl flex-col px-6 pb-4">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className="text-bark hover:bg-sand/50 hover:text-gold block rounded-md px-3 py-2 text-sm transition-colors"
+                className="text-bark hover:bg-sand/50 hover:text-gold flex min-h-11 touch-manipulation items-center rounded-md px-3 py-3 text-sm transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}

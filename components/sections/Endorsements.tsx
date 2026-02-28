@@ -1,0 +1,134 @@
+'use client';
+
+import { useRef, useState } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Quote, Linkedin, ChevronDown, ChevronUp } from 'lucide-react';
+import { Section } from '@/components/ui/Section';
+import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { Card } from '@/components/ui/Card';
+import { endorsements } from '@/data/endorsements';
+import { siteConfig } from '@/data/site';
+
+const linkedInRecommendationsUrl = `${siteConfig.links.linkedin}details/recommendations/`;
+
+function EndorsementCard({
+  endorsement,
+  index,
+  isInView,
+}: {
+  endorsement: (typeof endorsements)[number];
+  index: number;
+  isInView: boolean;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const quoteLong = endorsement.quote.length > 180;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      transition={{ duration: 0.5, delay: index * 0.12 }}
+    >
+      <Card className="group hover:border-gold/40 relative overflow-hidden transition-all duration-300">
+        <div className="relative">
+          <Quote className="text-gold/30 group-hover:text-gold/40 absolute -top-1 right-2 h-10 w-10 transition-transform duration-300 group-hover:scale-110" />
+          <blockquote className="text-bark relative pr-8 text-base leading-relaxed">
+            <AnimatePresence mode="wait">
+              {quoteLong && !expanded ? (
+                <motion.p
+                  key="short"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="line-clamp-4"
+                >
+                  {endorsement.quote}
+                </motion.p>
+              ) : (
+                <motion.p
+                  key="full"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {endorsement.quote}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </blockquote>
+          {quoteLong && (
+            <button
+              type="button"
+              onClick={() => setExpanded((e) => !e)}
+              className="text-gold hover:text-copper mt-2 flex items-center gap-1 text-sm font-medium transition-colors"
+            >
+              {expanded ? (
+                <>
+                  Show less <ChevronUp className="h-4 w-4" />
+                </>
+              ) : (
+                <>
+                  Read more <ChevronDown className="h-4 w-4" />
+                </>
+              )}
+            </button>
+          )}
+          <footer className="border-bark/10 mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 border-t pt-4">
+            <cite className="text-forest font-semibold not-italic">{endorsement.author}</cite>
+            {endorsement.role && <span className="text-stone text-sm">— {endorsement.role}</span>}
+            {endorsement.context && (
+              <span className="text-stone/80 block w-full text-xs">{endorsement.context}</span>
+            )}
+          </footer>
+        </div>
+      </Card>
+    </motion.div>
+  );
+}
+
+export function Endorsements() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-60px' });
+
+  return (
+    <Section variant="light" id="endorsements" nature={{ leaves: true }}>
+      <div ref={ref}>
+        <AnimatedHeading sectionId="endorsements" subtitle="IIa." className="mb-4">
+          Trail Recommendations
+        </AnimatedHeading>
+        <p className="text-bark mb-10 max-w-2xl text-lg">
+          What fellow hikers have said about working with me. See all recommendations and
+          endorsements on my LinkedIn profile.
+        </p>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {endorsements.map((endorsement, i) => (
+            <EndorsementCard
+              key={endorsement.id}
+              endorsement={endorsement}
+              index={i}
+              isInView={isInView}
+            />
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-10 flex justify-center"
+        >
+          <a
+            href={linkedInRecommendationsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gold hover:text-copper border-gold/50 bg-gold/5 hover:border-gold hover:bg-gold/10 inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 rounded-full border px-5 py-2.5 font-medium transition-all duration-300"
+          >
+            <Linkedin className="h-5 w-5" />
+            View recommendations & endorsements on LinkedIn
+          </a>
+        </motion.div>
+      </div>
+    </Section>
+  );
+}

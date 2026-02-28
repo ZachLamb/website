@@ -19,7 +19,7 @@ type ButtonProps = {
 export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   ({ children, variant = 'primary', className, href, ...props }, ref) => {
     const classes = cn(
-      'inline-flex items-center justify-center rounded-full px-6 py-3 font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+      'inline-flex min-h-11 min-w-[44px] items-center justify-center rounded-full px-6 py-3 font-medium transition-all duration-200 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
       variants[variant],
       className,
     );
