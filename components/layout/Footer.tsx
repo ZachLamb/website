@@ -65,16 +65,16 @@ export function Footer() {
           )}
         </div>
 
-        <p className="text-stone/60 flex items-center gap-3 text-xs tracking-[0.25em] uppercase">
+        <p className="text-stone/60 flex flex-wrap items-center justify-center gap-3 text-xs tracking-[0.25em] uppercase">
           <motion.span
             initial={{ width: 0 }}
             animate={isInView ? { width: 32 } : { width: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-stone/30 inline-block h-px"
+            className="bg-stone/30 inline-block h-px shrink-0"
           />
           <motion.svg
             viewBox="0 0 16 16"
-            className="text-gold/40 h-3 w-3"
+            className="text-gold/40 h-3 w-3 shrink-0"
             initial={{ opacity: 0, scale: 0 }}
             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
@@ -84,10 +84,10 @@ export function Footer() {
               fill="currentColor"
             />
           </motion.svg>
-          {messages.footer.endOfTrail}
+          <span className="text-center">{messages.footer.endOfTrail}</span>
           <motion.svg
             viewBox="0 0 16 16"
-            className="text-gold/40 h-3 w-3"
+            className="text-gold/40 h-3 w-3 shrink-0"
             initial={{ opacity: 0, scale: 0 }}
             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
@@ -101,7 +101,7 @@ export function Footer() {
             initial={{ width: 0 }}
             animate={isInView ? { width: 32 } : { width: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-stone/30 inline-block h-px"
+            className="bg-stone/30 inline-block h-px shrink-0"
           />
         </p>
 

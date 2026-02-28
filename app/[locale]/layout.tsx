@@ -6,7 +6,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { TrailExtension } from '@/components/ui/TrailExtension';
 import { LocaleProvider } from '@/components/providers/LocaleProvider';
-import { getMessages, isValidLocale, type Locale } from '@/lib/i18n';
+import { getMessages, isValidLocale, locales, type Locale } from '@/lib/i18n';
 
 type Props = { children: React.ReactNode; params: Promise<{ locale: string }> };
 
@@ -23,7 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: messages.site.description,
     alternates: {
       canonical,
-      languages: { en: siteConfig.url, es: `${siteConfig.url}/es`, de: `${siteConfig.url}/de` },
+      languages: Object.fromEntries(
+        locales.map((loc) => [loc, loc === 'en' ? siteConfig.url : `${siteConfig.url}/${loc}`]),
+      ) as Record<string, string>,
     },
     openGraph: {
       title: `${messages.site.name} | ${messages.site.title}`,

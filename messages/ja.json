@@ -1,0 +1,89 @@
+{
+  "common": {
+    "skipToContent": "メインコンテンツへスキップ"
+  },
+  "site": {
+    "name": "Zach Lamb",
+    "title": "シニアソフトウェアエンジニア",
+    "description": "React、TypeScript、AIを活用したWebツールを専門とするシニアソフトウェアエンジニア。ヒューマンセンタードコンピューティングのバックグラウンドを持つ認定スクラムマスター。サイバーセキュリティプラットフォームから大規模eコマースまで、高性能なアプリケーションを構築しています。"
+  },
+  "nav": {
+    "trailGuide": "トレイルガイド",
+    "trailLog": "トレイルログ",
+    "recommendations": "推薦",
+    "gear": "ギア",
+    "lodge": "ロッジ",
+    "credentials": "資格",
+    "contact": "お問い合わせ",
+    "backToTop": "Zach Lamb – トップへ戻る",
+    "openMenu": "メニューを開く",
+    "closeMenu": "メニューを閉じる",
+    "selectLanguage": "言語を選択"
+  },
+  "hero": {
+    "title": "Zach Lamb",
+    "subtitle": "シニアソフトウェアエンジニア",
+    "tagline": "人々のためのツールを作っています。コード、アウトドア、オレオについて話すのもいつでも歓迎です。",
+    "getInTouch": "お問い合わせ",
+    "learnMore": "詳しく見る",
+    "resume": "履歴書",
+    "viewResume": "履歴書を見る（新しいタブで開く）"
+  },
+  "about": {
+    "heading": "トレイルガイド",
+    "body": "フロントエンド寄りのフルスタックエンジニアで、人々が実際に使いやすいWebアプリケーションを10年以上にわたり構築してきました。現在はCircadenceでサイバーセキュリティのプロ向けのAIツールを開発しています。それ以前はスターバックスの店舗チームのコミュニケーション改善を支援し、StellarFiでデザインシステムを構築しました。認定スクラムマスターとして、優れたソフトウェアは優れたプロセスと共感的なチームから生まれると信じています。コードを書いていないときは、ヨガを教えたり、コロラドのトレイルを歩いたり、ウェイトトレーニングをしたり、最高のオレオの味について議論したりしています。",
+    "focusAreas": "React & TypeScript · デザインシステム · AIツール · 認定スクラムマスター"
+  },
+  "footer": {
+    "backToTop": "トップへ戻る",
+    "resume": "履歴書",
+    "viewResume": "履歴書を見る（新しいタブで開く）",
+    "endOfTrail": "トレイルの終わり"
+  },
+  "contact": {
+    "heading": "キャンプにメッセージを残す",
+    "intro": "コード、今後のトレイル、オレオについてでも — メッセージを残していただければ、ベースキャンプから返信します。通常1日以内に返信します。",
+    "name": "お名前",
+    "email": "メールアドレス",
+    "message": "メッセージ",
+    "namePlaceholder": "ハイカーの皆さん",
+    "emailPlaceholder": "hiker@example.jp",
+    "messagePlaceholder": "ご用件は？",
+    "send": "送信",
+    "sending": "送信中…",
+    "successTitle": "ベースキャンプにメッセージを残しました",
+    "successSub": "メッセージは送信されました。",
+    "sendAnother": "もう一度送る",
+    "orReachOut": "または直接ご連絡ください",
+    "fallbackError": "問題が発生しました。もう一度お試しください。",
+    "messageSent": "送信しました！"
+  },
+  "sections": {
+    "experience": "トレイルログ",
+    "endorsements": "推薦",
+    "skills": "ギア",
+    "services": "ロッジ",
+    "education": "資格"
+  },
+  "endorsements": {
+    "intro": "一緒に働いた仲間が私について語ってくれたこと。",
+    "showLess": "折りたたむ",
+    "readMore": "続きを読む",
+    "viewOnLinkedIn": "LinkedInで見る",
+    "viewOnLinkedInAria": "この推薦をLinkedInで見る（新しいタブで開く）",
+    "viewAllOnLinkedIn": "LinkedInで全ての推薦を見る",
+    "viewAllOnLinkedInAria": "LinkedInで全ての推薦を見る（新しいタブで開く）"
+  },
+  "experience": {
+    "more": "件"
+  },
+  "education": {
+    "certifications": "認定資格"
+  },
+  "skills": {
+    "intro": "各技術の実務経験年数 — 実践で試され、本番対応済み。",
+    "scaleDescription": "スケール：0–{max}年。専門経験に基づく。",
+    "yearAbbrev": "年",
+    "yearAbbrevPlural": "年"
+  }
+}

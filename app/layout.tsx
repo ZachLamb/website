@@ -18,7 +18,8 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const headersList = await headers();
   const localeHeader = headersList.get('x-next-locale') ?? '';
-  const lang = isValidLocale(localeHeader) ? localeHeader : defaultLocale;
+  const locale = isValidLocale(localeHeader) ? localeHeader : defaultLocale;
+  const lang = locale === 'zh' ? 'zh-Hans' : locale;
 
   return (
     <html lang={lang} className={`${inter.variable} ${cormorantGaramond.variable}`}>

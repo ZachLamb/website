@@ -53,17 +53,11 @@ body {
   }
 }
 
-/* Spanish: longer text — allow wrapping and adjust layout to avoid overflow */
-:lang(es) [data-nav-link] {
-  white-space: normal;
-  font-size: 0.8125rem; /* 13px — slightly smaller so "Registro del sendero" etc. fit */
+/* Spanish & Italian: slightly smaller nav link font so longer labels fit on one line without overflow */
+html:lang(es) nav [data-nav-link],
+html:lang(it) nav [data-nav-link] {
+  font-size: 0.8125rem; /* 13px */
   line-height: 1.35;
-  text-align: left;
-}
-
-:lang(es) .break-words {
-  word-break: break-word;
-  overflow-wrap: break-word;
 }
 
 /* Print: hide decorative/fixed UI, clean single-column look */

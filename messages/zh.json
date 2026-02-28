@@ -1,0 +1,89 @@
+{
+  "common": {
+    "skipToContent": "跳到主内容"
+  },
+  "site": {
+    "name": "Zach Lamb",
+    "title": "高级软件工程师",
+    "description": "高级软件工程师，专注于 React、TypeScript 与 AI 驱动的 Web 工具。认证 ScrumMaster，具备以人为中心的计算背景，从网络安全平台到大规模电商，构建高性能应用。"
+  },
+  "nav": {
+    "trailGuide": "步道指南",
+    "trailLog": "步道日志",
+    "recommendations": "推荐",
+    "gear": "装备",
+    "lodge": "营地",
+    "credentials": "资历",
+    "contact": "联系",
+    "backToTop": "Zach Lamb – 返回顶部",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "selectLanguage": "选择语言"
+  },
+  "hero": {
+    "title": "Zach Lamb",
+    "subtitle": "高级软件工程师",
+    "tagline": "我为人们打造工具 —— 也随时乐意聊聊代码、户外或奥利奥。",
+    "getInTouch": "联系我",
+    "learnMore": "了解更多",
+    "resume": "简历",
+    "viewResume": "查看简历（在新标签页中打开）"
+  },
+  "about": {
+    "heading": "步道指南",
+    "body": "我是一名偏前端的全栈工程师，十多年来一直在构建人们真正喜欢使用的 Web 应用。目前在 Circadence 为网络安全从业者打造 AI 驱动的工具。此前曾帮助星巴克门店团队改善沟通，并在 StellarFi 构建设计系统。我是认证 ScrumMaster，相信优秀软件来自优秀流程和共情团队。不写代码时，你会在教瑜伽、探索科罗拉多步道、举重或争论最好吃的奥利奥口味时找到我。",
+    "focusAreas": "React 与 TypeScript · 设计系统 · AI 工具 · 认证 ScrumMaster"
+  },
+  "footer": {
+    "backToTop": "返回顶部",
+    "resume": "简历",
+    "viewResume": "查看简历（在新标签页中打开）",
+    "endOfTrail": "步道终点"
+  },
+  "contact": {
+    "heading": "在营地留言",
+    "intro": "无论是代码、前方的步道还是奥利奥 —— 留个言，我会从大本营回复。通常一天内回复。",
+    "name": "姓名",
+    "email": "邮箱",
+    "message": "留言",
+    "namePlaceholder": "同路人",
+    "emailPlaceholder": "hiker@example.cn",
+    "messagePlaceholder": "想说什么？",
+    "send": "发送",
+    "sending": "发送中…",
+    "successTitle": "留言已留在大本营",
+    "successSub": "您的消息已在路上。",
+    "sendAnother": "再发一条",
+    "orReachOut": "或直接联系我",
+    "fallbackError": "出错了，请重试。",
+    "messageSent": "已发送！"
+  },
+  "sections": {
+    "experience": "步道日志",
+    "endorsements": "推荐",
+    "skills": "装备",
+    "services": "营地",
+    "education": "资历"
+  },
+  "endorsements": {
+    "intro": "同路人对我与他们的合作是怎么说的。",
+    "showLess": "收起",
+    "readMore": "阅读更多",
+    "viewOnLinkedIn": "在 LinkedIn 上查看",
+    "viewOnLinkedInAria": "在 LinkedIn 上查看此推荐（在新标签页中打开）",
+    "viewAllOnLinkedIn": "在 LinkedIn 上查看全部推荐",
+    "viewAllOnLinkedInAria": "在 LinkedIn 上查看全部推荐（在新标签页中打开）"
+  },
+  "experience": {
+    "more": "更多"
+  },
+  "education": {
+    "certifications": "认证"
+  },
+  "skills": {
+    "intro": "各项技术的实践年数 —— 经步道与生产环境验证。",
+    "scaleDescription": "刻度：0–{max} 年。基于专业经验。",
+    "yearAbbrev": "年",
+    "yearAbbrevPlural": "年"
+  }
+}

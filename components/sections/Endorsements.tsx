@@ -30,7 +30,8 @@ function EndorsementCard({
 }) {
   const [expanded, setExpanded] = useState(false);
   const quoteLong = endorsement.quote.length > 180;
-  const lineClampClass = locale === 'es' ? 'line-clamp-5' : 'line-clamp-4';
+  const longTextLocales = ['es', 'it', 'de', 'ja', 'zh'] as const;
+  const lineClampClass = longTextLocales.includes(locale) ? 'line-clamp-5' : 'line-clamp-4';
 
   return (
     <motion.div

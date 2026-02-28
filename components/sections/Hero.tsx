@@ -336,7 +336,7 @@ export function Hero() {
         variants={stagger}
         initial="hidden"
         animate="visible"
-        className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-4 py-12 text-center sm:px-6 md:px-8"
+        className="relative z-10 mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col items-center justify-center px-4 py-12 text-center sm:px-6 md:px-8"
       >
         <motion.p
           variants={fadeUp}

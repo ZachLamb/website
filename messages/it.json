@@ -1,0 +1,89 @@
+{
+  "common": {
+    "skipToContent": "Vai al contenuto"
+  },
+  "site": {
+    "name": "Zach Lamb",
+    "title": "Ingegnere del Software Senior",
+    "description": "Ingegnere del Software Senior specializzato in React, TypeScript e strumenti web basati su IA. ScrumMaster certificato con formazione in Human Centered Computing, costruisce applicazioni performanti dalle piattaforme di cybersecurity all'e-commerce su scala."
+  },
+  "nav": {
+    "trailGuide": "Guida del sentiero",
+    "trailLog": "Registro del sentiero",
+    "recommendations": "Raccomandazioni",
+    "gear": "Equipaggiamento",
+    "lodge": "Rifugio",
+    "credentials": "Credenziali",
+    "contact": "Contatto",
+    "backToTop": "Zach Lamb – torna in alto",
+    "openMenu": "Apri menu",
+    "closeMenu": "Chiudi menu",
+    "selectLanguage": "Seleziona lingua"
+  },
+  "hero": {
+    "title": "Zach Lamb",
+    "subtitle": "Ingegnere del Software Senior",
+    "tagline": "Costruisco strumenti per le persone — e sono sempre disponibile per una chiacchierata su codice, natura o Oreo.",
+    "getInTouch": "Contattami",
+    "learnMore": "Scopri di più",
+    "resume": "Curriculum",
+    "viewResume": "Vedi curriculum (si apre in nuova scheda)"
+  },
+  "about": {
+    "heading": "Guida del sentiero",
+    "body": "Sono un ingegnere full-stack orientato al frontend con oltre un decennio di esperienza nella costruzione di applicazioni web che le persone amano usare. Attualmente sono in Circadence dove creo strumenti basati su IA per professionisti della cybersecurity. In precedenza ho aiutato i team dei negozi Starbucks a comunicare meglio e ho costruito design system in StellarFi. Sono uno ScrumMaster certificato che crede che un grande software nasca da grandi processi e team empatici. Quando non scrivo codice, mi troverai a insegnare yoga, esplorare i sentieri del Colorado, sollevare pesi o a discutere del miglior gusto di Oreo.",
+    "focusAreas": "React e TypeScript · Design system · Strumenti con IA · ScrumMaster certificato"
+  },
+  "footer": {
+    "backToTop": "Torna in alto",
+    "resume": "Curriculum",
+    "viewResume": "Vedi curriculum (si apre in nuova scheda)",
+    "endOfTrail": "Fine del sentiero"
+  },
+  "contact": {
+    "heading": "Lascia un messaggio al campo",
+    "intro": "Che sia su codice, il sentiero davanti a te o le Oreo — lascia un messaggio e ti risponderò dal campo base. Di solito rispondo entro un giorno.",
+    "name": "Nome",
+    "email": "Email",
+    "message": "Messaggio",
+    "namePlaceholder": "Compagno di escursione",
+    "emailPlaceholder": "escursionista@email.it",
+    "messagePlaceholder": "Cosa hai in mente?",
+    "send": "Invia messaggio",
+    "sending": "Invio in corso…",
+    "successTitle": "Messaggio lasciato al campo base",
+    "successSub": "Il tuo messaggio è in viaggio.",
+    "sendAnother": "Invia un altro",
+    "orReachOut": "Oppure contattami direttamente",
+    "fallbackError": "Qualcosa è andato storto. Riprova.",
+    "messageSent": "Messaggio inviato!"
+  },
+  "sections": {
+    "experience": "Registro del sentiero",
+    "endorsements": "Raccomandazioni",
+    "skills": "Equipaggiamento",
+    "services": "Rifugio",
+    "education": "Credenziali"
+  },
+  "endorsements": {
+    "intro": "Cosa hanno detto di me i compagni di escursione con cui ho lavorato.",
+    "showLess": "Mostra meno",
+    "readMore": "Leggi di più",
+    "viewOnLinkedIn": "Vedi su LinkedIn",
+    "viewOnLinkedInAria": "Vedi questa raccomandazione su LinkedIn (si apre in nuova scheda)",
+    "viewAllOnLinkedIn": "Vedi tutte le raccomandazioni su LinkedIn",
+    "viewAllOnLinkedInAria": "Vedi tutte le raccomandazioni su LinkedIn (si apre in nuova scheda)"
+  },
+  "experience": {
+    "more": "altri"
+  },
+  "education": {
+    "certifications": "Certificazioni"
+  },
+  "skills": {
+    "intro": "Anni di esperienza pratica con ogni tecnologia — testato sul campo e pronto per la produzione.",
+    "scaleDescription": "Scala: 0–{max} anni. Basato sull'esperienza professionale.",
+    "yearAbbrev": "anno",
+    "yearAbbrevPlural": "anni"
+  }
+}
