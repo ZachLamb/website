@@ -43,7 +43,10 @@ describe('Endorsements', () => {
 
   it('renders endorsement cards from data', () => {
     render(<Endorsements />);
-    expect(screen.getAllByText('Recommender full name').length).toBe(3);
+    expect(screen.getByText('Kimball Heaton')).toBeInTheDocument();
+    expect(screen.getByText('Katherine Liu')).toBeInTheDocument();
+    expect(screen.getByText('Lia Young')).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/View this recommendation on LinkedIn/i).length).toBe(3);
   });
 
   it('has the endorsements section id', () => {

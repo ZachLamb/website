@@ -15,10 +15,12 @@ function EndorsementCard({
   endorsement,
   index,
   isInView,
+  linkedInUrl,
 }: {
   endorsement: (typeof endorsements)[number];
   index: number;
   isInView: boolean;
+  linkedInUrl: string;
 }) {
   const [expanded, setExpanded] = useState(false);
   const quoteLong = endorsement.quote.length > 180;
@@ -79,6 +81,16 @@ function EndorsementCard({
             {endorsement.context && (
               <span className="text-stone/80 block w-full text-xs">{endorsement.context}</span>
             )}
+            <a
+              href={linkedInUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View this recommendation on LinkedIn (opens in new tab)"
+              className="text-gold hover:text-copper focus-visible:ring-gold focus-visible:ring-offset-parchment mt-2 inline-flex min-h-11 touch-manipulation items-center gap-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
+              <Linkedin className="h-4 w-4" />
+              View on LinkedIn
+            </a>
           </footer>
         </div>
       </Card>
@@ -124,6 +136,7 @@ export function Endorsements() {
               endorsement={endorsement}
               index={i}
               isInView={isInView}
+              linkedInUrl={linkedInRecommendationsUrl}
             />
           ))}
         </div>

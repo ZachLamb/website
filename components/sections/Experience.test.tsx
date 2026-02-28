@@ -34,10 +34,22 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { experiences } from '@/data/experience';
 import { Experience } from './Experience';
 
-function mockMatchMedia(matches: boolean) {
-  return Object.assign(
-    vi.fn(() => ({ matches, addEventListener: vi.fn(), removeEventListener: vi.fn() })),
-    { addListener: vi.fn(), removeListener: vi.fn(), dispatchEvent: vi.fn() },
+function mockMatchMedia(matches: boolean): (query: string) => MediaQueryList {
+  return vi.fn(
+    (query: string) =>
+      Object.assign(
+        {
+          matches,
+          media: query,
+          onchange: null,
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+          addListener: vi.fn(),
+          removeListener: vi.fn(),
+          dispatchEvent: vi.fn(),
+        },
+        {},
+      ) as MediaQueryList,
   );
 }
 

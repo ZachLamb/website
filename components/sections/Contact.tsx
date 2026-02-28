@@ -16,7 +16,12 @@ const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>
 const inputClasses =
   'w-full rounded-lg border border-bark/30 bg-charcoal px-4 py-3 text-parchment placeholder:text-stone/50 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gold transition-all';
 
-const contactEmail = 'hello@zachlamb.com';
+/** Mailto link and display: use NEXT_PUBLIC_CONTACT_EMAIL or fallback so form recipient and link stay in sync when set. */
+const contactEmail =
+  typeof process.env.NEXT_PUBLIC_CONTACT_EMAIL === 'string' &&
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL.trim() !== ''
+    ? process.env.NEXT_PUBLIC_CONTACT_EMAIL.trim()
+    : 'hello@zachlamb.com';
 
 /** Paper airplane SVG for success animation */
 function PaperAirplaneIcon({ className }: { className?: string }) {
@@ -105,9 +110,14 @@ export function Contact() {
           {status === 'success' ? (
             <motion.div
               key="success"
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.4 }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.5,
+                type: 'spring',
+                stiffness: 400,
+                damping: 25,
+              }}
               className="border-gold/20 bg-gold/5 flex flex-col items-center justify-center rounded-lg border py-12 text-center"
               aria-live="polite"
               aria-atomic="true"
@@ -116,26 +126,65 @@ export function Contact() {
               <p className="sr-only">Message sent!</p>
               <motion.div
                 className="text-gold mb-4 flex justify-center"
-                initial={prefersReducedMotion ? false : { y: 0, opacity: 1 }}
+                initial={prefersReducedMotion ? false : { y: 0, opacity: 1, rotate: 0, x: 0 }}
                 animate={
-                  prefersReducedMotion ? {} : { y: [-24, -80], opacity: [1, 0], rotate: [0, 12] }
+                  prefersReducedMotion
+                    ? {}
+                    : {
+                        y: [0, -16, -96],
+                        x: [0, 0, 20],
+                        opacity: [1, 1, 0],
+                        rotate: [0, 5, 18],
+                        scale: [1, 1.15, 0.9],
+                      }
                 }
-                transition={{ duration: 1.2, ease: 'easeOut' }}
+                transition={{
+                  duration: 1.4,
+                  times: [0, 0.2, 1],
+                  ease: ['easeOut', 'easeOut', 'easeIn'],
+                }}
               >
                 <PaperAirplaneIcon className="h-12 w-12" />
               </motion.div>
-              <p className="text-parchment font-serif text-xl font-semibold">
-                Note left at base camp
-              </p>
-              <p className="text-stone mt-1 text-sm">Your message is on its way.</p>
-              <Button
-                type="button"
-                variant="secondary"
-                className="mt-6"
-                onClick={() => setStatus('idle')}
+              <motion.p
+                className="text-parchment font-serif text-xl font-semibold"
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+                animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.4,
+                  delay: 0.35,
+                }}
               >
-                Send another
-              </Button>
+                Note left at base camp
+              </motion.p>
+              <motion.p
+                className="text-stone mt-1 text-sm"
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
+                animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.35,
+                  delay: 0.55,
+                }}
+              >
+                Your message is on its way.
+              </motion.p>
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+                animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.35,
+                  delay: 0.75,
+                }}
+              >
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="mt-6"
+                  onClick={() => setStatus('idle')}
+                >
+                  Send another
+                </Button>
+              </motion.div>
             </motion.div>
           ) : (
             <motion.form
@@ -194,8 +243,35 @@ export function Contact() {
               </div>
 
               <Button type="submit" className="w-full gap-2" disabled={status === 'sending'}>
-                {status === 'sending' ? 'Sending…' : 'Send Message'}
-                <Send className="h-4 w-4" />
+                {status === 'sending' ? (
+                  <span className="flex items-center justify-center gap-2">
+                    {!prefersReducedMotion && (
+                      <span className="flex gap-1">
+                        {[0, 1, 2].map((i) => (
+                          <motion.span
+                            key={i}
+                            className="h-1.5 w-1.5 rounded-full bg-current opacity-60"
+                            animate={{
+                              opacity: [0.4, 1, 0.4],
+                              scale: [0.9, 1.1, 0.9],
+                            }}
+                            transition={{
+                              duration: 0.8,
+                              repeat: Infinity,
+                              delay: i * 0.15,
+                            }}
+                          />
+                        ))}
+                      </span>
+                    )}
+                    Sending…
+                  </span>
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="h-4 w-4" />
+                  </>
+                )}
               </Button>
 
               <div aria-live="polite" aria-atomic="true">

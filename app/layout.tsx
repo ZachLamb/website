@@ -11,19 +11,19 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: `${siteConfig.name} | ${siteConfig.title}`,
   description: siteConfig.description,
+  alternates: { canonical: siteConfig.url },
   openGraph: {
     title: `${siteConfig.name} | ${siteConfig.title}`,
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
     type: 'website',
-    images: [{ url: siteConfig.ogImage, width: 1200, height: 630 }],
+    // OG image is provided by app/opengraph-image.tsx (dynamic)
   },
   twitter: {
     card: 'summary_large_image',
     title: `${siteConfig.name} | ${siteConfig.title}`,
     description: siteConfig.description,
-    images: [siteConfig.ogImage],
   },
   other: {
     'theme-color': '#2C3E2D',
@@ -36,10 +36,24 @@ export const viewport = {
   maximumScale: 5,
 };
 
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person' as const,
+  name: siteConfig.name,
+  url: siteConfig.url,
+  jobTitle: siteConfig.title,
+  description: siteConfig.description,
+  sameAs: [siteConfig.links.github, siteConfig.links.linkedin].filter(Boolean),
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${cormorantGaramond.variable}`}>
       <body className="min-h-[100dvh] min-h-screen antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <a
           href="#main-content"
           className="focus:bg-gold focus:text-parchment sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:px-4 focus:py-2"

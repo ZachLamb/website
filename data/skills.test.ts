@@ -11,6 +11,12 @@ describe('skillCategories', () => {
       expect(category).toHaveProperty('name');
       expect(Array.isArray(category.skills)).toBe(true);
       expect(category.skills.length).toBeGreaterThan(0);
+      category.skills.forEach((skill) => {
+        expect(skill).toHaveProperty('name');
+        expect(skill).toHaveProperty('years');
+        expect(typeof skill.years).toBe('number');
+        expect(skill.years).toBeGreaterThanOrEqual(0);
+      });
     });
   });
 
@@ -24,7 +30,8 @@ describe('skillCategories', () => {
 
   it('Frontend should include React and TypeScript', () => {
     const frontend = skillCategories.find((c) => c.id === 'frontend');
-    expect(frontend?.skills).toContain('React');
-    expect(frontend?.skills).toContain('TypeScript');
+    const names = frontend?.skills.map((s) => s.name) ?? [];
+    expect(names).toContain('React');
+    expect(names).toContain('TypeScript');
   });
 });
