@@ -64,5 +64,26 @@
     "skills": "Ausrüstung",
     "services": "Unterkunft",
     "education": "Qualifikationen"
+  },
+  "endorsements": {
+    "intro": "Was Wegbegleiter über die Zusammenarbeit mit mir gesagt haben.",
+    "showLess": "Weniger anzeigen",
+    "readMore": "Mehr lesen",
+    "viewOnLinkedIn": "Auf LinkedIn ansehen",
+    "viewOnLinkedInAria": "Diese Empfehlung auf LinkedIn ansehen (öffnet in neuem Tab)",
+    "viewAllOnLinkedIn": "Alle Empfehlungen auf LinkedIn ansehen",
+    "viewAllOnLinkedInAria": "Alle Empfehlungen auf LinkedIn ansehen (öffnet in neuem Tab)"
+  },
+  "experience": {
+    "more": "weitere"
+  },
+  "education": {
+    "certifications": "Zertifizierungen"
+  },
+  "skills": {
+    "intro": "Jahre praktische Erfahrung mit jeder Technologie — wegerprobt und produktionsreif.",
+    "scaleDescription": "Skala: 0–{max} Jahre. Basierend auf Berufserfahrung.",
+    "yearAbbrev": "J.",
+    "yearAbbrevPlural": "J."
   }
 }

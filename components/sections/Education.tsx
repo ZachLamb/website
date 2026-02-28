@@ -56,7 +56,9 @@ export function Education() {
       </div>
 
       <div className="mt-8">
-        <h3 className="text-forest font-serif text-lg font-semibold">Certifications</h3>
+        <h3 className="text-forest font-serif text-lg font-semibold">
+          {messages.education.certifications}
+        </h3>
         <div className="mt-4 space-y-3">
           {certifications.map((cert, i) => (
             <motion.div

@@ -13,12 +13,16 @@ function ExperienceBar({
   index,
   isInView,
   categoryIndex,
+  yearAbbrev,
+  yearAbbrevPlural,
 }: {
   years: number;
   maxYears: number;
   index: number;
   isInView: boolean;
   categoryIndex: number;
+  yearAbbrev: string;
+  yearAbbrevPlural: string;
 }) {
   const widthPercent = Math.min(100, (years / maxYears) * 100);
 
@@ -34,7 +38,7 @@ function ExperienceBar({
           }}
           className="text-parchment/90 font-medium"
         >
-          {years} {years === 1 ? 'yr' : 'yrs'}
+          {years} {years === 1 ? yearAbbrev : yearAbbrevPlural}
         </motion.span>
       </div>
       <div className="bg-forest/40 relative h-2 overflow-hidden rounded-full" aria-hidden>
@@ -68,9 +72,7 @@ export function Skills() {
         {messages.sections.skills}
       </AnimatedHeading>
 
-      <p className="text-stone/90 mt-4 max-w-2xl text-base">
-        Years of hands-on experience with each technology — trail-tested and production-ready.
-      </p>
+      <p className="text-stone/90 mt-4 max-w-2xl text-base">{messages.skills.intro}</p>
 
       <div ref={ref} className="mt-10 grid grid-cols-1 gap-10 sm:gap-12 md:grid-cols-2">
         {skillCategories.map((category, i) => (
@@ -101,6 +103,8 @@ export function Skills() {
                         index={j}
                         isInView={isInView}
                         categoryIndex={i}
+                        yearAbbrev={messages.skills.yearAbbrev}
+                        yearAbbrevPlural={messages.skills.yearAbbrevPlural}
                       />
                     </div>
                   </div>
@@ -111,7 +115,7 @@ export function Skills() {
       </div>
 
       <p className="text-stone/70 mt-6 text-xs">
-        Scale: 0–{maxYearsForScale} years. Based on professional experience.
+        {messages.skills.scaleDescription.replace('{max}', String(maxYearsForScale))}
       </p>
     </Section>
   );

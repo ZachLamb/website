@@ -225,9 +225,11 @@ function TrailProfileGraph({ count, id }: { count: number; id: string }) {
 function ExperienceDetailPanel({
   entry,
   side,
+  moreLabel,
 }: {
   entry: ExperienceEntry;
   side: 'left' | 'right';
+  moreLabel: string;
 }) {
   return (
     <motion.div
@@ -261,7 +263,9 @@ function ExperienceDetailPanel({
           <li key={i}>• {item}</li>
         ))}
         {entry.description.length > 4 && (
-          <li className="text-stone text-xs">+{entry.description.length - 4} more</li>
+          <li className="text-stone text-xs">
+            +{entry.description.length - 4} {moreLabel}
+          </li>
         )}
       </ul>
 
@@ -302,6 +306,7 @@ export function Experience() {
             key={hoveredEntry.id}
             entry={hoveredEntry}
             side={experiences.indexOf(hoveredEntry) % 2 === 0 ? 'right' : 'left'}
+            moreLabel={messages.experience.more}
           />
         )}
       </AnimatePresence>

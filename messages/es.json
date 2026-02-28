@@ -64,5 +64,26 @@
     "skills": "Equipo",
     "services": "Refugio",
     "education": "Credenciales"
+  },
+  "endorsements": {
+    "intro": "Lo que otros senderistas han dicho sobre trabajar conmigo.",
+    "showLess": "Ver menos",
+    "readMore": "Leer más",
+    "viewOnLinkedIn": "Ver en LinkedIn",
+    "viewOnLinkedInAria": "Ver esta recomendación en LinkedIn (se abre en nueva pestaña)",
+    "viewAllOnLinkedIn": "Ver todas las recomendaciones en LinkedIn",
+    "viewAllOnLinkedInAria": "Ver todas las recomendaciones en LinkedIn (se abre en nueva pestaña)"
+  },
+  "experience": {
+    "more": "más"
+  },
+  "education": {
+    "certifications": "Certificaciones"
+  },
+  "skills": {
+    "intro": "Años de experiencia práctica con cada tecnología — probado en el camino y listo para producción.",
+    "scaleDescription": "Escala: 0–{max} años. Según experiencia profesional.",
+    "yearAbbrev": "año",
+    "yearAbbrevPlural": "años"
   }
 }

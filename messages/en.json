@@ -64,5 +64,26 @@
     "skills": "Gear",
     "services": "Lodge",
     "education": "Credentials"
+  },
+  "endorsements": {
+    "intro": "What fellow hikers have said about working with me.",
+    "showLess": "Show less",
+    "readMore": "Read more",
+    "viewOnLinkedIn": "View on LinkedIn",
+    "viewOnLinkedInAria": "View this recommendation on LinkedIn (opens in new tab)",
+    "viewAllOnLinkedIn": "View all recommendations on LinkedIn",
+    "viewAllOnLinkedInAria": "View all recommendations on LinkedIn (opens in new tab)"
+  },
+  "experience": {
+    "more": "more"
+  },
+  "education": {
+    "certifications": "Certifications"
+  },
+  "skills": {
+    "intro": "Years of hands-on experience with each technology — trail-tested and production-ready.",
+    "scaleDescription": "Scale: 0–{max} years. Based on professional experience.",
+    "yearAbbrev": "yr",
+    "yearAbbrevPlural": "yrs"
   }
 }

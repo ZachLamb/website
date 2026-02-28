@@ -101,6 +101,7 @@ export function Navbar() {
               <li key={link.href} className="shrink-0">
                 <a
                   href={link.href}
+                  data-nav-link
                   className={cn(
                     'relative text-sm whitespace-nowrap transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-px after:transition-all after:duration-300 hover:after:w-full',
                     isActive

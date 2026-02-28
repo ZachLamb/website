@@ -7,6 +7,7 @@ import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
+import type { Messages } from '@/lib/i18n';
 import { endorsements } from '@/data/endorsements';
 import { siteConfig } from '@/data/site';
 
@@ -17,14 +18,19 @@ function EndorsementCard({
   index,
   isInView,
   linkedInUrl,
+  messages,
+  locale,
 }: {
   endorsement: (typeof endorsements)[number];
   index: number;
   isInView: boolean;
   linkedInUrl: string;
+  messages: Messages['endorsements'];
+  locale: import('@/lib/i18n').Locale;
 }) {
   const [expanded, setExpanded] = useState(false);
   const quoteLong = endorsement.quote.length > 180;
+  const lineClampClass = locale === 'es' ? 'line-clamp-5' : 'line-clamp-4';
 
   return (
     <motion.div
@@ -43,7 +49,7 @@ function EndorsementCard({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="line-clamp-4"
+                  className={lineClampClass}
                 >
                   {endorsement.quote}
                 </motion.p>
@@ -67,11 +73,11 @@ function EndorsementCard({
             >
               {expanded ? (
                 <>
-                  Show less <ChevronUp className="h-4 w-4" />
+                  {messages.showLess} <ChevronUp className="h-4 w-4" />
                 </>
               ) : (
                 <>
-                  Read more <ChevronDown className="h-4 w-4" />
+                  {messages.readMore} <ChevronDown className="h-4 w-4" />
                 </>
               )}
             </button>
@@ -86,11 +92,11 @@ function EndorsementCard({
               href={linkedInUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="View this recommendation on LinkedIn (opens in new tab)"
+              aria-label={messages.viewOnLinkedInAria}
               className="text-gold hover:text-copper focus-visible:ring-gold focus-visible:ring-offset-parchment mt-2 inline-flex min-h-11 touch-manipulation items-center gap-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               <Linkedin className="h-4 w-4" />
-              View on LinkedIn
+              {messages.viewOnLinkedIn}
             </a>
           </footer>
         </div>
@@ -100,7 +106,7 @@ function EndorsementCard({
 }
 
 export function Endorsements() {
-  const { messages } = useLocaleContext();
+  const { locale, messages } = useLocaleContext();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
@@ -110,9 +116,7 @@ export function Endorsements() {
         <AnimatedHeading sectionId="endorsements" subtitle="IIa." className="mb-4">
           {messages.sections.endorsements}
         </AnimatedHeading>
-        <p className="text-bark mb-6 max-w-2xl text-lg">
-          What fellow hikers have said about working with me.
-        </p>
+        <p className="text-bark mb-6 max-w-2xl text-lg">{messages.endorsements.intro}</p>
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
@@ -123,11 +127,11 @@ export function Endorsements() {
             href={linkedInRecommendationsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="View all recommendations on LinkedIn (opens in new tab)"
+            aria-label={messages.endorsements.viewAllOnLinkedInAria}
             className="text-gold hover:text-copper focus-visible:ring-gold inline-flex items-center gap-2 rounded font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Linkedin className="h-5 w-5" />
-            View all recommendations on LinkedIn
+            {messages.endorsements.viewAllOnLinkedIn}
           </a>
         </motion.p>
 
@@ -139,6 +143,8 @@ export function Endorsements() {
               index={i}
               isInView={isInView}
               linkedInUrl={linkedInRecommendationsUrl}
+              messages={messages.endorsements}
+              locale={locale}
             />
           ))}
         </div>
