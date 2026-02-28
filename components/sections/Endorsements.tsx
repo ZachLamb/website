@@ -7,7 +7,7 @@ import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
-import type { Messages } from '@/lib/i18n';
+import type { Locale, Messages } from '@/lib/i18n';
 import { endorsements } from '@/data/endorsements';
 import { siteConfig } from '@/data/site';
 
@@ -26,12 +26,12 @@ function EndorsementCard({
   isInView: boolean;
   linkedInUrl: string;
   messages: Messages['endorsements'];
-  locale: import('@/lib/i18n').Locale;
+  locale: Locale;
 }) {
   const [expanded, setExpanded] = useState(false);
   const quoteLong = endorsement.quote.length > 180;
-  const longTextLocales = ['es', 'it', 'de', 'ja', 'zh'] as const;
-  const lineClampClass = longTextLocales.includes(locale) ? 'line-clamp-5' : 'line-clamp-4';
+  const longTextLocales = new Set<Locale>(['es', 'it', 'de', 'ja', 'zh']);
+  const lineClampClass = longTextLocales.has(locale) ? 'line-clamp-5' : 'line-clamp-4';
 
   return (
     <motion.div
