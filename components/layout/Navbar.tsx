@@ -6,15 +6,7 @@ import { Menu, X, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { useActiveSection } from '@/hooks/useActiveSection';
-import { locales, type Locale } from '@/lib/i18n';
-
-const LOCALE_COOKIE = 'NEXT_LOCALE';
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
-
-function setLocaleCookie(locale: Locale) {
-  if (typeof document === 'undefined') return;
-  document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
-}
+import { LanguageDropdown } from '@/components/ui/LanguageDropdown';
 
 const navLinkIds = [
   { key: 'trailGuide' as const, href: '#about', id: 'about' },
@@ -101,16 +93,16 @@ export function Navbar() {
           {messages.site.name}
         </a>
 
-        {/* Desktop links */}
-        <ul className="hidden items-center gap-8 md:flex">
+        {/* Desktop links + language dropdown */}
+        <ul className="hidden flex-wrap items-center gap-6 md:flex">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
-              <li key={link.href}>
+              <li key={link.href} className="shrink-0">
                 <a
                   href={link.href}
                   className={cn(
-                    'relative text-sm transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-px after:transition-all after:duration-300 hover:after:w-full',
+                    'relative text-sm whitespace-nowrap transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-px after:transition-all after:duration-300 hover:after:w-full',
                     isActive
                       ? 'text-gold after:bg-gold font-medium after:w-full'
                       : 'text-bark after:bg-gold hover:text-gold after:w-0 hover:after:w-full',
@@ -122,23 +114,8 @@ export function Navbar() {
               </li>
             );
           })}
-          <li className="flex items-center gap-1">
-            {locales.map((l) => (
-              <a
-                key={l}
-                href={l === 'en' ? '/en' : `/${l}`}
-                onClick={() => setLocaleCookie(l)}
-                className={cn(
-                  'rounded px-2 py-1 text-xs font-medium uppercase transition-colors',
-                  l === locale
-                    ? 'text-gold bg-gold/10'
-                    : 'text-bark hover:text-gold hover:bg-sand/50',
-                )}
-                aria-current={l === locale ? 'page' : undefined}
-              >
-                {l}
-              </a>
-            ))}
+          <li className="shrink-0">
+            <LanguageDropdown id="language-select-desktop" />
           </li>
         </ul>
 
@@ -174,24 +151,8 @@ export function Navbar() {
               </a>
             </li>
           ))}
-          <li className="flex gap-2 px-3 py-2">
-            {locales.map((l) => (
-              <a
-                key={l}
-                href={l === 'en' ? '/en' : `/${l}`}
-                onClick={() => {
-                  setLocaleCookie(l);
-                  setMobileOpen(false);
-                }}
-                className={cn(
-                  'rounded px-3 py-2 text-sm font-medium uppercase',
-                  l === locale ? 'text-gold bg-gold/10' : 'text-bark hover:bg-sand/50',
-                )}
-                aria-current={l === locale ? 'page' : undefined}
-              >
-                {l}
-              </a>
-            ))}
+          <li className="px-3 py-2">
+            <LanguageDropdown compact id="language-select-mobile" />
           </li>
         </ul>
       </div>

@@ -22,7 +22,7 @@ export function About() {
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="text-bark max-w-3xl text-lg leading-relaxed"
+        className="text-bark max-w-3xl text-lg leading-relaxed break-words"
       >
         {messages.about.body}
       </motion.p>
@@ -31,7 +31,7 @@ export function About() {
         initial={{ opacity: 0, y: 12 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
         transition={{ duration: 0.5, delay: 0.35 }}
-        className="text-stone mt-6 max-w-3xl text-sm"
+        className="text-stone mt-6 max-w-3xl text-sm break-words"
         aria-label="Focus areas"
       >
         {messages.about.focusAreas}

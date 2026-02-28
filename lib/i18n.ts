@@ -1,6 +1,13 @@
 export const locales = ['en', 'es', 'de'] as const;
 export type Locale = (typeof locales)[number];
 
+/** Display names for language dropdown (in each language for consistency use native names) */
+export const localeNames: Record<Locale, string> = {
+  en: 'English',
+  es: 'Español',
+  de: 'Deutsch',
+};
+
 export const defaultLocale: Locale = 'en';
 
 export function isValidLocale(value: string): value is Locale {

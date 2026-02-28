@@ -340,19 +340,22 @@ export function Hero() {
       >
         <motion.p
           variants={fadeUp}
-          className="text-gold font-sans text-sm tracking-widest uppercase"
+          className="text-gold text-center font-sans text-sm tracking-widest break-words uppercase"
         >
           {messages.hero.subtitle}
         </motion.p>
 
         <motion.h1
           variants={fadeUp}
-          className="text-parchment mt-4 font-serif text-5xl font-bold md:text-7xl"
+          className="text-parchment mt-4 text-center font-serif text-5xl font-bold break-words md:text-7xl"
         >
           {messages.hero.title}
         </motion.h1>
 
-        <motion.p variants={fadeUp} className="text-stone mt-6 max-w-2xl text-lg md:text-xl">
+        <motion.p
+          variants={fadeUp}
+          className="text-stone mt-6 max-w-2xl text-center text-lg break-words md:text-xl"
+        >
           {messages.hero.tagline}
         </motion.p>
 

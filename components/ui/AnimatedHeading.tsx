@@ -84,7 +84,7 @@ export function AnimatedHeading({
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.6, delay: subtitle ? 0.1 : 0 }}
-        className="text-forest font-serif text-3xl font-semibold md:text-4xl"
+        className="text-forest font-serif text-3xl font-semibold break-words md:text-4xl"
       >
         {headingContent}
       </MotionTag>

@@ -16,11 +16,12 @@ export function proxy(request: NextRequest) {
   }
 
   // Request to root: detect locale and redirect to /{locale}
+  // Priority: cookie (user choice) > Accept-Language (browser) > default (en)
   if (pathname === '/') {
     const cookieLocale = request.cookies.get(LOCALE_COOKIE)?.value ?? '';
     const locale = isValidLocale(cookieLocale)
       ? cookieLocale
-      : getLocaleFromAcceptLanguage(request.headers.get('accept-language'));
+      : getLocaleFromAcceptLanguage(request.headers.get('accept-language')); // unsupported → en
     return NextResponse.redirect(new URL(`/${locale}`, request.url));
   }
 

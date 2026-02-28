@@ -39,4 +39,11 @@ describe('Navbar', () => {
     fireEvent.click(btn);
     expect(btn).toHaveAttribute('aria-expanded', 'false');
   });
+
+  it('renders language dropdown with current locale', () => {
+    renderWithLocale(<Navbar />);
+    const comboboxes = screen.getAllByRole('combobox', { name: /select language/i });
+    expect(comboboxes.length).toBeGreaterThanOrEqual(1);
+    expect(comboboxes[0]).toHaveValue('en');
+  });
 });
