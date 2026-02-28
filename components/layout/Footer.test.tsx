@@ -22,13 +22,20 @@ describe('Footer', () => {
     expect(screen.getByText(/© \d{4} Zach Lamb/)).toBeInTheDocument();
   });
 
-  it('renders GitHub link', () => {
+  it('renders Back to top link', () => {
     render(<Footer />);
-    expect(screen.getByLabelText('GitHub')).toBeInTheDocument();
+    const backToTop = screen.getByRole('link', { name: /back to top/i });
+    expect(backToTop).toBeInTheDocument();
+    expect(backToTop).toHaveAttribute('href', '#hero');
   });
 
-  it('renders LinkedIn link', () => {
+  it('renders GitHub link with accessible label', () => {
     render(<Footer />);
-    expect(screen.getByLabelText('LinkedIn')).toBeInTheDocument();
+    expect(screen.getByLabelText(/GitHub/i)).toBeInTheDocument();
+  });
+
+  it('renders LinkedIn link with accessible label', () => {
+    render(<Footer />);
+    expect(screen.getByLabelText(/LinkedIn/i)).toBeInTheDocument();
   });
 });

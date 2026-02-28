@@ -77,7 +77,7 @@ export function Contact() {
         className="text-stone mt-4 text-lg"
       >
         Whether it&rsquo;s about code, the trail ahead, or Oreos — drop a note and I&rsquo;ll get
-        back to you from base camp.
+        back to you from base camp. I typically reply within a day.
       </motion.p>
 
       <div ref={ref} className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-2">
@@ -96,6 +96,7 @@ export function Contact() {
               id="name"
               name="name"
               type="text"
+              autoComplete="name"
               required
               maxLength={200}
               placeholder="Fellow Hiker"
@@ -111,6 +112,7 @@ export function Contact() {
               id="email"
               name="email"
               type="email"
+              autoComplete="email"
               required
               maxLength={320}
               placeholder="hiker@trailmail.com"
@@ -167,6 +169,7 @@ export function Contact() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`${link.platform} (opens in new tab)`}
                   className="text-parchment hover:text-gold flex min-h-11 touch-manipulation items-center gap-3 rounded-md py-3 transition-colors"
                 >
                   <Icon className="text-gold h-5 w-5 shrink-0" />

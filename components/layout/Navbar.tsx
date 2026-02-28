@@ -4,19 +4,21 @@ import { useState } from 'react';
 import { Menu, X, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/data/site';
+import { useActiveSection } from '@/hooks/useActiveSection';
 
 const navLinks = [
-  { label: 'Trail Guide', href: '#about' },
-  { label: 'Trail Log', href: '#experience' },
-  { label: 'Recommendations', href: '#endorsements' },
-  { label: 'Gear', href: '#skills' },
-  { label: 'Lodge', href: '#services' },
-  { label: 'Credentials', href: '#education' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Trail Guide', href: '#about', id: 'about' },
+  { label: 'Trail Log', href: '#experience', id: 'experience' },
+  { label: 'Recommendations', href: '#endorsements', id: 'endorsements' },
+  { label: 'Gear', href: '#skills', id: 'skills' },
+  { label: 'Lodge', href: '#services', id: 'services' },
+  { label: 'Credentials', href: '#education', id: 'education' },
+  { label: 'Contact', href: '#contact', id: 'contact' },
 ];
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const activeSection = useActiveSection();
 
   return (
     <header className="bg-parchment/90 border-bark/10 sticky top-0 z-50 border-b backdrop-blur-md">
@@ -35,16 +37,25 @@ export function Navbar() {
 
         {/* Desktop links */}
         <ul className="hidden gap-8 md:flex">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-bark after:bg-gold hover:text-gold relative text-sm transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-px after:w-0 after:transition-all after:duration-300 hover:after:w-full"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className={cn(
+                    'relative text-sm transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-px after:transition-all after:duration-300 hover:after:w-full',
+                    isActive
+                      ? 'text-gold after:bg-gold font-medium after:w-full'
+                      : 'text-bark after:bg-gold hover:text-gold after:w-0 hover:after:w-full',
+                  )}
+                  aria-current={isActive ? 'location' : undefined}
+                >
+                  {link.label}
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Mobile toggle – 44px min touch target */}

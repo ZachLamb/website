@@ -5,6 +5,7 @@ import { Github, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
 import { socialLinks } from '@/data/social';
+import { siteConfig } from '@/data/site';
 
 const stagger = {
   hidden: {},
@@ -356,31 +357,47 @@ export function Hero() {
           variants={fadeUp}
           className="mt-8 flex w-full min-w-0 flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-4"
         >
-          <Button href="#about" className="w-full sm:w-auto sm:min-w-0">
-            Begin the Journey
+          <Button href="#contact" className="w-full sm:w-auto sm:min-w-0">
+            Get in Touch
           </Button>
-          <Button variant="secondary" href="#contact" className="w-full sm:w-auto sm:min-w-0">
-            Leave a Note at Camp
+          <Button variant="secondary" href="#about" className="w-full sm:w-auto sm:min-w-0">
+            Learn More
           </Button>
         </motion.div>
 
-        <motion.div variants={fadeUp} className="mt-6 flex items-center gap-2">
-          {socialLinks.map((link) => {
-            const Icon = iconMap[link.icon];
-            if (!Icon) return null;
-            return (
-              <a
-                key={link.platform}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link.platform}
-                className="text-stone hover:text-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-colors"
-              >
-                <Icon className="h-5 w-5" />
-              </a>
-            );
-          })}
+        <motion.div
+          variants={fadeUp}
+          className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
+        >
+          {siteConfig.links.resume && (
+            <a
+              href={siteConfig.links.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-stone hover:text-gold decoration-gold/30 hover:decoration-gold text-sm font-medium underline underline-offset-2 transition-colors"
+              aria-label="View resume (opens in new tab)"
+            >
+              Resume
+            </a>
+          )}
+          <span className="flex items-center gap-2">
+            {socialLinks.map((link) => {
+              const Icon = iconMap[link.icon];
+              if (!Icon) return null;
+              return (
+                <a
+                  key={link.platform}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${link.platform} (opens in new tab)`}
+                  className="text-stone hover:text-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-colors"
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              );
+            })}
+          </span>
         </motion.div>
       </motion.div>
     </section>

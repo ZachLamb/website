@@ -37,6 +37,26 @@ export function Footer() {
         transition={{ duration: 0.6 }}
         className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-8"
       >
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          <a
+            href="#hero"
+            className="text-stone/60 hover:text-gold text-xs font-medium tracking-wider uppercase transition-colors"
+          >
+            Back to top
+          </a>
+          {siteConfig.links.resume && (
+            <a
+              href={siteConfig.links.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-stone/60 hover:text-gold text-xs font-medium tracking-wider uppercase transition-colors"
+              aria-label="View resume (opens in new tab)"
+            >
+              Resume
+            </a>
+          )}
+        </div>
+
         <p className="text-stone/60 flex items-center gap-3 text-xs tracking-[0.25em] uppercase">
           <motion.span
             initial={{ width: 0 }}
@@ -82,7 +102,7 @@ export function Footer() {
             href={siteConfig.links.github}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="GitHub"
+            aria-label="GitHub (opens in new tab)"
             className="text-stone hover:text-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
           >
             <Github className="h-5 w-5" />
@@ -91,7 +111,7 @@ export function Footer() {
             href={siteConfig.links.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="LinkedIn"
+            aria-label="LinkedIn (opens in new tab)"
             className="text-stone hover:text-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
           >
             <Linkedin className="h-5 w-5" />

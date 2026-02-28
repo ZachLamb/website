@@ -37,19 +37,19 @@ describe('Hero', () => {
     expect(screen.getByText('Senior Software Engineer')).toBeInTheDocument();
   });
 
-  it('renders "Begin the Journey" CTA', () => {
+  it('renders "Get in Touch" primary CTA', () => {
     render(<Hero />);
-    expect(screen.getByText('Begin the Journey')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /get in touch/i })).toBeInTheDocument();
   });
 
-  it('renders "Leave a Note at Camp" CTA', () => {
+  it('renders "Learn More" secondary CTA', () => {
     render(<Hero />);
-    expect(screen.getByText('Leave a Note at Camp')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /learn more/i })).toBeInTheDocument();
   });
 
-  it('renders social links', () => {
+  it('renders social links with accessible labels', () => {
     render(<Hero />);
-    expect(screen.getByLabelText('GitHub')).toBeInTheDocument();
-    expect(screen.getByLabelText('LinkedIn')).toBeInTheDocument();
+    expect(screen.getByLabelText(/GitHub/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/LinkedIn/i)).toBeInTheDocument();
   });
 });

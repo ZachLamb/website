@@ -30,6 +30,16 @@ export function About() {
         When I&rsquo;m not writing code, you&rsquo;ll find me teaching yoga, exploring
         Colorado&rsquo;s trails, lifting weights, or debating the best Oreo flavor.
       </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+        transition={{ duration: 0.5, delay: 0.35 }}
+        className="text-stone mt-6 max-w-3xl text-sm"
+        aria-label="Focus areas"
+      >
+        React & TypeScript · Design systems · AI-powered tools · Certified ScrumMaster
+      </motion.p>
     </Section>
   );
 }

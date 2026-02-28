@@ -122,6 +122,7 @@ export function Endorsements() {
             href={linkedInRecommendationsUrl}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="View recommendations and endorsements on LinkedIn (opens in new tab)"
             className="text-gold hover:text-copper border-gold/50 bg-gold/5 hover:border-gold hover:bg-gold/10 inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 rounded-full border px-5 py-2.5 font-medium transition-all duration-300"
           >
             <Linkedin className="h-5 w-5" />
