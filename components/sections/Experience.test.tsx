@@ -30,8 +30,16 @@ vi.mock('@/components/ui/NatureElements', () => ({
   MistLayer: () => null,
 }));
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { experiences } from '@/data/experience';
 import { Experience } from './Experience';
+
+function mockMatchMedia(matches: boolean) {
+  return Object.assign(
+    vi.fn(() => ({ matches, addEventListener: vi.fn(), removeEventListener: vi.fn() })),
+    { addListener: vi.fn(), removeListener: vi.fn(), dispatchEvent: vi.fn() },
+  );
+}
 
 describe('Experience', () => {
   it('renders "Trail Log" heading', () => {
@@ -61,5 +69,42 @@ describe('Experience', () => {
   it('has the experience section id', () => {
     const { container } = render(<Experience />);
     expect(container.querySelector('#experience')).toBeInTheDocument();
+  });
+
+  it('shows detail panel on desktop when hovering a card', async () => {
+    window.matchMedia = mockMatchMedia(true);
+    render(<Experience />);
+    await waitFor(() => {
+      const card = screen.getByTestId('experience-card-circadence');
+      expect(card).toBeInTheDocument();
+    });
+    const card = screen.getByTestId('experience-card-circadence');
+    fireEvent.mouseEnter(card);
+    await waitFor(() => {
+      const panels = document.querySelectorAll('[aria-hidden="true"]');
+      const panel = Array.from(panels).find((el) => el.textContent?.includes('Circadence'));
+      expect(panel).toBeInTheDocument();
+    });
+    expect(screen.getAllByText('Circadence').length).toBeGreaterThanOrEqual(1);
+    const firstDescription = experiences.find((e) => e.id === 'circadence')!.description[0];
+    expect(
+      screen.getAllByText((content) => content.includes(firstDescription)).length,
+    ).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('TypeScript').length).toBeGreaterThanOrEqual(1);
+    window.matchMedia = undefined as any;
+  });
+
+  it('detail panel has aria-hidden for accessibility', async () => {
+    window.matchMedia = mockMatchMedia(true);
+    render(<Experience />);
+    await waitFor(() =>
+      expect(screen.getByTestId('experience-card-circadence')).toBeInTheDocument(),
+    );
+    fireEvent.mouseEnter(screen.getByTestId('experience-card-circadence'));
+    await waitFor(() => {
+      const panels = document.querySelectorAll('[aria-hidden="true"]');
+      expect(panels.length).toBeGreaterThanOrEqual(1);
+    });
+    window.matchMedia = undefined as any;
   });
 });

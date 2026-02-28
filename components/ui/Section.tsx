@@ -8,6 +8,8 @@ interface SectionProps {
   children: React.ReactNode;
   className?: string;
   variant?: 'light' | 'dark';
+  /** Trail-map style framing: thin top/bottom rules */
+  mapFrame?: boolean;
   nature?: {
     leaves?: boolean;
     fireflies?: boolean;
@@ -16,7 +18,14 @@ interface SectionProps {
   };
 }
 
-export function Section({ id, children, className, variant = 'light', nature }: SectionProps) {
+export function Section({
+  id,
+  children,
+  className,
+  variant = 'light',
+  mapFrame,
+  nature,
+}: SectionProps) {
   const showLeaves = nature?.leaves ?? variant === 'light';
   const showFireflies = nature?.fireflies ?? variant === 'dark';
   const showPines = nature?.pines ?? false;
@@ -26,9 +35,11 @@ export function Section({ id, children, className, variant = 'light', nature }: 
     <section
       id={id}
       aria-labelledby={id ? `${id}-heading` : undefined}
+      data-map-frame={mapFrame ?? undefined}
       className={cn(
         'relative overflow-hidden py-16 md:py-24',
         variant === 'dark' ? 'bg-charcoal text-parchment' : 'bg-parchment',
+        mapFrame && 'border-bark/10 border-t border-b',
         className,
       )}
     >

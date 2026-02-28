@@ -60,7 +60,7 @@ function EndorsementCard({
             <button
               type="button"
               onClick={() => setExpanded((e) => !e)}
-              className="text-gold hover:text-copper mt-2 flex items-center gap-1 text-sm font-medium transition-colors"
+              className="text-gold hover:text-copper focus-visible:ring-gold mt-2 flex min-h-11 touch-manipulation items-center gap-1 rounded px-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               {expanded ? (
                 <>
@@ -96,10 +96,26 @@ export function Endorsements() {
         <AnimatedHeading sectionId="endorsements" subtitle="IIa." className="mb-4">
           Trail Recommendations
         </AnimatedHeading>
-        <p className="text-bark mb-10 max-w-2xl text-lg">
-          What fellow hikers have said about working with me. See all recommendations and
-          endorsements on my LinkedIn profile.
+        <p className="text-bark mb-6 max-w-2xl text-lg">
+          What fellow hikers have said about working with me.
         </p>
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="mb-10"
+        >
+          <a
+            href={linkedInRecommendationsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View all recommendations on LinkedIn (opens in new tab)"
+            className="text-gold hover:text-copper focus-visible:ring-gold inline-flex items-center gap-2 rounded font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            <Linkedin className="h-5 w-5" />
+            View all recommendations on LinkedIn
+          </a>
+        </motion.p>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {endorsements.map((endorsement, i) => (
@@ -111,24 +127,6 @@ export function Endorsements() {
             />
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-10 flex justify-center"
-        >
-          <a
-            href={linkedInRecommendationsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View recommendations and endorsements on LinkedIn (opens in new tab)"
-            className="text-gold hover:text-copper border-gold/50 bg-gold/5 hover:border-gold hover:bg-gold/10 inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 rounded-full border px-5 py-2.5 font-medium transition-all duration-300"
-          >
-            <Linkedin className="h-5 w-5" />
-            View recommendations & endorsements on LinkedIn
-          </a>
-        </motion.div>
       </div>
     </Section>
   );

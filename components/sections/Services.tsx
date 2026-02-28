@@ -21,7 +21,7 @@ export function Services() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <Section variant="light" id="services" nature={{ leaves: true }}>
+    <Section variant="light" id="services" mapFrame nature={{ leaves: true }}>
       <AnimatedHeading sectionId="services" subtitle="IV.">
         Services at the Lodge
       </AnimatedHeading>
@@ -37,7 +37,7 @@ export function Services() {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
-              <Card className="group">
+              <Card variant="map" className="group">
                 <div className="bg-gold/10 mb-4 flex h-12 w-12 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110">
                   {Icon && <Icon className="text-gold h-6 w-6" />}
                 </div>

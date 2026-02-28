@@ -1,14 +1,23 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { experiences } from '@/data/experience';
+import type { ExperienceEntry } from '@/data/experience';
 
-function TimelineCard({ entry, index }: { entry: (typeof experiences)[number]; index: number }) {
+function TimelineCard({
+  entry,
+  index,
+  onHover,
+}: {
+  entry: (typeof experiences)[number];
+  index: number;
+  onHover: (e: ExperienceEntry | null) => void;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
   const isLeft = index % 2 === 0;
@@ -16,6 +25,13 @@ function TimelineCard({ entry, index }: { entry: (typeof experiences)[number]; i
   const cardContent = (
     <CardContent entry={entry} align={isLeft ? 'right' : 'left'} isInView={isInView} />
   );
+
+  const handleEnter = () => {
+    if (typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches) {
+      onHover(entry);
+    }
+  };
+  const handleLeave = () => onHover(null);
 
   return (
     <motion.div
@@ -25,7 +41,12 @@ function TimelineCard({ entry, index }: { entry: (typeof experiences)[number]; i
       viewport={{ once: true, margin: '-80px' }}
     >
       {/* Left column: shows card for even indices on desktop, empty otherwise */}
-      <div className="hidden md:block">
+      <div
+        className="hidden md:block"
+        data-testid={`experience-card-${entry.id}`}
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
+      >
         {isLeft ? (
           <motion.div
             initial={{ opacity: 0, x: 30 }}
@@ -33,7 +54,9 @@ function TimelineCard({ entry, index }: { entry: (typeof experiences)[number]; i
             transition={{ duration: 0.5, delay: 0.1 }}
             className="transition-transform duration-300 group-hover/timeline:translate-x-1"
           >
-            <Card className="text-right">{cardContent}</Card>
+            <Card variant="map" className="text-right">
+              {cardContent}
+            </Card>
           </motion.div>
         ) : null}
       </div>
@@ -75,7 +98,12 @@ function TimelineCard({ entry, index }: { entry: (typeof experiences)[number]; i
       </div>
 
       {/* Right column: shows card for odd indices on desktop, all cards on mobile */}
-      <div className="min-w-0">
+      <div
+        className="min-w-0"
+        data-testid={!isLeft ? `experience-card-${entry.id}` : undefined}
+        onMouseEnter={!isLeft ? handleEnter : undefined}
+        onMouseLeave={!isLeft ? handleLeave : undefined}
+      >
         {isLeft ? (
           <motion.div
             className="transition-transform duration-300 group-hover/timeline:translate-x-1 md:hidden"
@@ -83,7 +111,7 @@ function TimelineCard({ entry, index }: { entry: (typeof experiences)[number]; i
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <Card>
+            <Card variant="map">
               <CardContent entry={entry} align="left" isInView={isInView} />
             </Card>
           </motion.div>
@@ -94,7 +122,7 @@ function TimelineCard({ entry, index }: { entry: (typeof experiences)[number]; i
             transition={{ duration: 0.5, delay: 0.1 }}
             className="transition-transform duration-300 group-hover/timeline:-translate-x-1"
           >
-            <Card>
+            <Card variant="map">
               <CardContent entry={entry} align="left" isInView={isInView} />
             </Card>
           </motion.div>
@@ -156,16 +184,129 @@ function CardContent({
   );
 }
 
-export function Experience() {
+/** Trail profile / elevation-style line (abstract "path" for this role) */
+function TrailProfileGraph({ count, id }: { count: number; id: string }) {
+  const points = 8;
+  const steps = Array.from({ length: points }, (_, i) => {
+    const t = i / (points - 1);
+    const y = 0.85 - 0.5 * Math.sin((i * ((count % 5) + 1)) / 2) * 0.4 - t * 0.3;
+    return [t * 100, y * 100];
+  });
+  const d = steps.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x} ${y}`).join(' ');
+  const gradId = `trail-profile-${id}`;
   return (
-    <Section variant="light" id="experience" nature={{ leaves: true, pines: true }}>
+    <svg
+      viewBox="0 0 100 100"
+      className="text-gold h-14 w-full"
+      preserveAspectRatio="none"
+      aria-hidden
+    >
+      <defs>
+        <linearGradient id={gradId} x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0.4" />
+        </linearGradient>
+      </defs>
+      <path d={`${d} L 100 100 L 0 100 Z`} fill={`url(#${gradId})`} />
+      <path
+        d={d}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity={0.8}
+      />
+    </svg>
+  );
+}
+
+function ExperienceDetailPanel({
+  entry,
+  side,
+}: {
+  entry: ExperienceEntry;
+  side: 'left' | 'right';
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: side === 'left' ? -24 : 24 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: side === 'left' ? -24 : 24 }}
+      transition={{ duration: 0.25 }}
+      className="border-bark/15 bg-parchment/95 pointer-events-none fixed top-1/2 z-40 w-[min(calc(50vw-3rem),calc(100vw-2rem))] max-w-[min(30rem,calc(100vw-2rem))] min-w-72 -translate-y-1/2 rounded-lg border border-dashed p-6 shadow-xl backdrop-blur-sm"
+      style={
+        side === 'left'
+          ? { left: 'max(1rem, calc((100vw - 1280px) / 2 + 1rem))' }
+          : { right: 'max(1rem, calc((100vw - 1280px) / 2 + 1rem))' }
+      }
+      aria-hidden
+    >
+      <p className="text-forest font-serif text-xl font-semibold">{entry.company}</p>
+      <p className="text-bark mt-0.5 text-sm">{entry.position}</p>
+      <p className="text-stone mt-1 text-xs">
+        {entry.startDate} — {entry.endDate}
+      </p>
+
+      <div className="border-bark/10 mt-4 overflow-hidden rounded-md border">
+        <TrailProfileGraph
+          id={entry.id}
+          count={entry.description.length + entry.techStack.length}
+        />
+      </div>
+
+      <ul className="text-bark mt-3 list-inside space-y-1 text-sm leading-relaxed">
+        {entry.description.slice(0, 4).map((item, i) => (
+          <li key={i}>• {item}</li>
+        ))}
+        {entry.description.length > 4 && (
+          <li className="text-stone text-xs">+{entry.description.length - 4} more</li>
+        )}
+      </ul>
+
+      {entry.techStack.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {entry.techStack.map((tech) => (
+            <Badge key={tech}>{tech}</Badge>
+          ))}
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+export function Experience() {
+  const [hoveredEntry, setHoveredEntry] = useState<ExperienceEntry | null>(null);
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : false,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const handler = () => setIsDesktop(mq.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  return (
+    <Section variant="light" id="experience" mapFrame nature={{ leaves: true, pines: true }}>
       <AnimatedHeading sectionId="experience" subtitle="II." className="mb-12">
         Trail Log
       </AnimatedHeading>
 
+      <AnimatePresence>
+        {isDesktop && hoveredEntry && (
+          <ExperienceDetailPanel
+            key={hoveredEntry.id}
+            entry={hoveredEntry}
+            side={experiences.indexOf(hoveredEntry) % 2 === 0 ? 'right' : 'left'}
+          />
+        )}
+      </AnimatePresence>
+
       <div className="flex flex-col gap-8">
         {experiences.map((entry, i) => (
-          <TimelineCard key={entry.id} entry={entry} index={i} />
+          <TimelineCard key={entry.id} entry={entry} index={i} onHover={setHoveredEntry} />
         ))}
       </div>
     </Section>

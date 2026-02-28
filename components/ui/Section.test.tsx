@@ -51,4 +51,11 @@ describe('Section', () => {
     const section = container.querySelector('section')!;
     expect(section).toHaveClass('pt-0');
   });
+
+  it('applies map-frame border when mapFrame is true', () => {
+    const { container } = render(<Section mapFrame>Map section</Section>);
+    const section = container.querySelector('section')!;
+    expect(section).toHaveAttribute('data-map-frame', 'true');
+    expect(section).toHaveClass('border-t', 'border-b', 'border-bark/10');
+  });
 });

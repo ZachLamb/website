@@ -21,4 +21,10 @@ describe('Card', () => {
     const card = container.firstElementChild!;
     expect(card).toHaveClass('rounded-lg', 'border', 'p-6', 'transition-all');
   });
+
+  it('applies map variant (dashed border)', () => {
+    const { container } = render(<Card variant="map">Map card</Card>);
+    const card = container.firstElementChild!;
+    expect(card).toHaveClass('border-dashed', 'border-bark/20');
+  });
 });

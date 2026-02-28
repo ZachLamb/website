@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/data/site';
@@ -20,8 +20,39 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const activeSection = useActiveSection();
 
+  /* Only lock scroll when mobile menu is open and viewport is actually mobile (fixes desktop scroll) */
+  useEffect(() => {
+    const isMobile =
+      typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+    const shouldLock = mobileOpen && isMobile;
+
+    if (shouldLock) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+
+    const mq = window.matchMedia('(max-width: 767px)');
+    const onResize = () => {
+      if (!mq.matches) {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        setMobileOpen(false);
+      }
+    };
+
+    mq.addEventListener('change', onResize);
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      mq.removeEventListener('change', onResize);
+    };
+  }, [mobileOpen]);
+
   return (
-    <header className="bg-parchment/90 border-bark/10 sticky top-0 z-50 border-b backdrop-blur-md">
+    <header className="bg-parchment/90 border-bark/10 sticky top-0 z-50 border-b pt-[env(safe-area-inset-top)] backdrop-blur-md">
       <nav
         aria-label="Main navigation"
         className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6"

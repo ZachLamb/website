@@ -137,7 +137,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="bg-forest text-parchment relative flex min-h-screen flex-col items-center justify-center overflow-x-hidden overflow-y-auto"
+      className="bg-forest text-parchment relative flex min-h-[100dvh] min-h-screen flex-col items-center justify-center overflow-x-hidden"
     >
       {/* Background layer: clip decorations only so content is never clipped */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -374,7 +374,7 @@ export function Hero() {
               href={siteConfig.links.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-stone hover:text-gold decoration-gold/30 hover:decoration-gold text-sm font-medium underline underline-offset-2 transition-colors"
+              className="text-stone hover:text-gold focus-visible:ring-gold decoration-gold/30 hover:decoration-gold rounded text-sm font-medium underline underline-offset-2 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
               aria-label="View resume (opens in new tab)"
             >
               Resume
@@ -391,7 +391,7 @@ export function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${link.platform} (opens in new tab)`}
-                  className="text-stone hover:text-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-colors"
+                  className="text-stone hover:text-gold focus-visible:ring-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   <Icon className="h-5 w-5" />
                 </a>

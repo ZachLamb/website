@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "dev:turbo": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint app/ components/ data/ lib/",
@@ -21,6 +22,7 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.2.1",
+    "@vercel/analytics": "^1.6.1",
     "clsx": "^2",
     "framer-motion": "^11",
     "lucide-react": "^0.575.0",
@@ -60,7 +62,12 @@
     "vitest": "^4.0.18"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["eslint --fix", "prettier --write"],
-    "*.{json,md,css,mjs}": ["prettier --write"]
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,mjs}": [
+      "prettier --write"
+    ]
   }
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/react';
 import { inter, cormorantGaramond } from '@/lib/fonts';
 import { siteConfig } from '@/data/site';
 import { Navbar } from '@/components/layout/Navbar';
@@ -38,7 +39,7 @@ export const viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${cormorantGaramond.variable}`}>
-      <body className="min-h-screen antialiased">
+      <body className="min-h-[100dvh] min-h-screen antialiased">
         <a
           href="#main-content"
           className="focus:bg-gold focus:text-parchment sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:px-4 focus:py-2"
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main id="main-content">{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );

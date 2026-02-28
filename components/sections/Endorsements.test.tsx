@@ -35,7 +35,7 @@ describe('Endorsements', () => {
 
   it('renders link to LinkedIn recommendations', () => {
     render(<Endorsements />);
-    const link = screen.getByText(/View recommendations & endorsements on LinkedIn/i);
+    const link = screen.getByText(/View all recommendations on LinkedIn/i);
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', expect.stringContaining('linkedin.com'));
     expect(link).toHaveAttribute('target', '_blank');
@@ -43,7 +43,7 @@ describe('Endorsements', () => {
 
   it('renders endorsement cards from data', () => {
     render(<Endorsements />);
-    expect(screen.getAllByText('Colleague Name').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Recommender full name').length).toBe(3);
   });
 
   it('has the endorsements section id', () => {

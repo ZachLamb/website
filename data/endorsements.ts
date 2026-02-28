@@ -7,33 +7,34 @@ export type Endorsement = {
 };
 
 /**
- * Add endorsements from your LinkedIn profile.
- * LinkedIn: Profile → Recommendations (or ask colleagues to add recommendations).
- * You can also paraphrase skill endorsements or testimonials here.
+ * Your latest three LinkedIn recommendations.
+ * 1. Go to https://www.linkedin.com/in/lambzachary/details/recommendations/
+ * 2. Copy the full quote, recommender name, their title/company, and context (e.g. "Worked together at X") for each of your three most recent recommendations.
+ * 3. Paste below, one recommendation per object.
  */
 export const endorsements: Endorsement[] = [
   {
     id: '1',
     quote:
-      'Zach is an exceptional engineer who brings clarity, empathy, and strong technical skills to every project. A true collaborator.',
-    author: 'Colleague Name',
-    role: 'Title, Company',
-    context: 'Worked together on [project/team]',
+      'Paste your first (most recent) LinkedIn recommendation quote here. Replace this entire string with the full text from LinkedIn.',
+    author: 'Recommender full name',
+    role: 'Their Title, Company',
+    context: 'e.g. Worked together at Company Name',
   },
   {
     id: '2',
     quote:
-      'Great to work with—delivers clean code, clear communication, and always keeps the user in mind.',
-    author: 'Colleague Name',
-    role: 'Title, Company',
-    context: 'Collaborated at [Company]',
+      'Paste your second LinkedIn recommendation quote here. Replace with the full text from LinkedIn.',
+    author: 'Recommender full name',
+    role: 'Their Title, Company',
+    context: 'e.g. Zach reported to me at Company',
   },
   {
     id: '3',
     quote:
-      'Brought structure and quality to our frontend. Highly recommend for React and TypeScript work.',
-    author: 'Colleague Name',
-    role: 'Title, Company',
-    context: 'Direct report / peer',
+      'Paste your third LinkedIn recommendation quote here. Replace with the full text from LinkedIn.',
+    author: 'Recommender full name',
+    role: 'Their Title, Company',
+    context: 'e.g. Collaborated on project X',
   },
 ];

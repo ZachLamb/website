@@ -35,12 +35,13 @@ export function Footer() {
         initial={{ opacity: 0, y: 10 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
         transition={{ duration: 0.6 }}
-        className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-8"
+        className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-8 pb-[max(2rem,env(safe-area-inset-bottom))]"
       >
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           <a
             href="#hero"
-            className="text-stone/60 hover:text-gold text-xs font-medium tracking-wider uppercase transition-colors"
+            aria-label="Back to top"
+            className="text-stone/60 hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             Back to top
           </a>
@@ -49,8 +50,8 @@ export function Footer() {
               href={siteConfig.links.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-stone/60 hover:text-gold text-xs font-medium tracking-wider uppercase transition-colors"
               aria-label="View resume (opens in new tab)"
+              className="text-stone/60 hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               Resume
             </a>
@@ -103,7 +104,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub (opens in new tab)"
-            className="text-stone hover:text-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
+            className="text-stone hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Github className="h-5 w-5" />
           </a>
@@ -112,7 +113,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn (opens in new tab)"
-            className="text-stone hover:text-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
+            className="text-stone hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Linkedin className="h-5 w-5" />
           </a>

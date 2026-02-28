@@ -16,6 +16,7 @@ vi.mock('framer-motion', () => ({
   },
   useInView: () => true,
   useScroll: () => ({ scrollYProgress: { current: 0 } }),
+  useReducedMotion: () => false,
   AnimatePresence: ({ children }: any) => children,
 }));
 
@@ -61,7 +62,7 @@ describe('Contact', () => {
     expect(container.querySelector('#contact')).toBeInTheDocument();
   });
 
-  it('shows success message on successful submission', async () => {
+  it('shows success view on successful submission', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
       new Response(JSON.stringify({ success: true }), { status: 200 }),
     );
@@ -70,7 +71,26 @@ describe('Contact', () => {
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hello' } });
     fireEvent.submit(screen.getByText('Send Message').closest('form')!);
-    await waitFor(() => expect(screen.getByText('Message sent!')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Note left at base camp')).toBeInTheDocument());
+    expect(screen.getByText('Your message is on its way.')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    vi.restoreAllMocks();
+  });
+
+  it('Send another button resets to form', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
+    render(<Contact />);
+    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@test.com' } });
+    fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hi' } });
+    fireEvent.submit(screen.getByText('Send Message').closest('form')!);
+    await waitFor(() => expect(screen.getByText('Send another')).toBeInTheDocument());
+    fireEvent.click(screen.getByText('Send another'));
+    expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    expect(screen.getByText('Send Message')).toBeInTheDocument();
+    expect(screen.queryByText('Note left at base camp')).not.toBeInTheDocument();
     vi.restoreAllMocks();
   });
 

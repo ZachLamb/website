@@ -16,9 +16,9 @@
   --color-copper: #b87333;
 }
 
+/* Single scroll context: viewport scrolls; body clips horizontal overflow (fixes multiple scroll bars on desktop) */
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
 }
 
 body {
@@ -26,11 +26,16 @@ body {
   background-color: var(--color-parchment);
   color: var(--color-forest);
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: none;
+  touch-action: manipulation;
 }
 
-/* Subtle paper grain texture on light sections */
+/* Trail-map paper texture on light sections (grain + faint contour) */
 .bg-parchment {
-  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 20h40M20 0v40' fill='none' stroke='%235c4033' stroke-width='0.15' opacity='0.04'/%3E%3C/svg%3E");
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -45,5 +50,22 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Print: hide decorative/fixed UI, clean single-column look */
+@media print {
+  .pointer-events-none.fixed {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  a[href^='#'] {
+    text-decoration: none;
+    color: inherit;
   }
 }
