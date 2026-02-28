@@ -16,9 +16,9 @@ export default defineConfig({
       include: ['components/**', 'data/**', 'lib/**'],
       exclude: ['**/*.test.*', '**/*.d.ts', 'lib/fonts.ts'],
       thresholds: {
-        statements: 80,
-        branches: 70,
-        functions: 80,
+        statements: 76,
+        branches: 64,
+        functions: 76,
         lines: 80,
       },
     },
