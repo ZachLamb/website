@@ -12,10 +12,10 @@ vi.stubEnv('RESEND_API_KEY', 'test_key');
 
 import { POST } from './route';
 
-function makeRequest(body: Record<string, unknown>) {
+function makeRequest(body: Record<string, unknown>, headers?: HeadersInit) {
   return new Request('http://localhost/api/contact', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...headers } as HeadersInit,
     body: JSON.stringify(body),
   });
 }
@@ -98,5 +98,18 @@ describe('POST /api/contact', () => {
       makeRequest({ name: 'Frodo', email: 'frodo@shire.me', message: 'Hello!' }),
     );
     expect(res.status).toBe(500);
+  });
+
+  it('returns 429 when rate limit exceeded', async () => {
+    const clientHeader = { 'x-forwarded-for': '192.168.1.100' };
+    const validBody = { name: 'Frodo', email: 'frodo@shire.me', message: 'Hello!' };
+    for (let i = 0; i < 5; i++) {
+      const res = await POST(makeRequest(validBody, clientHeader));
+      expect(res.status).toBe(200);
+    }
+    const res = await POST(makeRequest(validBody, clientHeader));
+    expect(res.status).toBe(429);
+    const json = await res.json();
+    expect(json.error).toMatch(/too many/i);
   });
 });

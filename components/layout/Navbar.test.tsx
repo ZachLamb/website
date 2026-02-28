@@ -1,14 +1,15 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { Navbar } from './Navbar';
 
 describe('Navbar', () => {
   it('renders "Zach Lamb" site name', () => {
-    render(<Navbar />);
+    renderWithLocale(<Navbar />);
     expect(screen.getByText('Zach Lamb')).toBeInTheDocument();
   });
 
   it('renders navigation links', () => {
-    render(<Navbar />);
+    renderWithLocale(<Navbar />);
     const links = [
       'Trail Guide',
       'Trail Log',
@@ -24,14 +25,14 @@ describe('Navbar', () => {
   });
 
   it('renders mobile menu button with aria-expanded', () => {
-    render(<Navbar />);
+    renderWithLocale(<Navbar />);
     const btn = screen.getByRole('button', { name: /open menu/i });
     expect(btn).toBeInTheDocument();
     expect(btn).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('toggles mobile menu on button click', () => {
-    render(<Navbar />);
+    renderWithLocale(<Navbar />);
     const btn = screen.getByRole('button', { name: /open menu/i });
     fireEvent.click(btn);
     expect(btn).toHaveAttribute('aria-expanded', 'true');

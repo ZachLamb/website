@@ -26,32 +26,33 @@ vi.mock('@/components/ui/NatureElements', () => ({
   MistLayer: () => null,
 }));
 
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { Education } from './Education';
 
 describe('Education', () => {
   it('renders "Ranger Credentials" heading', () => {
-    render(<Education />);
-    expect(screen.getByText('Ranger Credentials')).toBeInTheDocument();
+    renderWithLocale(<Education />);
+    expect(screen.getByText('Credentials')).toBeInTheDocument();
   });
 
   it('renders CU Boulder', () => {
-    render(<Education />);
+    renderWithLocale(<Education />);
     expect(screen.getByText('University of Colorado Boulder')).toBeInTheDocument();
   });
 
   it('renders Front Range Community College', () => {
-    render(<Education />);
+    renderWithLocale(<Education />);
     expect(screen.getByText('Front Range Community College')).toBeInTheDocument();
   });
 
   it('renders CSM certification', () => {
-    render(<Education />);
+    renderWithLocale(<Education />);
     expect(screen.getByText('Certified ScrumMaster (CSM)')).toBeInTheDocument();
   });
 
   it('has the education section id', () => {
-    const { container } = render(<Education />);
+    const { container } = renderWithLocale(<Education />);
     expect(container.querySelector('#education')).toBeInTheDocument();
   });
 });

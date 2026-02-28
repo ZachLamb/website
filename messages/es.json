@@ -1,0 +1,67 @@
+{
+  "common": {
+    "skipToContent": "Saltar al contenido"
+  },
+  "site": {
+    "name": "Zach Lamb",
+    "title": "Ingeniero de Software Senior",
+    "description": "Ingeniero de Software Senior especializado en React, TypeScript y herramientas web impulsadas por IA. ScrumMaster certificado con formación en Human Centered Computing, construyendo aplicaciones performantes desde plataformas de ciberseguridad hasta comercio electrónico a escala."
+  },
+  "nav": {
+    "trailGuide": "Guía del sendero",
+    "trailLog": "Registro del sendero",
+    "recommendations": "Recomendaciones",
+    "gear": "Equipo",
+    "lodge": "Refugio",
+    "credentials": "Credenciales",
+    "contact": "Contacto",
+    "backToTop": "Zach Lamb – volver arriba",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
+  },
+  "hero": {
+    "title": "Zach Lamb",
+    "subtitle": "Ingeniero de Software Senior",
+    "tagline": "Construyo herramientas para las personas — y siempre estoy dispuesto a conversar sobre código, la naturaleza o las Oreos.",
+    "getInTouch": "Contactar",
+    "learnMore": "Saber más",
+    "resume": "Currículum",
+    "viewResume": "Ver currículum (se abre en nueva pestaña)"
+  },
+  "about": {
+    "heading": "Guía del sendero",
+    "body": "Soy un ingeniero full-stack con orientación al frontend y más de una década de experiencia construyendo aplicaciones web que la gente disfruta usar. Actualmente trabajo en Circadence creando herramientas impulsadas por IA para profesionales de ciberseguridad. Antes ayudé a los equipos de tiendas de Starbucks a comunicarse mejor y construí sistemas de diseño en StellarFi. Soy ScrumMaster certificado y creo que un gran software nace de grandes procesos y equipos empáticos. Cuando no estoy programando, me encontrarás dando clases de yoga, explorando los senderos de Colorado, haciendo pesas o debatiendo el mejor sabor de Oreo.",
+    "focusAreas": "React y TypeScript · Sistemas de diseño · Herramientas con IA · ScrumMaster certificado"
+  },
+  "footer": {
+    "backToTop": "Volver arriba",
+    "resume": "Currículum",
+    "viewResume": "Ver currículum (se abre en nueva pestaña)",
+    "endOfTrail": "Fin del sendero"
+  },
+  "contact": {
+    "heading": "Deja una nota en el campamento",
+    "intro": "Ya sea sobre código, el sendero que sigue o las Oreos — deja una nota y te responderé desde el campamento base. Normalmente respondo en un día.",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "message": "Mensaje",
+    "namePlaceholder": "Compañero de ruta",
+    "emailPlaceholder": "senderista@correo.com",
+    "messagePlaceholder": "¿Qué tienes en mente?",
+    "send": "Enviar mensaje",
+    "sending": "Enviando…",
+    "successTitle": "Nota dejada en el campamento base",
+    "successSub": "Tu mensaje está en camino.",
+    "sendAnother": "Enviar otro",
+    "orReachOut": "O escríbeme directamente",
+    "fallbackError": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "messageSent": "¡Mensaje enviado!"
+  },
+  "sections": {
+    "experience": "Registro del sendero",
+    "endorsements": "Recomendaciones",
+    "skills": "Equipo",
+    "services": "Refugio",
+    "education": "Credenciales"
+  }
+}

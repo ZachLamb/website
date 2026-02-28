@@ -1,24 +1,38 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { siteConfig } from '@/data/site';
+import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { useActiveSection } from '@/hooks/useActiveSection';
+import { locales, type Locale } from '@/lib/i18n';
 
-const navLinks = [
-  { label: 'Trail Guide', href: '#about', id: 'about' },
-  { label: 'Trail Log', href: '#experience', id: 'experience' },
-  { label: 'Recommendations', href: '#endorsements', id: 'endorsements' },
-  { label: 'Gear', href: '#skills', id: 'skills' },
-  { label: 'Lodge', href: '#services', id: 'services' },
-  { label: 'Credentials', href: '#education', id: 'education' },
-  { label: 'Contact', href: '#contact', id: 'contact' },
+const LOCALE_COOKIE = 'NEXT_LOCALE';
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
+
+function setLocaleCookie(locale: Locale) {
+  if (typeof document === 'undefined') return;
+  document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
+}
+
+const navLinkIds = [
+  { key: 'trailGuide' as const, href: '#about', id: 'about' },
+  { key: 'trailLog' as const, href: '#experience', id: 'experience' },
+  { key: 'recommendations' as const, href: '#endorsements', id: 'endorsements' },
+  { key: 'gear' as const, href: '#skills', id: 'skills' },
+  { key: 'lodge' as const, href: '#services', id: 'services' },
+  { key: 'credentials' as const, href: '#education', id: 'education' },
+  { key: 'contact' as const, href: '#contact', id: 'contact' },
 ];
 
 export function Navbar() {
+  const { locale, messages } = useLocaleContext();
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const activeSection = useActiveSection();
+  const menuRef = useRef<HTMLUListElement>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
 
   /* Only lock scroll when mobile menu is open and viewport is actually mobile (fixes desktop scroll) */
   useEffect(() => {
@@ -51,6 +65,27 @@ export function Navbar() {
     };
   }, [mobileOpen]);
 
+  const prevMobileOpen = useRef(false);
+  // Focus first nav link when mobile menu opens; return focus to toggle when it closes
+  useEffect(() => {
+    if (mobileOpen && menuRef.current) {
+      const first = menuRef.current.querySelector<HTMLAnchorElement>('a[href]');
+      first?.focus();
+    } else if (prevMobileOpen.current && !mobileOpen && toggleButtonRef.current) {
+      toggleButtonRef.current.focus();
+    }
+    prevMobileOpen.current = mobileOpen;
+  }, [mobileOpen]);
+
+  const basePath = pathname?.startsWith('/')
+    ? pathname.split('/').slice(0, 2).join('/')
+    : `/${locale}`;
+  const navLinks = navLinkIds.map((item) => ({
+    label: messages.nav[item.key],
+    href: item.href,
+    id: item.id,
+  }));
+
   return (
     <header className="bg-parchment/90 border-bark/10 sticky top-0 z-50 border-b pt-[env(safe-area-inset-top)] backdrop-blur-md">
       <nav
@@ -58,16 +93,16 @@ export function Navbar() {
         className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6"
       >
         <a
-          href="#hero"
+          href={`${basePath}#hero`}
           className="group text-forest hover:text-forest/80 flex items-center gap-2 font-serif text-xl font-semibold transition-colors"
-          aria-label="Zach Lamb – back to top"
+          aria-label={messages.nav.backToTop}
         >
           <Compass className="text-gold h-5 w-5 transition-transform duration-500 group-hover:rotate-45" />
-          {siteConfig.name}
+          {messages.site.name}
         </a>
 
         {/* Desktop links */}
-        <ul className="hidden gap-8 md:flex">
+        <ul className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
@@ -87,14 +122,33 @@ export function Navbar() {
               </li>
             );
           })}
+          <li className="flex items-center gap-1">
+            {locales.map((l) => (
+              <a
+                key={l}
+                href={l === 'en' ? '/en' : `/${l}`}
+                onClick={() => setLocaleCookie(l)}
+                className={cn(
+                  'rounded px-2 py-1 text-xs font-medium uppercase transition-colors',
+                  l === locale
+                    ? 'text-gold bg-gold/10'
+                    : 'text-bark hover:text-gold hover:bg-sand/50',
+                )}
+                aria-current={l === locale ? 'page' : undefined}
+              >
+                {l}
+              </a>
+            ))}
+          </li>
         </ul>
 
         {/* Mobile toggle – 44px min touch target */}
         <button
+          ref={toggleButtonRef}
           type="button"
           className="text-bark flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-md md:hidden"
           onClick={() => setMobileOpen((prev) => !prev)}
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-label={mobileOpen ? messages.nav.closeMenu : messages.nav.openMenu}
           aria-expanded={mobileOpen}
         >
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -108,7 +162,7 @@ export function Navbar() {
           mobileOpen ? 'block' : 'hidden',
         )}
       >
-        <ul className="mx-auto flex max-w-5xl flex-col px-6 pb-4">
+        <ul ref={menuRef} className="mx-auto flex max-w-5xl flex-col px-6 pb-4">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
@@ -120,6 +174,25 @@ export function Navbar() {
               </a>
             </li>
           ))}
+          <li className="flex gap-2 px-3 py-2">
+            {locales.map((l) => (
+              <a
+                key={l}
+                href={l === 'en' ? '/en' : `/${l}`}
+                onClick={() => {
+                  setLocaleCookie(l);
+                  setMobileOpen(false);
+                }}
+                className={cn(
+                  'rounded px-3 py-2 text-sm font-medium uppercase',
+                  l === locale ? 'text-gold bg-gold/10' : 'text-bark hover:bg-sand/50',
+                )}
+                aria-current={l === locale ? 'page' : undefined}
+              >
+                {l}
+              </a>
+            ))}
+          </li>
         </ul>
       </div>
     </header>

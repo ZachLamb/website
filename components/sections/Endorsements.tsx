@@ -6,6 +6,7 @@ import { Quote, Linkedin, ChevronDown, ChevronUp } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
+import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { endorsements } from '@/data/endorsements';
 import { siteConfig } from '@/data/site';
 
@@ -99,6 +100,7 @@ function EndorsementCard({
 }
 
 export function Endorsements() {
+  const { messages } = useLocaleContext();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
@@ -106,7 +108,7 @@ export function Endorsements() {
     <Section variant="light" id="endorsements" nature={{ leaves: true }}>
       <div ref={ref}>
         <AnimatedHeading sectionId="endorsements" subtitle="IIa." className="mb-4">
-          Trail Recommendations
+          {messages.sections.endorsements}
         </AnimatedHeading>
         <p className="text-bark mb-6 max-w-2xl text-lg">
           What fellow hikers have said about working with me.

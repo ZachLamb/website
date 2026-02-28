@@ -1,8 +1,11 @@
 import { ImageResponse } from 'next/og';
+import { siteConfig } from '@/data/site';
 
-export const alt = 'Zach Lamb — Senior Software Engineer';
+export const alt = `${siteConfig.name} — ${siteConfig.title}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
+
+const domain = typeof siteConfig.url === 'string' ? new URL(siteConfig.url).host : 'zachlamb.io';
 
 export default function OGImage() {
   return new ImageResponse(
@@ -34,7 +37,7 @@ export default function OGImage() {
             color: '#B8860B',
           }}
         >
-          Senior Software Engineer
+          {siteConfig.title}
         </div>
         <div
           style={{
@@ -44,7 +47,7 @@ export default function OGImage() {
             lineHeight: 1.1,
           }}
         >
-          Zach Lamb
+          {siteConfig.name}
         </div>
         <div
           style={{
@@ -67,7 +70,7 @@ export default function OGImage() {
           letterSpacing: '0.1em',
         }}
       >
-        zachlamb.com
+        {domain}
       </div>
     </div>,
     { ...size },

@@ -30,7 +30,8 @@ vi.mock('@/components/ui/NatureElements', () => ({
   MistLayer: () => null,
 }));
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { experiences } from '@/data/experience';
 import { Experience } from './Experience';
 
@@ -55,12 +56,12 @@ function mockMatchMedia(matches: boolean): (query: string) => MediaQueryList {
 
 describe('Experience', () => {
   it('renders "Trail Log" heading', () => {
-    render(<Experience />);
+    renderWithLocale(<Experience />);
     expect(screen.getByText('Trail Log')).toBeInTheDocument();
   });
 
   it('renders all 10 company names', () => {
-    render(<Experience />);
+    renderWithLocale(<Experience />);
     const companies = [
       'Circadence',
       'Starbucks',
@@ -79,13 +80,13 @@ describe('Experience', () => {
   });
 
   it('has the experience section id', () => {
-    const { container } = render(<Experience />);
+    const { container } = renderWithLocale(<Experience />);
     expect(container.querySelector('#experience')).toBeInTheDocument();
   });
 
   it('shows detail panel on desktop when hovering a card', async () => {
     window.matchMedia = mockMatchMedia(true);
-    render(<Experience />);
+    renderWithLocale(<Experience />);
     await waitFor(() => {
       const card = screen.getByTestId('experience-card-circadence');
       expect(card).toBeInTheDocument();
@@ -108,7 +109,7 @@ describe('Experience', () => {
 
   it('detail panel has aria-hidden for accessibility', async () => {
     window.matchMedia = mockMatchMedia(true);
-    render(<Experience />);
+    renderWithLocale(<Experience />);
     await waitFor(() =>
       expect(screen.getByTestId('experience-card-circadence')).toBeInTheDocument(),
     );

@@ -6,6 +6,7 @@ import { Send, Github, Linkedin, Mail } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Button } from '@/components/ui/Button';
+import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { socialLinks } from '@/data/social';
 
 const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
@@ -43,12 +44,17 @@ function PaperAirplaneIcon({ className }: { className?: string }) {
 }
 
 export function Contact() {
+  const { messages } = useLocaleContext();
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (status === 'success' || status === 'error') {
-      const timer = setTimeout(() => setStatus('idle'), 5000);
+      const timer = setTimeout(() => {
+        setStatus('idle');
+        setErrorMessage(null);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [status]);
@@ -56,6 +62,7 @@ export function Contact() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus('sending');
+    setErrorMessage(null);
 
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -75,9 +82,20 @@ export function Contact() {
         form.reset();
         setStatus('success');
       } else {
+        let message: string | null = null;
+        try {
+          const data = await res.json();
+          if (typeof (data as { error?: unknown })?.error === 'string') {
+            message = (data as { error: string }).error;
+          }
+        } catch {
+          // ignore invalid JSON
+        }
+        setErrorMessage(message);
         setStatus('error');
       }
     } catch {
+      setErrorMessage(null);
       setStatus('error');
     }
   }
@@ -92,7 +110,7 @@ export function Contact() {
         subtitle="VI."
         className="[&_h2]:text-parchment [&_p]:text-gold"
       >
-        Leave a Note at Camp
+        {messages.contact.heading}
       </AnimatedHeading>
 
       <motion.p
@@ -101,8 +119,7 @@ export function Contact() {
         transition={{ duration: 0.5, delay: 0.1 }}
         className="text-stone mt-4 text-lg"
       >
-        Whether it&rsquo;s about code, the trail ahead, or Oreos — drop a note and I&rsquo;ll get
-        back to you from base camp. I typically reply within a day.
+        {messages.contact.intro}
       </motion.p>
 
       <div ref={ref} className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-2">
@@ -123,7 +140,7 @@ export function Contact() {
               aria-atomic="true"
               role="status"
             >
-              <p className="sr-only">Message sent!</p>
+              <p className="sr-only">{messages.contact.messageSent}</p>
               <motion.div
                 className="text-gold mb-4 flex justify-center"
                 initial={prefersReducedMotion ? false : { y: 0, opacity: 1, rotate: 0, x: 0 }}
@@ -155,7 +172,7 @@ export function Contact() {
                   delay: 0.35,
                 }}
               >
-                Note left at base camp
+                {messages.contact.successTitle}
               </motion.p>
               <motion.p
                 className="text-stone mt-1 text-sm"
@@ -166,7 +183,7 @@ export function Contact() {
                   delay: 0.55,
                 }}
               >
-                Your message is on its way.
+                {messages.contact.successSub}
               </motion.p>
               <motion.div
                 initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
@@ -182,7 +199,7 @@ export function Contact() {
                   className="mt-6"
                   onClick={() => setStatus('idle')}
                 >
-                  Send another
+                  {messages.contact.sendAnother}
                 </Button>
               </motion.div>
             </motion.div>
@@ -197,7 +214,7 @@ export function Contact() {
             >
               <div>
                 <label htmlFor="name" className="text-parchment mb-1 block text-sm font-medium">
-                  Name
+                  {messages.contact.name}
                 </label>
                 <input
                   id="name"
@@ -206,14 +223,14 @@ export function Contact() {
                   autoComplete="name"
                   required
                   maxLength={200}
-                  placeholder="Fellow Hiker"
+                  placeholder={messages.contact.namePlaceholder}
                   className={inputClasses}
                 />
               </div>
 
               <div>
                 <label htmlFor="email" className="text-parchment mb-1 block text-sm font-medium">
-                  Email
+                  {messages.contact.email}
                 </label>
                 <input
                   id="email"
@@ -222,14 +239,14 @@ export function Contact() {
                   autoComplete="email"
                   required
                   maxLength={320}
-                  placeholder="hiker@trailmail.com"
+                  placeholder={messages.contact.emailPlaceholder}
                   className={inputClasses}
                 />
               </div>
 
               <div>
                 <label htmlFor="message" className="text-parchment mb-1 block text-sm font-medium">
-                  Message
+                  {messages.contact.message}
                 </label>
                 <textarea
                   id="message"
@@ -237,7 +254,7 @@ export function Contact() {
                   rows={5}
                   required
                   maxLength={5000}
-                  placeholder="What's on your mind?"
+                  placeholder={messages.contact.messagePlaceholder}
                   className={inputClasses}
                 />
               </div>
@@ -264,11 +281,11 @@ export function Contact() {
                         ))}
                       </span>
                     )}
-                    Sending…
+                    {messages.contact.sending}
                   </span>
                 ) : (
                   <>
-                    Send Message
+                    {messages.contact.send}
                     <Send className="h-4 w-4" />
                   </>
                 )}
@@ -277,7 +294,7 @@ export function Contact() {
               <div aria-live="polite" aria-atomic="true">
                 {status === 'error' && (
                   <p className="text-center text-sm text-red-400">
-                    Something went wrong. Please try again.
+                    {errorMessage ?? messages.contact.fallbackError}
                   </p>
                 )}
               </div>
@@ -291,7 +308,7 @@ export function Contact() {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <h3 className="text-parchment mb-6 font-serif text-xl font-semibold">
-            Or reach out directly
+            {messages.contact.orReachOut}
           </h3>
 
           <div className="space-y-1">

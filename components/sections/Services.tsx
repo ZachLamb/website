@@ -6,6 +6,7 @@ import { Code, Sparkles, Users, Palette } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
+import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { services } from '@/data/services';
 import type { LucideIcon } from 'lucide-react';
 
@@ -17,13 +18,14 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export function Services() {
+  const { messages } = useLocaleContext();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
 
   return (
     <Section variant="light" id="services" mapFrame nature={{ leaves: true }}>
       <AnimatedHeading sectionId="services" subtitle="IV.">
-        Services at the Lodge
+        {messages.sections.services}
       </AnimatedHeading>
 
       <div ref={ref} className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">

@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { skillCategories, maxYearsForScale } from '@/data/skills';
 
 function ExperienceBar({
@@ -53,6 +54,7 @@ function ExperienceBar({
 }
 
 export function Skills() {
+  const { messages } = useLocaleContext();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
@@ -63,7 +65,7 @@ export function Skills() {
         subtitle="III."
         className="[&_p]:text-gold [&_h2]:text-parchment"
       >
-        Gear &amp; Provisions
+        {messages.sections.skills}
       </AnimatedHeading>
 
       <p className="text-stone/90 mt-4 max-w-2xl text-base">

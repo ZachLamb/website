@@ -26,27 +26,28 @@ vi.mock('@/components/ui/NatureElements', () => ({
   MistLayer: () => null,
 }));
 
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { About } from './About';
 
 describe('About', () => {
   it('renders "Trail Guide" heading', () => {
-    render(<About />);
+    renderWithLocale(<About />);
     expect(screen.getByText('Trail Guide')).toBeInTheDocument();
   });
 
   it('renders bio text mentioning Circadence', () => {
-    render(<About />);
+    renderWithLocale(<About />);
     expect(screen.getByText(/Circadence/)).toBeInTheDocument();
   });
 
   it('renders bio text mentioning frontend-leaning', () => {
-    render(<About />);
+    renderWithLocale(<About />);
     expect(screen.getByText(/frontend-leaning/)).toBeInTheDocument();
   });
 
   it('has the about section id', () => {
-    const { container } = render(<About />);
+    const { container } = renderWithLocale(<About />);
     expect(container.querySelector('#about')).toBeInTheDocument();
   });
 });

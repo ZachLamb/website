@@ -1,0 +1,67 @@
+{
+  "common": {
+    "skipToContent": "Zum Inhalt springen"
+  },
+  "site": {
+    "name": "Zach Lamb",
+    "title": "Senior Software-Ingenieur",
+    "description": "Senior Software-Ingenieur mit Schwerpunkt React, TypeScript und KI-gestützte Web-Tools. Zertifizierter ScrumMaster mit Hintergrund in Human Centered Computing, Entwicklung performanter Anwendungen von Cybersicherheitsplattformen bis E-Commerce im großen Maßstab."
+  },
+  "nav": {
+    "trailGuide": "Wegweiser",
+    "trailLog": "Wegbericht",
+    "recommendations": "Empfehlungen",
+    "gear": "Ausrüstung",
+    "lodge": "Unterkunft",
+    "credentials": "Qualifikationen",
+    "contact": "Kontakt",
+    "backToTop": "Zach Lamb – nach oben",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen"
+  },
+  "hero": {
+    "title": "Zach Lamb",
+    "subtitle": "Senior Software-Ingenieur",
+    "tagline": "Ich baue Werkzeuge für Menschen — und bin immer offen für ein Gespräch über Code, die Natur oder Oreos.",
+    "getInTouch": "Kontakt aufnehmen",
+    "learnMore": "Mehr erfahren",
+    "resume": "Lebenslauf",
+    "viewResume": "Lebenslauf ansehen (öffnet in neuem Tab)"
+  },
+  "about": {
+    "heading": "Wegweiser",
+    "body": "Ich bin ein Full-Stack-Ingenieur mit Fokus auf Frontend und über zehn Jahre Erfahrung beim Bau von Webanwendungen, die Menschen gerne nutzen. Derzeit arbeite ich bei Circadence an KI-gestützten Tools für Cybersicherheitsprofis. Zuvor habe ich Store-Teams von Starbucks bei der Kommunikation unterstützt und Design-Systeme bei StellarFi aufgebaut. Ich bin zertifizierter ScrumMaster und überzeugt, dass großartige Software aus guten Prozessen und empathischen Teams entsteht. Wenn ich nicht programmiere, unterrichte ich Yoga, erkunde Colorados Wege, mache Krafttraining oder diskutiere den besten Oreo-Geschmack.",
+    "focusAreas": "React & TypeScript · Design-Systeme · KI-gestützte Tools · Zertifizierter ScrumMaster"
+  },
+  "footer": {
+    "backToTop": "Nach oben",
+    "resume": "Lebenslauf",
+    "viewResume": "Lebenslauf ansehen (öffnet in neuem Tab)",
+    "endOfTrail": "Ende des Weges"
+  },
+  "contact": {
+    "heading": "Hinterlass eine Nachricht im Lager",
+    "intro": "Ob zu Code, dem Weg vor uns oder Oreos — schreib eine Nachricht und ich melde mich vom Basislager. Ich antworte in der Regel innerhalb eines Tages.",
+    "name": "Name",
+    "email": "E-Mail",
+    "message": "Nachricht",
+    "namePlaceholder": "Wanderfreund",
+    "emailPlaceholder": "wanderer@pfadpost.de",
+    "messagePlaceholder": "Was liegt dir auf dem Herzen?",
+    "send": "Nachricht senden",
+    "sending": "Wird gesendet…",
+    "successTitle": "Nachricht im Basislager hinterlassen",
+    "successSub": "Deine Nachricht ist unterwegs.",
+    "sendAnother": "Noch eine senden",
+    "orReachOut": "Oder schreib mir direkt",
+    "fallbackError": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "messageSent": "Nachricht gesendet!"
+  },
+  "sections": {
+    "experience": "Wegbericht",
+    "endorsements": "Empfehlungen",
+    "skills": "Ausrüstung",
+    "services": "Unterkunft",
+    "education": "Qualifikationen"
+  }
+}

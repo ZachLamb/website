@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button';
+import { BackToHomeLink } from '@/components/ui/BackToHomeLink';
 
 export default function NotFound() {
   return (
@@ -7,7 +7,7 @@ export default function NotFound() {
       <p className="text-bark">
         The page you&rsquo;re looking for doesn&rsquo;t exist in this realm.
       </p>
-      <Button href="/">Return to the Shire</Button>
+      <BackToHomeLink />
     </div>
   );
 }

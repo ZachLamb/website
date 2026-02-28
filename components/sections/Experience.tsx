@@ -6,6 +6,7 @@ import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { experiences } from '@/data/experience';
 import type { ExperienceEntry } from '@/data/experience';
 
@@ -276,6 +277,7 @@ function ExperienceDetailPanel({
 }
 
 export function Experience() {
+  const { messages } = useLocaleContext();
   const [hoveredEntry, setHoveredEntry] = useState<ExperienceEntry | null>(null);
   const [isDesktop, setIsDesktop] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : false,
@@ -291,7 +293,7 @@ export function Experience() {
   return (
     <Section variant="light" id="experience" mapFrame nature={{ leaves: true, pines: true }}>
       <AnimatedHeading sectionId="experience" subtitle="II." className="mb-12">
-        Trail Log
+        {messages.sections.experience}
       </AnimatedHeading>
 
       <AnimatePresence>

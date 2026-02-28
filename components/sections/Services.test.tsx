@@ -26,17 +26,18 @@ vi.mock('@/components/ui/NatureElements', () => ({
   MistLayer: () => null,
 }));
 
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { Services } from './Services';
 
 describe('Services', () => {
   it('renders "Services at the Lodge" heading', () => {
-    render(<Services />);
-    expect(screen.getByText('Services at the Lodge')).toBeInTheDocument();
+    renderWithLocale(<Services />);
+    expect(screen.getByText('Lodge')).toBeInTheDocument();
   });
 
   it('renders all 4 service titles', () => {
-    render(<Services />);
+    renderWithLocale(<Services />);
     expect(screen.getByText('Frontend Engineering')).toBeInTheDocument();
     expect(screen.getByText('AI-Powered Web Tools')).toBeInTheDocument();
     expect(screen.getByText('Agile Coaching')).toBeInTheDocument();
@@ -44,7 +45,7 @@ describe('Services', () => {
   });
 
   it('has the services section id', () => {
-    const { container } = render(<Services />);
+    const { container } = renderWithLocale(<Services />);
     expect(container.querySelector('#services')).toBeInTheDocument();
   });
 });

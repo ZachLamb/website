@@ -7,16 +7,18 @@ import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { education, certifications } from '@/data/education';
 
 export function Education() {
+  const { messages } = useLocaleContext();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
 
   return (
     <Section variant="light" id="education" nature={{ leaves: true, pines: true }}>
       <AnimatedHeading sectionId="education" subtitle="V.">
-        Ranger Credentials
+        {messages.sections.education}
       </AnimatedHeading>
 
       <div ref={ref} className="mt-12 space-y-6">

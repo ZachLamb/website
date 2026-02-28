@@ -1,0 +1,67 @@
+{
+  "common": {
+    "skipToContent": "Skip to content"
+  },
+  "site": {
+    "name": "Zach Lamb",
+    "title": "Senior Software Engineer",
+    "description": "Senior Software Engineer specializing in React, TypeScript, and AI-powered web tools. Certified ScrumMaster with a Human Centered Computing background, building performant applications from cybersecurity platforms to e-commerce at scale."
+  },
+  "nav": {
+    "trailGuide": "Trail Guide",
+    "trailLog": "Trail Log",
+    "recommendations": "Recommendations",
+    "gear": "Gear",
+    "lodge": "Lodge",
+    "credentials": "Credentials",
+    "contact": "Contact",
+    "backToTop": "Zach Lamb – back to top",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "hero": {
+    "title": "Zach Lamb",
+    "subtitle": "Senior Software Engineer",
+    "tagline": "I build tools for people — and I'm always up for a conversation about code, the outdoors, or Oreos.",
+    "getInTouch": "Get in Touch",
+    "learnMore": "Learn More",
+    "resume": "Resume",
+    "viewResume": "View resume (opens in new tab)"
+  },
+  "about": {
+    "heading": "Trail Guide",
+    "body": "I'm a frontend-leaning full-stack engineer with over a decade of experience building web applications that people actually enjoy using. Currently, I'm at Circadence crafting AI-powered tools for cybersecurity professionals. Before that, I helped Starbucks store teams communicate better and built design systems at StellarFi. I'm a Certified ScrumMaster who believes great software comes from great processes and empathetic teams. When I'm not writing code, you'll find me teaching yoga, exploring Colorado's trails, lifting weights, or debating the best Oreo flavor.",
+    "focusAreas": "React & TypeScript · Design systems · AI-powered tools · Certified ScrumMaster"
+  },
+  "footer": {
+    "backToTop": "Back to top",
+    "resume": "Resume",
+    "viewResume": "View resume (opens in new tab)",
+    "endOfTrail": "End of Trail"
+  },
+  "contact": {
+    "heading": "Leave a Note at Camp",
+    "intro": "Whether it's about code, the trail ahead, or Oreos — drop a note and I'll get back to you from base camp. I typically reply within a day.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "namePlaceholder": "Fellow Hiker",
+    "emailPlaceholder": "hiker@trailmail.com",
+    "messagePlaceholder": "What's on your mind?",
+    "send": "Send Message",
+    "sending": "Sending…",
+    "successTitle": "Note left at base camp",
+    "successSub": "Your message is on its way.",
+    "sendAnother": "Send another",
+    "orReachOut": "Or reach out directly",
+    "fallbackError": "Something went wrong. Please try again.",
+    "messageSent": "Message sent!"
+  },
+  "sections": {
+    "experience": "Trail Log",
+    "endorsements": "Recommendations",
+    "skills": "Gear",
+    "services": "Lodge",
+    "education": "Credentials"
+  }
+}

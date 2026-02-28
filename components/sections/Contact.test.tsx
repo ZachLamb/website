@@ -29,37 +29,38 @@ vi.mock('@/components/ui/NatureElements', () => ({
   MistLayer: () => null,
 }));
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { Contact } from './Contact';
 
 describe('Contact', () => {
   it('renders "Leave a Note at Camp" heading', () => {
-    render(<Contact />);
+    renderWithLocale(<Contact />);
     expect(screen.getByText('Leave a Note at Camp')).toBeInTheDocument();
   });
 
   it('renders name field', () => {
-    render(<Contact />);
+    renderWithLocale(<Contact />);
     expect(screen.getByLabelText('Name')).toBeInTheDocument();
   });
 
   it('renders email field', () => {
-    render(<Contact />);
+    renderWithLocale(<Contact />);
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
   });
 
   it('renders message field', () => {
-    render(<Contact />);
+    renderWithLocale(<Contact />);
     expect(screen.getByLabelText('Message')).toBeInTheDocument();
   });
 
   it('renders submit button', () => {
-    render(<Contact />);
+    renderWithLocale(<Contact />);
     expect(screen.getByText('Send Message')).toBeInTheDocument();
   });
 
   it('has the contact section id', () => {
-    const { container } = render(<Contact />);
+    const { container } = renderWithLocale(<Contact />);
     expect(container.querySelector('#contact')).toBeInTheDocument();
   });
 
@@ -67,7 +68,7 @@ describe('Contact', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
       new Response(JSON.stringify({ success: true }), { status: 200 }),
     );
-    render(<Contact />);
+    renderWithLocale(<Contact />);
     fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Test' } });
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hello' } });
@@ -82,7 +83,7 @@ describe('Contact', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
       new Response(JSON.stringify({}), { status: 200 }),
     );
-    render(<Contact />);
+    renderWithLocale(<Contact />);
     fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Test' } });
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hi' } });
@@ -95,11 +96,24 @@ describe('Contact', () => {
     vi.restoreAllMocks();
   });
 
-  it('shows error message on failed submission', async () => {
+  it('shows API error message on failed submission', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
-      new Response(JSON.stringify({ error: 'fail' }), { status: 500 }),
+      new Response(JSON.stringify({ error: 'Invalid email address' }), { status: 400 }),
     );
-    render(<Contact />);
+    renderWithLocale(<Contact />);
+    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'bad-email' } });
+    fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hello' } });
+    fireEvent.submit(screen.getByText('Send Message').closest('form')!);
+    await waitFor(() => expect(screen.getByText('Invalid email address')).toBeInTheDocument());
+    vi.restoreAllMocks();
+  });
+
+  it('shows fallback error message when API returns non-OK without error body', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 500 }),
+    );
+    renderWithLocale(<Contact />);
     fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Test' } });
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hello' } });
@@ -110,15 +124,32 @@ describe('Contact', () => {
     vi.restoreAllMocks();
   });
 
-  it('shows error message on network failure', async () => {
+  it('shows fallback error message on network failure', async () => {
     vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new Error('Network error'));
-    render(<Contact />);
+    renderWithLocale(<Contact />);
     fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Test' } });
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hello' } });
     fireEvent.submit(screen.getByText('Send Message').closest('form')!);
     await waitFor(() =>
       expect(screen.getByText('Something went wrong. Please try again.')).toBeInTheDocument(),
+    );
+    vi.restoreAllMocks();
+  });
+
+  it('shows rate limit message when API returns 429', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      new Response(JSON.stringify({ error: 'Too many attempts. Please try again later.' }), {
+        status: 429,
+      }),
+    );
+    renderWithLocale(<Contact />);
+    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@test.com' } });
+    fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hello' } });
+    fireEvent.submit(screen.getByText('Send Message').closest('form')!);
+    await waitFor(() =>
+      expect(screen.getByText('Too many attempts. Please try again later.')).toBeInTheDocument(),
     );
     vi.restoreAllMocks();
   });

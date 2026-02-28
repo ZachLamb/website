@@ -27,17 +27,18 @@ vi.mock('@/components/ui/NatureElements', () => ({
   MistLayer: () => null,
 }));
 
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { Skills } from './Skills';
 
 describe('Skills', () => {
-  it('renders "Gear & Provisions" heading', () => {
-    render(<Skills />);
-    expect(screen.getByText('Gear & Provisions')).toBeInTheDocument();
+  it('renders "Gear" heading', () => {
+    renderWithLocale(<Skills />);
+    expect(screen.getByText('Gear')).toBeInTheDocument();
   });
 
   it('renders all 4 category names', () => {
-    render(<Skills />);
+    renderWithLocale(<Skills />);
     expect(screen.getByText('Frontend')).toBeInTheDocument();
     expect(screen.getByText('Backend')).toBeInTheDocument();
     expect(screen.getByText('Tools & Infrastructure')).toBeInTheDocument();
@@ -45,7 +46,7 @@ describe('Skills', () => {
   });
 
   it('renders individual skills', () => {
-    render(<Skills />);
+    renderWithLocale(<Skills />);
     expect(screen.getByText('React')).toBeInTheDocument();
     expect(screen.getByText('TypeScript')).toBeInTheDocument();
     expect(screen.getByText('Docker')).toBeInTheDocument();
@@ -53,7 +54,7 @@ describe('Skills', () => {
   });
 
   it('has the skills section id', () => {
-    const { container } = render(<Skills />);
+    const { container } = renderWithLocale(<Skills />);
     expect(container.querySelector('#skills')).toBeInTheDocument();
   });
 });

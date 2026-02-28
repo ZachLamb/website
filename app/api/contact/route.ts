@@ -14,6 +14,34 @@ const MAX_NAME_LENGTH = 200;
 const MAX_EMAIL_LENGTH = 320;
 const MAX_MESSAGE_LENGTH = 5000;
 
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const RATE_LIMIT_MAX = 5;
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function getClientId(request: Request): string {
+  return (
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip') ||
+    'unknown'
+  );
+}
+
+function checkRateLimit(clientId: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(clientId);
+  if (!entry) {
+    rateLimitMap.set(clientId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+  if (now >= entry.resetAt) {
+    rateLimitMap.set(clientId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+  entry.count += 1;
+  return entry.count <= RATE_LIMIT_MAX;
+}
+
 export async function POST(request: Request) {
   let body: { name?: string; email?: string; message?: string };
 
@@ -39,6 +67,14 @@ export async function POST(request: Request) {
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: 'Invalid email address' }, { status: 400 });
+  }
+
+  const clientId = getClientId(request);
+  if (!checkRateLimit(clientId)) {
+    return NextResponse.json(
+      { error: 'Too many attempts. Please try again later.' },
+      { status: 429 },
+    );
   }
 
   try {

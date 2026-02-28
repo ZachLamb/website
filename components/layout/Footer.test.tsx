@@ -8,34 +8,35 @@ vi.mock('framer-motion', () => ({
   useInView: () => true,
 }));
 
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { Footer } from './Footer';
 
 describe('Footer', () => {
   it('renders End of Trail marker', () => {
-    render(<Footer />);
+    renderWithLocale(<Footer />);
     expect(screen.getByText('End of Trail')).toBeInTheDocument();
   });
 
   it('renders copyright text', () => {
-    render(<Footer />);
+    renderWithLocale(<Footer />);
     expect(screen.getByText(/© \d{4} Zach Lamb/)).toBeInTheDocument();
   });
 
   it('renders Back to top link', () => {
-    render(<Footer />);
+    renderWithLocale(<Footer />);
     const backToTop = screen.getByRole('link', { name: /back to top/i });
     expect(backToTop).toBeInTheDocument();
-    expect(backToTop).toHaveAttribute('href', '#hero');
+    expect(backToTop.getAttribute('href')).toMatch(/#hero$/);
   });
 
   it('renders GitHub link with accessible label', () => {
-    render(<Footer />);
+    renderWithLocale(<Footer />);
     expect(screen.getByLabelText(/GitHub/i)).toBeInTheDocument();
   });
 
   it('renders LinkedIn link with accessible label', () => {
-    render(<Footer />);
+    renderWithLocale(<Footer />);
     expect(screen.getByLabelText(/LinkedIn/i)).toBeInTheDocument();
   });
 });

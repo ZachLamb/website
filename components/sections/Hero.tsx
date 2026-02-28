@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
 import { socialLinks } from '@/data/social';
 import { siteConfig } from '@/data/site';
+import { useLocaleContext } from '@/components/providers/LocaleProvider';
 
 const stagger = {
   hidden: {},
@@ -134,6 +135,9 @@ function MountainBackdrop() {
 }
 
 export function Hero() {
+  const { locale, messages } = useLocaleContext();
+  const basePath = `/${locale}`;
+
   return (
     <section
       id="hero"
@@ -338,30 +342,33 @@ export function Hero() {
           variants={fadeUp}
           className="text-gold font-sans text-sm tracking-widest uppercase"
         >
-          Senior Software Engineer
+          {messages.hero.subtitle}
         </motion.p>
 
         <motion.h1
           variants={fadeUp}
           className="text-parchment mt-4 font-serif text-5xl font-bold md:text-7xl"
         >
-          Zach Lamb
+          {messages.hero.title}
         </motion.h1>
 
         <motion.p variants={fadeUp} className="text-stone mt-6 max-w-2xl text-lg md:text-xl">
-          I build tools for people — and I&rsquo;m always up for a conversation about code, the
-          outdoors, or Oreos.
+          {messages.hero.tagline}
         </motion.p>
 
         <motion.div
           variants={fadeUp}
           className="mt-8 flex w-full min-w-0 flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-4"
         >
-          <Button href="#contact" className="w-full sm:w-auto sm:min-w-0">
-            Get in Touch
+          <Button href={`${basePath}#contact`} className="w-full sm:w-auto sm:min-w-0">
+            {messages.hero.getInTouch}
           </Button>
-          <Button variant="secondary" href="#about" className="w-full sm:w-auto sm:min-w-0">
-            Learn More
+          <Button
+            variant="secondary"
+            href={`${basePath}#about`}
+            className="w-full sm:w-auto sm:min-w-0"
+          >
+            {messages.hero.learnMore}
           </Button>
         </motion.div>
 
@@ -375,9 +382,9 @@ export function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               className="text-stone hover:text-gold focus-visible:ring-gold decoration-gold/30 hover:decoration-gold rounded text-sm font-medium underline underline-offset-2 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              aria-label="View resume (opens in new tab)"
+              aria-label={messages.hero.viewResume}
             >
-              Resume
+              {messages.hero.resume}
             </a>
           )}
           <span className="flex items-center gap-2">

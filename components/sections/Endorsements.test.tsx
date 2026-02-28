@@ -24,17 +24,18 @@ vi.mock('@/components/ui/NatureElements', () => ({
   BirdSilhouettes: () => null,
 }));
 
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { Endorsements } from './Endorsements';
 
 describe('Endorsements', () => {
   it('renders "Trail Recommendations" heading', () => {
-    render(<Endorsements />);
-    expect(screen.getByText('Trail Recommendations')).toBeInTheDocument();
+    renderWithLocale(<Endorsements />);
+    expect(screen.getByText('Recommendations')).toBeInTheDocument();
   });
 
   it('renders link to LinkedIn recommendations', () => {
-    render(<Endorsements />);
+    renderWithLocale(<Endorsements />);
     const link = screen.getByText(/View all recommendations on LinkedIn/i);
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', expect.stringContaining('linkedin.com'));
@@ -42,7 +43,7 @@ describe('Endorsements', () => {
   });
 
   it('renders endorsement cards from data', () => {
-    render(<Endorsements />);
+    renderWithLocale(<Endorsements />);
     expect(screen.getByText('Kimball Heaton')).toBeInTheDocument();
     expect(screen.getByText('Katherine Liu')).toBeInTheDocument();
     expect(screen.getByText('Lia Young')).toBeInTheDocument();
@@ -50,7 +51,7 @@ describe('Endorsements', () => {
   });
 
   it('has the endorsements section id', () => {
-    const { container } = render(<Endorsements />);
+    const { container } = renderWithLocale(<Endorsements />);
     expect(container.querySelector('#endorsements')).toBeInTheDocument();
   });
 });

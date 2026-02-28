@@ -23,32 +23,33 @@ vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: any) => children,
 }));
 
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithLocale } from '@/lib/test-utils';
 import { Hero } from './Hero';
 
 describe('Hero', () => {
   it('renders "Zach Lamb" heading', () => {
-    render(<Hero />);
+    renderWithLocale(<Hero />);
     expect(screen.getByText('Zach Lamb')).toBeInTheDocument();
   });
 
   it('renders "Senior Software Engineer" subtitle', () => {
-    render(<Hero />);
+    renderWithLocale(<Hero />);
     expect(screen.getByText('Senior Software Engineer')).toBeInTheDocument();
   });
 
   it('renders "Get in Touch" primary CTA', () => {
-    render(<Hero />);
+    renderWithLocale(<Hero />);
     expect(screen.getByRole('link', { name: /get in touch/i })).toBeInTheDocument();
   });
 
   it('renders "Learn More" secondary CTA', () => {
-    render(<Hero />);
+    renderWithLocale(<Hero />);
     expect(screen.getByRole('link', { name: /learn more/i })).toBeInTheDocument();
   });
 
   it('renders social links with accessible labels', () => {
-    render(<Hero />);
+    renderWithLocale(<Hero />);
     expect(screen.getByLabelText(/GitHub/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/LinkedIn/i)).toBeInTheDocument();
   });

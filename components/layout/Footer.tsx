@@ -1,9 +1,11 @@
 'use client';
 
 import { useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, useInView } from 'framer-motion';
 import { Github, Linkedin } from 'lucide-react';
 import { siteConfig } from '@/data/site';
+import { useLocaleContext } from '@/components/providers/LocaleProvider';
 
 function FooterMountains() {
   return (
@@ -24,8 +26,13 @@ function FooterMountains() {
 }
 
 export function Footer() {
+  const { locale, messages } = useLocaleContext();
+  const pathname = usePathname();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-40px' });
+  const basePath = pathname?.startsWith('/')
+    ? pathname.split('/').slice(0, 2).join('/')
+    : `/${locale}`;
 
   return (
     <footer className="bg-charcoal text-parchment relative">
@@ -39,21 +46,21 @@ export function Footer() {
       >
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           <a
-            href="#hero"
-            aria-label="Back to top"
+            href={`${basePath}#hero`}
+            aria-label={messages.footer.backToTop}
             className="text-stone/60 hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            Back to top
+            {messages.footer.backToTop}
           </a>
           {siteConfig.links.resume && (
             <a
               href={siteConfig.links.resume}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="View resume (opens in new tab)"
+              aria-label={messages.footer.viewResume}
               className="text-stone/60 hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              Resume
+              {messages.footer.resume}
             </a>
           )}
         </div>
@@ -77,7 +84,7 @@ export function Footer() {
               fill="currentColor"
             />
           </motion.svg>
-          End of Trail
+          {messages.footer.endOfTrail}
           <motion.svg
             viewBox="0 0 16 16"
             className="text-gold/40 h-3 w-3"
@@ -120,7 +127,7 @@ export function Footer() {
         </div>
 
         <p className="text-stone text-sm">
-          &copy; {new Date().getFullYear()} {siteConfig.name}
+          &copy; {new Date().getFullYear()} {messages.site.name}
         </p>
       </motion.div>
     </footer>
