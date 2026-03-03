@@ -1,51 +1,28 @@
-# Gatsby Markdown Typescript Personal Website
+# zachlamb.io
 
-This is a personal website/blog using [Gatsby](https://www.gatsbyjs.org/), [Markdown](https://www.markdownguide.org/), [Typescript](https://www.typescriptlang.org/), [Styled Components](https://styled-components.com/), [Talwind CSS](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/) & [React Font Awesome](https://github.com/FortAwesome/react-fontawesome/).
+Personal portfolio website built with [Next.js](https://nextjs.org/), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/), and [Framer Motion](https://www.framer.com/motion/).
 
-## Demo
+## Development
 
-[Gatsby Markdown Typescript Personal Website](https://gatsby-markdown-typescript-personal-website.netlify.app/)
+```shell
+npm install
+npm run dev
+```
 
-## Quick start
+The site runs at `http://localhost:3000`.
 
-1.  **Create a Gatsby site.**
+## Scripts
 
-    Use the Gatsby CLI to create a new site, using the Gatsby Markdown Typescript Personal Website Starter.
+| Command             | Description              |
+| ------------------- | ------------------------ |
+| `npm run dev`       | Start development server |
+| `npm run build`     | Production build         |
+| `npm run start`     | Serve production build   |
+| `npm run lint`      | Run ESLint               |
+| `npm run format`    | Format with Prettier     |
+| `npm run typecheck` | TypeScript type checking |
+| `npm test`          | Run tests with Vitest    |
 
-    ```shell
-    gatsby new my-site-name https://github.com/SaimirKapaj/gatsby-markdown-typescript-personal-website
-    ```
+## Deployment
 
-2.  **Develop**
-
-    Navigate into your new site’s directory and start the development environment.
-
-    ```shell
-    gatsby develop
-    ```
-
-    Your site is now running at `http://localhost:8000`
-
-3.  **Build**
-
-    Get an optimized production build for your site generating static HTML and JavaScript, CSS bundles.
-
-    ```shell
-    gatsby build
-    ```
-
-4.  **Serve**
-
-    Starts a local server for testing your production site.
-
-    ```shell
-    gatsby serve
-    ```
-
-    Your production site is now running at `http://localhost:9000`
-
-## Deploy
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/SaimirKapaj/gatsby-markdown-typescript-personal-website)
-
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/import/project?template=https://github.com/SaimirKapaj/gatsby-markdown-typescript-personal-website)
+Hosted on [Vercel](https://vercel.com/).
