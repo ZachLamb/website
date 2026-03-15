@@ -23,7 +23,7 @@ const experience = [
   {
     title: 'Senior Cutie Pie',
     place: 'The Mirror Every Morning',
-    desc: 'Delivered daily cuteness with zero downtime. Recognized by peers for laugh deployment and smile ROI. Successfully charmed baristas into free extra shots on 2 separate occasions.',
+    desc: 'Delivered daily cuteness with zero downtime. Recognized by peers for laugh deployment and smile ROI. Successfully charmed baristas into free extra shots on 2 separate occasions. Created new process on how to handle and maintain attachment style.',
   },
   {
     title: 'Cutie Pie',
@@ -90,8 +90,6 @@ export default function SnackPage() {
   return (
     <div className="myspace-page">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Trebuchet+MS&display=swap');
-
         .myspace-page {
           --ms-bg: #003366;
           --ms-profile-bg: #000000;
@@ -159,10 +157,6 @@ export default function SnackPage() {
           100% { color: #ff0000; }
         }
 
-        .sparkle-container {
-          position: relative;
-          display: inline-block;
-        }
         .sparkle {
           position: absolute;
           width: 6px;
