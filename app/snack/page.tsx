@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
   Mail,
@@ -20,6 +20,11 @@ import {
   Ban,
   Send,
   X,
+  Music,
+  SkipBack,
+  SkipForward,
+  Play,
+  Volume2,
 } from 'lucide-react';
 import { getRandomSong } from '@/data/songs';
 import ApplicationModal from './ApplicationModal';
@@ -40,7 +45,7 @@ const experience = [
   {
     title: 'Chief Sweetie Pie',
     place: 'Self-Employed (Lifetime)',
-    desc: 'Consistently exceeded expectations in thoughtfulness, snack-sharing, and unsolicited forehead kisses. Maintained a 100% approval rating among pets, friends, parents, nieces, and nephews.',
+    desc: 'Consistently exceeded expectations in thoughtfulness, snack-sharing, and unsolicited forehead kisses. Maintained a 100% approval rating among all pets (cats and dogs), friends, parents, nieces, and nephews.',
   },
   {
     title: 'Senior Cutie Pie',
@@ -95,6 +100,14 @@ const comments = [
   },
 ];
 
+const sendMessageTemplates = [
+  "Zach, I think you're a total cutie pie. I'd love a chance to steal a little of your time.",
+  'Dear Zach, your profile is dangerously charming. Can I apply for one flirty conversation?',
+  'Hi Zach, this is me bravely shooting my shot. You seem sweet, funny, and very kissable.',
+  "Zach, your vibe is immaculate. If you're free, I'd love to be your next cute distraction.",
+  "Hey Zach, I brought confidence and Oreos. I think we'd make a very solid team.",
+];
+
 const friendColors = [
   '#e06090',
   '#60a0e0',
@@ -111,17 +124,25 @@ const topFriends = [
   { name: 'Britney Spears', initial: 'B' },
   { name: 'Lindsay Lohan', initial: 'L' },
   { name: 'Nicole Richie', initial: 'N' },
-  { name: 'Kim Kardashian', initial: 'K' },
-  { name: 'Tila Tequila', initial: 'T' },
-  { name: 'Jeffree Star', initial: 'J' },
+  { name: 'Jenna Marbles', initial: 'J' },
+  { name: 'Lady Gaga', initial: 'L' },
+  { name: 'Hayley Williams', initial: 'H' },
 ];
 
 const interests = [
-  { label: 'General', value: 'Hiking, Dogs, Oreos, Being the big spoon, Therapy, Gay stuff' },
-  { label: 'Music', value: 'Celine Dion, Lady Gaga, Whitney Houston, ABBA, whatever you put on' },
-  { label: 'Movies', value: 'Anything where the dog lives, 90s romcoms, horror (I will hold you)' },
+  { label: 'General', value: 'Hiking, Pets, Oreos, Being the big spoon, Therapy, Gay stuff' },
+  {
+    label: 'Music',
+    value: 'Paramore, Blink-182, Carly Rae Jepsen, Avril Lavigne, whatever you put on',
+  },
+  { label: 'Movies', value: 'Anything where the pet lives, 90s romcoms, horror (I will hold you)' },
   { label: 'Television', value: 'Drag Race, Great British Bake Off, whatever true crime you pick' },
-  { label: 'Heroes', value: 'My therapist, every dog I have ever met, Dolly Parton' },
+  { label: 'Heroes', value: 'My therapist, every pet I have ever met, Dolly Parton' },
+  {
+    label: 'Travel',
+    value:
+      'Half adventure (museums, exploring the city, hiking) and half relaxing (beach, pool, doing absolutely nothing)',
+  },
 ];
 
 /* ─── client-only Spotify player (avoids hydration mismatch from Math.random) ── */
@@ -129,14 +150,52 @@ const interests = [
 function SpotifyPlayerInner() {
   const song = getRandomSong();
   return (
-    <iframe
-      src={`https://open.spotify.com/embed/track/${song.spotifyId}?utm_source=generator&theme=0`}
-      height="152"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy"
-      title={`Now playing: ${song.title} by ${song.artist}`}
-      style={{ width: '100%', borderRadius: '12px', border: 'none' }}
-    />
+    <div className="ms-myspace-player">
+      {/* Player chrome header */}
+      <div className="ms-player-header">
+        <div className="ms-player-title">
+          <Music size={12} />
+          <span>Snack&apos;s Music</span>
+        </div>
+        <div className="ms-player-eq">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <span key={i} className="ms-eq-bar" style={{ animationDelay: `${i * 0.15}s` }} />
+          ))}
+        </div>
+      </div>
+
+      {/* Song info + decorative transport */}
+      <div className="ms-player-info">
+        <div className="ms-player-song">
+          <span className="ms-player-song-title">{song.title}</span>
+          <span className="ms-player-song-artist">{song.artist}</span>
+        </div>
+        <div className="ms-player-controls">
+          <button className="ms-player-btn" aria-hidden="true" tabIndex={-1}>
+            <SkipBack size={12} />
+          </button>
+          <button className="ms-player-btn ms-player-btn-play" aria-hidden="true" tabIndex={-1}>
+            <Play size={14} fill="currentColor" />
+          </button>
+          <button className="ms-player-btn" aria-hidden="true" tabIndex={-1}>
+            <SkipForward size={12} />
+          </button>
+          <button className="ms-player-btn" aria-hidden="true" tabIndex={-1}>
+            <Volume2 size={12} />
+          </button>
+        </div>
+      </div>
+
+      {/* Compact Spotify embed */}
+      <iframe
+        src={`https://open.spotify.com/embed/track/${song.spotifyId}?utm_source=generator&theme=0`}
+        height="80"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+        title={`Now playing: ${song.title} by ${song.artist}`}
+        style={{ width: '100%', border: 'none', borderRadius: '0 0 4px 4px', display: 'block' }}
+      />
+    </div>
   );
 }
 
@@ -149,38 +208,86 @@ const SpotifyPlayer = dynamic(() => Promise.resolve({ default: SpotifyPlayerInne
 export default function SnackPage() {
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [showApplication, setShowApplication] = useState(false);
+  const [messageState, setMessageState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [sentMessage, setSentMessage] = useState('');
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const sendTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', updatePreference);
+      return () => mediaQuery.removeEventListener('change', updatePreference);
+    }
+
+    mediaQuery.addListener(updatePreference);
+    return () => mediaQuery.removeListener(updatePreference);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (sendTimerRef.current !== null) {
+        window.clearTimeout(sendTimerRef.current);
+      }
+    };
+  }, []);
+
+  function handleSendMessage() {
+    if (messageState === 'sending') return;
+
+    if (sendTimerRef.current !== null) {
+      window.clearTimeout(sendTimerRef.current);
+      sendTimerRef.current = null;
+    }
+
+    const randomMessage =
+      sendMessageTemplates[Math.floor(Math.random() * sendMessageTemplates.length)];
+    setMessageState('sending');
+
+    sendTimerRef.current = window.setTimeout(
+      () => {
+        setSentMessage(randomMessage);
+        setMessageState('sent');
+        sendTimerRef.current = null;
+      },
+      prefersReducedMotion ? 220 : 1100,
+    );
+  }
 
   return (
     <div className="myspace-page">
       <style>{`
         /* Override main site body background */
         body:has(.myspace-page) {
-          background-color: #003366 !important;
+          background-color: #0a0a0a !important;
           background-image: none !important;
         }
 
         .myspace-page {
-          --ms-bg: #003366;
-          --ms-profile-bg: #000000;
-          --ms-section-bg: #001a33;
-          --ms-border: #336699;
-          --ms-text: #ffffff;
-          --ms-link: #77bbff;
-          --ms-accent: #ff66cc;
-          --ms-online: #00ff00;
+          --ms-bg: #0a0a0a;
+          --ms-profile-bg: #0d0d0d;
+          --ms-section-bg: #111111;
+          --ms-border: #2a2a2a;
+          --ms-text: #e0e0e0;
+          --ms-link: #cc77ff;
+          --ms-accent: #ff3399;
+          --ms-online: #00ff66;
 
           min-height: 100dvh;
           min-height: 100vh;
           background-color: var(--ms-bg);
           background-image:
-            radial-gradient(ellipse at 20% 50%, rgba(102, 0, 153, 0.15) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 20%, rgba(0, 51, 102, 0.3) 0%, transparent 50%),
+            radial-gradient(ellipse at 20% 50%, rgba(128, 0, 128, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 20%, rgba(255, 0, 100, 0.05) 0%, transparent 50%),
             repeating-linear-gradient(
               0deg,
               transparent,
               transparent 2px,
-              rgba(255, 255, 255, 0.01) 2px,
-              rgba(255, 255, 255, 0.01) 4px
+              rgba(255, 255, 255, 0.008) 2px,
+              rgba(255, 255, 255, 0.008) 4px
             );
           color: var(--ms-text);
           font-family: 'Trebuchet MS', Verdana, Arial, sans-serif;
@@ -240,8 +347,8 @@ export default function SnackPage() {
 
         /* ── header bar ── */
         .ms-header {
-          background: linear-gradient(180deg, #004488 0%, #002244 100%);
-          border-bottom: 2px solid #336699;
+          background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+          border-bottom: 2px solid #333333;
           padding: 8px 16px;
           display: flex;
           align-items: center;
@@ -265,7 +372,7 @@ export default function SnackPage() {
           font-size: 12px;
         }
         .ms-header-nav a {
-          color: #aabbdd;
+          color: #999999;
           text-decoration: none;
         }
         .ms-header-nav a:hover {
@@ -276,17 +383,17 @@ export default function SnackPage() {
         /* ── url bar (desktop) ── */
         .ms-url-bar {
           display: none;
-          background: #ffffff;
-          border: 1px solid #999999;
+          background: #1a1a1a;
+          border: 1px solid #333333;
           border-radius: 3px;
           padding: 4px 8px;
           font-family: 'Courier New', monospace;
           font-size: 11px;
-          color: #333333;
+          color: #999999;
           margin: 8px 16px 0;
         }
         .ms-url-bar span {
-          color: #0066cc;
+          color: var(--ms-link);
         }
 
         /* ── two-column layout ── */
@@ -321,7 +428,7 @@ export default function SnackPage() {
           border-radius: 4px;
           border: 3px solid var(--ms-accent);
           margin: 0 auto 12px;
-          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+          background: linear-gradient(135deg, #1a0a1a 0%, #0d0d1a 50%, #1a0a2e 100%);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -366,7 +473,7 @@ export default function SnackPage() {
         .ms-mood {
           margin-top: 10px;
           font-size: 12px;
-          color: #aaaacc;
+          color: #999999;
         }
         .ms-mood strong {
           color: var(--ms-link);
@@ -379,7 +486,7 @@ export default function SnackPage() {
           justify-content: center;
           gap: 8px 16px;
           font-size: 12px;
-          color: #aaaacc;
+          color: #999999;
         }
         .ms-detail-item {
           display: flex;
@@ -387,7 +494,7 @@ export default function SnackPage() {
           gap: 4px;
         }
         .ms-detail-label {
-          color: #888899;
+          color: #666666;
         }
 
         /* ── contacting box ── */
@@ -399,7 +506,7 @@ export default function SnackPage() {
           overflow: hidden;
         }
         .ms-contacting-header {
-          background: linear-gradient(90deg, #003366 0%, #004488 100%);
+          background: linear-gradient(90deg, #1a1a1a 0%, #222222 100%);
           padding: 6px 10px;
           font-weight: bold;
           font-size: 11px;
@@ -431,6 +538,42 @@ export default function SnackPage() {
           border-color: var(--ms-accent);
           color: var(--ms-accent);
         }
+        .ms-action-btn:disabled {
+          opacity: 0.6;
+          cursor: wait;
+        }
+        .ms-action-btn.is-sending {
+          border-color: var(--ms-accent);
+          color: var(--ms-accent);
+        }
+        .ms-send-message-feedback {
+          margin: 0 10px 10px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 4px;
+          padding: 8px 10px;
+          background: rgba(255,255,255,0.03);
+          font-size: 11px;
+          color: #bfbfd8;
+          min-height: 34px;
+        }
+        .ms-send-message-row {
+          display: flex;
+          align-items: flex-start;
+          gap: 6px;
+          line-height: 1.4;
+        }
+        .ms-send-message-row.is-sent {
+          color: #d6b3ff;
+        }
+        .ms-send-spinner {
+          flex-shrink: 0;
+          margin-top: 1px;
+          animation: send-spin 0.9s linear infinite;
+        }
+        .ms-send-label {
+          font-weight: bold;
+          color: var(--ms-accent);
+        }
 
         /* ── details table ── */
         .ms-details-table {
@@ -451,7 +594,7 @@ export default function SnackPage() {
           width: 80px;
         }
         .ms-details-table td:last-child {
-          color: #aaaacc;
+          color: #999999;
         }
 
         /* ── sections ── */
@@ -463,7 +606,7 @@ export default function SnackPage() {
           overflow: hidden;
         }
         .ms-section-header {
-          background: linear-gradient(90deg, #003366 0%, #004488 100%);
+          background: linear-gradient(90deg, #1a1a1a 0%, #222222 100%);
           padding: 8px 12px;
           font-weight: bold;
           font-size: 13px;
@@ -478,42 +621,113 @@ export default function SnackPage() {
           padding: 12px;
           font-size: 13px;
           line-height: 1.6;
-          color: #ccccdd;
+          color: #bbbbbb;
         }
 
-        /* ── spotify embed ── */
+        /* ── spotify / myspace player ── */
         .ms-spotify {
           margin: 12px 0;
-          border-radius: 8px;
+          border-radius: 6px;
           overflow: hidden;
-          border: 1px solid var(--ms-border);
+          border: 1px solid #2a2a2a;
         }
-        .ms-spotify iframe {
-          display: block;
-          width: 100%;
-          border: none;
+        .ms-myspace-player {
+          background: linear-gradient(180deg, #141414 0%, #0a0a0a 100%);
         }
-        .ms-now-playing {
-          background: linear-gradient(180deg, #111122 0%, #0a0a1a 100%);
-          border: 1px solid #333366;
-          border-bottom: none;
-          border-radius: 6px 6px 0 0;
-          padding: 6px 12px;
-          font-size: 10px;
-          text-transform: uppercase;
-          letter-spacing: 1.5px;
-          color: var(--ms-accent);
-          font-weight: bold;
+        .ms-player-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 6px 10px;
+          background: linear-gradient(180deg, #1f1f1f 0%, #141414 100%);
+          border-bottom: 1px solid #2a2a2a;
+        }
+        .ms-player-title {
           display: flex;
           align-items: center;
           gap: 6px;
+          font-size: 10px;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          color: #999999;
         }
-        .ms-now-playing-dot {
-          width: 6px;
-          height: 6px;
+        .ms-player-eq {
+          display: flex;
+          align-items: flex-end;
+          gap: 2px;
+          height: 14px;
+        }
+        .ms-eq-bar {
+          width: 3px;
           background: var(--ms-accent);
+          border-radius: 1px;
+          animation: eq-bounce 0.8s ease-in-out infinite alternate;
+        }
+        .ms-eq-bar:nth-child(1) { height: 4px; }
+        .ms-eq-bar:nth-child(2) { height: 10px; }
+        .ms-eq-bar:nth-child(3) { height: 6px; }
+        .ms-eq-bar:nth-child(4) { height: 12px; }
+        .ms-eq-bar:nth-child(5) { height: 8px; }
+        @keyframes eq-bounce {
+          0% { transform: scaleY(0.3); }
+          100% { transform: scaleY(1); }
+        }
+        @keyframes send-spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .ms-player-info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 8px 10px;
+          border-bottom: 1px solid #1a1a1a;
+        }
+        .ms-player-song {
+          display: flex;
+          flex-direction: column;
+          gap: 1px;
+          min-width: 0;
+        }
+        .ms-player-song-title {
+          font-size: 12px;
+          font-weight: bold;
+          color: #ffffff;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .ms-player-song-artist {
+          font-size: 10px;
+          color: #777777;
+        }
+        .ms-player-controls {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          flex-shrink: 0;
+        }
+        .ms-player-btn {
+          background: rgba(255,255,255,0.06);
+          border: 1px solid #2a2a2a;
           border-radius: 50%;
-          animation: blink-online 1s ease-in-out infinite;
+          width: 28px;
+          height: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #999999;
+          cursor: default;
+          font-size: 0;
+          padding: 0;
+        }
+        .ms-player-btn-play {
+          width: 32px;
+          height: 32px;
+          background: rgba(255,102,204,0.15);
+          border-color: var(--ms-accent);
+          color: var(--ms-accent);
         }
 
         /* ── interests table ── */
@@ -537,10 +751,10 @@ export default function SnackPage() {
           font-weight: bold;
           white-space: nowrap;
           width: 90px;
-          background: rgba(255,255,255,0.02);
+          background: rgba(255,255,255,0.03);
         }
         .ms-interests-table td:last-child {
-          color: #ccccdd;
+          color: #bbbbbb;
         }
 
         /* ── experience ── */
@@ -572,7 +786,7 @@ export default function SnackPage() {
           font-style: italic;
         }
         .ms-exp-desc {
-          color: #aaaacc;
+          color: #999999;
           font-size: 12px;
           margin-top: 3px;
         }
@@ -588,7 +802,7 @@ export default function SnackPage() {
         .ms-skill-name {
           flex: 1;
           min-width: 0;
-          color: #ccccdd;
+          color: #bbbbbb;
         }
         .ms-skill-hearts {
           display: flex;
@@ -675,19 +889,19 @@ export default function SnackPage() {
           font-size: 12px;
         }
         .ms-comment-time {
-          color: #666688;
+          color: #555555;
           font-size: 10px;
           margin-left: 8px;
         }
         .ms-comment-text {
-          color: #aaaacc;
+          color: #999999;
           font-size: 12px;
           margin-top: 2px;
         }
 
         /* ── marquee banner ── */
         .ms-marquee {
-          background: linear-gradient(90deg, #330066, #660033, #003366, #330066);
+          background: linear-gradient(90deg, #1a0033, #330019, #0d0d0d, #1a0033);
           padding: 6px 0;
           overflow: hidden;
           white-space: nowrap;
@@ -705,9 +919,9 @@ export default function SnackPage() {
           display: block;
           width: 100%;
           padding: 14px;
-          background: linear-gradient(180deg, var(--ms-accent) 0%, #cc3399 100%);
+          background: linear-gradient(180deg, var(--ms-accent) 0%, #990044 100%);
           color: white;
-          border: 2px solid #ff88dd;
+          border: 2px solid #ff4488;
           border-radius: 6px;
           font-weight: bold;
           font-size: 15px;
@@ -731,7 +945,7 @@ export default function SnackPage() {
           padding-left: 20px;
           position: relative;
           font-size: 12px;
-          color: #ccccdd;
+          color: #bbbbbb;
         }
         .ms-edu-item::before {
           content: '';
@@ -752,7 +966,7 @@ export default function SnackPage() {
           padding-left: 20px;
           position: relative;
           font-size: 12px;
-          color: #ccccdd;
+          color: #bbbbbb;
         }
         .ms-cert-item::before {
           content: '\\2713';
@@ -769,7 +983,7 @@ export default function SnackPage() {
           text-align: center;
           padding: 20px 12px;
           font-size: 11px;
-          color: #555577;
+          color: #444444;
           border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
         .ms-footer a {
@@ -858,12 +1072,13 @@ export default function SnackPage() {
         @media (prefers-reduced-motion: reduce) {
           .sparkle,
           .ms-online-dot,
-          .ms-now-playing-dot,
           .ms-heart,
           .ms-friend-avatar,
           .ms-marquee span,
           .ms-profile-name,
-          .ms-star {
+          .ms-star,
+          .ms-eq-bar,
+          .ms-send-spinner {
             animation: none !important;
           }
         }
@@ -897,7 +1112,7 @@ export default function SnackPage() {
           <a href="#top8">Friends</a>
           <a href="#skills">Forum</a>
         </nav>
-        <div style={{ fontSize: '12px', color: '#aaaacc' }}>a place for friends</div>
+        <div style={{ fontSize: '12px', color: '#666666' }}>a place for friends</div>
       </header>
 
       {/* ── Marquee Banner ── */}
@@ -911,7 +1126,7 @@ export default function SnackPage() {
       {/* ── URL Bar (desktop) ── */}
       <div className="ms-url-bar" aria-hidden="true">
         <Lock size={11} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }} />{' '}
-        <span>https://myspace.com/snack</span>
+        <span>https://zachlamb.io/myspace</span>
       </div>
 
       {/* ── Main Layout ── */}
@@ -922,16 +1137,17 @@ export default function SnackPage() {
             {/* Profile Header Card */}
             <div className="ms-profile-header">
               <div className="ms-profile-photo">
-                <span
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/snack/profile.jpg"
+                  alt="Zach"
                   style={{
-                    fontSize: '32px',
-                    fontWeight: 'bold',
-                    color: 'var(--ms-accent)',
-                    letterSpacing: '2px',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center top',
                   }}
-                >
-                  ZL
-                </span>
+                />
                 <span
                   className="sparkle"
                   style={{ top: '8px', right: '12px', animationDelay: '0s' }}
@@ -955,7 +1171,7 @@ export default function SnackPage() {
               </div>
 
               <div className="ms-mood">
-                <strong>Mood:</strong> Available for cuddles &amp; compliments
+                <strong>Mood:</strong> 🏳️‍🌈 Gay
               </div>
 
               <div className="ms-details">
@@ -978,9 +1194,6 @@ export default function SnackPage() {
                   />{' '}
                   Gay
                 </span>
-                <span className="ms-detail-item">
-                  <span className="ms-detail-label">IG</span> @gayhiker
-                </span>
               </div>
 
               {/* Details table */}
@@ -999,12 +1212,12 @@ export default function SnackPage() {
                     <td>Doesn&apos;t matter, I&apos;ll still be cute</td>
                   </tr>
                   <tr>
-                    <td>Smoke</td>
-                    <td>Only when cooking</td>
+                    <td>Bakes</td>
+                    <td>Rosemary Brown Butter Rice Crispy Treats</td>
                   </tr>
                   <tr>
                     <td>Drink</td>
-                    <td>Iced oat latte, always</td>
+                    <td>Right now, cinnamon latte from Convivio</td>
                   </tr>
                 </tbody>
               </table>
@@ -1014,8 +1227,22 @@ export default function SnackPage() {
             <div className="ms-contacting">
               <div className="ms-contacting-header">Contacting Snack</div>
               <div className="ms-contacting-actions">
-                <button className="ms-action-btn">
-                  <Mail size={10} /> Send Message
+                <button
+                  className={`ms-action-btn ${messageState === 'sending' ? 'is-sending' : ''}`}
+                  onClick={handleSendMessage}
+                  disabled={messageState === 'sending'}
+                  type="button"
+                >
+                  {messageState === 'sending' ? (
+                    <Send size={10} className="ms-send-spinner" />
+                  ) : (
+                    <Mail size={10} />
+                  )}{' '}
+                  {messageState === 'sending'
+                    ? 'Sending...'
+                    : messageState === 'sent'
+                      ? 'Send Again'
+                      : 'Send Message'}
                 </button>
                 <button className="ms-action-btn" onClick={() => setShowApplication(true)}>
                   <UserPlus size={10} /> Add to Friends
@@ -1033,14 +1260,26 @@ export default function SnackPage() {
                   <Ban size={10} /> Block User (lol jk)
                 </button>
               </div>
+              <div className="ms-send-message-feedback" aria-live="polite">
+                {messageState === 'sending' ? (
+                  <div className="ms-send-message-row">
+                    <span>Transmitting your message to Zach...</span>
+                  </div>
+                ) : messageState === 'sent' ? (
+                  <div className="ms-send-message-row is-sent">
+                    <span className="ms-send-label">Delivered:</span>
+                    <span>{sentMessage}</span>
+                  </div>
+                ) : (
+                  <div className="ms-send-message-row">
+                    <span>Click Send Message to deliver a random note.</span>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* ── Spotify Player ── */}
             <div className="ms-spotify" id="music">
-              <div className="ms-now-playing">
-                <span className="ms-now-playing-dot" />
-                Now Playing
-              </div>
               <SpotifyPlayer />
             </div>
 
@@ -1077,7 +1316,7 @@ export default function SnackPage() {
                 <p>
                   Someone who laughs at my jokes (even the bad ones), steals my hoodies (I&apos;ll
                   steal yours back), and isn&apos;t afraid to be a complete dork in public. Bonus
-                  points if you can keep up on a trail and share your Oreos. Must love dogs —
+                  points if you can keep up on a trail and share your Oreos. Must love pets —
                   non-negotiable.
                 </p>
               </div>
@@ -1282,9 +1521,6 @@ export default function SnackPage() {
         {/* ── Footer ── */}
         <footer className="ms-footer">
           <p>&copy; 2026 Snack&apos;s MySpace — A place for cuties</p>
-          <p style={{ marginTop: '4px' }}>
-            <a href="/">← back to the real website</a>
-          </p>
         </footer>
       </div>
 
