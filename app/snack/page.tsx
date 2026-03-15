@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { getRandomSong } from '@/data/songs';
 
 /* ─── data ──────────────────────────────────────────────── */
 
@@ -80,16 +81,29 @@ const topFriends = [
   { name: 'Your Mom', emoji: '💐' },
 ];
 
+const interests = [
+  { label: 'General', value: 'Hiking, Dogs, Oreos, Being the big spoon, Therapy, Gay stuff' },
+  { label: 'Music', value: 'Celine Dion, Lady Gaga, Whitney Houston, ABBA, whatever you put on' },
+  { label: 'Movies', value: 'Anything where the dog lives, 90s romcoms, horror (I will hold you)' },
+  { label: 'Television', value: 'Drag Race, Great British Bake Off, whatever true crime you pick' },
+  { label: 'Heroes', value: 'My therapist, every dog I have ever met, Dolly Parton' },
+];
+
 /* ─── component ─────────────────────────────────────────── */
 
 export default function SnackPage() {
-  const [currentSong] = useState({ title: 'My Heart Will Go On', artist: 'Celine Dion' });
-  const [playing, setPlaying] = useState(true);
+  const song = useMemo(() => getRandomSong(), []);
   const [showCommentForm, setShowCommentForm] = useState(false);
 
   return (
     <div className="myspace-page">
       <style>{`
+        /* Override main site body background */
+        body:has(.myspace-page) {
+          background-color: #003366 !important;
+          background-image: none !important;
+        }
+
         .myspace-page {
           --ms-bg: #003366;
           --ms-profile-bg: #000000;
@@ -97,14 +111,12 @@ export default function SnackPage() {
           --ms-border: #336699;
           --ms-text: #ffffff;
           --ms-link: #77bbff;
-          --ms-link-hover: #ffcc00;
           --ms-accent: #ff66cc;
-          --ms-header-bg: #003366;
           --ms-online: #00ff00;
 
           min-height: 100dvh;
           min-height: 100vh;
-          background: var(--ms-bg);
+          background-color: var(--ms-bg);
           background-image:
             radial-gradient(ellipse at 20% 50%, rgba(102, 0, 153, 0.15) 0%, transparent 50%),
             radial-gradient(ellipse at 80% 20%, rgba(0, 51, 102, 0.3) 0%, transparent 50%),
@@ -126,7 +138,7 @@ export default function SnackPage() {
           box-sizing: border-box;
         }
 
-        /* ── sparkle keyframes ── */
+        /* ── keyframes ── */
         @keyframes sparkle {
           0%, 100% { opacity: 0; transform: scale(0); }
           50% { opacity: 1; transform: scale(1); }
@@ -155,6 +167,10 @@ export default function SnackPage() {
           66% { color: #0088ff; }
           83% { color: #8800ff; }
           100% { color: #ff0000; }
+        }
+        @keyframes star-twinkle {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 1; }
         }
 
         .sparkle {
@@ -188,14 +204,55 @@ export default function SnackPage() {
         .ms-header-logo span {
           color: var(--ms-accent);
         }
+        .ms-header-nav {
+          display: none;
+          gap: 16px;
+          font-size: 12px;
+        }
+        .ms-header-nav a {
+          color: #aabbdd;
+          text-decoration: none;
+        }
+        .ms-header-nav a:hover {
+          color: #ffffff;
+          text-decoration: underline;
+        }
 
-        /* ── profile card ── */
-        .ms-profile {
-          max-width: 600px;
+        /* ── url bar (desktop) ── */
+        .ms-url-bar {
+          display: none;
+          background: #ffffff;
+          border: 1px solid #999999;
+          border-radius: 3px;
+          padding: 4px 8px;
+          font-family: 'Courier New', monospace;
+          font-size: 11px;
+          color: #333333;
+          margin: 8px 16px 0;
+        }
+        .ms-url-bar span {
+          color: #0066cc;
+        }
+
+        /* ── two-column layout ── */
+        .ms-layout {
+          max-width: 960px;
           margin: 0 auto;
           padding: 12px;
         }
+        .ms-columns {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .ms-col-left {
+          width: 100%;
+        }
+        .ms-col-right {
+          width: 100%;
+        }
 
+        /* ── profile card ── */
         .ms-profile-header {
           background: var(--ms-profile-bg);
           border: 2px solid var(--ms-border);
@@ -278,6 +335,70 @@ export default function SnackPage() {
           color: #888899;
         }
 
+        /* ── contacting box ── */
+        .ms-contacting {
+          background: var(--ms-section-bg);
+          border: 1px solid var(--ms-border);
+          border-radius: 4px;
+          margin: 12px 0;
+          overflow: hidden;
+        }
+        .ms-contacting-header {
+          background: linear-gradient(90deg, #003366 0%, #004488 100%);
+          padding: 6px 10px;
+          font-weight: bold;
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          border-bottom: 1px solid var(--ms-border);
+          color: var(--ms-accent);
+        }
+        .ms-contacting-actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 6px;
+          padding: 10px;
+        }
+        .ms-action-btn {
+          background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+          border: 1px solid var(--ms-border);
+          border-radius: 3px;
+          color: var(--ms-link);
+          font-size: 10px;
+          font-family: inherit;
+          padding: 6px 4px;
+          cursor: pointer;
+          text-align: center;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .ms-action-btn:hover {
+          background: rgba(255,255,255,0.1);
+          border-color: var(--ms-accent);
+          color: var(--ms-accent);
+        }
+
+        /* ── details table ── */
+        .ms-details-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 11px;
+          margin-top: 8px;
+        }
+        .ms-details-table td {
+          padding: 4px 8px;
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+          vertical-align: top;
+        }
+        .ms-details-table td:first-child {
+          color: var(--ms-link);
+          font-weight: bold;
+          white-space: nowrap;
+          width: 80px;
+        }
+        .ms-details-table td:last-child {
+          color: #aaaacc;
+        }
+
         /* ── sections ── */
         .ms-section {
           background: var(--ms-section-bg);
@@ -305,66 +426,66 @@ export default function SnackPage() {
           color: #ccccdd;
         }
 
-        /* ── music player ── */
-        .ms-player {
+        /* ── spotify embed ── */
+        .ms-spotify {
+          margin: 12px 0;
+          border-radius: 8px;
+          overflow: hidden;
+          border: 1px solid var(--ms-border);
+        }
+        .ms-spotify iframe {
+          display: block;
+          width: 100%;
+          border: none;
+        }
+        .ms-now-playing {
           background: linear-gradient(180deg, #111122 0%, #0a0a1a 100%);
           border: 1px solid #333366;
-          border-radius: 6px;
-          padding: 10px 14px;
-          margin: 12px 0;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-        .ms-player-btn {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          background: var(--ms-accent);
-          border: none;
-          color: white;
-          font-size: 16px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          transition: transform 0.15s;
-        }
-        .ms-player-btn:active {
-          transform: scale(0.92);
-        }
-        .ms-player-info {
-          flex: 1;
-          min-width: 0;
-          overflow: hidden;
-        }
-        .ms-player-title {
+          border-bottom: none;
+          border-radius: 6px 6px 0 0;
+          padding: 6px 12px;
+          font-size: 10px;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          color: var(--ms-accent);
           font-weight: bold;
-          font-size: 12px;
-          color: #ffffff;
-          white-space: nowrap;
-        }
-        .ms-player-title span {
-          display: inline-block;
-          animation: marquee 10s linear infinite;
-        }
-        .ms-player-artist {
-          font-size: 11px;
-          color: #999999;
-        }
-        .ms-player-bars {
           display: flex;
-          align-items: flex-end;
-          gap: 2px;
-          height: 20px;
-          flex-shrink: 0;
+          align-items: center;
+          gap: 6px;
         }
-        .ms-player-bar {
-          width: 3px;
+        .ms-now-playing-dot {
+          width: 6px;
+          height: 6px;
           background: var(--ms-accent);
-          border-radius: 1px;
-          transition: height 0.3s ease;
+          border-radius: 50%;
+          animation: blink-online 1s ease-in-out infinite;
+        }
+
+        /* ── interests table ── */
+        .ms-interests-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 12px;
+        }
+        .ms-interests-table tr {
+          border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .ms-interests-table tr:last-child {
+          border-bottom: none;
+        }
+        .ms-interests-table td {
+          padding: 8px 10px;
+          vertical-align: top;
+        }
+        .ms-interests-table td:first-child {
+          color: var(--ms-link);
+          font-weight: bold;
+          white-space: nowrap;
+          width: 90px;
+          background: rgba(255,255,255,0.02);
+        }
+        .ms-interests-table td:last-child {
+          color: #ccccdd;
         }
 
         /* ── experience ── */
@@ -437,9 +558,12 @@ export default function SnackPage() {
           padding: 8px 4px;
           transition: transform 0.2s, border-color 0.2s;
         }
+        .ms-friend:hover {
+          border-color: var(--ms-accent);
+          transform: scale(1.05);
+        }
         .ms-friend:active {
           transform: scale(0.95);
-          border-color: var(--ms-accent);
         }
         .ms-friend-avatar {
           font-size: 28px;
@@ -528,6 +652,9 @@ export default function SnackPage() {
           transition: transform 0.15s;
           font-family: inherit;
         }
+        .ms-cta:hover {
+          filter: brightness(1.1);
+        }
         .ms-cta:active {
           transform: scale(0.97);
         }
@@ -576,6 +703,9 @@ export default function SnackPage() {
           color: var(--ms-link);
           text-decoration: none;
         }
+        .ms-footer a:hover {
+          text-decoration: underline;
+        }
 
         /* ── visitor counter ── */
         .ms-visitor-counter {
@@ -592,25 +722,106 @@ export default function SnackPage() {
           margin-top: 8px;
         }
 
+        /* ── blinking stars (bg decoration) ── */
+        .ms-stars {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 0;
+          overflow: hidden;
+        }
+        .ms-star {
+          position: absolute;
+          width: 2px;
+          height: 2px;
+          background: #ffffff;
+          border-radius: 50%;
+          animation: star-twinkle 3s ease-in-out infinite;
+        }
+
+        /* ── desktop layout (768px+) ── */
+        @media (min-width: 768px) {
+          .ms-header-nav {
+            display: flex;
+          }
+          .ms-url-bar {
+            display: block;
+          }
+          .ms-columns {
+            flex-direction: row;
+            align-items: flex-start;
+          }
+          .ms-col-left {
+            width: 340px;
+            flex-shrink: 0;
+          }
+          .ms-col-right {
+            flex: 1;
+            min-width: 0;
+          }
+          .ms-profile-photo {
+            width: 180px;
+            height: 180px;
+            font-size: 72px;
+          }
+          .ms-top8-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+          }
+          .ms-friend-avatar {
+            font-size: 36px;
+          }
+          .ms-friend-name {
+            font-size: 11px;
+          }
+        }
+
         /* ── reduced motion ── */
         @media (prefers-reduced-motion: reduce) {
           .sparkle,
           .ms-online-dot,
-          .ms-player-title span,
+          .ms-now-playing-dot,
           .ms-heart,
           .ms-friend-avatar,
           .ms-marquee span,
-          .ms-profile-name {
+          .ms-profile-name,
+          .ms-star {
             animation: none !important;
           }
         }
       `}</style>
+
+      {/* ── Background stars ── */}
+      <div className="ms-stars" aria-hidden="true">
+        {Array.from({ length: 30 }).map((_, i) => (
+          <span
+            key={i}
+            className="ms-star"
+            style={{
+              top: `${(i * 37) % 100}%`,
+              left: `${(i * 53) % 100}%`,
+              animationDelay: `${(i * 0.4) % 3}s`,
+              animationDuration: `${2 + (i % 3)}s`,
+            }}
+          />
+        ))}
+      </div>
 
       {/* ── Header ── */}
       <header className="ms-header">
         <div className="ms-header-logo">
           My<span>Space</span>
         </div>
+        <nav className="ms-header-nav">
+          <a href="#about">Home</a>
+          <a href="#experience">Browse</a>
+          <a href="#comments">Mail</a>
+          <a href="#top8">Friends</a>
+          <a href="#skills">Forum</a>
+        </nav>
         <div style={{ fontSize: '12px', color: '#aaaacc' }}>
           <span role="img" aria-label="sparkle">
             ✨
@@ -627,266 +838,327 @@ export default function SnackPage() {
         </span>
       </div>
 
-      {/* ── Profile ── */}
-      <div className="ms-profile">
-        {/* Profile Header Card */}
-        <div className="ms-profile-header">
-          <div className="ms-profile-photo">
-            <span role="img" aria-label="snack">
-              🥾
-            </span>
-            {/* sparkles */}
-            <span className="sparkle" style={{ top: '8px', right: '12px', animationDelay: '0s' }} />
-            <span
-              className="sparkle"
-              style={{ top: '20px', left: '10px', animationDelay: '0.5s' }}
-            />
-            <span
-              className="sparkle"
-              style={{ bottom: '15px', right: '20px', animationDelay: '1s' }}
-            />
-          </div>
+      {/* ── URL Bar (desktop) ── */}
+      <div className="ms-url-bar" aria-hidden="true">
+        🔒 <span>https://myspace.com/snack</span>
+      </div>
 
-          <h1 className="ms-profile-name">Snack (Zach)</h1>
-          <p className="ms-profile-tagline">&quot;Sweetie Pie &amp; Cutie Pie&quot;</p>
-
-          <div className="ms-online-badge">
-            <span className="ms-online-dot" />
-            Online Now!
-          </div>
-
-          <div className="ms-mood">
-            <strong>Mood:</strong> Available for cuddles &amp; compliments 💜
-          </div>
-
-          <div className="ms-details">
-            <span className="ms-detail-item">
-              <span className="ms-detail-label">📍</span> Denver, CO
-            </span>
-            <span className="ms-detail-item">
-              <span className="ms-detail-label">🎂</span> 32
-            </span>
-            <span className="ms-detail-item">
-              <span className="ms-detail-label">🏳️‍🌈</span> Gay
-            </span>
-            <span className="ms-detail-item">
-              <span className="ms-detail-label">📷</span> @gayhiker
-            </span>
-          </div>
-        </div>
-
-        {/* ── Music Player ── */}
-        <div className="ms-player" role="region" aria-label="Music player">
-          <button
-            className="ms-player-btn"
-            onClick={() => setPlaying(!playing)}
-            aria-label={playing ? 'Pause' : 'Play'}
-          >
-            {playing ? '⏸' : '▶'}
-          </button>
-          <div className="ms-player-info">
-            <div className="ms-player-title">
-              <span>{currentSong.title}</span>
-            </div>
-            <div className="ms-player-artist">{currentSong.artist}</div>
-          </div>
-          <div className="ms-player-bars" aria-hidden="true">
-            {[12, 18, 8, 16, 10].map((h, i) => (
-              <span
-                key={i}
-                className="ms-player-bar"
-                style={{
-                  height: playing ? `${h}px` : '3px',
-                  animationDelay: `${i * 0.1}s`,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* ── Objective / About Me ── */}
-        <div className="ms-section">
-          <div className="ms-section-header">
-            <span>💌</span> About Me
-          </div>
-          <div className="ms-section-body">
-            <p>
-              32 year-old gay man seeking a full-time position. Open to relocation into your heart
-              and hole. 💜
-            </p>
-          </div>
-        </div>
-
-        {/* ── Who I'd Like to Meet ── */}
-        <div className="ms-section">
-          <div className="ms-section-header">
-            <span>👀</span> Who I&apos;d Like to Meet
-          </div>
-          <div className="ms-section-body">
-            <p>
-              Someone who laughs at my jokes (even the bad ones), steals my hoodies (I&apos;ll steal
-              yours back), and isn&apos;t afraid to be a complete dork in public. Bonus points if
-              you can keep up on a trail and share your Oreos. Must love dogs — non-negotiable.
-            </p>
-          </div>
-        </div>
-
-        {/* ── Experience ── */}
-        <div className="ms-section">
-          <div className="ms-section-header">
-            <span>💼</span> Experience
-          </div>
-          <div className="ms-section-body">
-            {experience.map((exp) => (
-              <div key={exp.title} className="ms-exp-item">
-                <div className="ms-exp-title">{exp.title}</div>
-                <div className="ms-exp-place">{exp.place}</div>
-                <div className="ms-exp-desc">{exp.desc}</div>
+      {/* ── Main Layout ── */}
+      <div className="ms-layout" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="ms-columns">
+          {/* ════ LEFT COLUMN ════ */}
+          <div className="ms-col-left">
+            {/* Profile Header Card */}
+            <div className="ms-profile-header">
+              <div className="ms-profile-photo">
+                <span role="img" aria-label="snack">
+                  🥾
+                </span>
+                <span
+                  className="sparkle"
+                  style={{ top: '8px', right: '12px', animationDelay: '0s' }}
+                />
+                <span
+                  className="sparkle"
+                  style={{ top: '20px', left: '10px', animationDelay: '0.5s' }}
+                />
+                <span
+                  className="sparkle"
+                  style={{ bottom: '15px', right: '20px', animationDelay: '1s' }}
+                />
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* ── Skills ── */}
-        <div className="ms-section">
-          <div className="ms-section-header">
-            <span>💜</span> Skills
-          </div>
-          <div className="ms-section-body">
-            <div
-              style={{
-                fontSize: '11px',
-                color: '#888899',
-                marginBottom: '10px',
-                fontStyle: 'italic',
-              }}
-            >
-              Each 💜 = ~5 years of experience (32 years and counting)
-            </div>
-            {skills.map((skill) => (
-              <div key={skill.name} className="ms-skill-row">
-                <span className="ms-skill-name">{skill.name}</span>
-                <span className="ms-skill-hearts">
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <span
-                      key={i}
-                      className={`ms-heart ${i >= skill.hearts ? 'ms-heart-empty' : ''}`}
-                      style={{ animationDelay: `${i * 0.15}s` }}
-                    >
-                      💜
-                    </span>
-                  ))}
+              <h1 className="ms-profile-name">Snack (Zach)</h1>
+              <p className="ms-profile-tagline">&quot;Sweetie Pie &amp; Cutie Pie&quot;</p>
+
+              <div className="ms-online-badge">
+                <span className="ms-online-dot" />
+                Online Now!
+              </div>
+
+              <div className="ms-mood">
+                <strong>Mood:</strong> Available for cuddles &amp; compliments 💜
+              </div>
+
+              <div className="ms-details">
+                <span className="ms-detail-item">
+                  <span className="ms-detail-label">📍</span> Denver, CO
+                </span>
+                <span className="ms-detail-item">
+                  <span className="ms-detail-label">🎂</span> 32
+                </span>
+                <span className="ms-detail-item">
+                  <span className="ms-detail-label">🏳️‍🌈</span> Gay
+                </span>
+                <span className="ms-detail-item">
+                  <span className="ms-detail-label">📷</span> @gayhiker
                 </span>
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* ── Top 8 ── */}
-        <div className="ms-section">
-          <div className="ms-section-header">
-            <span>👯</span> Snack&apos;s Top 8
-          </div>
-          <div className="ms-section-body">
-            <div className="ms-top8-grid">
-              {topFriends.map((friend) => (
-                <div key={friend.name} className="ms-friend">
-                  <span className="ms-friend-avatar">{friend.emoji}</span>
-                  <span className="ms-friend-name">{friend.name}</span>
-                </div>
-              ))}
+              {/* Details table */}
+              <table className="ms-details-table">
+                <tbody>
+                  <tr>
+                    <td>Status</td>
+                    <td>Single (accepting applications)</td>
+                  </tr>
+                  <tr>
+                    <td>Here for</td>
+                    <td>Dating, Cuddles, Oreo Reviews</td>
+                  </tr>
+                  <tr>
+                    <td>Zodiac</td>
+                    <td>Doesn&apos;t matter, I&apos;ll still be cute</td>
+                  </tr>
+                  <tr>
+                    <td>Smoke</td>
+                    <td>Only when cooking 🍳</td>
+                  </tr>
+                  <tr>
+                    <td>Drink</td>
+                    <td>Iced oat latte, always</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
-        </div>
 
-        {/* ── Education & Certs ── */}
-        <div className="ms-section">
-          <div className="ms-section-header">
-            <span>🎓</span> Education &amp; Certifications
-          </div>
-          <div className="ms-section-body">
-            <div className="ms-edu-item">
-              <strong>B.A. in Being Adorable</strong> — University of Life, graduated with honors.
-              <br />
-              Minor in Sending Perfect Goodnight Texts and Being Vers
-            </div>
-            <div style={{ height: '10px' }} />
-            <div className="ms-cert-item">
-              Certified Good Hugger (renewed annually). Licensed to make you laugh at inappropriate
-              times.
-            </div>
-            <div className="ms-cert-item">
-              Certified Oral Specialist: Professional Society of Intimate Arts (passed with
-              distinction). Advanced Rimming Techniques: scored &quot;outstanding&quot; on practical
-              exam; 100% client vocalization/moaning rate.
-            </div>
-          </div>
-        </div>
-
-        {/* ── Comments ── */}
-        <div className="ms-section">
-          <div className="ms-section-header">
-            <span>💬</span> Comments ({comments.length})
-          </div>
-          <div className="ms-section-body">
-            {comments.map((c) => (
-              <div key={c.name} className="ms-comment">
-                <div className="ms-comment-avatar">{c.avatar}</div>
-                <div className="ms-comment-body">
-                  <span className="ms-comment-name">{c.name}</span>
-                  <span className="ms-comment-time">{c.time}</span>
-                  <div className="ms-comment-text">{c.text}</div>
-                </div>
+            {/* ── Contacting Snack ── */}
+            <div className="ms-contacting">
+              <div className="ms-contacting-header">Contacting Snack</div>
+              <div className="ms-contacting-actions">
+                <button className="ms-action-btn">💌 Send Message</button>
+                <button className="ms-action-btn">➕ Add to Friends</button>
+                <button className="ms-action-btn">💕 Add to Favorites</button>
+                <button className="ms-action-btn">🔗 Forward to Friend</button>
+                <button className="ms-action-btn">🎁 Send Oreos</button>
+                <button className="ms-action-btn">🚫 Block User (lol jk)</button>
               </div>
-            ))}
-            {!showCommentForm ? (
-              <button
-                className="ms-cta"
-                onClick={() => setShowCommentForm(true)}
-                style={{ marginTop: '10px' }}
-              >
-                💌 Leave a Comment
-              </button>
-            ) : (
-              <div style={{ marginTop: '10px' }}>
-                <textarea
-                  placeholder="say something nice (or spicy)..."
-                  rows={3}
+            </div>
+
+            {/* ── Spotify Player ── */}
+            <div className="ms-spotify" id="music">
+              <div className="ms-now-playing">
+                <span className="ms-now-playing-dot" />
+                Now Playing
+              </div>
+              <iframe
+                src={`https://open.spotify.com/embed/track/${song.spotifyId}?utm_source=generator&theme=0`}
+                height="152"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                title={`Now playing: ${song.title} by ${song.artist}`}
+              />
+            </div>
+
+            {/* ── Visitor Counter ── */}
+            <div style={{ textAlign: 'center', margin: '16px 0' }}>
+              <div className="ms-visitor-counter">
+                <span>👁️</span>
+                <span>Profile Views: 004,208</span>
+              </div>
+            </div>
+          </div>
+
+          {/* ════ RIGHT COLUMN ════ */}
+          <div className="ms-col-right">
+            {/* ── About Me ── */}
+            <div className="ms-section" id="about">
+              <div className="ms-section-header">
+                <span>💌</span> About Me
+              </div>
+              <div className="ms-section-body">
+                <p>
+                  32 year-old gay man seeking a full-time position. Open to relocation into your
+                  heart and hole. 💜
+                </p>
+              </div>
+            </div>
+
+            {/* ── Who I'd Like to Meet ── */}
+            <div className="ms-section">
+              <div className="ms-section-header">
+                <span>👀</span> Who I&apos;d Like to Meet
+              </div>
+              <div className="ms-section-body">
+                <p>
+                  Someone who laughs at my jokes (even the bad ones), steals my hoodies (I&apos;ll
+                  steal yours back), and isn&apos;t afraid to be a complete dork in public. Bonus
+                  points if you can keep up on a trail and share your Oreos. Must love dogs —
+                  non-negotiable.
+                </p>
+              </div>
+            </div>
+
+            {/* ── Interests ── */}
+            <div className="ms-section">
+              <div className="ms-section-header">
+                <span>🎯</span> Interests
+              </div>
+              <div className="ms-section-body" style={{ padding: 0 }}>
+                <table className="ms-interests-table">
+                  <tbody>
+                    {interests.map((item) => (
+                      <tr key={item.label}>
+                        <td>{item.label}</td>
+                        <td>{item.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* ── Experience ── */}
+            <div className="ms-section" id="experience">
+              <div className="ms-section-header">
+                <span>💼</span> Experience
+              </div>
+              <div className="ms-section-body">
+                {experience.map((exp) => (
+                  <div key={exp.title} className="ms-exp-item">
+                    <div className="ms-exp-title">{exp.title}</div>
+                    <div className="ms-exp-place">{exp.place}</div>
+                    <div className="ms-exp-desc">{exp.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Skills ── */}
+            <div className="ms-section" id="skills">
+              <div className="ms-section-header">
+                <span>💜</span> Skills
+              </div>
+              <div className="ms-section-body">
+                <div
                   style={{
-                    width: '100%',
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid var(--ms-border)',
-                    borderRadius: '4px',
-                    color: '#ffffff',
-                    padding: '10px',
-                    fontSize: '13px',
-                    fontFamily: 'inherit',
-                    resize: 'vertical',
+                    fontSize: '11px',
+                    color: '#888899',
+                    marginBottom: '10px',
+                    fontStyle: 'italic',
                   }}
-                />
-                <button className="ms-cta" onClick={() => setShowCommentForm(false)}>
-                  📨 Submit
-                </button>
+                >
+                  Each 💜 = ~5 years of experience (32 years and counting)
+                </div>
+                {skills.map((skill) => (
+                  <div key={skill.name} className="ms-skill-row">
+                    <span className="ms-skill-name">{skill.name}</span>
+                    <span className="ms-skill-hearts">
+                      {Array.from({ length: 6 }).map((_, i) => (
+                        <span
+                          key={i}
+                          className={`ms-heart ${i >= skill.hearts ? 'ms-heart-empty' : ''}`}
+                          style={{ animationDelay: `${i * 0.15}s` }}
+                        >
+                          💜
+                        </span>
+                      ))}
+                    </span>
+                  </div>
+                ))}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* ── References ── */}
-        <div className="ms-section">
-          <div className="ms-section-header">
-            <span>📋</span> References
-          </div>
-          <div className="ms-section-body" style={{ textAlign: 'center', fontStyle: 'italic' }}>
-            Available upon request. 😏
-          </div>
-        </div>
+            {/* ── Top 8 ── */}
+            <div className="ms-section" id="top8">
+              <div className="ms-section-header">
+                <span>👯</span> Snack&apos;s Top 8
+              </div>
+              <div className="ms-section-body">
+                <div className="ms-top8-grid">
+                  {topFriends.map((friend) => (
+                    <div key={friend.name} className="ms-friend">
+                      <span className="ms-friend-avatar">{friend.emoji}</span>
+                      <span className="ms-friend-name">{friend.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-        {/* ── Visitor Counter ── */}
-        <div style={{ textAlign: 'center', margin: '16px 0' }}>
-          <div className="ms-visitor-counter">
-            <span>👁️</span>
-            <span>Profile Views: 004,208</span>
+            {/* ── Education & Certs ── */}
+            <div className="ms-section">
+              <div className="ms-section-header">
+                <span>🎓</span> Education &amp; Certifications
+              </div>
+              <div className="ms-section-body">
+                <div className="ms-edu-item">
+                  <strong>B.A. in Being Adorable</strong> — University of Life, graduated with
+                  honors.
+                  <br />
+                  Minor in Sending Perfect Goodnight Texts and Being Vers
+                </div>
+                <div style={{ height: '10px' }} />
+                <div className="ms-cert-item">
+                  Certified Good Hugger (renewed annually). Licensed to make you laugh at
+                  inappropriate times.
+                </div>
+                <div className="ms-cert-item">
+                  Certified Oral Specialist: Professional Society of Intimate Arts (passed with
+                  distinction). Advanced Rimming Techniques: scored &quot;outstanding&quot; on
+                  practical exam; 100% client vocalization/moaning rate.
+                </div>
+              </div>
+            </div>
+
+            {/* ── Comments ── */}
+            <div className="ms-section" id="comments">
+              <div className="ms-section-header">
+                <span>💬</span> Comments ({comments.length})
+              </div>
+              <div className="ms-section-body">
+                {comments.map((c) => (
+                  <div key={c.name} className="ms-comment">
+                    <div className="ms-comment-avatar">{c.avatar}</div>
+                    <div className="ms-comment-body">
+                      <span className="ms-comment-name">{c.name}</span>
+                      <span className="ms-comment-time">{c.time}</span>
+                      <div className="ms-comment-text">{c.text}</div>
+                    </div>
+                  </div>
+                ))}
+                {!showCommentForm ? (
+                  <button
+                    className="ms-cta"
+                    onClick={() => setShowCommentForm(true)}
+                    style={{ marginTop: '10px' }}
+                  >
+                    💌 Leave a Comment
+                  </button>
+                ) : (
+                  <div style={{ marginTop: '10px' }}>
+                    <textarea
+                      placeholder="say something nice (or spicy)..."
+                      rows={3}
+                      style={{
+                        width: '100%',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid var(--ms-border)',
+                        borderRadius: '4px',
+                        color: '#ffffff',
+                        padding: '10px',
+                        fontSize: '13px',
+                        fontFamily: 'inherit',
+                        resize: 'vertical',
+                      }}
+                    />
+                    <button className="ms-cta" onClick={() => setShowCommentForm(false)}>
+                      📨 Submit
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* ── References ── */}
+            <div className="ms-section">
+              <div className="ms-section-header">
+                <span>📋</span> References
+              </div>
+              <div className="ms-section-body" style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                Available upon request. 😏
+              </div>
+            </div>
           </div>
         </div>
 
