@@ -7,69 +7,34 @@ export interface Song {
 
 const songs: Song[] = [
   {
-    title: 'Misery Business',
+    title: 'Still Into You',
     artist: 'Paramore',
-    spotifyId: '6SpLc7EXZIPpy0sVko0aoU',
+    spotifyId: '1yjY7rpaAQvKwpdUliHx0d',
   },
   {
-    title: "It's All Coming Back to Me Now",
-    artist: 'Celine Dion',
-    spotifyId: '3wDFRlraSP43XLnuBLeVAK',
+    title: 'Gimme More',
+    artist: 'Britney Spears',
+    spotifyId: '6ic8OlLUNEATToEFU3xmaH',
   },
   {
-    title: 'I Wanna Dance with Somebody',
-    artist: 'Whitney Houston',
-    spotifyId: '2tUBqZG2AbRi7Q0BIrVrEj',
+    title: 'Girlfriend',
+    artist: 'Avril Lavigne',
+    spotifyId: '45hOioMDJktr86iKDHC8gr',
   },
   {
-    title: 'Dancing Queen',
-    artist: 'ABBA',
-    spotifyId: '0GjEhVFGZW8afUYGChu3Rr',
-  },
-  {
-    title: 'Born This Way',
-    artist: 'Lady Gaga',
-    spotifyId: '2KfOVNGlmRga1b2WLAO09H',
-  },
-  {
-    title: 'Edge of Glory',
-    artist: 'Lady Gaga',
-    spotifyId: '5QO79kh1Ij79ZpKmrvEaA1',
-  },
-  {
-    title: 'Vogue',
-    artist: 'Madonna',
-    spotifyId: '3PA0kFfRbGBOscaZLIlsaN',
-  },
-  {
-    title: "Don't Stop Me Now",
-    artist: 'Queen',
-    spotifyId: '7hQJA50XrCWABAu5v6QZ4i',
-  },
-  {
-    title: 'Take Me to Church',
-    artist: 'Hozier',
-    spotifyId: '1CS7Sd1u5tWkstBhpssyjP',
+    title: 'Only One',
+    artist: 'Yellowcard',
+    spotifyId: '0gZp88SA5OcujHLDGkxtI3',
   },
   {
     title: 'Run Away with Me',
     artist: 'Carly Rae Jepsen',
-    spotifyId: '4Ffb4IiDjokLiJTjSCKOUe',
+    spotifyId: '0FS7B5o3QyvOD8eWjnbLoO',
   },
   {
-    title: 'Call Me Maybe',
-    artist: 'Carly Rae Jepsen',
-    spotifyId: '20I6sIOMTCkB6w7qEcGSd6',
-  },
-  {
-    title: 'I Will Always Love You',
-    artist: 'Whitney Houston',
-    spotifyId: '4eHbdreAnSOrDDsFfc4Fpm',
-  },
-  {
-    title: 'Somebody to Love',
-    artist: 'Queen',
-    spotifyId: '4rDbp1vnvEhiPnHBwnOl1K',
+    title: 'All the Small Things',
+    artist: 'Blink-182',
+    spotifyId: '2m1hi0nfMR9vdGC8UcrnwU',
   },
 ];
 
