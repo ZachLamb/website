@@ -69,7 +69,7 @@ describe('POST /api/snack/apply', () => {
   });
 
   it('requires travelStyle in canonical schema', async () => {
-    const body = validBody();
+    const body: Record<string, unknown> = { ...validBody() };
     delete body.travelStyle;
 
     const res = await POST(makeRequest(body));
@@ -80,9 +80,9 @@ describe('POST /api/snack/apply', () => {
   });
 
   it('accepts legacy dogOpinion and stores canonical petOpinion', async () => {
-    const body = validBody();
+    const body: Record<string, unknown> = { ...validBody() };
     delete body.petOpinion;
-    (body as Record<string, unknown>).dogOpinion = 'Dog person';
+    body.dogOpinion = 'Dog person';
 
     const res = await POST(makeRequest(body));
 
