@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { X, Send } from 'lucide-react';
 
 const radioQuestions = [
@@ -74,16 +74,58 @@ interface Props {
 export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitError }: Props) {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const dialogTitleId = useId();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    returnFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
     document.body.style.overflow = 'hidden';
+
+    closeButtonRef.current?.focus();
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (e.key !== 'Tab' || !dialogRef.current) {
+        return;
+      }
+
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      );
+
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     window.addEventListener('keydown', onKey);
     return () => {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', onKey);
+      returnFocusRef.current?.focus();
     };
   }, [onClose]);
 
@@ -101,10 +143,22 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      const json = await res.json();
+      let json: unknown = null;
+      try {
+        json = await res.json();
+      } catch {
+        json = null;
+      }
+
       if (!res.ok) {
         setStatus('error');
-        const message = json.error ?? 'Something went wrong';
+        const message =
+          typeof json === 'object' &&
+          json !== null &&
+          'error' in json &&
+          typeof json.error === 'string'
+            ? json.error
+            : 'Something went wrong. Please try again.';
         setErrorMsg(message);
         onSubmitError?.(message);
         return;
@@ -137,6 +191,10 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
       }}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={dialogTitleId}
         style={{
           background: '#111111',
           border: '1px solid #2a2a2a',
@@ -160,17 +218,20 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
             borderRadius: '6px 6px 0 0',
           }}
         >
-          <span
+          <h2
+            id={dialogTitleId}
             style={{
               fontWeight: 'bold',
               fontSize: '14px',
               textTransform: 'uppercase',
               letterSpacing: '1px',
+              margin: 0,
             }}
           >
             Friend Request Application
-          </span>
+          </h2>
           <button
+            ref={closeButtonRef}
             onClick={onClose}
             style={{
               background: 'none',
@@ -316,7 +377,10 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
               ))}
 
               {status === 'error' && (
-                <div style={{ color: '#ff6666', fontSize: '12px', marginBottom: '10px' }}>
+                <div
+                  role="alert"
+                  style={{ color: '#ff6666', fontSize: '12px', marginBottom: '10px' }}
+                >
                   {errorMsg}
                 </div>
               )}

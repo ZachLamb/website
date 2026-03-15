@@ -162,14 +162,12 @@ export default function SnackAdminPage() {
 
         {submissions.map((s) => (
           <div key={s.id} style={cardStyle}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                cursor: 'pointer',
-              }}
+            <button
+              type="button"
+              style={submissionToggleStyle}
               onClick={() => toggleExpanded(s.id)}
+              aria-expanded={expanded.has(s.id)}
+              aria-controls={`submission-details-${s.id}`}
             >
               <div>
                 <span style={{ fontWeight: 'bold', color: '#cc77ff', fontSize: '14px' }}>
@@ -194,10 +192,11 @@ export default function SnackAdminPage() {
                   <ChevronDown size={14} style={{ color: '#999999' }} />
                 )}
               </div>
-            </div>
+            </button>
 
             {expanded.has(s.id) && (
               <div
+                id={`submission-details-${s.id}`}
                 style={{ marginTop: '12px', borderTop: '1px solid #2a2a2a', paddingTop: '12px' }}
               >
                 <DetailRow label="Pitch" value={s.pitch} />
@@ -302,4 +301,19 @@ const cardStyle: React.CSSProperties = {
   borderRadius: '6px',
   padding: '14px 16px',
   marginBottom: '10px',
+};
+
+const submissionToggleStyle: React.CSSProperties = {
+  width: '100%',
+  border: 'none',
+  background: 'transparent',
+  color: 'inherit',
+  padding: 0,
+  margin: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  cursor: 'pointer',
+  textAlign: 'left',
+  fontFamily: 'inherit',
 };

@@ -149,7 +149,7 @@ const interests = [
 /* ─── client-only Spotify player (avoids hydration mismatch from Math.random) ── */
 
 function SpotifyPlayerInner() {
-  const song = getRandomSong();
+  const [song] = useState(() => getRandomSong());
   return (
     <div className="ms-myspace-player">
       {/* Player chrome header */}
