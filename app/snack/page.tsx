@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { getRandomSong } from '@/data/songs';
 
 /* ─── data ──────────────────────────────────────────────── */
@@ -72,13 +73,13 @@ const comments = [
 
 const topFriends = [
   { name: 'Tom', emoji: '👤' },
-  { name: 'Celine Dion', emoji: '🎤' },
-  { name: 'My Therapist', emoji: '🧠' },
-  { name: 'Every Dog', emoji: '🐕' },
-  { name: 'Trader Joe', emoji: '🛒' },
-  { name: 'Oreo', emoji: '🍪' },
-  { name: 'The Trail', emoji: '🥾' },
-  { name: 'Your Mom', emoji: '💐' },
+  { name: 'Paris Hilton', emoji: '👱‍♀️' },
+  { name: 'Britney Spears', emoji: '🎤' },
+  { name: 'Lindsay Lohan', emoji: '🎬' },
+  { name: 'Nicole Richie', emoji: '👛' },
+  { name: 'Kim Kardashian', emoji: '📸' },
+  { name: 'Tila Tequila', emoji: '🍸' },
+  { name: 'Jeffree Star', emoji: '⭐' },
 ];
 
 const interests = [
@@ -89,10 +90,29 @@ const interests = [
   { label: 'Heroes', value: 'My therapist, every dog I have ever met, Dolly Parton' },
 ];
 
+/* ─── client-only Spotify player (avoids hydration mismatch from Math.random) ── */
+
+function SpotifyPlayerInner() {
+  const song = getRandomSong();
+  return (
+    <iframe
+      src={`https://open.spotify.com/embed/track/${song.spotifyId}?utm_source=generator&theme=0`}
+      height="152"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+      title={`Now playing: ${song.title} by ${song.artist}`}
+      style={{ width: '100%', borderRadius: '12px', border: 'none' }}
+    />
+  );
+}
+
+const SpotifyPlayer = dynamic(() => Promise.resolve({ default: SpotifyPlayerInner }), {
+  ssr: false,
+});
+
 /* ─── component ─────────────────────────────────────────── */
 
 export default function SnackPage() {
-  const song = useMemo(() => getRandomSong(), []);
   const [showCommentForm, setShowCommentForm] = useState(false);
 
   return (
@@ -941,13 +961,7 @@ export default function SnackPage() {
                 <span className="ms-now-playing-dot" />
                 Now Playing
               </div>
-              <iframe
-                src={`https://open.spotify.com/embed/track/${song.spotifyId}?utm_source=generator&theme=0`}
-                height="152"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                title={`Now playing: ${song.title} by ${song.artist}`}
-              />
+              <SpotifyPlayer />
             </div>
 
             {/* ── Visitor Counter ── */}
