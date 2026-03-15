@@ -75,9 +75,11 @@ body:has(.myspace-page) {
   0%,
   100% {
     transform: scale(1);
+    filter: drop-shadow(0 0 2px rgba(180, 100, 255, 0.4));
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.25);
+    filter: drop-shadow(0 0 6px rgba(180, 100, 255, 0.7));
   }
 }
 @keyframes float {
@@ -521,34 +523,6 @@ body:has(.myspace-page) {
   font-size: 10px;
   color: #777777;
 }
-.ms-player-controls {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-}
-.ms-player-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid #2a2a2a;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #999999;
-  cursor: default;
-  font-size: 0;
-  padding: 0;
-}
-.ms-player-btn-play {
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 102, 204, 0.15);
-  border-color: var(--ms-accent);
-  color: var(--ms-accent);
-}
-
 /* ── interests table ── */
 .ms-interests-table {
   width: 100%;
@@ -631,10 +605,12 @@ body:has(.myspace-page) {
 }
 .ms-heart {
   animation: pulse-heart 2s ease-in-out infinite;
-  color: var(--ms-accent);
+  color: #b464ff;
 }
 .ms-heart-empty {
   opacity: 0.2;
+  animation: none;
+  filter: none;
 }
 
 /* ── top 8 ── */
@@ -649,9 +625,7 @@ body:has(.myspace-page) {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 4px;
   padding: 8px 4px;
-  transition:
-    transform 0.2s,
-    border-color 0.2s;
+  transition: border-color 0.2s;
 }
 /* hover/active transforms handled by Framer Motion */
 .ms-friend-avatar {

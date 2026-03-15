@@ -150,7 +150,7 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
     const data = Object.fromEntries(fd.entries());
 
     try {
-      const res = await fetch('/api/myspace/apply', {
+      const res = await fetch('/api/snack/apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

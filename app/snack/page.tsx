@@ -24,10 +24,6 @@ import {
   Ban,
   Send,
   Music,
-  SkipBack,
-  SkipForward,
-  Play,
-  Volume2,
 } from 'lucide-react';
 import { getRandomSong } from '@/data/songs';
 import ApplicationModal from './ApplicationModal';
@@ -143,8 +139,16 @@ const interests = [
     value: 'Paramore, Blink-182, Carly Rae Jepsen, Avril Lavigne, whatever you put on',
   },
   { label: 'Movies', value: 'Anything where the pet lives, 90s romcoms, horror (I will hold you)' },
-  { label: 'Television', value: 'Drag Race, Great British Bake Off, whatever true crime you pick' },
-  { label: 'Heroes', value: 'My therapist, every pet I have ever met, Dolly Parton' },
+  {
+    label: 'Television',
+    value:
+      "Severance, Great British Bake Off, Yellowjackets, Heated Rivalry (duh), and Bob's Burgers",
+  },
+  {
+    label: 'Heroes',
+    value:
+      'Lesbians with rescue cats, my therapist, dogs named "Frank", whoever invented tater tots, my gym coaches, Caleb Hearon, and those freaks who invent new Taco Bell items',
+  },
   {
     label: 'Travel',
     value:
@@ -188,29 +192,15 @@ function SpotifyPlayerInner() {
         </div>
       </div>
 
-      {/* Song info + decorative transport */}
+      {/* Song info */}
       <div className="ms-player-info">
         <div className="ms-player-song">
           <span className="ms-player-song-title">{song.title}</span>
           <span className="ms-player-song-artist">{song.artist}</span>
         </div>
-        <div className="ms-player-controls">
-          <span className="ms-player-btn" aria-hidden="true">
-            <SkipBack size={12} />
-          </span>
-          <span className="ms-player-btn ms-player-btn-play" aria-hidden="true">
-            <Play size={14} fill="currentColor" />
-          </span>
-          <span className="ms-player-btn" aria-hidden="true">
-            <SkipForward size={12} />
-          </span>
-          <span className="ms-player-btn" aria-hidden="true">
-            <Volume2 size={12} />
-          </span>
-        </div>
       </div>
 
-      {/* Compact Spotify embed */}
+      {/* Spotify embed */}
       <iframe
         src={`https://open.spotify.com/embed/track/${song.spotifyId}?utm_source=generator&theme=0`}
         height="80"
@@ -680,21 +670,38 @@ export default function SnackPage() {
                 >
                   Each heart = ~5 years of experience (32 years and counting)
                 </div>
-                {skills.map((skill) => (
-                  <div key={skill.name} className="ms-skill-row">
+                {skills.map((skill, skillIdx) => (
+                  <motion.div
+                    key={skill.name}
+                    className="ms-skill-row"
+                    initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      duration: 0.3,
+                      delay: 0.6 + skillIdx * 0.08,
+                      ease: 'easeOut' as const,
+                    }}
+                  >
                     <span className="ms-skill-name">{skill.name}</span>
                     <span className="ms-skill-hearts">
                       {Array.from({ length: 6 }).map((_, i) => (
-                        <span
+                        <motion.span
                           key={i}
                           className={`ms-heart ${i >= skill.hearts ? 'ms-heart-empty' : ''}`}
                           style={{ animationDelay: `${i * 0.15}s` }}
+                          initial={prefersReducedMotion ? false : { opacity: 0, scale: 0 }}
+                          animate={{ opacity: i >= skill.hearts ? 0.2 : 1, scale: 1 }}
+                          transition={{
+                            duration: 0.3,
+                            delay: 0.8 + skillIdx * 0.08 + i * 0.05,
+                            ease: 'backOut' as const,
+                          }}
                         >
                           <Heart size={14} fill="currentColor" />
-                        </span>
+                        </motion.span>
                       ))}
                     </span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
