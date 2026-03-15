@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
 import { socialLinks } from '@/data/social';
 import { siteConfig } from '@/data/site';
+import { demoTrip } from '@/data/trips';
+import type { MarkerIcon } from '@/data/trips';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 
 const stagger = {
@@ -25,35 +27,10 @@ const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>
   linkedin: Linkedin,
 };
 
-const trailPath =
-  'M 60 80 C 120 40 180 60 240 110 S 340 160 400 130 S 500 80 560 120 S 640 200 620 280 S 560 360 480 380 S 380 400 320 440 S 240 500 200 560 S 160 620 220 660';
-
-const secondTrailPath =
-  'M 740 60 C 700 120 720 180 680 240 S 640 280 660 340 S 620 400 580 460 S 520 500 500 560 S 440 600 400 640 S 340 680 300 720';
-
-const thirdTrailPath =
-  'M 120 200 Q 280 120 420 180 T 660 260 T 720 380 Q 680 520 520 580 T 280 620';
-
-type MarkerIcon = 'peak' | 'pine' | 'compass' | 'lake' | 'campfire' | 'elk' | 'columbine' | 'flag';
-
-interface TrailMarker {
-  x: number;
-  y: number;
-  delay: number;
-  icon: MarkerIcon;
-  label?: string;
-}
-
-const trailMarkers: TrailMarker[] = [
-  { x: 60, y: 80, delay: 1.6, icon: 'compass', label: 'Trailhead' },
-  { x: 240, y: 110, delay: 2.0, icon: 'pine', label: 'Bear Lake' },
-  { x: 400, y: 130, delay: 2.3, icon: 'elk' },
-  { x: 560, y: 120, delay: 2.6, icon: 'peak', label: 'Longs Peak' },
-  { x: 620, y: 280, delay: 2.9, icon: 'columbine' },
-  { x: 480, y: 380, delay: 3.2, icon: 'lake', label: 'Dream Lake' },
-  { x: 320, y: 440, delay: 3.5, icon: 'pine' },
-  { x: 200, y: 560, delay: 3.8, icon: 'campfire', label: 'Base Camp' },
-  { x: 220, y: 660, delay: 4.1, icon: 'flag', label: 'Summit' },
+/** Default secondary paths when trip has none (decoration only). */
+const defaultSecondaryPaths = [
+  'M 740 60 C 700 120 720 180 680 240 S 640 280 660 340 S 620 400 580 460 S 520 500 500 560 S 440 600 400 640 S 340 680 300 720',
+  'M 120 200 Q 280 120 420 180 T 660 260 T 720 380 Q 680 520 520 580 T 280 620',
 ];
 
 /** Trail sign: post with horizontal bar and rectangular sign (trailhead style) */
@@ -198,7 +175,7 @@ export function Hero() {
             <path d="M68 0 L72 0 L70 -3 Z" fill="rgba(245,240,232,0.35)" />
           </motion.g>
           <motion.path
-            d={trailPath}
+            d={demoTrip.trailPath}
             stroke="rgba(245,240,232,0.14)"
             strokeWidth="2"
             strokeDasharray="8 6"
@@ -209,7 +186,7 @@ export function Hero() {
             transition={{ duration: 3.5, ease: 'easeInOut', delay: 0.5 }}
           />
 
-          {trailMarkers.map((marker) => {
+          {demoTrip.markers.map((marker) => {
             const Icon = markerIcons[marker.icon];
             return (
               <motion.g
@@ -276,30 +253,25 @@ export function Hero() {
             transition={{ duration: 1, delay: 3.1 }}
           />
 
-          {/* Second trail path (dotted) */}
-          <motion.path
-            d={secondTrailPath}
-            stroke="rgba(245,240,232,0.07)"
-            strokeWidth="1.5"
-            strokeDasharray="4 8"
-            strokeLinecap="round"
-            fill="none"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 4, ease: 'easeInOut', delay: 1.2 }}
-          />
-          {/* Third trail path (dotted, alternate route) */}
-          <motion.path
-            d={thirdTrailPath}
-            stroke="rgba(245,240,232,0.08)"
-            strokeWidth="1.5"
-            strokeDasharray="6 6"
-            strokeLinecap="round"
-            fill="none"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 3.8, ease: 'easeInOut', delay: 1.8 }}
-          />
+          {/* Secondary trail paths (dotted, decoration) */}
+          {(demoTrip.secondaryTrailPaths ?? defaultSecondaryPaths).map((pathD, i) => (
+            <motion.path
+              key={i}
+              d={pathD}
+              stroke="rgba(245,240,232,0.07)"
+              strokeWidth="1.5"
+              strokeDasharray={i === 0 ? '4 8' : '6 6'}
+              strokeLinecap="round"
+              fill="none"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{
+                duration: i === 0 ? 4 : 3.8,
+                ease: 'easeInOut',
+                delay: i === 0 ? 1.2 : 1.8,
+              }}
+            />
+          ))}
           {/* Trail continues down off the map — follow the path */}
           <motion.path
             d="M 220 660 L 220 760"

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { track } from '@vercel/analytics';
 import {
   Mail,
   Eye,
@@ -19,7 +20,6 @@ import {
   Gift,
   Ban,
   Send,
-  X,
   Music,
   SkipBack,
   SkipForward,
@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { getRandomSong } from '@/data/songs';
 import ApplicationModal from './ApplicationModal';
+import { MyspaceProfileImage } from './MyspaceProfileImage';
 
 /* ─── data ──────────────────────────────────────────────── */
 
@@ -213,6 +214,14 @@ export default function SnackPage() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const sendTimerRef = useRef<number | null>(null);
 
+  function trackMyspace(action: string, details: Record<string, string> = {}) {
+    track('myspace_interaction', { slug: 'myspace', action, ...details });
+  }
+
+  useEffect(() => {
+    track('myspace_page_view', { slug: 'myspace', path: '/myspace' });
+  }, []);
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
@@ -237,6 +246,7 @@ export default function SnackPage() {
 
   function handleSendMessage() {
     if (messageState === 'sending') return;
+    trackMyspace('send_message_click', { state: messageState });
 
     if (sendTimerRef.current !== null) {
       window.clearTimeout(sendTimerRef.current);
@@ -255,6 +265,16 @@ export default function SnackPage() {
       },
       prefersReducedMotion ? 220 : 1100,
     );
+  }
+
+  function handleOpenApplication() {
+    trackMyspace('open_application_modal');
+    setShowApplication(true);
+  }
+
+  function handleCloseApplication() {
+    trackMyspace('close_application_modal');
+    setShowApplication(false);
   }
 
   return (
@@ -1106,11 +1126,21 @@ export default function SnackPage() {
           My<span>Space</span>
         </div>
         <nav className="ms-header-nav">
-          <a href="#about">Home</a>
-          <a href="#experience">Browse</a>
-          <a href="#comments">Mail</a>
-          <a href="#top8">Friends</a>
-          <a href="#skills">Forum</a>
+          <a href="#about" onClick={() => trackMyspace('nav_click', { target: 'about' })}>
+            Home
+          </a>
+          <a href="#experience" onClick={() => trackMyspace('nav_click', { target: 'experience' })}>
+            Browse
+          </a>
+          <a href="#comments" onClick={() => trackMyspace('nav_click', { target: 'comments' })}>
+            Mail
+          </a>
+          <a href="#top8" onClick={() => trackMyspace('nav_click', { target: 'top8' })}>
+            Friends
+          </a>
+          <a href="#skills" onClick={() => trackMyspace('nav_click', { target: 'skills' })}>
+            Forum
+          </a>
         </nav>
         <div style={{ fontSize: '12px', color: '#666666' }}>a place for friends</div>
       </header>
@@ -1137,17 +1167,7 @@ export default function SnackPage() {
             {/* Profile Header Card */}
             <div className="ms-profile-header">
               <div className="ms-profile-photo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/snack/profile.jpg"
-                  alt="Zach"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: 'center top',
-                  }}
-                />
+                <MyspaceProfileImage />
                 <span
                   className="sparkle"
                   style={{ top: '8px', right: '12px', animationDelay: '0s' }}
@@ -1244,19 +1264,35 @@ export default function SnackPage() {
                       ? 'Send Again'
                       : 'Send Message'}
                 </button>
-                <button className="ms-action-btn" onClick={() => setShowApplication(true)}>
+                <button className="ms-action-btn" onClick={handleOpenApplication}>
                   <UserPlus size={10} /> Add to Friends
                 </button>
-                <button className="ms-action-btn">
+                <button
+                  className="ms-action-btn"
+                  onClick={() => trackMyspace('add_to_favorites_click')}
+                  type="button"
+                >
                   <Heart size={10} /> Add to Favorites
                 </button>
-                <button className="ms-action-btn">
+                <button
+                  className="ms-action-btn"
+                  onClick={() => trackMyspace('forward_to_friend_click')}
+                  type="button"
+                >
                   <Share2 size={10} /> Forward to Friend
                 </button>
-                <button className="ms-action-btn">
+                <button
+                  className="ms-action-btn"
+                  onClick={() => trackMyspace('send_oreos_click')}
+                  type="button"
+                >
                   <Gift size={10} /> Send Oreos
                 </button>
-                <button className="ms-action-btn">
+                <button
+                  className="ms-action-btn"
+                  onClick={() => trackMyspace('block_user_click')}
+                  type="button"
+                >
                   <Ban size={10} /> Block User (lol jk)
                 </button>
               </div>
@@ -1468,7 +1504,10 @@ export default function SnackPage() {
                 {!showCommentForm ? (
                   <button
                     className="ms-cta"
-                    onClick={() => setShowCommentForm(true)}
+                    onClick={() => {
+                      trackMyspace('leave_comment_click');
+                      setShowCommentForm(true);
+                    }}
                     style={{ marginTop: '10px' }}
                   >
                     <Mail
@@ -1494,7 +1533,13 @@ export default function SnackPage() {
                         resize: 'vertical',
                       }}
                     />
-                    <button className="ms-cta" onClick={() => setShowCommentForm(false)}>
+                    <button
+                      className="ms-cta"
+                      onClick={() => {
+                        trackMyspace('submit_comment_click');
+                        setShowCommentForm(false);
+                      }}
+                    >
                       <Send
                         size={14}
                         style={{ display: 'inline', verticalAlign: 'middle', marginRight: 6 }}
@@ -1524,7 +1569,13 @@ export default function SnackPage() {
         </footer>
       </div>
 
-      {showApplication && <ApplicationModal onClose={() => setShowApplication(false)} />}
+      {showApplication && (
+        <ApplicationModal
+          onClose={handleCloseApplication}
+          onSubmitSuccess={() => trackMyspace('application_submit_success')}
+          onSubmitError={(error) => trackMyspace('application_submit_error', { error })}
+        />
+      )}
     </div>
   );
 }

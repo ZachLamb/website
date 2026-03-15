@@ -27,12 +27,13 @@ const radioQuestions = [
     ],
   },
   {
-    name: 'dogOpinion',
-    label: 'How do you feel about dogs?',
+    name: 'petOpinion',
+    label: 'How do you feel about pets?',
     options: [
-      'Dogs are everything',
-      'I like dogs',
-      "I'm more of a cat person",
+      'Pets are everything (dogs AND cats)',
+      'Dog person',
+      'Cat person',
+      'Both are great',
       'Allergic but willing to suffer',
     ],
   },
@@ -47,6 +48,17 @@ const radioQuestions = [
     ],
   },
   {
+    name: 'travelStyle',
+    label: 'Favorite way to travel?',
+    options: [
+      'Half adventure, half relaxing (like Snack)',
+      'All adventure, no downtime',
+      'All relaxing, no plans',
+      'Wherever the food is best',
+      "I don't travel much",
+    ],
+  },
+  {
     name: 'bigSpoon',
     label: 'Big spoon or little spoon?',
     options: ['Big spoon', 'Little spoon', 'Switch hitter', "Separate blankets, don't touch me"],
@@ -55,9 +67,11 @@ const radioQuestions = [
 
 interface Props {
   onClose: () => void;
+  onSubmitSuccess?: () => void;
+  onSubmitError?: (error: string) => void;
 }
 
-export default function ApplicationModal({ onClose }: Props) {
+export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitError }: Props) {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -82,7 +96,7 @@ export default function ApplicationModal({ onClose }: Props) {
     const data = Object.fromEntries(fd.entries());
 
     try {
-      const res = await fetch('/api/snack/apply', {
+      const res = await fetch('/api/myspace/apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -90,13 +104,18 @@ export default function ApplicationModal({ onClose }: Props) {
       const json = await res.json();
       if (!res.ok) {
         setStatus('error');
-        setErrorMsg(json.error ?? 'Something went wrong');
+        const message = json.error ?? 'Something went wrong';
+        setErrorMsg(message);
+        onSubmitError?.(message);
         return;
       }
       setStatus('success');
+      onSubmitSuccess?.();
     } catch {
       setStatus('error');
-      setErrorMsg('Network error. Please try again.');
+      const message = 'Network error. Please try again.';
+      setErrorMsg(message);
+      onSubmitError?.(message);
     }
   }
 
@@ -119,8 +138,8 @@ export default function ApplicationModal({ onClose }: Props) {
     >
       <div
         style={{
-          background: '#001a33',
-          border: '1px solid #336699',
+          background: '#111111',
+          border: '1px solid #2a2a2a',
           borderRadius: '6px',
           width: '100%',
           maxWidth: '520px',
@@ -132,9 +151,9 @@ export default function ApplicationModal({ onClose }: Props) {
         {/* Header */}
         <div
           style={{
-            background: 'linear-gradient(90deg, #003366 0%, #004488 100%)',
+            background: 'linear-gradient(90deg, #1a1a1a 0%, #222222 100%)',
             padding: '12px 16px',
-            borderBottom: '1px solid #336699',
+            borderBottom: '1px solid #2a2a2a',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -156,7 +175,7 @@ export default function ApplicationModal({ onClose }: Props) {
             style={{
               background: 'none',
               border: 'none',
-              color: '#aabbdd',
+              color: '#999999',
               cursor: 'pointer',
               padding: 4,
             }}
@@ -174,7 +193,7 @@ export default function ApplicationModal({ onClose }: Props) {
                 style={{
                   fontSize: '18px',
                   fontWeight: 'bold',
-                  color: '#ff66cc',
+                  color: '#ff3399',
                   marginBottom: '12px',
                 }}
               >
@@ -188,8 +207,8 @@ export default function ApplicationModal({ onClose }: Props) {
                 style={{
                   marginTop: '20px',
                   padding: '10px 24px',
-                  background: 'linear-gradient(180deg, #ff66cc 0%, #cc3399 100%)',
-                  border: '2px solid #ff88dd',
+                  background: 'linear-gradient(180deg, #ff3399 0%, #990044 100%)',
+                  border: '2px solid #ff4488',
                   borderRadius: '6px',
                   color: '#fff',
                   fontWeight: 'bold',
@@ -206,13 +225,14 @@ export default function ApplicationModal({ onClose }: Props) {
               <p
                 style={{
                   fontSize: '12px',
-                  color: '#aaaacc',
+                  color: '#999999',
                   marginBottom: '16px',
                   lineHeight: 1.5,
                 }}
               >
                 Think you have what it takes? Fill out this application and Snack will get back to
-                you. Probably.
+                you. Probably. Find Snack on IG:{' '}
+                <span style={{ color: '#ff3399', fontWeight: 'bold' }}>@gayhiker</span>
               </p>
 
               {/* Text fields */}
@@ -276,7 +296,7 @@ export default function ApplicationModal({ onClose }: Props) {
                           alignItems: 'center',
                           gap: '8px',
                           fontSize: '12px',
-                          color: '#ccccdd',
+                          color: '#bbbbbb',
                           cursor: 'pointer',
                           padding: '4px 0',
                         }}
@@ -286,7 +306,7 @@ export default function ApplicationModal({ onClose }: Props) {
                           name={q.name}
                           value={opt}
                           required
-                          style={{ accentColor: '#ff66cc' }}
+                          style={{ accentColor: '#ff3399' }}
                         />
                         {opt}
                       </label>
@@ -314,7 +334,7 @@ export default function ApplicationModal({ onClose }: Props) {
                   background:
                     status === 'submitting'
                       ? '#555'
-                      : 'linear-gradient(180deg, #ff66cc 0%, #cc3399 100%)',
+                      : 'linear-gradient(180deg, #ff3399 0%, #990044 100%)',
                   border: '2px solid #ff88dd',
                   borderRadius: '6px',
                   color: '#fff',
@@ -339,7 +359,7 @@ const labelStyle: React.CSSProperties = {
   display: 'block',
   fontSize: '11px',
   fontWeight: 'bold',
-  color: '#77bbff',
+  color: '#cc77ff',
   textTransform: 'uppercase',
   letterSpacing: '0.5px',
   marginBottom: '4px',
@@ -348,7 +368,7 @@ const labelStyle: React.CSSProperties = {
 const inputStyle: React.CSSProperties = {
   width: '100%',
   background: 'rgba(255,255,255,0.05)',
-  border: '1px solid #336699',
+  border: '1px solid #2a2a2a',
   borderRadius: '4px',
   color: '#ffffff',
   padding: '8px 10px',
