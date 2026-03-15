@@ -51,7 +51,7 @@ const experience = [
   {
     title: 'Senior Cutie Pie',
     place: 'The Mirror Every Morning',
-    desc: 'Delivered daily cuteness with zero downtime. Recognized by peers for laugh deployment and smile ROI. Successfully charmed baristas into free extra shots on 2 separate occasions. Created new process on how to handle and maintain attachment style.',
+    desc: 'Delivered daily cuteness with zero downtime. Recognized by peers for laugh deployment and smile ROI. Successfully charmed baristas into free extra shots on 2 separate occasions. Created a new process to build and maintain secure attachment.',
   },
   {
     title: 'Cutie Pie',
@@ -172,18 +172,18 @@ function SpotifyPlayerInner() {
           <span className="ms-player-song-artist">{song.artist}</span>
         </div>
         <div className="ms-player-controls">
-          <button className="ms-player-btn" aria-hidden="true" tabIndex={-1}>
+          <span className="ms-player-btn" aria-hidden="true">
             <SkipBack size={12} />
-          </button>
-          <button className="ms-player-btn ms-player-btn-play" aria-hidden="true" tabIndex={-1}>
+          </span>
+          <span className="ms-player-btn ms-player-btn-play" aria-hidden="true">
             <Play size={14} fill="currentColor" />
-          </button>
-          <button className="ms-player-btn" aria-hidden="true" tabIndex={-1}>
+          </span>
+          <span className="ms-player-btn" aria-hidden="true">
             <SkipForward size={12} />
-          </button>
-          <button className="ms-player-btn" aria-hidden="true" tabIndex={-1}>
+          </span>
+          <span className="ms-player-btn" aria-hidden="true">
             <Volume2 size={12} />
-          </button>
+          </span>
         </div>
       </div>
 
@@ -373,6 +373,8 @@ export default function SnackPage() {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          gap: 8px;
+          flex-wrap: wrap;
           position: sticky;
           top: 0;
           z-index: 50;
@@ -387,30 +389,38 @@ export default function SnackPage() {
           color: var(--ms-accent);
         }
         .ms-header-nav {
-          display: none;
-          gap: 16px;
-          font-size: 12px;
+          display: flex;
+          gap: 12px;
+          font-size: 11px;
+          width: 100%;
+          overflow-x: auto;
+          white-space: nowrap;
+          padding-bottom: 2px;
+          scrollbar-width: thin;
         }
         .ms-header-nav a {
           color: #999999;
           text-decoration: none;
+          flex: 0 0 auto;
         }
         .ms-header-nav a:hover {
           color: #ffffff;
           text-decoration: underline;
         }
 
-        /* ── url bar (desktop) ── */
+        /* ── url bar ── */
         .ms-url-bar {
-          display: none;
+          display: block;
           background: #1a1a1a;
           border: 1px solid #333333;
           border-radius: 3px;
           padding: 4px 8px;
           font-family: 'Courier New', monospace;
-          font-size: 11px;
+          font-size: 10px;
           color: #999999;
           margin: 8px 16px 0;
+          overflow-x: auto;
+          white-space: nowrap;
         }
         .ms-url-bar span {
           color: var(--ms-link);
@@ -606,6 +616,7 @@ export default function SnackPage() {
           padding: 4px 8px;
           border-bottom: 1px solid rgba(255,255,255,0.05);
           vertical-align: top;
+          word-break: break-word;
         }
         .ms-details-table td:first-child {
           color: var(--ms-link);
@@ -775,6 +786,7 @@ export default function SnackPage() {
         }
         .ms-interests-table td:last-child {
           color: #bbbbbb;
+          word-break: break-word;
         }
 
         /* ── experience ── */
@@ -909,7 +921,7 @@ export default function SnackPage() {
           font-size: 12px;
         }
         .ms-comment-time {
-          color: #555555;
+          color: #777777;
           font-size: 10px;
           margin-left: 8px;
         }
@@ -931,6 +943,8 @@ export default function SnackPage() {
         }
         .ms-marquee span {
           display: inline-block;
+          min-width: max-content;
+          padding-right: 24px;
           animation: marquee 15s linear infinite;
         }
 
@@ -1051,11 +1065,18 @@ export default function SnackPage() {
 
         /* ── desktop layout (768px+) ── */
         @media (min-width: 768px) {
+          .ms-header {
+            flex-wrap: nowrap;
+          }
           .ms-header-nav {
-            display: flex;
+            width: auto;
+            overflow: visible;
+            white-space: normal;
+            padding-bottom: 0;
+            font-size: 12px;
           }
           .ms-url-bar {
-            display: block;
+            font-size: 11px;
           }
           .ms-columns {
             flex-direction: row;
@@ -1146,10 +1167,11 @@ export default function SnackPage() {
       </header>
 
       {/* ── Marquee Banner ── */}
-      <div className="ms-marquee" aria-hidden="true">
+      <div className="ms-marquee" aria-label="Profile banner highlights">
         <span>
           ★彡 welcome to my profile ★彡 looking for my player 2 ★彡 swipe right on my heart ★彡
-          applications open ★彡 must love oreos ★彡 no terfs on my page ★彡 be gay do crime ★彡
+          applications open ★彡 must love oreos ★彡 no terfs on my page ★彡 be gay, do kind things
+          ★彡
         </span>
       </div>
 
@@ -1337,7 +1359,7 @@ export default function SnackPage() {
               </div>
               <div className="ms-section-body">
                 <p>
-                  32 year-old gay man seeking a full-time position. Open to relocation into your
+                  32-year-old gay man seeking a full-time position. Open to relocation into your
                   heart and hole.
                 </p>
               </div>
