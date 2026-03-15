@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { X, Send } from 'lucide-react';
 
 const radioQuestions = [
@@ -82,6 +83,11 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
   useEffect(() => {
     returnFocusRef.current =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
     document.body.style.overflow = 'hidden';
 
     closeButtonRef.current?.focus();
@@ -123,7 +129,13 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
 
     window.addEventListener('keydown', onKey);
     return () => {
+      const savedScrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
       document.body.style.overflow = '';
+      window.scrollTo(0, parseInt(savedScrollY || '0') * -1);
       window.removeEventListener('keydown', onKey);
       returnFocusRef.current?.focus();
     };
@@ -174,7 +186,11 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
   }
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
       style={{
         position: 'fixed',
         inset: 0,
@@ -190,17 +206,24 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div
+      <motion.div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={dialogTitleId}
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
         style={{
           background: '#111111',
           border: '1px solid #2a2a2a',
           borderRadius: '6px',
           width: '100%',
           maxWidth: '520px',
+          maxHeight: 'calc(100dvh - 48px)',
+          display: 'flex',
+          flexDirection: 'column',
           position: 'relative',
           fontFamily: "'Trebuchet MS', Verdana, Arial, sans-serif",
           color: '#ffffff',
@@ -247,7 +270,7 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
         </div>
 
         {/* Body */}
-        <div style={{ padding: '16px' }}>
+        <div style={{ padding: '16px', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
           {status === 'success' ? (
             <div style={{ textAlign: 'center', padding: '32px 16px' }}>
               <div
@@ -414,8 +437,8 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
             </form>
           )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

@@ -14,6 +14,10 @@ vi.mock('@vercel/analytics', () => ({
   track: trackMock,
 }));
 
+vi.mock('next/font/google', () => ({
+  Permanent_Marker: () => ({ className: 'mock-marker-font' }),
+}));
+
 vi.mock('@/data/songs', () => ({
   getRandomSong: getRandomSongMock,
 }));

@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { track } from '@vercel/analytics';
+import { Permanent_Marker } from 'next/font/google';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   Mail,
   Eye,
@@ -28,7 +31,10 @@ import {
 } from 'lucide-react';
 import { getRandomSong } from '@/data/songs';
 import ApplicationModal from './ApplicationModal';
-import { MyspaceProfileImage } from './MyspaceProfileImage';
+import './page.css';
+/* MyspaceProfileImage no longer needed — using next/image directly */
+
+const markerFont = Permanent_Marker({ weight: '400', subsets: ['latin'], display: 'swap' });
 
 /* ─── data ──────────────────────────────────────────────── */
 
@@ -146,6 +152,23 @@ const interests = [
   },
 ];
 
+/* ─── animation variants ─────────────────────────────────── */
+
+const fadeInUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.4, ease: 'easeOut' as const, delay },
+});
+
+const staggerChildren = {
+  animate: { transition: { staggerChildren: 0.06 } },
+};
+
+const friendVariants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.3, ease: 'easeOut' } },
+};
+
 /* ─── client-only Spotify player (avoids hydration mismatch from Math.random) ── */
 
 function SpotifyPlayerInner() {
@@ -211,8 +234,12 @@ export default function SnackPage() {
   const [showApplication, setShowApplication] = useState(false);
   const [messageState, setMessageState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [sentMessage, setSentMessage] = useState('');
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const [favorited, setFavorited] = useState(false);
+  const [oreoCount, setOreoCount] = useState(0);
+  const [feedbackText, setFeedbackText] = useState('');
   const sendTimerRef = useRef<number | null>(null);
+  const feedbackTimerRef = useRef<number | null>(null);
 
   function trackMyspace(action: string, details: Record<string, string> = {}) {
     track('myspace_interaction', { slug: 'myspace', action, ...details });
@@ -220,20 +247,6 @@ export default function SnackPage() {
 
   useEffect(() => {
     track('myspace_page_view', { slug: 'myspace', path: '/myspace' });
-  }, []);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
-    updatePreference();
-
-    if (typeof mediaQuery.addEventListener === 'function') {
-      mediaQuery.addEventListener('change', updatePreference);
-      return () => mediaQuery.removeEventListener('change', updatePreference);
-    }
-
-    mediaQuery.addListener(updatePreference);
-    return () => mediaQuery.removeListener(updatePreference);
   }, []);
 
   useEffect(() => {
@@ -263,7 +276,7 @@ export default function SnackPage() {
         setMessageState('sent');
         sendTimerRef.current = null;
       },
-      prefersReducedMotion ? 220 : 1100,
+      prefersReducedMotion === true ? 220 : 1100,
     );
   }
 
@@ -277,854 +290,94 @@ export default function SnackPage() {
     setShowApplication(false);
   }
 
+  function showFeedback(text: string) {
+    setFeedbackText(text);
+    if (feedbackTimerRef.current !== null) {
+      window.clearTimeout(feedbackTimerRef.current);
+    }
+    feedbackTimerRef.current = window.setTimeout(() => {
+      setFeedbackText('');
+      feedbackTimerRef.current = null;
+    }, 4000);
+  }
+
+  function handleAddToFavorites() {
+    trackMyspace('add_to_favorites_click');
+    setFavorited(true);
+    showFeedback('Snack has been added to your favorites. You have great taste.');
+  }
+
+  async function handleForwardToFriend() {
+    trackMyspace('forward_to_friend_click');
+    const shareData = {
+      title: "Snack's Dating Resume",
+      text: "Check out this absolute catch. You're welcome.",
+      url: 'https://zachlamb.io/snack',
+    };
+    if (typeof navigator.share === 'function') {
+      try {
+        await navigator.share(shareData);
+        showFeedback("Shared successfully. Snack's reach grows.");
+      } catch {
+        /* user cancelled share — that's fine */
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareData.url);
+        showFeedback('Link copied! Now go paste it to someone cute.');
+      } catch {
+        showFeedback("Couldn't copy — try sharing zachlamb.io/snack manually.");
+      }
+    }
+  }
+
+  const oreoMessages = [
+    'Snack has received 1 Oreo. He is pleased.',
+    'Another Oreo! Snack is now hoarding.',
+    'Oreo stockpile growing. Snack may never share.',
+    'At this rate, Snack will need a bigger pantry.',
+    'Oreo overflow detected. Snack is in heaven.',
+    "You're spoiling him. He loves it.",
+    'Snack just dipped one in milk. This is your doing.',
+    "That's a lot of Oreos. Are you proposing?",
+  ];
+
+  function handleSendOreos() {
+    trackMyspace('send_oreos_click');
+    const newCount = oreoCount + 1;
+    setOreoCount(newCount);
+    const msg = oreoMessages[Math.min(newCount - 1, oreoMessages.length - 1)];
+    showFeedback(msg);
+  }
+
+  const blockMessages = [
+    "Lol no. You can't block Snack. He's too cute.",
+    "Denied. Snack is unblockable. It's in the terms of service.",
+    'Nice try. Snack has plot armor.',
+    'Error 403: Too adorable to block.',
+    "You don't have the emotional bandwidth to block this face.",
+    "Block request rejected. Snack's cuteness overrides your firewall.",
+  ];
+
+  function handleBlockUser() {
+    trackMyspace('block_user_click');
+    const msg = blockMessages[Math.floor(Math.random() * blockMessages.length)];
+    showFeedback(msg);
+  }
+
+  useEffect(() => {
+    return () => {
+      if (feedbackTimerRef.current !== null) {
+        window.clearTimeout(feedbackTimerRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className="myspace-page">
-      <style>{`
-        /* Override main site body background */
-        body:has(.myspace-page) {
-          background-color: #0a0a0a !important;
-          background-image: none !important;
-        }
-
-        .myspace-page {
-          --ms-bg: #0a0a0a;
-          --ms-profile-bg: #0d0d0d;
-          --ms-section-bg: #111111;
-          --ms-border: #2a2a2a;
-          --ms-text: #e0e0e0;
-          --ms-link: #cc77ff;
-          --ms-accent: #ff3399;
-          --ms-online: #00ff66;
-
-          min-height: 100dvh;
-          min-height: 100vh;
-          background-color: var(--ms-bg);
-          background-image:
-            radial-gradient(ellipse at 20% 50%, rgba(128, 0, 128, 0.08) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 20%, rgba(255, 0, 100, 0.05) 0%, transparent 50%),
-            repeating-linear-gradient(
-              0deg,
-              transparent,
-              transparent 2px,
-              rgba(255, 255, 255, 0.008) 2px,
-              rgba(255, 255, 255, 0.008) 4px
-            );
-          color: var(--ms-text);
-          font-family: 'Trebuchet MS', Verdana, Arial, sans-serif;
-          font-size: 14px;
-          line-height: 1.5;
-          overflow-x: hidden;
-        }
-
-        .myspace-page * {
-          box-sizing: border-box;
-        }
-
-        /* ── keyframes ── */
-        @keyframes sparkle {
-          0%, 100% { opacity: 0; transform: scale(0); }
-          50% { opacity: 1; transform: scale(1); }
-        }
-        @keyframes blink-online {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
-        @keyframes marquee {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
-        }
-        @keyframes pulse-heart {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.2); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
-        }
-        @keyframes rainbow {
-          0% { color: #ff0000; }
-          16% { color: #ff8800; }
-          33% { color: #ffff00; }
-          50% { color: #00ff00; }
-          66% { color: #0088ff; }
-          83% { color: #8800ff; }
-          100% { color: #ff0000; }
-        }
-        @keyframes star-twinkle {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 1; }
-        }
-
-        .sparkle {
-          position: absolute;
-          width: 6px;
-          height: 6px;
-          background: #ffcc00;
-          border-radius: 50%;
-          animation: sparkle 1.5s ease-in-out infinite;
-          pointer-events: none;
-        }
-
-        /* ── header bar ── */
-        .ms-header {
-          background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
-          border-bottom: 2px solid #333333;
-          padding: 8px 16px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 8px;
-          flex-wrap: wrap;
-          position: sticky;
-          top: 0;
-          z-index: 50;
-        }
-        .ms-header-logo {
-          font-size: 20px;
-          font-weight: bold;
-          color: #ffffff;
-          letter-spacing: -0.5px;
-        }
-        .ms-header-logo span {
-          color: var(--ms-accent);
-        }
-        .ms-header-nav {
-          display: flex;
-          gap: 12px;
-          font-size: 11px;
-          width: 100%;
-          overflow-x: auto;
-          white-space: nowrap;
-          padding-bottom: 2px;
-          scrollbar-width: thin;
-        }
-        .ms-header-nav a {
-          color: #999999;
-          text-decoration: none;
-          flex: 0 0 auto;
-        }
-        .ms-header-nav a:hover {
-          color: #ffffff;
-          text-decoration: underline;
-        }
-
-        /* ── url bar ── */
-        .ms-url-bar {
-          display: block;
-          background: #1a1a1a;
-          border: 1px solid #333333;
-          border-radius: 3px;
-          padding: 4px 8px;
-          font-family: 'Courier New', monospace;
-          font-size: 10px;
-          color: #999999;
-          margin: 8px 16px 0;
-          overflow-x: auto;
-          white-space: nowrap;
-        }
-        .ms-url-bar span {
-          color: var(--ms-link);
-        }
-
-        /* ── two-column layout ── */
-        .ms-layout {
-          max-width: 960px;
-          margin: 0 auto;
-          padding: 12px;
-        }
-        .ms-columns {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .ms-col-left {
-          width: 100%;
-        }
-        .ms-col-right {
-          width: 100%;
-        }
-
-        /* ── profile card ── */
-        .ms-profile-header {
-          background: var(--ms-profile-bg);
-          border: 2px solid var(--ms-border);
-          border-radius: 4px;
-          padding: 16px;
-          text-align: center;
-        }
-        .ms-profile-photo {
-          width: 140px;
-          height: 140px;
-          border-radius: 4px;
-          border: 3px solid var(--ms-accent);
-          margin: 0 auto 12px;
-          background: linear-gradient(135deg, #1a0a1a 0%, #0d0d1a 50%, #1a0a2e 100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 56px;
-          position: relative;
-          overflow: hidden;
-        }
-        .ms-profile-name {
-          font-size: 24px;
-          font-weight: bold;
-          margin: 0 0 2px;
-          animation: rainbow 4s linear infinite;
-        }
-        .ms-profile-tagline {
-          color: var(--ms-accent);
-          font-style: italic;
-          font-size: 13px;
-          margin: 0 0 8px;
-        }
-        .ms-online-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: rgba(0, 255, 0, 0.1);
-          border: 1px solid rgba(0, 255, 0, 0.3);
-          border-radius: 12px;
-          padding: 3px 12px;
-          font-size: 11px;
-          color: var(--ms-online);
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-        .ms-online-dot {
-          width: 8px;
-          height: 8px;
-          background: var(--ms-online);
-          border-radius: 50%;
-          animation: blink-online 1.5s ease-in-out infinite;
-        }
-
-        .ms-mood {
-          margin-top: 10px;
-          font-size: 12px;
-          color: #999999;
-        }
-        .ms-mood strong {
-          color: var(--ms-link);
-        }
-
-        .ms-details {
-          margin-top: 12px;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 8px 16px;
-          font-size: 12px;
-          color: #999999;
-        }
-        .ms-detail-item {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-        .ms-detail-label {
-          color: #666666;
-        }
-
-        /* ── contacting box ── */
-        .ms-contacting {
-          background: var(--ms-section-bg);
-          border: 1px solid var(--ms-border);
-          border-radius: 4px;
-          margin: 12px 0;
-          overflow: hidden;
-        }
-        .ms-contacting-header {
-          background: linear-gradient(90deg, #1a1a1a 0%, #222222 100%);
-          padding: 6px 10px;
-          font-weight: bold;
-          font-size: 11px;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          border-bottom: 1px solid var(--ms-border);
-          color: var(--ms-accent);
-        }
-        .ms-contacting-actions {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 6px;
-          padding: 10px;
-        }
-        .ms-action-btn {
-          background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
-          border: 1px solid var(--ms-border);
-          border-radius: 3px;
-          color: var(--ms-link);
-          font-size: 10px;
-          font-family: inherit;
-          padding: 6px 4px;
-          cursor: pointer;
-          text-align: center;
-          transition: background 0.15s, border-color 0.15s;
-        }
-        .ms-action-btn:hover {
-          background: rgba(255,255,255,0.1);
-          border-color: var(--ms-accent);
-          color: var(--ms-accent);
-        }
-        .ms-action-btn:disabled {
-          opacity: 0.6;
-          cursor: wait;
-        }
-        .ms-action-btn.is-sending {
-          border-color: var(--ms-accent);
-          color: var(--ms-accent);
-        }
-        .ms-send-message-feedback {
-          margin: 0 10px 10px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 4px;
-          padding: 8px 10px;
-          background: rgba(255,255,255,0.03);
-          font-size: 11px;
-          color: #bfbfd8;
-          min-height: 34px;
-        }
-        .ms-send-message-row {
-          display: flex;
-          align-items: flex-start;
-          gap: 6px;
-          line-height: 1.4;
-        }
-        .ms-send-message-row.is-sent {
-          color: #d6b3ff;
-        }
-        .ms-send-spinner {
-          flex-shrink: 0;
-          margin-top: 1px;
-          animation: send-spin 0.9s linear infinite;
-        }
-        .ms-send-label {
-          font-weight: bold;
-          color: var(--ms-accent);
-        }
-
-        /* ── details table ── */
-        .ms-details-table {
-          width: 100%;
-          border-collapse: collapse;
-          font-size: 11px;
-          margin-top: 8px;
-        }
-        .ms-details-table td {
-          padding: 4px 8px;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
-          vertical-align: top;
-          word-break: break-word;
-        }
-        .ms-details-table td:first-child {
-          color: var(--ms-link);
-          font-weight: bold;
-          white-space: nowrap;
-          width: 80px;
-        }
-        .ms-details-table td:last-child {
-          color: #999999;
-        }
-
-        /* ── sections ── */
-        .ms-section {
-          background: var(--ms-section-bg);
-          border: 1px solid var(--ms-border);
-          border-radius: 4px;
-          margin: 12px 0;
-          overflow: hidden;
-        }
-        .ms-section-header {
-          background: linear-gradient(90deg, #1a1a1a 0%, #222222 100%);
-          padding: 8px 12px;
-          font-weight: bold;
-          font-size: 13px;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          border-bottom: 1px solid var(--ms-border);
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .ms-section-body {
-          padding: 12px;
-          font-size: 13px;
-          line-height: 1.6;
-          color: #bbbbbb;
-        }
-
-        /* ── spotify / myspace player ── */
-        .ms-spotify {
-          margin: 12px 0;
-          border-radius: 6px;
-          overflow: hidden;
-          border: 1px solid #2a2a2a;
-        }
-        .ms-myspace-player {
-          background: linear-gradient(180deg, #141414 0%, #0a0a0a 100%);
-        }
-        .ms-player-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 6px 10px;
-          background: linear-gradient(180deg, #1f1f1f 0%, #141414 100%);
-          border-bottom: 1px solid #2a2a2a;
-        }
-        .ms-player-title {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 10px;
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 1.5px;
-          color: #999999;
-        }
-        .ms-player-eq {
-          display: flex;
-          align-items: flex-end;
-          gap: 2px;
-          height: 14px;
-        }
-        .ms-eq-bar {
-          width: 3px;
-          background: var(--ms-accent);
-          border-radius: 1px;
-          animation: eq-bounce 0.8s ease-in-out infinite alternate;
-        }
-        .ms-eq-bar:nth-child(1) { height: 4px; }
-        .ms-eq-bar:nth-child(2) { height: 10px; }
-        .ms-eq-bar:nth-child(3) { height: 6px; }
-        .ms-eq-bar:nth-child(4) { height: 12px; }
-        .ms-eq-bar:nth-child(5) { height: 8px; }
-        @keyframes eq-bounce {
-          0% { transform: scaleY(0.3); }
-          100% { transform: scaleY(1); }
-        }
-        @keyframes send-spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        .ms-player-info {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 8px 10px;
-          border-bottom: 1px solid #1a1a1a;
-        }
-        .ms-player-song {
-          display: flex;
-          flex-direction: column;
-          gap: 1px;
-          min-width: 0;
-        }
-        .ms-player-song-title {
-          font-size: 12px;
-          font-weight: bold;
-          color: #ffffff;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .ms-player-song-artist {
-          font-size: 10px;
-          color: #777777;
-        }
-        .ms-player-controls {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          flex-shrink: 0;
-        }
-        .ms-player-btn {
-          background: rgba(255,255,255,0.06);
-          border: 1px solid #2a2a2a;
-          border-radius: 50%;
-          width: 28px;
-          height: 28px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #999999;
-          cursor: default;
-          font-size: 0;
-          padding: 0;
-        }
-        .ms-player-btn-play {
-          width: 32px;
-          height: 32px;
-          background: rgba(255,102,204,0.15);
-          border-color: var(--ms-accent);
-          color: var(--ms-accent);
-        }
-
-        /* ── interests table ── */
-        .ms-interests-table {
-          width: 100%;
-          border-collapse: collapse;
-          font-size: 12px;
-        }
-        .ms-interests-table tr {
-          border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-        .ms-interests-table tr:last-child {
-          border-bottom: none;
-        }
-        .ms-interests-table td {
-          padding: 8px 10px;
-          vertical-align: top;
-        }
-        .ms-interests-table td:first-child {
-          color: var(--ms-link);
-          font-weight: bold;
-          white-space: nowrap;
-          width: 90px;
-          background: rgba(255,255,255,0.03);
-        }
-        .ms-interests-table td:last-child {
-          color: #bbbbbb;
-          word-break: break-word;
-        }
-
-        /* ── experience ── */
-        .ms-exp-item {
-          border-left: 2px solid var(--ms-accent);
-          padding-left: 12px;
-          margin-bottom: 14px;
-          position: relative;
-        }
-        .ms-exp-item::before {
-          content: '';
-          position: absolute;
-          left: -7px;
-          top: 6px;
-          width: 10px;
-          height: 10px;
-          background: var(--ms-accent);
-          border-radius: 50%;
-          border: 2px solid var(--ms-section-bg);
-        }
-        .ms-exp-title {
-          font-weight: bold;
-          color: var(--ms-link);
-          font-size: 13px;
-        }
-        .ms-exp-place {
-          color: var(--ms-accent);
-          font-size: 11px;
-          font-style: italic;
-        }
-        .ms-exp-desc {
-          color: #999999;
-          font-size: 12px;
-          margin-top: 3px;
-        }
-
-        /* ── skills ── */
-        .ms-skill-row {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-bottom: 6px;
-          font-size: 12px;
-        }
-        .ms-skill-name {
-          flex: 1;
-          min-width: 0;
-          color: #bbbbbb;
-        }
-        .ms-skill-hearts {
-          display: flex;
-          gap: 2px;
-          flex-shrink: 0;
-        }
-        .ms-heart {
-          animation: pulse-heart 2s ease-in-out infinite;
-          color: var(--ms-accent);
-        }
-        .ms-heart-empty {
-          opacity: 0.2;
-        }
-
-        /* ── top 8 ── */
-        .ms-top8-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 8px;
-        }
-        .ms-friend {
-          text-align: center;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 4px;
-          padding: 8px 4px;
-          transition: transform 0.2s, border-color 0.2s;
-        }
-        .ms-friend:hover {
-          border-color: var(--ms-accent);
-          transform: scale(1.05);
-        }
-        .ms-friend:active {
-          transform: scale(0.95);
-        }
-        .ms-friend-avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 4px;
-          font-size: 16px;
-          font-weight: bold;
-          color: #ffffff;
-          animation: float 3s ease-in-out infinite;
-        }
-        .ms-friend-name {
-          font-size: 10px;
-          color: var(--ms-link);
-          word-break: break-word;
-        }
-
-        /* ── comments ── */
-        .ms-comment {
-          display: flex;
-          gap: 10px;
-          padding: 10px 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        .ms-comment:last-child {
-          border-bottom: none;
-        }
-        .ms-comment-avatar {
-          width: 36px;
-          height: 36px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid var(--ms-border);
-          border-radius: 4px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 18px;
-          flex-shrink: 0;
-        }
-        .ms-comment-body {
-          flex: 1;
-          min-width: 0;
-        }
-        .ms-comment-name {
-          color: var(--ms-link);
-          font-weight: bold;
-          font-size: 12px;
-        }
-        .ms-comment-time {
-          color: #777777;
-          font-size: 10px;
-          margin-left: 8px;
-        }
-        .ms-comment-text {
-          color: #999999;
-          font-size: 12px;
-          margin-top: 2px;
-        }
-
-        /* ── marquee banner ── */
-        .ms-marquee {
-          background: linear-gradient(90deg, #1a0033, #330019, #0d0d0d, #1a0033);
-          padding: 6px 0;
-          overflow: hidden;
-          white-space: nowrap;
-          font-size: 12px;
-          color: #ffcc00;
-          font-weight: bold;
-        }
-        .ms-marquee span {
-          display: inline-block;
-          min-width: max-content;
-          padding-right: 24px;
-          animation: marquee 15s linear infinite;
-        }
-
-        /* ── cta button ── */
-        .ms-cta {
-          display: block;
-          width: 100%;
-          padding: 14px;
-          background: linear-gradient(180deg, var(--ms-accent) 0%, #990044 100%);
-          color: white;
-          border: 2px solid #ff4488;
-          border-radius: 6px;
-          font-weight: bold;
-          font-size: 15px;
-          text-align: center;
-          text-decoration: none;
-          cursor: pointer;
-          margin: 12px 0;
-          transition: transform 0.15s;
-          font-family: inherit;
-        }
-        .ms-cta:hover {
-          filter: brightness(1.1);
-        }
-        .ms-cta:active {
-          transform: scale(0.97);
-        }
-
-        /* ── education / certs ── */
-        .ms-edu-item {
-          margin-bottom: 10px;
-          padding-left: 20px;
-          position: relative;
-          font-size: 12px;
-          color: #bbbbbb;
-        }
-        .ms-edu-item::before {
-          content: '';
-          position: absolute;
-          left: 2px;
-          top: 4px;
-          width: 8px;
-          height: 8px;
-          background: var(--ms-link);
-          border-radius: 2px;
-        }
-        .ms-edu-item strong {
-          color: var(--ms-link);
-        }
-
-        .ms-cert-item {
-          margin-bottom: 8px;
-          padding-left: 20px;
-          position: relative;
-          font-size: 12px;
-          color: #bbbbbb;
-        }
-        .ms-cert-item::before {
-          content: '\\2713';
-          position: absolute;
-          left: 2px;
-          top: 0;
-          color: var(--ms-online);
-          font-weight: bold;
-          font-size: 13px;
-        }
-
-        /* ── footer ── */
-        .ms-footer {
-          text-align: center;
-          padding: 20px 12px;
-          font-size: 11px;
-          color: #444444;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .ms-footer a {
-          color: var(--ms-link);
-          text-decoration: none;
-        }
-        .ms-footer a:hover {
-          text-decoration: underline;
-        }
-
-        /* ── visitor counter ── */
-        .ms-visitor-counter {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: #000000;
-          border: 1px solid #333333;
-          border-radius: 3px;
-          padding: 3px 10px;
-          font-family: 'Courier New', monospace;
-          font-size: 12px;
-          color: #00ff00;
-          margin-top: 8px;
-        }
-
-        /* ── blinking stars (bg decoration) ── */
-        .ms-stars {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          z-index: 0;
-          overflow: hidden;
-        }
-        .ms-star {
-          position: absolute;
-          width: 2px;
-          height: 2px;
-          background: #ffffff;
-          border-radius: 50%;
-          animation: star-twinkle 3s ease-in-out infinite;
-        }
-
-        /* ── desktop layout (768px+) ── */
-        @media (min-width: 768px) {
-          .ms-header {
-            flex-wrap: nowrap;
-          }
-          .ms-header-nav {
-            width: auto;
-            overflow: visible;
-            white-space: normal;
-            padding-bottom: 0;
-            font-size: 12px;
-          }
-          .ms-url-bar {
-            font-size: 11px;
-          }
-          .ms-columns {
-            flex-direction: row;
-            align-items: flex-start;
-          }
-          .ms-col-left {
-            width: 340px;
-            flex-shrink: 0;
-          }
-          .ms-col-right {
-            flex: 1;
-            min-width: 0;
-          }
-          .ms-profile-photo {
-            width: 180px;
-            height: 180px;
-            font-size: 72px;
-          }
-          .ms-top8-grid {
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-          }
-          .ms-friend-avatar {
-            width: 48px;
-            height: 48px;
-            font-size: 18px;
-          }
-          .ms-friend-name {
-            font-size: 11px;
-          }
-        }
-
-        /* ── reduced motion ── */
-        @media (prefers-reduced-motion: reduce) {
-          .sparkle,
-          .ms-online-dot,
-          .ms-heart,
-          .ms-friend-avatar,
-          .ms-marquee span,
-          .ms-profile-name,
-          .ms-star,
-          .ms-eq-bar,
-          .ms-send-spinner {
-            animation: none !important;
-          }
-        }
-      `}</style>
-
+    <div
+      className="myspace-page"
+      style={{ fontFamily: "'Trebuchet MS', Verdana, Arial, sans-serif" }}
+    >
       {/* ── Background stars ── */}
       <div className="ms-stars" aria-hidden="true">
         {Array.from({ length: 30 }).map((_, i) => (
@@ -1143,7 +396,7 @@ export default function SnackPage() {
 
       {/* ── Header ── */}
       <header className="ms-header">
-        <div className="ms-header-logo">
+        <div className={`ms-header-logo ${markerFont.className}`}>
           My<span>Space</span>
         </div>
         <nav className="ms-header-nav">
@@ -1187,9 +440,26 @@ export default function SnackPage() {
           {/* ════ LEFT COLUMN ════ */}
           <div className="ms-col-left">
             {/* Profile Header Card */}
-            <div className="ms-profile-header">
+            <motion.div
+              className="ms-profile-header"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            >
               <div className="ms-profile-photo">
-                <MyspaceProfileImage />
+                <Image
+                  src="/snack/profile.jpg"
+                  alt="Zach"
+                  width={360}
+                  height={360}
+                  priority
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center top',
+                  }}
+                />
                 <span
                   className="sparkle"
                   style={{ top: '8px', right: '12px', animationDelay: '0s' }}
@@ -1204,7 +474,7 @@ export default function SnackPage() {
                 />
               </div>
 
-              <h1 className="ms-profile-name">Snack (Zach)</h1>
+              <h1 className={`ms-profile-name ${markerFont.className}`}>Snack (Zach)</h1>
               <p className="ms-profile-tagline">&quot;Sweetie Pie &amp; Cutie Pie&quot;</p>
 
               <div className="ms-online-badge">
@@ -1223,19 +493,6 @@ export default function SnackPage() {
                 <span className="ms-detail-item">
                   <span className="ms-detail-label">Age</span> 32
                 </span>
-                <span className="ms-detail-item">
-                  <span
-                    style={{
-                      width: 12,
-                      height: 12,
-                      background:
-                        'linear-gradient(180deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787)',
-                      borderRadius: 2,
-                      display: 'inline-block',
-                    }}
-                  />{' '}
-                  Gay
-                </span>
               </div>
 
               {/* Details table */}
@@ -1251,7 +508,7 @@ export default function SnackPage() {
                   </tr>
                   <tr>
                     <td>Zodiac</td>
-                    <td>Doesn&apos;t matter, I&apos;ll still be cute</td>
+                    <td>Water Sign</td>
                   </tr>
                   <tr>
                     <td>Bakes</td>
@@ -1263,7 +520,7 @@ export default function SnackPage() {
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </motion.div>
 
             {/* ── Contacting Snack ── */}
             <div className="ms-contacting">
@@ -1290,31 +547,19 @@ export default function SnackPage() {
                   <UserPlus size={10} /> Add to Friends
                 </button>
                 <button
-                  className="ms-action-btn"
-                  onClick={() => trackMyspace('add_to_favorites_click')}
+                  className={`ms-action-btn ${favorited ? 'is-sending' : ''}`}
+                  onClick={handleAddToFavorites}
                   type="button"
                 >
-                  <Heart size={10} /> Add to Favorites
+                  <Heart size={10} /> {favorited ? 'Favorited' : 'Add to Favorites'}
                 </button>
-                <button
-                  className="ms-action-btn"
-                  onClick={() => trackMyspace('forward_to_friend_click')}
-                  type="button"
-                >
+                <button className="ms-action-btn" onClick={handleForwardToFriend} type="button">
                   <Share2 size={10} /> Forward to Friend
                 </button>
-                <button
-                  className="ms-action-btn"
-                  onClick={() => trackMyspace('send_oreos_click')}
-                  type="button"
-                >
-                  <Gift size={10} /> Send Oreos
+                <button className="ms-action-btn" onClick={handleSendOreos} type="button">
+                  <Gift size={10} /> Send Oreos{oreoCount > 0 ? ` (${oreoCount})` : ''}
                 </button>
-                <button
-                  className="ms-action-btn"
-                  onClick={() => trackMyspace('block_user_click')}
-                  type="button"
-                >
+                <button className="ms-action-btn" onClick={handleBlockUser} type="button">
                   <Ban size={10} /> Block User (lol jk)
                 </button>
               </div>
@@ -1323,6 +568,10 @@ export default function SnackPage() {
                   <div className="ms-send-message-row">
                     <span>Transmitting your message to Zach...</span>
                   </div>
+                ) : feedbackText ? (
+                  <div className="ms-send-message-row is-sent">
+                    <span>{feedbackText}</span>
+                  </div>
                 ) : messageState === 'sent' ? (
                   <div className="ms-send-message-row is-sent">
                     <span className="ms-send-label">Delivered:</span>
@@ -1330,7 +579,7 @@ export default function SnackPage() {
                   </div>
                 ) : (
                   <div className="ms-send-message-row">
-                    <span>Click Send Message to deliver a random note.</span>
+                    <span>Click a button to interact with Snack.</span>
                   </div>
                 )}
               </div>
@@ -1353,7 +602,7 @@ export default function SnackPage() {
           {/* ════ RIGHT COLUMN ════ */}
           <div className="ms-col-right">
             {/* ── About Me ── */}
-            <div className="ms-section" id="about">
+            <motion.div className="ms-section" id="about" {...fadeInUp(0.1)}>
               <div className="ms-section-header">
                 <Mail size={14} /> About Me
               </div>
@@ -1363,10 +612,10 @@ export default function SnackPage() {
                   heart and hole.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
             {/* ── Who I'd Like to Meet ── */}
-            <div className="ms-section">
+            <motion.div className="ms-section" {...fadeInUp(0.2)}>
               <div className="ms-section-header">
                 <Eye size={14} /> Who I&apos;d Like to Meet
               </div>
@@ -1378,10 +627,10 @@ export default function SnackPage() {
                   non-negotiable.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
             {/* ── Interests ── */}
-            <div className="ms-section">
+            <motion.div className="ms-section" {...fadeInUp(0.3)}>
               <div className="ms-section-header">
                 <Target size={14} /> Interests
               </div>
@@ -1397,10 +646,10 @@ export default function SnackPage() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </motion.div>
 
             {/* ── Experience ── */}
-            <div className="ms-section" id="experience">
+            <motion.div className="ms-section" id="experience" {...fadeInUp(0.4)}>
               <div className="ms-section-header">
                 <Briefcase size={14} /> Experience
               </div>
@@ -1413,10 +662,10 @@ export default function SnackPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* ── Skills ── */}
-            <div className="ms-section" id="skills">
+            <motion.div className="ms-section" id="skills" {...fadeInUp(0.5)}>
               <div className="ms-section-header">
                 <Heart size={14} /> Skills
               </div>
@@ -1424,7 +673,7 @@ export default function SnackPage() {
                 <div
                   style={{
                     fontSize: '11px',
-                    color: '#888899',
+                    color: '#777777',
                     marginBottom: '10px',
                     fontStyle: 'italic',
                   }}
@@ -1448,17 +697,28 @@ export default function SnackPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* ── Top 8 ── */}
-            <div className="ms-section" id="top8">
+            <motion.div className="ms-section" id="top8" {...fadeInUp(0.6)}>
               <div className="ms-section-header">
                 <Users size={14} /> Snack&apos;s Top 8
               </div>
               <div className="ms-section-body">
-                <div className="ms-top8-grid">
+                <motion.div
+                  className="ms-top8-grid"
+                  variants={staggerChildren}
+                  initial="initial"
+                  animate="animate"
+                >
                   {topFriends.map((friend, i) => (
-                    <div key={friend.name} className="ms-friend">
+                    <motion.div
+                      key={friend.name}
+                      className="ms-friend"
+                      variants={friendVariants}
+                      whileHover={{ scale: 1.05, borderColor: 'var(--ms-accent)' }}
+                      whileTap={{ scale: 0.95 }}
+                    >
                       <span
                         className="ms-friend-avatar"
                         style={{ background: friendColors[i % friendColors.length] }}
@@ -1466,14 +726,14 @@ export default function SnackPage() {
                         {friend.initial}
                       </span>
                       <span className="ms-friend-name">{friend.name}</span>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
 
             {/* ── Education & Certs ── */}
-            <div className="ms-section">
+            <motion.div className="ms-section" {...fadeInUp(0.7)}>
               <div className="ms-section-header">
                 <GraduationCap size={14} /> Education &amp; Certifications
               </div>
@@ -1495,10 +755,10 @@ export default function SnackPage() {
                   practical exam; 100% client vocalization/moaning rate.
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* ── Comments ── */}
-            <div className="ms-section" id="comments">
+            <motion.div className="ms-section" id="comments" {...fadeInUp(0.8)}>
               <div className="ms-section-header">
                 <MessageCircle size={14} /> Comments ({comments.length})
               </div>
@@ -1539,7 +799,11 @@ export default function SnackPage() {
                     Leave a Comment
                   </button>
                 ) : (
-                  <div style={{ marginTop: '10px' }}>
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    style={{ marginTop: '10px', overflow: 'hidden' }}
+                  >
                     <textarea
                       placeholder="say something nice (or spicy)..."
                       rows={3}
@@ -1568,20 +832,20 @@ export default function SnackPage() {
                       />{' '}
                       Submit
                     </button>
-                  </div>
+                  </motion.div>
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {/* ── References ── */}
-            <div className="ms-section">
+            <motion.div className="ms-section" {...fadeInUp(0.9)}>
               <div className="ms-section-header">
                 <ClipboardList size={14} /> References
               </div>
               <div className="ms-section-body" style={{ textAlign: 'center', fontStyle: 'italic' }}>
-                Available upon request.
+                &quot;He&apos;s so hot.&quot; — Paris Hilton when asked to be my reference
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -1591,13 +855,15 @@ export default function SnackPage() {
         </footer>
       </div>
 
-      {showApplication && (
-        <ApplicationModal
-          onClose={handleCloseApplication}
-          onSubmitSuccess={() => trackMyspace('application_submit_success')}
-          onSubmitError={(error) => trackMyspace('application_submit_error', { error })}
-        />
-      )}
+      <AnimatePresence>
+        {showApplication && (
+          <ApplicationModal
+            onClose={handleCloseApplication}
+            onSubmitSuccess={() => trackMyspace('application_submit_success')}
+            onSubmitError={(error) => trackMyspace('application_submit_error', { error })}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
