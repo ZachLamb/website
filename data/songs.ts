@@ -7,9 +7,9 @@ export interface Song {
 
 const songs: Song[] = [
   {
-    title: 'My Heart Will Go On',
-    artist: 'Celine Dion',
-    spotifyId: '33LC84JgLvK2KuW43MfaNq',
+    title: 'Misery Business',
+    artist: 'Paramore',
+    spotifyId: '6SpLc7EXZIPpy0sVko0aoU',
   },
   {
     title: "It's All Coming Back to Me Now",

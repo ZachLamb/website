@@ -2,7 +2,27 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import {
+  Mail,
+  Eye,
+  Target,
+  Briefcase,
+  Heart,
+  Users,
+  GraduationCap,
+  MessageCircle,
+  ClipboardList,
+  MapPin,
+  Lock,
+  UserPlus,
+  Share2,
+  Gift,
+  Ban,
+  Send,
+  X,
+} from 'lucide-react';
 import { getRandomSong } from '@/data/songs';
+import ApplicationModal from './ApplicationModal';
 
 /* ─── data ──────────────────────────────────────────────── */
 
@@ -47,39 +67,53 @@ const experience = [
 const comments = [
   {
     name: 'CuddleBear2024',
-    avatar: '🧸',
-    text: 'omg snack ur profile is SO cute!! we should totally hang out sometime 💕',
+    initial: 'C',
+    color: '#e06090',
+    text: 'omg snack ur profile is SO cute!! we should totally hang out sometime',
     time: '2 hours ago',
   },
   {
     name: 'HikingHottie',
-    avatar: '🏔️',
+    initial: 'H',
+    color: '#60a0e0',
     text: "love the resume format lol. also ur music taste? *chef's kiss*",
     time: '5 hours ago',
   },
   {
     name: 'OreoEnthusiast',
-    avatar: '🍪',
+    initial: 'O',
+    color: '#a070d0',
     text: 'double stuf or regular? this is a dealbreaker question.',
     time: '1 day ago',
   },
   {
     name: 'DenverDaddy',
-    avatar: '⛰️',
+    initial: 'D',
+    color: '#50b080',
     text: 'just here to say the hoodie thing is real. i want it back btw.',
     time: '2 days ago',
   },
 ];
 
+const friendColors = [
+  '#e06090',
+  '#60a0e0',
+  '#a070d0',
+  '#50b080',
+  '#e0a040',
+  '#d06060',
+  '#6080d0',
+  '#c060c0',
+];
 const topFriends = [
-  { name: 'Tom', emoji: '👤' },
-  { name: 'Paris Hilton', emoji: '👱‍♀️' },
-  { name: 'Britney Spears', emoji: '🎤' },
-  { name: 'Lindsay Lohan', emoji: '🎬' },
-  { name: 'Nicole Richie', emoji: '👛' },
-  { name: 'Kim Kardashian', emoji: '📸' },
-  { name: 'Tila Tequila', emoji: '🍸' },
-  { name: 'Jeffree Star', emoji: '⭐' },
+  { name: 'Tom', initial: 'T' },
+  { name: 'Paris Hilton', initial: 'P' },
+  { name: 'Britney Spears', initial: 'B' },
+  { name: 'Lindsay Lohan', initial: 'L' },
+  { name: 'Nicole Richie', initial: 'N' },
+  { name: 'Kim Kardashian', initial: 'K' },
+  { name: 'Tila Tequila', initial: 'T' },
+  { name: 'Jeffree Star', initial: 'J' },
 ];
 
 const interests = [
@@ -114,6 +148,7 @@ const SpotifyPlayer = dynamic(() => Promise.resolve({ default: SpotifyPlayerInne
 
 export default function SnackPage() {
   const [showCommentForm, setShowCommentForm] = useState(false);
+  const [showApplication, setShowApplication] = useState(false);
 
   return (
     <div className="myspace-page">
@@ -516,11 +551,15 @@ export default function SnackPage() {
           position: relative;
         }
         .ms-exp-item::before {
-          content: '💜';
+          content: '';
           position: absolute;
-          left: -9px;
-          top: 0;
-          font-size: 14px;
+          left: -7px;
+          top: 6px;
+          width: 10px;
+          height: 10px;
+          background: var(--ms-accent);
+          border-radius: 50%;
+          border: 2px solid var(--ms-section-bg);
         }
         .ms-exp-title {
           font-weight: bold;
@@ -557,11 +596,11 @@ export default function SnackPage() {
           flex-shrink: 0;
         }
         .ms-heart {
-          font-size: 14px;
           animation: pulse-heart 2s ease-in-out infinite;
+          color: var(--ms-accent);
         }
         .ms-heart-empty {
-          opacity: 0.25;
+          opacity: 0.2;
         }
 
         /* ── top 8 ── */
@@ -586,9 +625,16 @@ export default function SnackPage() {
           transform: scale(0.95);
         }
         .ms-friend-avatar {
-          font-size: 28px;
-          display: block;
-          margin-bottom: 4px;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 4px;
+          font-size: 16px;
+          font-weight: bold;
+          color: #ffffff;
           animation: float 3s ease-in-out infinite;
         }
         .ms-friend-name {
@@ -688,10 +734,14 @@ export default function SnackPage() {
           color: #ccccdd;
         }
         .ms-edu-item::before {
-          content: '🎓';
+          content: '';
           position: absolute;
-          left: 0;
-          top: 0;
+          left: 2px;
+          top: 4px;
+          width: 8px;
+          height: 8px;
+          background: var(--ms-link);
+          border-radius: 2px;
         }
         .ms-edu-item strong {
           color: var(--ms-link);
@@ -705,10 +755,13 @@ export default function SnackPage() {
           color: #ccccdd;
         }
         .ms-cert-item::before {
-          content: '✅';
+          content: '\\2713';
           position: absolute;
-          left: 0;
+          left: 2px;
           top: 0;
+          color: var(--ms-online);
+          font-weight: bold;
+          font-size: 13px;
         }
 
         /* ── footer ── */
@@ -792,7 +845,9 @@ export default function SnackPage() {
             gap: 10px;
           }
           .ms-friend-avatar {
-            font-size: 36px;
+            width: 48px;
+            height: 48px;
+            font-size: 18px;
           }
           .ms-friend-name {
             font-size: 11px;
@@ -842,12 +897,7 @@ export default function SnackPage() {
           <a href="#top8">Friends</a>
           <a href="#skills">Forum</a>
         </nav>
-        <div style={{ fontSize: '12px', color: '#aaaacc' }}>
-          <span role="img" aria-label="sparkle">
-            ✨
-          </span>{' '}
-          a place for friends
-        </div>
+        <div style={{ fontSize: '12px', color: '#aaaacc' }}>a place for friends</div>
       </header>
 
       {/* ── Marquee Banner ── */}
@@ -860,7 +910,8 @@ export default function SnackPage() {
 
       {/* ── URL Bar (desktop) ── */}
       <div className="ms-url-bar" aria-hidden="true">
-        🔒 <span>https://myspace.com/snack</span>
+        <Lock size={11} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4 }} />{' '}
+        <span>https://myspace.com/snack</span>
       </div>
 
       {/* ── Main Layout ── */}
@@ -871,8 +922,15 @@ export default function SnackPage() {
             {/* Profile Header Card */}
             <div className="ms-profile-header">
               <div className="ms-profile-photo">
-                <span role="img" aria-label="snack">
-                  🥾
+                <span
+                  style={{
+                    fontSize: '32px',
+                    fontWeight: 'bold',
+                    color: 'var(--ms-accent)',
+                    letterSpacing: '2px',
+                  }}
+                >
+                  ZL
                 </span>
                 <span
                   className="sparkle"
@@ -897,21 +955,31 @@ export default function SnackPage() {
               </div>
 
               <div className="ms-mood">
-                <strong>Mood:</strong> Available for cuddles &amp; compliments 💜
+                <strong>Mood:</strong> Available for cuddles &amp; compliments
               </div>
 
               <div className="ms-details">
                 <span className="ms-detail-item">
-                  <span className="ms-detail-label">📍</span> Denver, CO
+                  <MapPin size={12} /> Denver, CO
                 </span>
                 <span className="ms-detail-item">
-                  <span className="ms-detail-label">🎂</span> 32
+                  <span className="ms-detail-label">Age</span> 32
                 </span>
                 <span className="ms-detail-item">
-                  <span className="ms-detail-label">🏳️‍🌈</span> Gay
+                  <span
+                    style={{
+                      width: 12,
+                      height: 12,
+                      background:
+                        'linear-gradient(180deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787)',
+                      borderRadius: 2,
+                      display: 'inline-block',
+                    }}
+                  />{' '}
+                  Gay
                 </span>
                 <span className="ms-detail-item">
-                  <span className="ms-detail-label">📷</span> @gayhiker
+                  <span className="ms-detail-label">IG</span> @gayhiker
                 </span>
               </div>
 
@@ -932,7 +1000,7 @@ export default function SnackPage() {
                   </tr>
                   <tr>
                     <td>Smoke</td>
-                    <td>Only when cooking 🍳</td>
+                    <td>Only when cooking</td>
                   </tr>
                   <tr>
                     <td>Drink</td>
@@ -946,12 +1014,24 @@ export default function SnackPage() {
             <div className="ms-contacting">
               <div className="ms-contacting-header">Contacting Snack</div>
               <div className="ms-contacting-actions">
-                <button className="ms-action-btn">💌 Send Message</button>
-                <button className="ms-action-btn">➕ Add to Friends</button>
-                <button className="ms-action-btn">💕 Add to Favorites</button>
-                <button className="ms-action-btn">🔗 Forward to Friend</button>
-                <button className="ms-action-btn">🎁 Send Oreos</button>
-                <button className="ms-action-btn">🚫 Block User (lol jk)</button>
+                <button className="ms-action-btn">
+                  <Mail size={10} /> Send Message
+                </button>
+                <button className="ms-action-btn" onClick={() => setShowApplication(true)}>
+                  <UserPlus size={10} /> Add to Friends
+                </button>
+                <button className="ms-action-btn">
+                  <Heart size={10} /> Add to Favorites
+                </button>
+                <button className="ms-action-btn">
+                  <Share2 size={10} /> Forward to Friend
+                </button>
+                <button className="ms-action-btn">
+                  <Gift size={10} /> Send Oreos
+                </button>
+                <button className="ms-action-btn">
+                  <Ban size={10} /> Block User (lol jk)
+                </button>
               </div>
             </div>
 
@@ -967,7 +1047,7 @@ export default function SnackPage() {
             {/* ── Visitor Counter ── */}
             <div style={{ textAlign: 'center', margin: '16px 0' }}>
               <div className="ms-visitor-counter">
-                <span>👁️</span>
+                <Eye size={12} />
                 <span>Profile Views: 004,208</span>
               </div>
             </div>
@@ -978,12 +1058,12 @@ export default function SnackPage() {
             {/* ── About Me ── */}
             <div className="ms-section" id="about">
               <div className="ms-section-header">
-                <span>💌</span> About Me
+                <Mail size={14} /> About Me
               </div>
               <div className="ms-section-body">
                 <p>
                   32 year-old gay man seeking a full-time position. Open to relocation into your
-                  heart and hole. 💜
+                  heart and hole.
                 </p>
               </div>
             </div>
@@ -991,7 +1071,7 @@ export default function SnackPage() {
             {/* ── Who I'd Like to Meet ── */}
             <div className="ms-section">
               <div className="ms-section-header">
-                <span>👀</span> Who I&apos;d Like to Meet
+                <Eye size={14} /> Who I&apos;d Like to Meet
               </div>
               <div className="ms-section-body">
                 <p>
@@ -1006,7 +1086,7 @@ export default function SnackPage() {
             {/* ── Interests ── */}
             <div className="ms-section">
               <div className="ms-section-header">
-                <span>🎯</span> Interests
+                <Target size={14} /> Interests
               </div>
               <div className="ms-section-body" style={{ padding: 0 }}>
                 <table className="ms-interests-table">
@@ -1025,7 +1105,7 @@ export default function SnackPage() {
             {/* ── Experience ── */}
             <div className="ms-section" id="experience">
               <div className="ms-section-header">
-                <span>💼</span> Experience
+                <Briefcase size={14} /> Experience
               </div>
               <div className="ms-section-body">
                 {experience.map((exp) => (
@@ -1041,7 +1121,7 @@ export default function SnackPage() {
             {/* ── Skills ── */}
             <div className="ms-section" id="skills">
               <div className="ms-section-header">
-                <span>💜</span> Skills
+                <Heart size={14} /> Skills
               </div>
               <div className="ms-section-body">
                 <div
@@ -1052,7 +1132,7 @@ export default function SnackPage() {
                     fontStyle: 'italic',
                   }}
                 >
-                  Each 💜 = ~5 years of experience (32 years and counting)
+                  Each heart = ~5 years of experience (32 years and counting)
                 </div>
                 {skills.map((skill) => (
                   <div key={skill.name} className="ms-skill-row">
@@ -1064,7 +1144,7 @@ export default function SnackPage() {
                           className={`ms-heart ${i >= skill.hearts ? 'ms-heart-empty' : ''}`}
                           style={{ animationDelay: `${i * 0.15}s` }}
                         >
-                          💜
+                          <Heart size={14} fill="currentColor" />
                         </span>
                       ))}
                     </span>
@@ -1076,13 +1156,18 @@ export default function SnackPage() {
             {/* ── Top 8 ── */}
             <div className="ms-section" id="top8">
               <div className="ms-section-header">
-                <span>👯</span> Snack&apos;s Top 8
+                <Users size={14} /> Snack&apos;s Top 8
               </div>
               <div className="ms-section-body">
                 <div className="ms-top8-grid">
-                  {topFriends.map((friend) => (
+                  {topFriends.map((friend, i) => (
                     <div key={friend.name} className="ms-friend">
-                      <span className="ms-friend-avatar">{friend.emoji}</span>
+                      <span
+                        className="ms-friend-avatar"
+                        style={{ background: friendColors[i % friendColors.length] }}
+                      >
+                        {friend.initial}
+                      </span>
                       <span className="ms-friend-name">{friend.name}</span>
                     </div>
                   ))}
@@ -1093,7 +1178,7 @@ export default function SnackPage() {
             {/* ── Education & Certs ── */}
             <div className="ms-section">
               <div className="ms-section-header">
-                <span>🎓</span> Education &amp; Certifications
+                <GraduationCap size={14} /> Education &amp; Certifications
               </div>
               <div className="ms-section-body">
                 <div className="ms-edu-item">
@@ -1118,12 +1203,22 @@ export default function SnackPage() {
             {/* ── Comments ── */}
             <div className="ms-section" id="comments">
               <div className="ms-section-header">
-                <span>💬</span> Comments ({comments.length})
+                <MessageCircle size={14} /> Comments ({comments.length})
               </div>
               <div className="ms-section-body">
                 {comments.map((c) => (
                   <div key={c.name} className="ms-comment">
-                    <div className="ms-comment-avatar">{c.avatar}</div>
+                    <div
+                      className="ms-comment-avatar"
+                      style={{
+                        background: c.color,
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        fontSize: '14px',
+                      }}
+                    >
+                      {c.initial}
+                    </div>
                     <div className="ms-comment-body">
                       <span className="ms-comment-name">{c.name}</span>
                       <span className="ms-comment-time">{c.time}</span>
@@ -1137,7 +1232,11 @@ export default function SnackPage() {
                     onClick={() => setShowCommentForm(true)}
                     style={{ marginTop: '10px' }}
                   >
-                    💌 Leave a Comment
+                    <Mail
+                      size={14}
+                      style={{ display: 'inline', verticalAlign: 'middle', marginRight: 6 }}
+                    />{' '}
+                    Leave a Comment
                   </button>
                 ) : (
                   <div style={{ marginTop: '10px' }}>
@@ -1157,7 +1256,11 @@ export default function SnackPage() {
                       }}
                     />
                     <button className="ms-cta" onClick={() => setShowCommentForm(false)}>
-                      📨 Submit
+                      <Send
+                        size={14}
+                        style={{ display: 'inline', verticalAlign: 'middle', marginRight: 6 }}
+                      />{' '}
+                      Submit
                     </button>
                   </div>
                 )}
@@ -1167,10 +1270,10 @@ export default function SnackPage() {
             {/* ── References ── */}
             <div className="ms-section">
               <div className="ms-section-header">
-                <span>📋</span> References
+                <ClipboardList size={14} /> References
               </div>
               <div className="ms-section-body" style={{ textAlign: 'center', fontStyle: 'italic' }}>
-                Available upon request. 😏
+                Available upon request.
               </div>
             </div>
           </div>
@@ -1184,6 +1287,8 @@ export default function SnackPage() {
           </p>
         </footer>
       </div>
+
+      {showApplication && <ApplicationModal onClose={() => setShowApplication(false)} />}
     </div>
   );
 }

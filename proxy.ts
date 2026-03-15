@@ -11,7 +11,8 @@ export function proxy(request: NextRequest) {
     pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/') ||
     pathname.includes('.') || // static files
-    pathname === '/snack' // hidden page — not a locale
+    pathname === '/snack' ||
+    pathname.startsWith('/snack/') // hidden pages — not a locale
   ) {
     return NextResponse.next();
   }
