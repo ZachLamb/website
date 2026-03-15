@@ -6,11 +6,12 @@ const LOCALE_COOKIE = 'NEXT_LOCALE';
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip API routes, _next, and static assets
+  // Skip API routes, _next, static assets, and hidden pages
   if (
     pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/') ||
-    pathname.includes('.') // static files
+    pathname.includes('.') || // static files
+    pathname === '/snack' // hidden page — not a locale
   ) {
     return NextResponse.next();
   }
