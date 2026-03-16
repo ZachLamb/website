@@ -279,7 +279,7 @@ export default function SnackPage() {
   }
 
   useEffect(() => {
-    track('myspace_page_view', { slug: 'myspace', path: '/snack' });
+    track('myspace_page_view', { slug: 'myspace', path: '/myspace' });
   }, []);
 
   useEffect(() => {
@@ -345,7 +345,7 @@ export default function SnackPage() {
     const shareData = {
       title: "Snack's Dating Resume",
       text: "Check out this absolute catch. You're welcome.",
-      url: 'https://zachlamb.io/snack',
+      url: 'https://zachlamb.io/myspace',
     };
     if (typeof navigator.share === 'function') {
       try {
@@ -359,7 +359,7 @@ export default function SnackPage() {
         await navigator.clipboard.writeText(shareData.url);
         showFeedback('Link copied! Now go paste it to someone cute.');
       } catch {
-        showFeedback("Couldn't copy — try sharing zachlamb.io/snack manually.");
+        showFeedback("Couldn't copy — try sharing zachlamb.io/myspace manually.");
       }
     }
   }
