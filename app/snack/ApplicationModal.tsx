@@ -75,6 +75,7 @@ interface Props {
 export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitError }: Props) {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [formTimestamp] = useState(() => Date.now().toString());
   const dialogTitleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -306,6 +307,25 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
+              {/* Anti-bot: honeypot field (hidden from real users) */}
+              <div
+                aria-hidden="true"
+                tabIndex={-1}
+                style={{
+                  position: 'absolute',
+                  left: '-9999px',
+                  top: '-9999px',
+                  opacity: 0,
+                  height: 0,
+                  overflow: 'hidden',
+                }}
+              >
+                <label htmlFor="website">Website</label>
+                <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+              </div>
+              {/* Anti-bot: form render timestamp */}
+              <input type="hidden" name="_t" value={formTimestamp} />
+
               <p
                 style={{
                   fontSize: '12px',

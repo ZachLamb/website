@@ -48,6 +48,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
+  // Anti-bot: reject if honeypot field is filled
+  if (body.website) {
+    // Silently accept to not reveal detection to bots
+    return NextResponse.json({ success: true });
+  }
+
+  // Anti-bot: reject if form was submitted too quickly (< 3 seconds)
+  const formTimestamp = parseInt(body._t?.toString() ?? '0', 10);
+  if (formTimestamp > 0 && Date.now() - formTimestamp < 3000) {
+    return NextResponse.json({ success: true });
+  }
+
   const name = body.name?.toString().trim() ?? '';
   const ageRaw = body.age?.toString() ?? '';
   const location = body.location?.toString().trim() ?? '';
