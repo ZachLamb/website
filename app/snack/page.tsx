@@ -176,7 +176,18 @@ const friendVariants = {
 /* ─── client-only Spotify player (avoids hydration mismatch from Math.random) ── */
 
 function SpotifyPlayerInner() {
-  const [song] = useState(() => getRandomSong());
+  const [song, setSong] = useState(() => getRandomSong());
+  const [isShuffling, setIsShuffling] = useState(false);
+
+  function handleShuffle() {
+    if (isShuffling) return;
+    setIsShuffling(true);
+    setTimeout(() => {
+      setSong(getRandomSong());
+      setIsShuffling(false);
+    }, 400);
+  }
+
   return (
     <div className="ms-myspace-player">
       {/* Player chrome header */}
@@ -192,16 +203,35 @@ function SpotifyPlayerInner() {
         </div>
       </div>
 
-      {/* Song info */}
+      {/* Song info with vinyl + shuffle */}
       <div className="ms-player-info">
+        <div className="ms-vinyl-wrap">
+          <span className={`ms-vinyl ${isShuffling ? 'is-shuffling' : ''}`} aria-hidden="true">
+            <span className="ms-vinyl-label" />
+          </span>
+        </div>
         <div className="ms-player-song">
           <span className="ms-player-song-title">{song.title}</span>
           <span className="ms-player-song-artist">{song.artist}</span>
         </div>
+        <motion.button
+          className="ms-shuffle-btn"
+          onClick={handleShuffle}
+          disabled={isShuffling}
+          aria-label="Shuffle song"
+          type="button"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9, rotate: 180 }}
+          animate={isShuffling ? { rotate: 360 } : { rotate: 0 }}
+          transition={{ duration: 0.4, ease: 'easeInOut' as const }}
+        >
+          ⟳
+        </motion.button>
       </div>
 
       {/* Spotify embed */}
       <iframe
+        key={song.spotifyId}
         src={`https://open.spotify.com/embed/track/${song.spotifyId}?utm_source=generator&theme=0`}
         height="80"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -681,25 +711,51 @@ export default function SnackPage() {
                       delay: 0.6 + skillIdx * 0.08,
                       ease: 'easeOut' as const,
                     }}
+                    whileHover={{
+                      x: 4,
+                      backgroundColor: 'rgba(180, 100, 255, 0.06)',
+                      transition: { duration: 0.15 },
+                    }}
                   >
                     <span className="ms-skill-name">{skill.name}</span>
                     <span className="ms-skill-hearts">
-                      {Array.from({ length: 6 }).map((_, i) => (
-                        <motion.span
-                          key={i}
-                          className={`ms-heart ${i >= skill.hearts ? 'ms-heart-empty' : ''}`}
-                          style={{ animationDelay: `${i * 0.15}s` }}
-                          initial={prefersReducedMotion ? false : { opacity: 0, scale: 0 }}
-                          animate={{ opacity: i >= skill.hearts ? 0.2 : 1, scale: 1 }}
-                          transition={{
-                            duration: 0.3,
-                            delay: 0.8 + skillIdx * 0.08 + i * 0.05,
-                            ease: 'backOut' as const,
-                          }}
-                        >
-                          <Heart size={14} fill="currentColor" />
-                        </motion.span>
-                      ))}
+                      {Array.from({ length: 6 }).map((_, i) => {
+                        const filled = i < skill.hearts;
+                        return (
+                          <motion.span
+                            key={i}
+                            className={`ms-heart ${!filled ? 'ms-heart-empty' : ''}`}
+                            initial={prefersReducedMotion ? false : { opacity: 0, scale: 0 }}
+                            animate={{
+                              opacity: filled ? 1 : 0.2,
+                              scale: 1,
+                              filter: filled
+                                ? 'drop-shadow(0 0 3px rgba(180, 100, 255, 0.5))'
+                                : 'none',
+                            }}
+                            transition={{
+                              duration: 0.3,
+                              delay: 0.8 + skillIdx * 0.08 + i * 0.05,
+                              ease: 'backOut' as const,
+                            }}
+                            {...(filled
+                              ? {
+                                  whileHover: {
+                                    scale: 1.4,
+                                    filter: 'drop-shadow(0 0 8px rgba(180, 100, 255, 0.9))',
+                                    transition: { duration: 0.15, ease: 'easeOut' as const },
+                                  },
+                                  whileTap: {
+                                    scale: 0.7,
+                                    transition: { duration: 0.1, ease: 'easeIn' as const },
+                                  },
+                                }
+                              : {})}
+                          >
+                            <Heart size={14} fill="currentColor" />
+                          </motion.span>
+                        );
+                      })}
                     </span>
                   </motion.div>
                 ))}

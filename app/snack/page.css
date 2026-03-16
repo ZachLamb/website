@@ -71,17 +71,6 @@ body:has(.myspace-page) {
     transform: translateX(-100%);
   }
 }
-@keyframes pulse-heart {
-  0%,
-  100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 2px rgba(180, 100, 255, 0.4));
-  }
-  50% {
-    transform: scale(1.25);
-    filter: drop-shadow(0 0 6px rgba(180, 100, 255, 0.7));
-  }
-}
 @keyframes float {
   0%,
   100% {
@@ -501,7 +490,7 @@ body:has(.myspace-page) {
 .ms-player-info {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
   padding: 8px 10px;
   border-bottom: 1px solid #1a1a1a;
 }
@@ -510,6 +499,7 @@ body:has(.myspace-page) {
   flex-direction: column;
   gap: 1px;
   min-width: 0;
+  flex: 1;
 }
 .ms-player-song-title {
   font-size: 12px;
@@ -522,6 +512,81 @@ body:has(.myspace-page) {
 .ms-player-song-artist {
   font-size: 10px;
   color: #777777;
+}
+
+/* ── vinyl disc ── */
+@keyframes spin-vinyl {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.ms-vinyl-wrap {
+  flex-shrink: 0;
+}
+.ms-vinyl {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #222 30%, transparent 31%),
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0px,
+      transparent 3px,
+      rgba(255, 255, 255, 0.03) 3px,
+      rgba(255, 255, 255, 0.03) 4px
+    ),
+    conic-gradient(from 0deg, #111 0%, #1a1a1a 25%, #111 50%, #1a1a1a 75%, #111 100%);
+  border: 1px solid #333;
+  position: relative;
+  animation: spin-vinyl 3s linear infinite;
+}
+.ms-vinyl.is-shuffling {
+  animation-duration: 0.3s;
+}
+.ms-vinyl-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--ms-accent) 40%, #660033 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ── shuffle button ── */
+.ms-shuffle-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  background: rgba(255, 255, 255, 0.06);
+  color: #999;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+.ms-shuffle-btn:hover {
+  color: var(--ms-accent);
+  border-color: var(--ms-accent);
+}
+.ms-shuffle-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
 }
 /* ── interests table ── */
 .ms-interests-table {
@@ -592,6 +657,10 @@ body:has(.myspace-page) {
   gap: 8px;
   margin-bottom: 6px;
   font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-left: -6px;
+  margin-right: -6px;
 }
 .ms-skill-name {
   flex: 1;
@@ -604,13 +673,13 @@ body:has(.myspace-page) {
   flex-shrink: 0;
 }
 .ms-heart {
-  animation: pulse-heart 2s ease-in-out infinite;
   color: #b464ff;
+  cursor: pointer;
+  display: inline-flex;
 }
 .ms-heart-empty {
   opacity: 0.2;
-  animation: none;
-  filter: none;
+  cursor: default;
 }
 
 /* ── top 8 ── */
@@ -882,13 +951,13 @@ body:has(.myspace-page) {
 @media (prefers-reduced-motion: reduce) {
   .sparkle,
   .ms-online-dot,
-  .ms-heart,
   .ms-friend-avatar,
   .ms-marquee span,
   .ms-profile-name,
   .ms-star,
   .ms-eq-bar,
-  .ms-send-spinner {
+  .ms-send-spinner,
+  .ms-vinyl {
     animation: none !important;
   }
 }
