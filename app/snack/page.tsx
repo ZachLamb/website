@@ -135,7 +135,8 @@ const interests = [
   { label: 'General', value: 'Hiking, Pets, Oreos, Being the big spoon, Therapy, Gay stuff' },
   {
     label: 'Music',
-    value: 'Paramore, Blink-182, Carly Rae Jepsen, Avril Lavigne, whatever you put on',
+    value:
+      'Paramore, Caamp, K-Pop Demon Hunters Soundtrack, Young the Giant, Megan Thee Stallion, Olivia Dean, ROSAL\u00cdA, Infinity Song, and whatever you put on',
   },
   {
     label: 'Movies',

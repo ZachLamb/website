@@ -107,4 +107,80 @@ describe('POST /api/snack/apply', () => {
     expect(json.error).toMatch(/too many submissions/i);
     expect(lpushMock).not.toHaveBeenCalled();
   });
+
+  it('silently discards submission when honeypot field is filled', async () => {
+    const body = { ...validBody(), website: 'http://spam.example.com' };
+
+    const res = await POST(makeRequest(body));
+
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.success).toBe(true);
+    // Should NOT store or email
+    expect(lpushMock).not.toHaveBeenCalled();
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it('silently discards submission when form is submitted too quickly', async () => {
+    const body = { ...validBody(), _t: Date.now().toString() };
+
+    const res = await POST(makeRequest(body));
+
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.success).toBe(true);
+    expect(lpushMock).not.toHaveBeenCalled();
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it('allows submission when timestamp is old enough', async () => {
+    const body = { ...validBody(), _t: (Date.now() - 5000).toString() };
+
+    const res = await POST(makeRequest(body));
+
+    expect(res.status).toBe(200);
+    expect(lpushMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('stores submission and sends email on valid request', async () => {
+    const res = await POST(makeRequest(validBody()));
+
+    expect(res.status).toBe(200);
+    expect(lpushMock).toHaveBeenCalledTimes(1);
+    expect(sendMock).toHaveBeenCalledTimes(1);
+
+    const [, payload] = lpushMock.mock.calls[0] as [string, string];
+    const stored = JSON.parse(payload) as Record<string, unknown>;
+    expect(stored.name).toBe('Alex');
+    expect(stored.age).toBe(28);
+    expect(stored.location).toBe('Denver, CO');
+    expect(stored.pitch).toBe('I am kind, funny, and I bring snacks.');
+    expect(stored).toHaveProperty('id');
+    expect(stored).toHaveProperty('submittedAt');
+  });
+
+  it('returns 400 for missing required fields', async () => {
+    const body: Record<string, unknown> = { ...validBody() };
+    delete body.name;
+
+    const res = await POST(makeRequest(body));
+
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.error).toBe('name is required');
+  });
+
+  it('returns 400 for invalid age', async () => {
+    const res = await POST(makeRequest({ ...validBody(), age: '15' }));
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.error).toBe('Invalid age');
+  });
+
+  it('returns 400 when input exceeds max length', async () => {
+    const res = await POST(makeRequest({ ...validBody(), name: 'A'.repeat(101) }));
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.error).toBe('Input exceeds maximum length');
+  });
 });

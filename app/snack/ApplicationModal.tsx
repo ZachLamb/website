@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Send } from 'lucide-react';
+import { X, Send, Heart, CheckCircle } from 'lucide-react';
 
 const radioQuestions = [
   {
@@ -76,10 +76,15 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [formTimestamp] = useState(() => Date.now().toString());
+  const [pitchLength, setPitchLength] = useState(0);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(new Set());
   const dialogTitleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
+
+  const totalQuestions = radioQuestions.length;
+  const answeredCount = answeredQuestions.size;
 
   useEffect(() => {
     returnFocusRef.current =
@@ -141,6 +146,10 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
       returnFocusRef.current?.focus();
     };
   }, [onClose]);
+
+  function handleRadioChange(questionName: string) {
+    setAnsweredQuestions((prev) => new Set(prev).add(questionName));
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -273,24 +282,37 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
         {/* Body */}
         <div style={{ padding: '16px', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
           {status === 'success' ? (
-            <div style={{ textAlign: 'center', padding: '32px 16px' }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, ease: 'easeOut' as const }}
+              style={{ textAlign: 'center', padding: '32px 16px' }}
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.1, duration: 0.4, ease: 'backOut' as const }}
+              >
+                <CheckCircle size={48} style={{ color: '#ff3399', marginBottom: '12px' }} />
+              </motion.div>
               <div
                 style={{
                   fontSize: '18px',
                   fontWeight: 'bold',
                   color: '#ff3399',
-                  marginBottom: '12px',
+                  marginBottom: '8px',
                 }}
               >
                 Application Received!
               </div>
-              <p style={{ color: '#aaaacc', fontSize: '13px', lineHeight: 1.6 }}>
+              <p
+                style={{ color: '#aaaacc', fontSize: '13px', lineHeight: 1.6, margin: '0 0 20px' }}
+              >
                 Snack will review your file shortly. In the meantime, keep being cute.
               </p>
               <button
                 onClick={onClose}
                 style={{
-                  marginTop: '20px',
                   padding: '10px 24px',
                   background: 'linear-gradient(180deg, #ff3399 0%, #990044 100%)',
                   border: '2px solid #ff4488',
@@ -304,7 +326,7 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
               >
                 Close
               </button>
-            </div>
+            </motion.div>
           ) : (
             <form onSubmit={handleSubmit}>
               {/* Anti-bot: honeypot field (hidden from real users) */}
@@ -384,14 +406,76 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
                   rows={4}
                   style={{ ...inputStyle, resize: 'vertical' }}
                   placeholder="Make your case..."
+                  onChange={(e) => setPitchLength(e.target.value.length)}
                 />
+                <div
+                  style={{
+                    fontSize: '10px',
+                    color: pitchLength > 1800 ? '#ff6666' : '#555555',
+                    textAlign: 'right',
+                    marginTop: '2px',
+                  }}
+                >
+                  {pitchLength}/2000
+                </div>
               </div>
+
+              {/* Progress indicator */}
+              {answeredCount > 0 && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '12px',
+                    fontSize: '11px',
+                    color: '#777777',
+                  }}
+                >
+                  <Heart size={10} style={{ color: '#ff3399' }} />
+                  <span>
+                    {answeredCount}/{totalQuestions} questions answered
+                  </span>
+                  <div
+                    style={{
+                      flex: 1,
+                      height: '3px',
+                      background: '#1a1a1a',
+                      borderRadius: '2px',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: `${(answeredCount / totalQuestions) * 100}%`,
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #ff3399, #cc77ff)',
+                        borderRadius: '2px',
+                        transition: 'width 0.3s ease',
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
 
               {/* Radio questions */}
               {radioQuestions.map((q) => (
                 <fieldset key={q.name} style={{ border: 'none', margin: '0 0 14px', padding: 0 }}>
-                  <legend style={{ ...labelStyle, marginBottom: '6px' }}>{q.label} *</legend>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <legend
+                    style={{
+                      ...labelStyle,
+                      marginBottom: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    {q.label} *
+                    {answeredQuestions.has(q.name) && (
+                      <CheckCircle size={11} style={{ color: '#44cc88' }} />
+                    )}
+                  </legend>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                     {q.options.map((opt) => (
                       <label
                         key={opt}
@@ -402,7 +486,15 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
                           fontSize: '12px',
                           color: '#bbbbbb',
                           cursor: 'pointer',
-                          padding: '4px 0',
+                          padding: '5px 8px',
+                          borderRadius: '4px',
+                          transition: 'background 0.15s',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'transparent';
                         }}
                       >
                         <input
@@ -411,6 +503,7 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
                           value={opt}
                           required
                           style={{ accentColor: '#ff3399' }}
+                          onChange={() => handleRadioChange(q.name)}
                         />
                         {opt}
                       </label>
@@ -422,7 +515,15 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
               {status === 'error' && (
                 <div
                   role="alert"
-                  style={{ color: '#ff6666', fontSize: '12px', marginBottom: '10px' }}
+                  style={{
+                    color: '#ff6666',
+                    fontSize: '12px',
+                    marginBottom: '10px',
+                    padding: '8px 12px',
+                    background: 'rgba(255, 102, 102, 0.08)',
+                    borderRadius: '4px',
+                    border: '1px solid rgba(255, 102, 102, 0.2)',
+                  }}
                 >
                   {errorMsg}
                 </div>
@@ -449,6 +550,8 @@ export default function ApplicationModal({ onClose, onSubmitSuccess, onSubmitErr
                   fontSize: '14px',
                   cursor: status === 'submitting' ? 'wait' : 'pointer',
                   fontFamily: 'inherit',
+                  transition: 'opacity 0.15s',
+                  opacity: status === 'submitting' ? 0.7 : 1,
                 }}
               >
                 <Send size={14} />
