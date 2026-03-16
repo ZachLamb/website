@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
-import { verifyAdminCookie } from '../login/route';
+import { auth } from '@/auth';
 
-export async function GET(request: NextRequest) {
-  const cookie = request.cookies.get('myspace_admin')?.value;
-  if (!verifyAdminCookie(cookie)) {
+export async function GET() {
+  const allowedEmail = process.env.MYSPACE_ADMIN_USERNAME ?? '';
+  const session = await auth();
+  if (!session?.user?.email || session.user.email !== allowedEmail) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

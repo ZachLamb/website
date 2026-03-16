@@ -1,8 +1,6 @@
-import { NextRequest } from 'next/server';
-
-const { lrangeMock, verifyAdminCookieMock } = vi.hoisted(() => ({
+const { lrangeMock, authMock } = vi.hoisted(() => ({
   lrangeMock: vi.fn(),
-  verifyAdminCookieMock: vi.fn(),
+  authMock: vi.fn(),
 }));
 
 vi.mock('@vercel/kv', () => ({
@@ -11,39 +9,35 @@ vi.mock('@vercel/kv', () => ({
   },
 }));
 
-vi.mock('../login/route', () => ({
-  verifyAdminCookie: verifyAdminCookieMock,
+vi.mock('@/auth', () => ({
+  auth: authMock,
 }));
 
+vi.stubEnv('MYSPACE_ADMIN_USERNAME', 'admin@example.com');
+
 import { GET } from './route';
-
-function makeRequest(cookie?: string): NextRequest {
-  const headers = new Headers();
-  if (cookie) {
-    headers.set('Cookie', `myspace_admin=${cookie}`);
-  }
-
-  const request = new Request('http://localhost/api/myspace/admin/submissions', {
-    method: 'GET',
-    headers,
-  });
-  return new NextRequest(request);
-}
 
 describe('GET /api/snack/admin/submissions', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    verifyAdminCookieMock.mockReturnValue(true);
+    authMock.mockResolvedValue({ user: { email: 'admin@example.com' } });
   });
 
-  it('returns 401 when admin cookie is missing', async () => {
-    verifyAdminCookieMock.mockReturnValueOnce(false);
-    const res = await GET(makeRequest());
+  it('returns 401 when not authenticated', async () => {
+    authMock.mockResolvedValue(null);
+    const res = await GET();
     expect(res.status).toBe(401);
     await expect(res.json()).resolves.toEqual({ error: 'Unauthorized' });
   });
 
-  it('returns submissions for authorized admin cookie', async () => {
+  it('returns 401 when email does not match allowed admin', async () => {
+    authMock.mockResolvedValue({ user: { email: 'stranger@example.com' } });
+    const res = await GET();
+    expect(res.status).toBe(401);
+    await expect(res.json()).resolves.toEqual({ error: 'Unauthorized' });
+  });
+
+  it('returns submissions for authorized admin', async () => {
     lrangeMock.mockResolvedValue([
       JSON.stringify({
         id: 'a1',
@@ -52,10 +46,8 @@ describe('GET /api/snack/admin/submissions', () => {
         travelStyle: 'Adventure',
       }),
     ]);
-    const token = 'valid-token';
 
-    const res = await GET(makeRequest(token));
-    expect(verifyAdminCookieMock).toHaveBeenCalled();
+    const res = await GET();
     expect(res.status).toBe(200);
 
     const json = await res.json();
@@ -70,9 +62,8 @@ describe('GET /api/snack/admin/submissions', () => {
 
   it('returns 500 when KV read fails', async () => {
     lrangeMock.mockRejectedValue(new Error('kv down'));
-    const token = 'valid-token';
 
-    const res = await GET(makeRequest(token));
+    const res = await GET();
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: 'Failed to fetch submissions' });
   });

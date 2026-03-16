@@ -9,6 +9,7 @@ function getResendClient() {
 }
 
 const TO_EMAIL = process.env.CONTACT_EMAIL ?? 'hello@zachlamb.com';
+const ADMIN_EMAIL = process.env.MYSPACE_ADMIN_USERNAME ?? '';
 
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT_WINDOW_SECONDS = 15 * 60;
@@ -151,9 +152,14 @@ export async function POST(request: Request) {
       .filter((l) => l !== null)
       .join('\n');
 
+    const recipients = [TO_EMAIL];
+    if (ADMIN_EMAIL && ADMIN_EMAIL !== TO_EMAIL) {
+      recipients.push(ADMIN_EMAIL);
+    }
+
     await getResendClient().emails.send({
       from: `Snack's MySpace <${process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'}>`,
-      to: TO_EMAIL,
+      to: recipients,
       subject: `New Friend Request: ${submission.name}`,
       text: lines,
     });
