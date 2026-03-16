@@ -28,7 +28,6 @@ import {
 import { getRandomSong } from '@/data/songs';
 import ApplicationModal from './ApplicationModal';
 import './page.css';
-/* MyspaceProfileImage no longer needed — using next/image directly */
 
 const markerFont = Permanent_Marker({ weight: '400', subsets: ['latin'], display: 'swap' });
 
@@ -138,7 +137,11 @@ const interests = [
     label: 'Music',
     value: 'Paramore, Blink-182, Carly Rae Jepsen, Avril Lavigne, whatever you put on',
   },
-  { label: 'Movies', value: 'Anything where the pet lives, 90s romcoms, horror (I will hold you)' },
+  {
+    label: 'Movies',
+    value:
+      'Anything where the pet lives, romcoms, thrillers, nature docs, and horror (I will hold you)',
+  },
   {
     label: 'Television',
     value:
@@ -178,13 +181,23 @@ const friendVariants = {
 function SpotifyPlayerInner() {
   const [song, setSong] = useState(() => getRandomSong());
   const [isShuffling, setIsShuffling] = useState(false);
+  const shuffleTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (shuffleTimerRef.current !== null) {
+        window.clearTimeout(shuffleTimerRef.current);
+      }
+    };
+  }, []);
 
   function handleShuffle() {
     if (isShuffling) return;
     setIsShuffling(true);
-    setTimeout(() => {
+    shuffleTimerRef.current = window.setTimeout(() => {
       setSong(getRandomSong());
       setIsShuffling(false);
+      shuffleTimerRef.current = null;
     }, 400);
   }
 
@@ -266,7 +279,7 @@ export default function SnackPage() {
   }
 
   useEffect(() => {
-    track('myspace_page_view', { slug: 'myspace', path: '/myspace' });
+    track('myspace_page_view', { slug: 'myspace', path: '/snack' });
   }, []);
 
   useEffect(() => {
@@ -580,7 +593,7 @@ export default function SnackPage() {
                   <Gift size={10} /> Send Oreos{oreoCount > 0 ? ` (${oreoCount})` : ''}
                 </button>
                 <button className="ms-action-btn" onClick={handleBlockUser} type="button">
-                  <Ban size={10} /> Block User (lol jk)
+                  <Ban size={10} /> Block User
                 </button>
               </div>
               <div className="ms-send-message-feedback" aria-live="polite">
