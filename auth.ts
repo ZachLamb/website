@@ -4,7 +4,12 @@ import Google from 'next-auth/providers/google';
 const allowedEmail = process.env.MYSPACE_ADMIN_USERNAME ?? '';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [Google],
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  ],
   pages: {
     signIn: '/myspace/admin',
     error: '/myspace/admin',
