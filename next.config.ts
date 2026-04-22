@@ -16,14 +16,6 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },
-  async redirects() {
-    return [
-      { source: '/snack', destination: '/myspace', permanent: true },
-      { source: '/snack/:path((?!.*\\.).*)', destination: '/myspace/:path', permanent: true },
-      { source: '/api/snack/:path*', destination: '/api/myspace/:path*', permanent: true },
-      { source: '/myspace/profile.jpg', destination: '/snack/profile.jpg', permanent: true },
-    ];
-  },
   async headers() {
     return [{ source: '/(.*)', headers: securityHeaders }];
   },

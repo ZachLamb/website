@@ -6,23 +6,11 @@ const LOCALE_COOKIE = 'NEXT_LOCALE';
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith('/snack/') && pathname.includes('.')) {
-    return NextResponse.next();
-  }
-
-  if (pathname === '/snack' || pathname.startsWith('/snack/')) {
-    const targetPath = pathname.replace(/^\/snack/, '/myspace');
-    const target = new URL(`${targetPath}${request.nextUrl.search}`, request.url);
-    return NextResponse.redirect(target, 308);
-  }
-
-  // Skip API routes, _next, static assets, and hidden pages
+  // Skip API routes, _next, and static assets
   if (
     pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/') ||
-    pathname.includes('.') || // static files
-    pathname === '/myspace' ||
-    pathname.startsWith('/myspace/') // hidden pages — not a locale
+    pathname.includes('.') // static files
   ) {
     return NextResponse.next();
   }
