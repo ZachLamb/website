@@ -2,7 +2,8 @@
 
 import { useRef, useState } from 'react';
 import { m, useInView, AnimatePresence } from 'framer-motion';
-import { Quote, Linkedin, ChevronDown, ChevronUp } from 'lucide-react';
+import { Quote, ChevronDown, ChevronUp } from 'lucide-react';
+import { LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
@@ -96,7 +97,7 @@ function EndorsementCard({
               aria-label={messages.viewOnLinkedInAria}
               className="text-gold hover:text-copper focus-visible:ring-gold focus-visible:ring-offset-parchment mt-2 inline-flex min-h-11 touch-manipulation items-center gap-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              <Linkedin className="h-4 w-4" />
+              <LinkedinIcon className="h-4 w-4" />
               {messages.viewOnLinkedIn}
             </a>
           </footer>
@@ -131,7 +132,7 @@ export function Endorsements() {
             aria-label={messages.endorsements.viewAllOnLinkedInAria}
             className="text-gold hover:text-copper focus-visible:ring-gold inline-flex items-center gap-2 rounded font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            <Linkedin className="h-5 w-5" />
+            <LinkedinIcon className="h-5 w-5" />
             {messages.endorsements.viewAllOnLinkedIn}
           </a>
         </m.p>

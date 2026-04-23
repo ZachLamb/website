@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { m, useInView } from 'framer-motion';
-import { Github, Linkedin } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '@/components/ui/BrandIcons';
 import { siteConfig } from '@/data/site';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 
@@ -119,7 +119,7 @@ export function Footer() {
             aria-label="GitHub (opens in new tab)"
             className="text-stone hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            <Github className="h-5 w-5" />
+            <GithubIcon className="h-5 w-5" />
           </a>
           <a
             href={siteConfig.links.linkedin}
@@ -128,7 +128,7 @@ export function Footer() {
             aria-label="LinkedIn (opens in new tab)"
             className="text-stone hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            <Linkedin className="h-5 w-5" />
+            <LinkedinIcon className="h-5 w-5" />
           </a>
         </div>
 

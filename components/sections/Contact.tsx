@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { m, useInView, useReducedMotion } from 'framer-motion';
-import { Send, Github, Linkedin, Mail } from 'lucide-react';
+import { Send, Mail } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Button } from '@/components/ui/Button';
@@ -10,8 +11,8 @@ import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { socialLinks } from '@/data/social';
 
 const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
-  github: Github,
-  linkedin: Linkedin,
+  github: GithubIcon,
+  linkedin: LinkedinIcon,
 };
 
 const inputClasses =

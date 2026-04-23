@@ -1,7 +1,7 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { Github, Linkedin } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
 import { TaglineCycler } from '@/components/ui/TaglineCycler';
@@ -24,8 +24,8 @@ const fadeUp = {
 };
 
 const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
-  github: Github,
-  linkedin: Linkedin,
+  github: GithubIcon,
+  linkedin: LinkedinIcon,
 };
 
 /** Default secondary paths when trip has none (decoration only). */
