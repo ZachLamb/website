@@ -26,33 +26,43 @@ export function Navbar() {
   const menuRef = useRef<HTMLUListElement>(null);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
 
-  /* Only lock scroll when mobile menu is open and viewport is actually mobile (fixes desktop scroll) */
+  /* Lock scroll with a position:fixed pattern so iOS Safari preserves scroll position.
+     Setting overflow:hidden on <html> causes iOS to scroll to top on open and jank on close. */
   useEffect(() => {
-    const isMobile =
-      typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+    if (typeof window === 'undefined') return;
+
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
     const shouldLock = mobileOpen && isMobile;
 
     if (shouldLock) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      const savedScrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${savedScrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
     }
 
     const mq = window.matchMedia('(max-width: 767px)');
     const onResize = () => {
       if (!mq.matches) {
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
         setMobileOpen(false);
       }
     };
 
     mq.addEventListener('change', onResize);
     return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      // Restore on cleanup (also fires when mobileOpen flips to false).
+      // Do NOT touch document.documentElement — that was the iOS bug.
+      if (document.body.style.position === 'fixed') {
+        const restoreY = Math.abs(parseInt(document.body.style.top || '0', 10));
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.width = '';
+        window.scrollTo(0, restoreY);
+      }
       mq.removeEventListener('change', onResize);
     };
   }, [mobileOpen]);
