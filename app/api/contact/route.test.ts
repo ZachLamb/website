@@ -2,8 +2,10 @@
 // Node's native Request preserves the Origin header; happy-dom strips it per the
 // Fetch spec's forbidden-request-header rule, so we run this file in `node`.
 
-const { sendMock } = vi.hoisted(() => ({
+const { sendMock, incrMock, expireMock } = vi.hoisted(() => ({
   sendMock: vi.fn().mockResolvedValue({ data: { id: 'test-id' }, error: null }),
+  incrMock: vi.fn(),
+  expireMock: vi.fn().mockResolvedValue(1),
 }));
 
 vi.mock('resend', () => ({
@@ -12,9 +14,39 @@ vi.mock('resend', () => ({
   },
 }));
 
+// Mock @upstash/redis so we never open a real network connection in tests.
+// When UPSTASH_REDIS_REST_* env vars are unset (the default for most tests
+// in this file), lib/rate-limit.ts never constructs this class and the
+// in-memory fallback runs instead.
+vi.mock('@upstash/redis', () => ({
+  Redis: class {
+    pipeline() {
+      // Mirror Upstash's chainable pipeline shape: each command pushes onto
+      // an internal list, and exec() resolves to an array of results in
+      // command order. We only need incr + expire.
+      return {
+        incr: () => {
+          incrMock();
+          return this;
+        },
+        expire: () => {
+          expireMock();
+          return this;
+        },
+        exec: async () => {
+          const countResult = await incrMock.mock.results.at(-1)?.value;
+          const expireResult = await expireMock.mock.results.at(-1)?.value;
+          return [countResult, expireResult];
+        },
+      };
+    }
+  },
+}));
+
 vi.stubEnv('RESEND_API_KEY', 'test_key');
 
 import { POST } from './route';
+import { __resetRateLimitForTests } from '@/lib/rate-limit';
 
 function makeRequest(body: Record<string, unknown>, headers?: HeadersInit) {
   return new Request('http://localhost/api/contact', {
@@ -232,6 +264,75 @@ describe('POST /api/contact', () => {
       } finally {
         vi.unstubAllEnvs();
         vi.stubEnv('RESEND_API_KEY', 'test_key');
+      }
+    });
+  });
+
+  // Exercise the Upstash-backed path. UPSTASH_REDIS_REST_* env vars are
+  // stubbed so lib/rate-limit.ts constructs the mocked Redis class above,
+  // and we control what INCR returns to drive the allowed/denied branch.
+  describe('Upstash-backed rate limit', () => {
+    beforeAll(() => {
+      vi.stubEnv('UPSTASH_REDIS_REST_URL', 'https://test.upstash.io');
+      vi.stubEnv('UPSTASH_REDIS_REST_TOKEN', 'test-token');
+      // Drop any cached in-memory Redis client from earlier tests so the new
+      // env vars take effect.
+      __resetRateLimitForTests();
+    });
+    afterAll(() => {
+      vi.unstubAllEnvs();
+      vi.stubEnv('RESEND_API_KEY', 'test_key');
+      __resetRateLimitForTests();
+    });
+    beforeEach(() => {
+      incrMock.mockReset();
+      expireMock.mockReset();
+      expireMock.mockResolvedValue(1);
+    });
+
+    it('returns 429 when Upstash INCR returns > max', async () => {
+      incrMock.mockResolvedValueOnce(6);
+      const res = await POST(
+        makeRequest(
+          { name: 'Frodo', email: 'frodo@shire.me', message: 'Hello!' },
+          { 'x-forwarded-for': nextTestIp() },
+        ),
+      );
+      expect(res.status).toBe(429);
+      const json = await res.json();
+      expect(json.error).toMatch(/too many/i);
+      expect(incrMock).toHaveBeenCalledTimes(1);
+    });
+
+    it('returns 200 when Upstash INCR returns <= max', async () => {
+      incrMock.mockResolvedValueOnce(3);
+      const res = await POST(
+        makeRequest(
+          { name: 'Frodo', email: 'frodo@shire.me', message: 'Hello!' },
+          { 'x-forwarded-for': nextTestIp() },
+        ),
+      );
+      expect(res.status).toBe(200);
+      expect(incrMock).toHaveBeenCalledTimes(1);
+    });
+
+    it('fails open and returns 200 when Upstash throws', async () => {
+      incrMock.mockRejectedValueOnce(new Error('upstash down'));
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      try {
+        const res = await POST(
+          makeRequest(
+            { name: 'Frodo', email: 'frodo@shire.me', message: 'Hello!' },
+            { 'x-forwarded-for': nextTestIp() },
+          ),
+        );
+        expect(res.status).toBe(200);
+        expect(errorSpy).toHaveBeenCalledWith(
+          expect.stringMatching(/rate-limit/),
+          expect.any(Error),
+        );
+      } finally {
+        errorSpy.mockRestore();
       }
     });
   });

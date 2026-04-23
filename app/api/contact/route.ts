@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { rateLimit } from '@/lib/rate-limit';
 
 function getResendClient() {
   const key = process.env.RESEND_API_KEY;
@@ -13,9 +14,6 @@ const TO_EMAIL = process.env.CONTACT_EMAIL ?? 'hello@zachlamb.com';
 const MAX_NAME_LENGTH = 200;
 const MAX_EMAIL_LENGTH = 320;
 const MAX_MESSAGE_LENGTH = 5000;
-
-const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
-const RATE_LIMIT_MAX = 5;
 
 const ALLOWED_ORIGINS = new Set<string>([
   'https://zachlamb.io',
@@ -38,8 +36,6 @@ function isOriginAllowed(origin: string | null): boolean {
   return false;
 }
 
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
 function getClientId(request: Request): string {
   // Prefer Vercel-signed header: clients can't forge it because Vercel's edge rewrites it.
   // Fall back to x-forwarded-for (first hop) for non-Vercel environments, then x-real-ip.
@@ -48,17 +44,6 @@ function getClientId(request: Request): string {
   const xff = request.headers.get('x-forwarded-for');
   if (xff) return xff.split(',')[0].trim();
   return request.headers.get('x-real-ip') ?? 'unknown';
-}
-
-function checkRateLimit(clientId: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(clientId);
-  if (!entry || now >= entry.resetAt) {
-    rateLimitMap.set(clientId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return true;
-  }
-  entry.count += 1;
-  return entry.count <= RATE_LIMIT_MAX;
 }
 
 // Strip CR/LF so a malicious name can't inject mail headers via the subject line.
@@ -98,8 +83,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid email address' }, { status: 400 });
   }
 
-  const clientId = getClientId(request);
-  if (!checkRateLimit(clientId)) {
+  const { allowed } = await rateLimit(getClientId(request), {
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+  });
+  if (!allowed) {
     return NextResponse.json(
       { error: 'Too many attempts. Please try again later.' },
       { status: 429 },
