@@ -34,7 +34,11 @@ export function LanguageDropdown({
     const value = e.target.value as Locale;
     if (value === locale) return;
     setLocaleCookie(value);
-    router.push(value === 'en' ? '/en' : `/${value}`);
+    // Preserve the current hash so switching locales keeps the user on the
+    // same section (e.g. /en#services -> /ja#services) rather than dropping
+    // them back at the top of the page.
+    const hash = typeof window !== 'undefined' ? window.location.hash : '';
+    router.push(`/${value}${hash}`);
   }
 
   const label = messages.nav.selectLanguage;
