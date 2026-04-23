@@ -115,7 +115,7 @@ export function Endorsements() {
   return (
     <Section variant="light" id="endorsements" nature={{ leaves: true }}>
       <div ref={ref}>
-        <AnimatedHeading sectionId="endorsements" subtitle="IIa." className="mb-4">
+        <AnimatedHeading sectionId="endorsements" subtitle="IIc." className="mb-4">
           {messages.sections.endorsements}
         </AnimatedHeading>
         <p className="text-bark mb-6 max-w-2xl text-lg">{messages.endorsements.intro}</p>

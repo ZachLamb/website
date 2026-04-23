@@ -10,6 +10,7 @@
   "nav": {
     "trailGuide": "トレイルガイド",
     "trailLog": "トレイルログ",
+    "selectedWork": "選りすぐりの仕事",
     "recommendations": "推薦",
     "gear": "ギア",
     "lodge": "ロッジ",
@@ -63,10 +64,14 @@
   },
   "sections": {
     "experience": "トレイルログ",
+    "projects": "選りすぐりの仕事",
     "endorsements": "推薦",
     "skills": "ギア",
     "services": "ロッジ",
     "education": "資格"
+  },
+  "projects": {
+    "intro": "ユーザーのこと、きちんと届けること、そしてAIが本当に役立つ場所について、私の考え方を示すプロジェクトをいくつか。"
   },
   "endorsements": {
     "intro": "一緒に働いた仲間が私について語ってくれたこと。",

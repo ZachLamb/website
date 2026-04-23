@@ -10,6 +10,7 @@
   "nav": {
     "trailGuide": "Guida del sentiero",
     "trailLog": "Registro del sentiero",
+    "selectedWork": "Lavori Selezionati",
     "recommendations": "Raccomandazioni",
     "gear": "Equipaggiamento",
     "lodge": "Rifugio",
@@ -63,10 +64,14 @@
   },
   "sections": {
     "experience": "Registro del sentiero",
+    "projects": "Lavori Selezionati",
     "endorsements": "Raccomandazioni",
     "skills": "Equipaggiamento",
     "services": "Rifugio",
     "education": "Credenziali"
+  },
+  "projects": {
+    "intro": "Alcuni progetti che mostrano come penso agli utenti, a rilasciare e a dove l'IA porta davvero valore."
   },
   "endorsements": {
     "intro": "Cosa hanno detto di me i compagni di escursione con cui ho lavorato.",

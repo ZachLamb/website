@@ -1,6 +1,7 @@
 import { Hero } from '@/components/sections/Hero';
 import { About } from '@/components/sections/About';
 import { Experience } from '@/components/sections/Experience';
+import { Projects } from '@/components/sections/Projects';
 import { Endorsements } from '@/components/sections/Endorsements';
 import { Skills } from '@/components/sections/Skills';
 import { Services } from '@/components/sections/Services';
@@ -16,6 +17,8 @@ export default function Home() {
       <Divider variant="mountains" />
       <Experience />
       <Divider variant="trail" />
+      <Projects />
+      <Divider variant="treeline" />
       <Endorsements />
       <Skills />
       <Divider variant="treeline" flip />

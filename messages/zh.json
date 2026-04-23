@@ -10,6 +10,7 @@
   "nav": {
     "trailGuide": "步道指南",
     "trailLog": "步道日志",
+    "selectedWork": "精选作品",
     "recommendations": "推荐",
     "gear": "装备",
     "lodge": "营地",
@@ -61,10 +62,14 @@
   },
   "sections": {
     "experience": "步道日志",
+    "projects": "精选作品",
     "endorsements": "推荐",
     "skills": "装备",
     "services": "营地",
     "education": "资历"
+  },
+  "projects": {
+    "intro": "几个项目，展现我如何思考用户、交付以及 AI 真正发挥作用的地方。"
   },
   "endorsements": {
     "intro": "同路人对我与他们的合作是怎么说的。",

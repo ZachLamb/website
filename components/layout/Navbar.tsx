@@ -11,6 +11,7 @@ import { LanguageDropdown } from '@/components/ui/LanguageDropdown';
 export const navLinkIds = [
   { key: 'trailGuide' as const, href: '#about', id: 'about' },
   { key: 'trailLog' as const, href: '#experience', id: 'experience' },
+  { key: 'selectedWork' as const, href: '#projects', id: 'projects' },
   { key: 'recommendations' as const, href: '#endorsements', id: 'endorsements' },
   { key: 'gear' as const, href: '#skills', id: 'skills' },
   { key: 'lodge' as const, href: '#services', id: 'services' },

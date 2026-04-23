@@ -10,6 +10,7 @@
   "nav": {
     "trailGuide": "Wegweiser",
     "trailLog": "Wegbericht",
+    "selectedWork": "Ausgewählte Arbeiten",
     "recommendations": "Empfehlungen",
     "gear": "Ausrüstung",
     "lodge": "Unterkunft",
@@ -63,10 +64,14 @@
   },
   "sections": {
     "experience": "Wegbericht",
+    "projects": "Ausgewählte Arbeiten",
     "endorsements": "Empfehlungen",
     "skills": "Ausrüstung",
     "services": "Unterkunft",
     "education": "Qualifikationen"
+  },
+  "projects": {
+    "intro": "Einige Projekte, die zeigen, wie ich über Nutzer, das Ausliefern und den sinnvollen Einsatz von KI denke."
   },
   "endorsements": {
     "intro": "Was Wegbegleiter über die Zusammenarbeit mit mir gesagt haben.",

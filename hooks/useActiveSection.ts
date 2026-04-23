@@ -6,6 +6,7 @@ export const SECTION_IDS = [
   'hero',
   'about',
   'experience',
+  'projects',
   'endorsements',
   'skills',
   'services',

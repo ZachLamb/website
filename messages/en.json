@@ -10,6 +10,7 @@
   "nav": {
     "trailGuide": "Trail Guide",
     "trailLog": "Trail Log",
+    "selectedWork": "Selected Work",
     "recommendations": "Recommendations",
     "gear": "Gear",
     "lodge": "Lodge",
@@ -65,10 +66,14 @@
   },
   "sections": {
     "experience": "Trail Log",
+    "projects": "Selected Work",
     "endorsements": "Recommendations",
     "skills": "Gear",
     "services": "Lodge",
     "education": "Credentials"
+  },
+  "projects": {
+    "intro": "A handful of projects that show how I think about users, shipping, and where AI earns its keep."
   },
   "endorsements": {
     "intro": "What fellow hikers have said about working with me.",
