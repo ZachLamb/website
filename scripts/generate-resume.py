@@ -157,8 +157,9 @@ EXPERIENCE = [
         "end": "Jan 2024",
         "bullets": [
             "Created a new design system for a brand refresh, driving 100 new users per week improvement",
-            "Built API and UI table for credit bureau reporting",
-            "Created E2E testing framework that uncovered 2 major regression bugs and initiated bi-weekly retrospectives",
+            "Pair-programmed an API and UI table with my manager to show users how their monthly membership payments were being reported to credit bureaus",
+            "Built an E2E testing framework that uncovered two major regression bugs in the production account-creation flow",
+            "Initiated and facilitated bi-weekly retrospectives for the engineering team, leading to a documentation-focused sprint and broader process improvements",
         ],
         "stack": "TypeScript · React · E2E Testing",
     },
@@ -180,11 +181,11 @@ EXPERIENCE = [
         "start": "Nov 2020",
         "end": "Sep 2022",
         "bullets": [
-            "Built multi-million dollar sale promotions powering major revenue events",
-            "Created order history feature with React, Redux, and a custom REST API",
-            "Developed A/B tests increasing testing coverage by 40%",
+            "Built multi-million dollar sale promotions powering major revenue events using Vue.js, YAML, SASS, Docker, and AWS",
+            "Created the order-history feature with React, Redux, a custom REST microservice, Commerce Tools, and AWS Cognito as part of a larger Purple customer-accounts initiative",
+            "Developed A/B tests for the cart checkout flow with React, Redux, and the Google Places API, lifting test coverage across the codebase by 40% using Jest and React Testing Library",
         ],
-        "stack": "Vue.js · React · Redux · SASS · Docker · AWS",
+        "stack": "Vue.js · React · Redux · SASS · Docker · AWS · Commerce Tools",
     },
     {
         "company": "The Regis Company",
@@ -192,16 +193,17 @@ EXPERIENCE = [
         "start": "Nov 2017",
         "end": "Nov 2020",
         "bullets": [
-            "Contributed to a SPA for award-winning corporate learning experiences",
-            "Integrated new Python API reducing load times from 6 seconds to 500ms",
-            "Used UX background to improve team collaboration, achieving a 20% productivity increase",
+            "Contributed to a SPA powering award-winning corporate learning experiences alongside a small cross-disciplinary startup team",
+            "Integrated a new Python API that cut project load times from 6 seconds to 500ms",
+            "Met with clients alongside product owners to refine technical user requirements, reducing project scopes by 30% as measured by Agile story points",
+            "Used my UX background to bridge UX, Dev, and Product teams, driving a 20% productivity increase as measured by burndown charts",
         ],
         "stack": "React · Python · MobX",
     },
 ]
 
 EARLIER = [
-    ("Charter Communications", "Web Developer", "Jul 2017 – Nov 2017"),
+    ("Charter Communications", "Web Developer (Contract)", "Jul 2017 – Nov 2017"),
     ("Freelance Designer", "Freelance Designer", "Jan 2017 – Jul 2017"),
     ("Lab for Playful Computation", "UI/UX Developer", "Sep 2015 – May 2017"),
     ("CU Boulder IT / MCDB", "Technical Support", "Sep 2014 – Apr 2016"),
