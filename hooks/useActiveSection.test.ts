@@ -26,9 +26,12 @@ function setScrollY(value: number) {
   Object.defineProperty(window, 'scrollY', { configurable: true, writable: true, value });
 }
 
-function fireScroll() {
-  act(() => {
+async function fireScroll() {
+  await act(async () => {
     window.dispatchEvent(new Event('scroll'));
+    // Flush the rAF-throttled handler so the resulting state update is applied
+    // before the test assertion reads `result.current`.
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
   });
 }
 
@@ -55,38 +58,38 @@ describe('useActiveSection', () => {
     expect(result.current).toBe('hero');
   });
 
-  it('returns "about" after scrolling to scrollY=1000', () => {
+  it('returns "about" after scrolling to scrollY=1000', async () => {
     // viewportMid = 1000 + 280 = 1280, inside about [800, 1600)
     const { result } = renderHook(() => useActiveSection());
     setScrollY(1000);
-    fireScroll();
+    await fireScroll();
     expect(result.current).toBe('about');
   });
 
-  it('returns "skills" after scrolling to scrollY=3100', () => {
+  it('returns "skills" after scrolling to scrollY=3100', async () => {
     // viewportMid = 3100 + 280 = 3380, inside skills [3200, 4000)
     const { result } = renderHook(() => useActiveSection());
     setScrollY(3100);
-    fireScroll();
+    await fireScroll();
     expect(result.current).toBe('skills');
   });
 
-  it('returns "contact" after scrolling to scrollY=6000', () => {
+  it('returns "contact" after scrolling to scrollY=6000', async () => {
     // viewportMid = 6000 + 280 = 6280, inside contact [5600, 6400)
     const { result } = renderHook(() => useActiveSection());
     setScrollY(6000);
-    fireScroll();
+    await fireScroll();
     expect(result.current).toBe('contact');
   });
 
-  it('falls back to "hero" when scrolled past the last section', () => {
+  it('falls back to "hero" when scrolled past the last section', async () => {
     // viewportMid = 6500 + 280 = 6780, beyond contact's end at 6400.
     // Reverse iteration: no section matches either branch, so `current` stays at its
     // initial value of 'hero'. This documents the current implementation's behavior
     // at the past-end edge.
     const { result } = renderHook(() => useActiveSection());
     setScrollY(6500);
-    fireScroll();
+    await fireScroll();
     expect(result.current).toBe('hero');
   });
 
@@ -99,18 +102,16 @@ describe('useActiveSection', () => {
     }).not.toThrow();
   });
 
-  it('returns default "hero" when no section elements exist in the DOM', () => {
+  it('returns default "hero" when no section elements exist in the DOM', async () => {
     document.querySelectorAll('section').forEach((el) => el.remove());
     const { result } = renderHook(() => useActiveSection());
     expect(result.current).toBe('hero');
-    expect(() => {
-      setScrollY(2000);
-      fireScroll();
-    }).not.toThrow();
+    setScrollY(2000);
+    await expect(fireScroll()).resolves.not.toThrow();
     expect(result.current).toBe('hero');
   });
 
-  it('keeps a stable reference when the active section does not change', () => {
+  it('keeps a stable reference when the active section does not change', async () => {
     // The setActive updater guards with `prev !== current ? current : prev`, so when
     // the computed id matches the previous active id, React receives the same
     // reference and does not schedule a re-render.
@@ -119,7 +120,7 @@ describe('useActiveSection', () => {
     expect(initial).toBe('hero');
 
     setScrollY(10); // viewportMid = 290, still inside hero [0, 800)
-    fireScroll();
+    await fireScroll();
 
     expect(result.current).toBe(initial);
     expect(Object.is(result.current, initial)).toBe(true);

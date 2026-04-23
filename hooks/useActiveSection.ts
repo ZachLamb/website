@@ -21,6 +21,8 @@ export function useActiveSection(): string {
   const [active, setActive] = useState<string>('hero');
 
   useEffect(() => {
+    let ticking = false;
+
     function updateActive() {
       const scrollY = window.scrollY;
       const viewportMid = scrollY + window.innerHeight * 0.35;
@@ -41,11 +43,18 @@ export function useActiveSection(): string {
       }
 
       setActive((prev) => (prev !== current ? current : prev));
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateActive);
     }
 
     updateActive();
-    window.addEventListener('scroll', updateActive, { passive: true });
-    return () => window.removeEventListener('scroll', updateActive);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return active;
