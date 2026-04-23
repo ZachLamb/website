@@ -46,4 +46,10 @@ export const certifications: CertificationEntry[] = [
     issuer: 'Scrum Alliance',
     issuedDate: 'Oct 2020',
   },
+  {
+    id: 'mountain-goat-agile',
+    name: 'Agile Training',
+    issuer: 'Mountain Goat Software (Mike Cohn)',
+    issuedDate: '',
+  },
 ];

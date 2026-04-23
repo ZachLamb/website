@@ -10,8 +10,9 @@ export const siteConfig = {
   links: {
     github: 'https://github.com/ZachLamb',
     linkedin: 'https://www.linkedin.com/in/lambzachary/',
-    /** Optional: URL to resume/CV PDF for "Resume" link in hero and footer */
-    resume: undefined as string | undefined,
+    /** URL to resume/CV PDF for "Resume" link in hero and footer.
+     *  Regenerate via `python3 scripts/generate-resume.py`. */
+    resume: '/zach-lamb-resume.pdf' as string | undefined,
   },
 } as const;
 
