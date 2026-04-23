@@ -20,6 +20,7 @@ vi.mock('framer-motion', () => ({
   },
   useInView: () => true,
   useScroll: () => ({ scrollYProgress: { current: 0 } }),
+  useReducedMotion: () => false,
   AnimatePresence: ({ children }: any) => children,
 }));
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 function LeafSVG({ variant = 0 }: { variant?: number }) {
   if (variant === 1) {
@@ -77,6 +77,9 @@ export function FloatingLeaves({
   color?: string;
   seed?: number;
 }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) return null;
+
   const leaves = generateLeaves(count, seed);
 
   return (
@@ -111,6 +114,9 @@ export function FloatingLeaves({
 }
 
 export function BirdSilhouettes({ count = 3 }: { count?: number }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) return null;
+
   const birds = Array.from({ length: count }, (_, i) => ({
     id: i,
     y: 15 + i * 20,
@@ -176,6 +182,9 @@ export function PineTreeSilhouette({
 }
 
 export function Fireflies({ count = 12 }: { count?: number }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) return null;
+
   const dots = Array.from({ length: count }, (_, i) => ({
     id: i,
     x: 5 + ((i * 37) % 90),
@@ -216,6 +225,8 @@ export function Fireflies({ count = 12 }: { count?: number }) {
 }
 
 export function MistLayer({ className = '' }: { className?: string }) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <div
       aria-hidden="true"
@@ -226,8 +237,12 @@ export function MistLayer({ className = '' }: { className?: string }) {
         style={{
           background: 'linear-gradient(to top, rgba(245,240,232,0.08), transparent)',
         }}
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        animate={prefersReducedMotion ? {} : { opacity: [0.3, 0.6, 0.3] }}
+        transition={
+          prefersReducedMotion
+            ? { duration: 0 }
+            : { duration: 8, repeat: Infinity, ease: 'easeInOut' }
+        }
       />
     </div>
   );
