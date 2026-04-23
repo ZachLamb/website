@@ -68,4 +68,19 @@ else
   echo "No changed source files found for related tests."
 fi
 
+# Typecheck the whole project when any .ts/.tsx file changed. Cheap (tsc is
+# already incremental via tsbuildinfo) and catches cross-file type breakage
+# that vitest related can't see.
+mapfile -t TS_FILES < <(
+  printf '%s\n' "${CHANGED_FILES}" \
+    | rg '\.(ts|tsx)$' || true
+)
+
+if ((${#TS_FILES[@]} > 0)); then
+  echo "Running typecheck..."
+  npm run typecheck
+else
+  echo "No changed TypeScript files; skipping typecheck."
+fi
+
 echo "Pre-push checks passed."
