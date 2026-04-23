@@ -10,5 +10,5 @@ export const cormorantGaramond = Cormorant_Garamond({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-serif',
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '600', '700'],
 });
