@@ -10,6 +10,13 @@ import { getMessages, isValidLocale, locales, type Locale } from '@/lib/i18n';
 
 type Props = { children: React.ReactNode; params: Promise<{ locale: string }> };
 
+// Prerender every supported locale at build time so Vercel serves static HTML
+// from CDN instead of on-demand SSR. Invalid locales still fall through to the
+// runtime redirect below.
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isValidLocale(locale)) {
