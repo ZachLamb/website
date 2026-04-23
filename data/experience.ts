@@ -115,6 +115,19 @@ export const experiences: ExperienceEntry[] = [
     techStack: [],
   },
   {
+    id: 'gogo-business-aviation',
+    company: 'Gogo Business Aviation',
+    position: 'UI/UX Software Engineering Intern',
+    startDate: 'May 2016',
+    endDate: 'Aug 2016',
+    description: [
+      'Implemented major product features on a MEAN-stack app in a pair-programming team',
+      'Collaborated with Product and QA to design the end-user interface',
+      'Wrote end-to-end tests with Mocha.js',
+    ],
+    techStack: ['MongoDB', 'Express', 'Angular', 'Node.js', 'Mocha.js'],
+  },
+  {
     id: 'playful-computation',
     company: 'Lab for Playful Computation',
     position: 'UI/UX Developer',

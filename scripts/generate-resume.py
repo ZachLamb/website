@@ -205,6 +205,7 @@ EXPERIENCE = [
 EARLIER = [
     ("Charter Communications", "Web Developer (Contract)", "Jul 2017 – Nov 2017"),
     ("Freelance Designer", "Freelance Designer", "Jan 2017 – Jul 2017"),
+    ("Gogo Business Aviation", "UI/UX Software Engineering Intern", "May 2016 – Aug 2016"),
     ("Lab for Playful Computation", "UI/UX Developer", "Sep 2015 – May 2017"),
     ("CU Boulder IT / MCDB", "Technical Support", "Sep 2014 – Apr 2016"),
 ]

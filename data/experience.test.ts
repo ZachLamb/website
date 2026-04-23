@@ -1,8 +1,8 @@
 import { experiences } from './experience';
 
 describe('experiences', () => {
-  it('should have exactly 10 entries', () => {
-    expect(experiences).toHaveLength(10);
+  it('should have exactly 11 entries', () => {
+    expect(experiences).toHaveLength(11);
   });
 
   it('each entry should have all required fields', () => {
