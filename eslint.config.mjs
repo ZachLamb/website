@@ -19,11 +19,20 @@ export default [
       ...reactPlugin.configs['jsx-runtime'].rules,
       ...hooksPlugin.configs.recommended.rules,
       ...nextPlugin.configs.recommended.rules,
-      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
     settings: {
       react: { version: 'detect' },
+    },
+  },
+  {
+    // Test files often need `any` to stub opaque third-party APIs
+    // (e.g., framer-motion proxy mocks where typing each motion.* helper
+    // is more noise than signal). Disable the rule for tests only.
+    files: ['**/*.test.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   {
