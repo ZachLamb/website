@@ -23,7 +23,7 @@
   "hero": {
     "title": "Zach Lamb",
     "subtitle": "高级软件工程师",
-    "tagline": "我为人们打造工具 —— 也随时乐意聊聊代码、户外或奥利奥。",
+    "taglines": ["我为人们打造工具 —— 也随时乐意聊聊代码、户外或奥利奥。"],
     "getInTouch": "联系我",
     "learnMore": "了解更多",
     "resume": "简历",

@@ -23,7 +23,9 @@
   "hero": {
     "title": "Zach Lamb",
     "subtitle": "Senior Software-Ingenieur",
-    "tagline": "Ich baue Werkzeuge für Menschen — und bin immer offen für ein Gespräch über Code, die Natur oder Oreos.",
+    "taglines": [
+      "Ich baue Werkzeuge für Menschen — und bin immer offen für ein Gespräch über Code, die Natur oder Oreos."
+    ],
     "getInTouch": "Kontakt aufnehmen",
     "learnMore": "Mehr erfahren",
     "resume": "Lebenslauf",

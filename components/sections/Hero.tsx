@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Github, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
+import { TaglineCycler } from '@/components/ui/TaglineCycler';
 import { socialLinks } from '@/data/social';
 import { siteConfig } from '@/data/site';
 import { demoTrip } from '@/data/trips';
@@ -317,6 +318,15 @@ export function Hero() {
           {messages.hero.subtitle}
         </motion.p>
 
+        {siteConfig.availability && (
+          <motion.span
+            variants={fadeUp}
+            className="border-gold/40 bg-gold/10 text-gold mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-medium tracking-wide"
+          >
+            {siteConfig.availability}
+          </motion.span>
+        )}
+
         <motion.h1
           variants={fadeUp}
           className="text-parchment mt-4 text-center font-serif text-5xl font-bold break-words md:text-7xl"
@@ -324,12 +334,13 @@ export function Hero() {
           {messages.hero.title}
         </motion.h1>
 
-        <motion.p
-          variants={fadeUp}
-          className="text-stone mt-6 max-w-2xl text-center text-lg break-words md:text-xl"
-        >
-          {messages.hero.tagline}
-        </motion.p>
+        <motion.div variants={fadeUp} className="mt-6 w-full max-w-2xl">
+          <TaglineCycler
+            taglines={messages.hero.taglines}
+            intervalMs={3000}
+            className="text-stone min-h-[56px] text-center text-lg break-words md:text-xl"
+          />
+        </motion.div>
 
         <motion.div
           variants={fadeUp}

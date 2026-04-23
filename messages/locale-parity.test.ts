@@ -83,9 +83,19 @@ describe('locale parity', () => {
     ['zh', zh],
   ] as const)('%s has no empty string leaves', (name, messages) => {
     const entries = collectLeafEntries(messages as Dict);
-    const bad = entries
-      .filter(([, v]) => typeof v !== 'string' || v.length === 0)
-      .map(([path, v]) => `${path}=${JSON.stringify(v)}`);
+    const bad: string[] = [];
+    for (const [path, value] of entries) {
+      if (Array.isArray(value)) {
+        // Arrays of strings (e.g., hero.taglines): every element must be a non-empty string.
+        value.forEach((item, idx) => {
+          if (typeof item !== 'string' || item.length === 0) {
+            bad.push(`${path}[${idx}]=${JSON.stringify(item)}`);
+          }
+        });
+      } else if (typeof value !== 'string' || value.length === 0) {
+        bad.push(`${path}=${JSON.stringify(value)}`);
+      }
+    }
     expect(bad, `${name} has empty/non-string leaves: ${bad.join(', ')}`).toEqual([]);
   });
 });

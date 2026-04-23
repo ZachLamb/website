@@ -23,7 +23,11 @@
   "hero": {
     "title": "Zach Lamb",
     "subtitle": "Senior Software Engineer",
-    "tagline": "I build tools for people — and I'm always up for a conversation about code, the outdoors, or Oreos.",
+    "taglines": [
+      "Full-stack engineer with a PM's instinct — always got a pulse on the latest AI tools and where they actually ship.",
+      "React, TypeScript, and LLM apps — with an eye for what to actually build.",
+      "Always up for a conversation about code, AI, the outdoors, or Oreos."
+    ],
     "getInTouch": "Get in Touch",
     "learnMore": "Learn More",
     "resume": "Resume",
