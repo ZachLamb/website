@@ -16,9 +16,9 @@ export const experiences: ExperienceEntry[] = [
     startDate: 'Sep 2025',
     endDate: 'Present',
     description: [
-      'Building LLM and AI-powered web tools for cybersecurity professionals',
-      'Developing intelligent interfaces that augment security workflows with generative AI',
-      'Architecting front-end systems with TypeScript and React for mission-critical applications',
+      'Building LLM-powered web tools that speed up threat analysis and incident response for cybersecurity professionals',
+      'Splitting the role between engineering and product: scoping features with stakeholders, shaping the roadmap, and translating security workflows into shippable UX',
+      'Architecting React and TypeScript frontends for mission-critical security apps, integrating generative AI where it measurably improves analyst workflows',
     ],
     techStack: ['TypeScript', 'React', 'AI/LLM'],
   },
