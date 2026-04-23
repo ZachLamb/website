@@ -13,8 +13,16 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
-      include: ['components/**', 'data/**', 'lib/**'],
-      exclude: ['**/*.test.*', '**/*.d.ts', 'lib/fonts.ts'],
+      include: [
+        'components/**',
+        'data/**',
+        'lib/**',
+        'hooks/**',
+        'proxy.ts',
+        'app/api/**',
+        'app/[locale]/layout.tsx',
+      ],
+      exclude: ['**/*.test.*', '**/*.d.ts', '**/.DS_Store', 'lib/fonts.ts'],
       thresholds: {
         statements: 76,
         branches: 64,
