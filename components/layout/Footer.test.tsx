@@ -1,12 +1,18 @@
-vi.mock('framer-motion', () => ({
-  motion: {
+vi.mock('framer-motion', () => {
+  const factories = {
     div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
     svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
     path: (props: any) => <path {...props} />,
-  },
-  useInView: () => true,
-}));
+  };
+  return {
+    motion: factories,
+    m: factories,
+    useInView: () => true,
+    LazyMotion: ({ children }: any) => children,
+    domAnimation: {},
+  };
+});
 
 import { screen } from '@testing-library/react';
 import { renderWithLocale } from '@/lib/test-utils';

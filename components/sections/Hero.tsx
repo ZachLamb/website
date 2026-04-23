@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Github, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
@@ -84,7 +84,7 @@ function MountainBackdrop() {
         style={{ height: '180px' }}
       >
         {/* Far mountains */}
-        <motion.path
+        <m.path
           d="M0 200 L0 120 L100 80 L200 110 L300 60 L400 100 L500 50 L600 90 L700 40 L800 85 L900 55 L1000 95 L1100 70 L1200 100 L1200 200Z"
           fill="rgba(245,240,232,0.03)"
           initial={{ opacity: 0, y: 20 }}
@@ -92,7 +92,7 @@ function MountainBackdrop() {
           transition={{ duration: 1.5, delay: 0.3 }}
         />
         {/* Near mountains */}
-        <motion.path
+        <m.path
           d="M0 200 L0 150 L80 120 L160 145 L260 100 L340 135 L450 90 L540 130 L650 105 L740 140 L840 110 L940 145 L1050 120 L1140 150 L1200 135 L1200 200Z"
           fill="rgba(245,240,232,0.05)"
           initial={{ opacity: 0, y: 30 }}
@@ -100,7 +100,7 @@ function MountainBackdrop() {
           transition={{ duration: 1.5, delay: 0.6 }}
         />
         {/* Treeline silhouette */}
-        <motion.path
+        <m.path
           d="M0 200 L0 170 L20 168 L35 155 L38 168 L55 150 L58 168 L75 158 L78 168 L95 145 L98 168 L120 160 L140 148 L143 168 L165 155 L168 168 L190 162 L210 142 L213 168 L240 158 L260 148 L263 168 L285 155 L305 140 L308 168 L330 160 L350 150 L353 168 L375 155 L395 145 L398 168 L420 160 L440 152 L443 168 L465 155 L485 142 L488 168 L510 158 L530 148 L533 168 L555 155 L575 140 L578 168 L600 162 L620 150 L623 168 L645 155 L665 145 L668 168 L690 160 L710 148 L713 168 L735 155 L755 142 L758 168 L780 160 L800 150 L803 168 L825 155 L845 145 L848 168 L870 160 L890 152 L893 168 L915 155 L935 142 L938 168 L960 158 L980 148 L983 168 L1005 155 L1025 140 L1028 168 L1050 162 L1070 150 L1073 168 L1095 155 L1115 145 L1118 168 L1140 160 L1160 152 L1163 168 L1185 158 L1200 165 L1200 200Z"
           fill="rgba(245,240,232,0.04)"
           initial={{ opacity: 0, y: 15 }}
@@ -131,7 +131,7 @@ export function Hero() {
           aria-hidden
         >
           {/* Map frame – reads as a trail map */}
-          <motion.rect
+          <m.rect
             x="24"
             y="24"
             width="752"
@@ -146,7 +146,7 @@ export function Hero() {
             transition={{ duration: 1.2, delay: 0.8 }}
           />
           {/* Trail map label */}
-          <motion.g
+          <m.g
             transform="translate(48, 52)"
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
@@ -174,8 +174,8 @@ export function Hero() {
               TRAIL MAP
             </text>
             <path d="M68 0 L72 0 L70 -3 Z" fill="rgba(245,240,232,0.35)" />
-          </motion.g>
-          <motion.path
+          </m.g>
+          <m.path
             d={demoTrip.trailPath}
             stroke="rgba(245,240,232,0.14)"
             strokeWidth="2"
@@ -190,7 +190,7 @@ export function Hero() {
           {demoTrip.markers.map((marker) => {
             const Icon = markerIcons[marker.icon];
             return (
-              <motion.g
+              <m.g
                 key={`${marker.x}-${marker.y}`}
                 transform={`translate(${marker.x}, ${marker.y})`}
                 className="text-parchment/15"
@@ -212,12 +212,12 @@ export function Hero() {
                     {marker.label}
                   </text>
                 )}
-              </motion.g>
+              </m.g>
             );
           })}
 
           {/* Elevation contour hints */}
-          <motion.ellipse
+          <m.ellipse
             cx="540"
             cy="140"
             rx="80"
@@ -229,7 +229,7 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 2.5 }}
           />
-          <motion.ellipse
+          <m.ellipse
             cx="540"
             cy="140"
             rx="55"
@@ -241,7 +241,7 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 2.7 }}
           />
-          <motion.ellipse
+          <m.ellipse
             cx="470"
             cy="390"
             rx="50"
@@ -256,7 +256,7 @@ export function Hero() {
 
           {/* Secondary trail paths (dotted, decoration) */}
           {(demoTrip.secondaryTrailPaths ?? defaultSecondaryPaths).map((pathD, i) => (
-            <motion.path
+            <m.path
               key={i}
               d={pathD}
               stroke="rgba(245,240,232,0.07)"
@@ -274,7 +274,7 @@ export function Hero() {
             />
           ))}
           {/* Trail continues down off the map — follow the path */}
-          <motion.path
+          <m.path
             d="M 220 660 L 220 760"
             stroke="rgba(245,240,232,0.12)"
             strokeWidth="1.5"
@@ -305,44 +305,44 @@ export function Hero() {
         </svg>
       </div>
 
-      <motion.div
+      <m.div
         variants={stagger}
         initial="hidden"
         animate="visible"
         className="relative z-10 mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col items-center justify-center px-4 py-12 text-center sm:px-6 md:px-8"
       >
-        <motion.p
+        <m.p
           variants={fadeUp}
           className="text-gold text-center font-sans text-sm tracking-widest break-words uppercase"
         >
           {messages.hero.subtitle}
-        </motion.p>
+        </m.p>
 
         {siteConfig.availability && (
-          <motion.span
+          <m.span
             variants={fadeUp}
             className="border-gold/40 bg-gold/10 text-gold mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-medium tracking-wide"
           >
             {siteConfig.availability}
-          </motion.span>
+          </m.span>
         )}
 
-        <motion.h1
+        <m.h1
           variants={fadeUp}
           className="text-parchment mt-4 text-center font-serif text-5xl font-bold break-words md:text-7xl"
         >
           {messages.hero.title}
-        </motion.h1>
+        </m.h1>
 
-        <motion.div variants={fadeUp} className="mt-6 w-full max-w-2xl">
+        <m.div variants={fadeUp} className="mt-6 w-full max-w-2xl">
           <TaglineCycler
             taglines={messages.hero.taglines}
             intervalMs={3000}
             className="text-stone min-h-[56px] text-center text-lg break-words md:text-xl"
           />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={fadeUp}
           className="mt-8 flex w-full min-w-0 flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-4"
         >
@@ -356,9 +356,9 @@ export function Hero() {
           >
             {messages.hero.learnMore}
           </Button>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={fadeUp}
           className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
         >
@@ -391,8 +391,8 @@ export function Hero() {
               );
             })}
           </span>
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
     </section>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 type DividerVariant = 'mountains' | 'treeline' | 'trail';
@@ -52,7 +52,7 @@ function TreelineDivider({ flip }: { flip: boolean }) {
 function TrailDivider({ isInView }: { isInView: boolean }) {
   return (
     <div className="relative flex items-center justify-center py-4">
-      <motion.div
+      <m.div
         initial={{ width: 0 }}
         animate={isInView ? { width: '100%' } : { width: 0 }}
         transition={{ duration: 1.2, ease: 'easeOut' }}
@@ -60,7 +60,7 @@ function TrailDivider({ isInView }: { isInView: boolean }) {
         style={{ maxWidth: '100%' }}
       />
       <div className="bg-parchment absolute px-3">
-        <motion.svg
+        <m.svg
           viewBox="0 0 24 24"
           initial={{ opacity: 0, scale: 0.5 }}
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
@@ -79,7 +79,7 @@ function TrailDivider({ isInView }: { isInView: boolean }) {
           <circle cx="12" cy="15" r="3" />
           <path d="M12 18 L12 22" />
           <path d="M8 20 L16 20" />
-        </motion.svg>
+        </m.svg>
       </div>
     </div>
   );

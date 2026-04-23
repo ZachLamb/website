@@ -1,17 +1,16 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-const MotionH1 = motion.create('h1');
-const MotionH2 = motion.create('h2');
-const MotionH3 = motion.create('h3');
-
+// With LazyMotion + m.*, we use the per-tag components directly instead of
+// m.create('h1'). These are structurally identical (same API, same
+// runtime behavior) but share the lazy-loaded feature bundle.
 const motionHeadings = {
-  h1: MotionH1,
-  h2: MotionH2,
-  h3: MotionH3,
+  h1: m.h1,
+  h2: m.h2,
+  h3: m.h3,
 } as const;
 
 interface AnimatedHeadingProps {
@@ -25,7 +24,7 @@ interface AnimatedHeadingProps {
 
 function LeafAccent() {
   return (
-    <motion.svg
+    <m.svg
       viewBox="0 0 12 16"
       className="text-gold inline-block h-3.5 w-3.5"
       aria-hidden="true"
@@ -39,7 +38,7 @@ function LeafAccent() {
         opacity="0.7"
       />
       <path d="M6 3 L6 14" stroke="currentColor" strokeWidth="0.3" opacity="0.4" fill="none" />
-    </motion.svg>
+    </m.svg>
   );
 }
 
@@ -69,7 +68,7 @@ export function AnimatedHeading({
   return (
     <div ref={ref} className={cn('space-y-2', className)}>
       {subtitle && (
-        <motion.p
+        <m.p
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -77,7 +76,7 @@ export function AnimatedHeading({
         >
           <LeafAccent />
           {subtitle}
-        </motion.p>
+        </m.p>
       )}
       <MotionTag
         id={sectionId ? `${sectionId}-heading` : undefined}

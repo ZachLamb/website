@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { m, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 
 /**
  * Vertical trail line that extends from the hero down the page and
@@ -21,7 +21,7 @@ export function TrailExtension() {
       className="pointer-events-none fixed inset-y-0 left-0 z-0 w-4 md:left-[max(0.5rem,calc((100vw-1280px)/2))] md:w-5"
     >
       <svg className="h-full w-full" viewBox="0 0 24 100" preserveAspectRatio="none">
-        <motion.path
+        <m.path
           d="M 12 0 L 12 100"
           fill="none"
           stroke="rgba(184,134,11,0.2)"

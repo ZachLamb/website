@@ -1,10 +1,16 @@
-vi.mock('framer-motion', () => ({
-  motion: {
+vi.mock('framer-motion', () => {
+  const factories = {
     div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-  },
-  useInView: () => true,
-}));
+  };
+  return {
+    motion: factories,
+    m: factories,
+    useInView: () => true,
+    LazyMotion: ({ children }: any) => children,
+    domAnimation: {},
+  };
+});
 
 vi.mock('./NatureElements', () => ({
   FloatingLeaves: () => null,

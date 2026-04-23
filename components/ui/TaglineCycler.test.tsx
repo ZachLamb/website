@@ -6,16 +6,22 @@ const { motionMocks } = vi.hoisted(() => ({
   motionMocks: { useReducedMotion: vi.fn(() => false) },
 }));
 
-vi.mock('framer-motion', () => ({
-  useReducedMotion: () => motionMocks.useReducedMotion(),
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  motion: {
+vi.mock('framer-motion', () => {
+  const factories = {
     p: ({ children, ...props }: { children: React.ReactNode }) => <p {...props}>{children}</p>,
     div: ({ children, ...props }: { children: React.ReactNode }) => (
       <div {...props}>{children}</div>
     ),
-  },
-}));
+  };
+  return {
+    useReducedMotion: () => motionMocks.useReducedMotion(),
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    motion: factories,
+    m: factories,
+    LazyMotion: ({ children }: { children: React.ReactNode }) => children,
+    domAnimation: {},
+  };
+});
 
 describe('TaglineCycler', () => {
   beforeEach(() => {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
 import { Code, Sparkles, Users, Palette } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
@@ -33,7 +33,7 @@ export function Services() {
           const Icon = iconMap[service.icon];
 
           return (
-            <motion.div
+            <m.div
               key={service.id}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -46,7 +46,7 @@ export function Services() {
                 <h3 className="text-forest font-serif text-xl font-semibold">{service.title}</h3>
                 <p className="text-bark mt-2 text-sm">{service.description}</p>
               </Card>
-            </motion.div>
+            </m.div>
           );
         })}
       </div>

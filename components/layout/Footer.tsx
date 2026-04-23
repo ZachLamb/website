@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { motion, useInView } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
 import { Github, Linkedin } from 'lucide-react';
 import { siteConfig } from '@/data/site';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
@@ -37,7 +37,7 @@ export function Footer() {
   return (
     <footer className="bg-charcoal text-parchment relative">
       <FooterMountains />
-      <motion.div
+      <m.div
         ref={ref}
         initial={{ opacity: 0, y: 10 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
@@ -63,16 +63,22 @@ export function Footer() {
               {messages.footer.resume}
             </a>
           )}
+          <a
+            href={`${basePath}/privacy`}
+            className="text-stone/60 hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            {messages.footer.privacy}
+          </a>
         </div>
 
         <p className="text-stone/60 flex flex-wrap items-center justify-center gap-3 text-xs tracking-[0.25em] uppercase">
-          <motion.span
+          <m.span
             initial={{ width: 0 }}
             animate={isInView ? { width: 32 } : { width: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="bg-stone/30 inline-block h-px shrink-0"
           />
-          <motion.svg
+          <m.svg
             viewBox="0 0 16 16"
             className="text-gold/40 h-3 w-3 shrink-0"
             initial={{ opacity: 0, scale: 0 }}
@@ -83,9 +89,9 @@ export function Footer() {
               d="M8 1 C10 3 12 6 11 10 C10 13 8 15 8 15 C8 15 6 13 5 10 C4 6 6 3 8 1Z"
               fill="currentColor"
             />
-          </motion.svg>
+          </m.svg>
           <span className="text-center">{messages.footer.endOfTrail}</span>
-          <motion.svg
+          <m.svg
             viewBox="0 0 16 16"
             className="text-gold/40 h-3 w-3 shrink-0"
             initial={{ opacity: 0, scale: 0 }}
@@ -96,8 +102,8 @@ export function Footer() {
               d="M8 1 C10 3 12 6 11 10 C10 13 8 15 8 15 C8 15 6 13 5 10 C4 6 6 3 8 1Z"
               fill="currentColor"
             />
-          </motion.svg>
-          <motion.span
+          </m.svg>
+          <m.span
             initial={{ width: 0 }}
             animate={isInView ? { width: 32 } : { width: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -129,7 +135,7 @@ export function Footer() {
         <p className="text-stone text-sm">
           &copy; {new Date().getFullYear()} {messages.site.name}
         </p>
-      </motion.div>
+      </m.div>
     </footer>
   );
 }

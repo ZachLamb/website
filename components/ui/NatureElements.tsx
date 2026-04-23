@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { m, useReducedMotion } from 'framer-motion';
 
 function LeafSVG({ variant = 0 }: { variant?: number }) {
   if (variant === 1) {
@@ -85,7 +85,7 @@ export function FloatingLeaves({
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       {leaves.map((leaf) => (
-        <motion.div
+        <m.div
           key={leaf.id}
           className={`absolute ${color}`}
           style={{
@@ -107,7 +107,7 @@ export function FloatingLeaves({
           }}
         >
           <LeafSVG variant={leaf.variant} />
-        </motion.div>
+        </m.div>
       ))}
     </div>
   );
@@ -130,7 +130,7 @@ export function BirdSilhouettes({ count = 3 }: { count?: number }) {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       {birds.map((bird) => (
-        <motion.div
+        <m.div
           key={bird.id}
           className="text-bark/8 absolute"
           style={{ top: `${bird.y}%`, width: bird.size, height: bird.size }}
@@ -149,7 +149,7 @@ export function BirdSilhouettes({ count = 3 }: { count?: number }) {
             <path d="M12 6 C10 2 6 0 0 2 C4 2 8 4 12 6Z" opacity="0.8" />
             <path d="M12 6 C14 2 18 0 24 2 C20 2 16 4 12 6Z" opacity="0.8" />
           </svg>
-        </motion.div>
+        </m.div>
       ))}
     </div>
   );
@@ -197,7 +197,7 @@ export function Fireflies({ count = 12 }: { count?: number }) {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       {dots.map((dot) => (
-        <motion.div
+        <m.div
           key={dot.id}
           className="bg-gold-light/30 absolute rounded-full"
           style={{
@@ -232,7 +232,7 @@ export function MistLayer({ className = '' }: { className?: string }) {
       aria-hidden="true"
       className={`pointer-events-none absolute inset-x-0 bottom-0 ${className}`}
     >
-      <motion.div
+      <m.div
         className="h-32 w-full"
         style={{
           background: 'linear-gradient(to top, rgba(245,240,232,0.08), transparent)',

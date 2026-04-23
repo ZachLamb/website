@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m, useReducedMotion } from 'framer-motion';
 
 type Props = {
   taglines: readonly string[];
@@ -44,7 +44,7 @@ export function TaglineCycler({ taglines, intervalMs = 3000, className }: Props)
       onBlur={() => setPaused(false)}
     >
       <AnimatePresence mode="wait">
-        <motion.p
+        <m.p
           key={safeIndex}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ export function TaglineCycler({ taglines, intervalMs = 3000, className }: Props)
           transition={{ duration: 0.35 }}
         >
           {current}
-        </motion.p>
+        </m.p>
       </AnimatePresence>
     </div>
   );

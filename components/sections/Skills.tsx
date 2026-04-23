@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
@@ -29,7 +29,7 @@ function ExperienceBar({
   return (
     <div className="group flex flex-col gap-1">
       <div className="flex items-baseline justify-between gap-2 text-sm">
-        <motion.span
+        <m.span
           initial={{ opacity: 0, x: -8 }}
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
           transition={{
@@ -39,10 +39,10 @@ function ExperienceBar({
           className="text-parchment/90 font-medium"
         >
           {years} {years === 1 ? yearAbbrev : yearAbbrevPlural}
-        </motion.span>
+        </m.span>
       </div>
       <div className="bg-forest/40 relative h-2 overflow-hidden rounded-full" aria-hidden>
-        <motion.div
+        <m.div
           className="from-moss to-gold/80 absolute inset-y-0 left-0 rounded-full bg-linear-to-r"
           initial={{ width: 0 }}
           animate={isInView ? { width: `${widthPercent}%` } : { width: 0 }}
@@ -76,7 +76,7 @@ export function Skills() {
 
       <div ref={ref} className="mt-10 grid grid-cols-1 gap-10 sm:gap-12 md:grid-cols-2">
         {skillCategories.map((category, i) => (
-          <motion.div
+          <m.div
             key={category.id}
             role="article"
             initial={{ opacity: 0, y: 16 }}
@@ -110,7 +110,7 @@ export function Skills() {
                   </div>
                 ))}
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </div>
 

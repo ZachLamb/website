@@ -1,15 +1,21 @@
 import { render } from '@testing-library/react';
 import { Divider } from './Divider';
 
-vi.mock('framer-motion', () => ({
-  motion: {
+vi.mock('framer-motion', () => {
+  const factories = {
     div: (props: React.HTMLAttributes<HTMLDivElement>) => <div {...props} />,
     span: (props: React.HTMLAttributes<HTMLSpanElement>) => <span {...props} />,
     svg: (props: React.SVGProps<SVGSVGElement>) => <svg {...props} />,
     path: (props: React.SVGProps<SVGPathElement>) => <path {...props} />,
-  },
-  useInView: () => true,
-}));
+  };
+  return {
+    motion: factories,
+    m: factories,
+    useInView: () => true,
+    LazyMotion: ({ children }: { children: React.ReactNode }) => children,
+    domAnimation: {},
+  };
+});
 
 describe('Divider', () => {
   it('renders the trail variant by default', () => {

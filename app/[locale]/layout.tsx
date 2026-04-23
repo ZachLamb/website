@@ -6,6 +6,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { TrailExtension } from '@/components/ui/TrailExtension';
 import { LocaleProvider } from '@/components/providers/LocaleProvider';
+import { MotionProvider } from '@/components/providers/MotionProvider';
 import { getMessages, isValidLocale, locales, type Locale } from '@/lib/i18n';
 
 type Props = { children: React.ReactNode; params: Promise<{ locale: string }> };
@@ -68,21 +69,23 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <LocaleProvider locale={locale as Locale} messages={messages}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
-      />
-      <a
-        href="#main-content"
-        className="focus:bg-gold focus:text-parchment sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:px-4 focus:py-2"
-      >
-        {messages.common.skipToContent}
-      </a>
-      <TrailExtension />
-      <Navbar />
-      <main id="main-content">{children}</main>
-      <Footer />
-      <Analytics />
+      <MotionProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
+        <a
+          href="#main-content"
+          className="focus:bg-gold focus:text-parchment sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:px-4 focus:py-2"
+        >
+          {messages.common.skipToContent}
+        </a>
+        <TrailExtension />
+        <Navbar />
+        <main id="main-content">{children}</main>
+        <Footer />
+        <Analytics />
+      </MotionProvider>
     </LocaleProvider>
   );
 }

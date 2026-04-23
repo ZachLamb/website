@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { m, useInView, AnimatePresence } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
@@ -35,7 +35,7 @@ function TimelineCard({
   const handleLeave = () => onHover(null);
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className="group/timeline relative grid grid-cols-[24px_1fr] gap-x-4 md:grid-cols-[1fr_24px_1fr] md:gap-x-6"
       whileInView={{ opacity: 1 }}
@@ -49,7 +49,7 @@ function TimelineCard({
         onMouseLeave={handleLeave}
       >
         {isLeft ? (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -58,14 +58,14 @@ function TimelineCard({
             <Card variant="map" className="text-right">
               {cardContent}
             </Card>
-          </motion.div>
+          </m.div>
         ) : null}
       </div>
 
       {/* Center trail line + waypoint marker */}
       <div className="relative flex justify-center">
         <div className="absolute inset-0 flex justify-center">
-          <motion.div
+          <m.div
             className="border-gold/40 w-px border-l border-dashed"
             initial={{ scaleY: 0 }}
             animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
@@ -73,7 +73,7 @@ function TimelineCard({
             style={{ transformOrigin: 'top' }}
           />
         </div>
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0 }}
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
           transition={{ duration: 0.4, delay: 0.2, type: 'spring', stiffness: 200 }}
@@ -95,7 +95,7 @@ function TimelineCard({
               opacity="0.5"
             />
           </svg>
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Right column: shows card for odd indices on desktop, all cards on mobile */}
@@ -106,7 +106,7 @@ function TimelineCard({
         onMouseLeave={!isLeft ? handleLeave : undefined}
       >
         {isLeft ? (
-          <motion.div
+          <m.div
             className="transition-transform duration-300 group-hover/timeline:translate-x-1 md:hidden"
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
@@ -115,9 +115,9 @@ function TimelineCard({
             <Card variant="map">
               <CardContent entry={entry} align="left" isInView={isInView} />
             </Card>
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -126,10 +126,10 @@ function TimelineCard({
             <Card variant="map">
               <CardContent entry={entry} align="left" isInView={isInView} />
             </Card>
-          </motion.div>
+          </m.div>
         )}
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -154,21 +154,21 @@ function CardContent({
 
       <ul className="text-bark mt-3 list-inside space-y-1 text-sm leading-relaxed">
         {entry.description.map((item, i) => (
-          <motion.li
+          <m.li
             key={item}
             initial={{ opacity: 0, x: isRight ? 8 : -8 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isRight ? 8 : -8 }}
             transition={{ duration: 0.35, delay: 0.2 + i * 0.08 }}
           >
             • {item}
-          </motion.li>
+          </m.li>
         ))}
       </ul>
 
       {entry.techStack.length > 0 && (
         <div className={`mt-3 flex flex-wrap gap-2 ${isRight ? 'justify-end' : ''}`}>
           {entry.techStack.map((tech, j) => (
-            <motion.span
+            <m.span
               key={tech}
               initial={{ opacity: 0, scale: 0.85 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
@@ -177,7 +177,7 @@ function CardContent({
               className="inline-block"
             >
               <Badge>{tech}</Badge>
-            </motion.span>
+            </m.span>
           ))}
         </div>
       )}
@@ -232,7 +232,7 @@ function ExperienceDetailPanel({
   moreLabel: string;
 }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, x: side === 'left' ? -24 : 24 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: side === 'left' ? -24 : 24 }}
@@ -276,7 +276,7 @@ function ExperienceDetailPanel({
           ))}
         </div>
       )}
-    </motion.div>
+    </m.div>
   );
 }
 

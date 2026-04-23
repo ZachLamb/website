@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
@@ -17,7 +17,7 @@ export function About() {
         {messages.about.heading}
       </AnimatedHeading>
 
-      <motion.p
+      <m.p
         ref={ref}
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -25,9 +25,9 @@ export function About() {
         className="text-bark max-w-3xl text-lg leading-relaxed break-words"
       >
         {messages.about.body}
-      </motion.p>
+      </m.p>
 
-      <motion.p
+      <m.p
         initial={{ opacity: 0, y: 12 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
         transition={{ duration: 0.5, delay: 0.35 }}
@@ -35,7 +35,7 @@ export function About() {
         aria-label="Focus areas"
       >
         {messages.about.focusAreas}
-      </motion.p>
+      </m.p>
     </Section>
   );
 }

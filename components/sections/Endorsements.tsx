@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { m, useInView, AnimatePresence } from 'framer-motion';
 import { Quote, Linkedin, ChevronDown, ChevronUp } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
@@ -34,7 +34,7 @@ function EndorsementCard({
   const lineClampClass = longTextLocales.has(locale) ? 'line-clamp-5' : 'line-clamp-4';
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.5, delay: index * 0.12 }}
@@ -45,7 +45,7 @@ function EndorsementCard({
           <blockquote className="text-bark relative pr-8 text-base leading-relaxed">
             <AnimatePresence mode="wait">
               {quoteLong && !expanded ? (
-                <motion.p
+                <m.p
                   key="short"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -53,16 +53,16 @@ function EndorsementCard({
                   className={lineClampClass}
                 >
                   {endorsement.quote}
-                </motion.p>
+                </m.p>
               ) : (
-                <motion.p
+                <m.p
                   key="full"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
                   {endorsement.quote}
-                </motion.p>
+                </m.p>
               )}
             </AnimatePresence>
           </blockquote>
@@ -102,7 +102,7 @@ function EndorsementCard({
           </footer>
         </div>
       </Card>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -118,7 +118,7 @@ export function Endorsements() {
           {messages.sections.endorsements}
         </AnimatedHeading>
         <p className="text-bark mb-6 max-w-2xl text-lg">{messages.endorsements.intro}</p>
-        <motion.p
+        <m.p
           initial={{ opacity: 0, y: 8 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
           transition={{ duration: 0.4, delay: 0.1 }}
@@ -134,7 +134,7 @@ export function Endorsements() {
             <Linkedin className="h-5 w-5" />
             {messages.endorsements.viewAllOnLinkedIn}
           </a>
-        </motion.p>
+        </m.p>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {endorsements.map((endorsement, i) => (

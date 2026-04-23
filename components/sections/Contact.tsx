@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { m, useInView, useReducedMotion } from 'framer-motion';
 import { Send, Github, Linkedin, Mail } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
@@ -113,19 +113,19 @@ export function Contact() {
         {messages.contact.heading}
       </AnimatedHeading>
 
-      <motion.p
+      <m.p
         initial={{ opacity: 0, y: 12 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
         transition={{ duration: 0.5, delay: 0.1 }}
         className="text-stone mt-4 text-lg"
       >
         {messages.contact.intro}
-      </motion.p>
+      </m.p>
 
       <div ref={ref} className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-2">
         <div className="relative min-h-[320px]">
           {status === 'success' ? (
-            <motion.div
+            <m.div
               key="success"
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -141,7 +141,7 @@ export function Contact() {
               role="status"
             >
               <p className="sr-only">{messages.contact.messageSent}</p>
-              <motion.div
+              <m.div
                 className="text-gold mb-4 flex justify-center"
                 initial={prefersReducedMotion ? false : { y: 0, opacity: 1, rotate: 0, x: 0 }}
                 animate={
@@ -162,8 +162,8 @@ export function Contact() {
                 }}
               >
                 <PaperAirplaneIcon className="h-12 w-12" />
-              </motion.div>
-              <motion.p
+              </m.div>
+              <m.p
                 className="text-parchment font-serif text-xl font-semibold"
                 initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
                 animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
@@ -173,8 +173,8 @@ export function Contact() {
                 }}
               >
                 {messages.contact.successTitle}
-              </motion.p>
-              <motion.p
+              </m.p>
+              <m.p
                 className="text-stone mt-1 text-sm"
                 initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
                 animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
@@ -184,8 +184,8 @@ export function Contact() {
                 }}
               >
                 {messages.contact.successSub}
-              </motion.p>
-              <motion.div
+              </m.p>
+              <m.div
                 initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
                 animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
                 transition={{
@@ -201,10 +201,10 @@ export function Contact() {
                 >
                   {messages.contact.sendAnother}
                 </Button>
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
           ) : (
-            <motion.form
+            <m.form
               key="form"
               onSubmit={handleSubmit}
               className="space-y-6"
@@ -265,7 +265,7 @@ export function Contact() {
                     {!prefersReducedMotion && (
                       <span className="flex gap-1">
                         {[0, 1, 2].map((i) => (
-                          <motion.span
+                          <m.span
                             key={i}
                             className="h-1.5 w-1.5 rounded-full bg-current opacity-60"
                             animate={{
@@ -298,11 +298,11 @@ export function Contact() {
                   </p>
                 )}
               </div>
-            </motion.form>
+            </m.form>
           )}
         </div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: 20 }}
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
           transition={{ duration: 0.5, delay: 0.3 }}
@@ -339,7 +339,7 @@ export function Contact() {
               <span className="font-medium">{contactEmail}</span>
             </a>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </Section>
   );

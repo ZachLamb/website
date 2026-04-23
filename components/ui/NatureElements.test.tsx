@@ -24,26 +24,29 @@ vi.mock('framer-motion', async () => {
     rest,
     motionProps: { animate, transition },
   });
+  const factories = {
+    div: (props: any) => {
+      const { rest, motionProps } = stripMotionProps(props);
+      return (
+        <div
+          {...rest}
+          data-animate={JSON.stringify(motionProps.animate ?? null)}
+          data-transition={JSON.stringify(motionProps.transition ?? null)}
+        >
+          {rest.children}
+        </div>
+      );
+    },
+    span: (props: any) => {
+      const { rest } = stripMotionProps(props);
+      return <span {...rest}>{rest.children}</span>;
+    },
+  };
   return {
     ...actual,
-    motion: {
-      div: (props: any) => {
-        const { rest, motionProps } = stripMotionProps(props);
-        return (
-          <div
-            {...rest}
-            data-animate={JSON.stringify(motionProps.animate ?? null)}
-            data-transition={JSON.stringify(motionProps.transition ?? null)}
-          >
-            {rest.children}
-          </div>
-        );
-      },
-      span: (props: any) => {
-        const { rest } = stripMotionProps(props);
-        return <span {...rest}>{rest.children}</span>;
-      },
-    },
+    motion: factories,
+    m: factories,
+    LazyMotion: ({ children }: { children: React.ReactNode }) => children,
     useReducedMotion: vi.fn(() => false),
   };
 });

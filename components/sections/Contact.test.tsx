@@ -1,5 +1,5 @@
-vi.mock('framer-motion', () => ({
-  motion: {
+vi.mock('framer-motion', () => {
+  const factories = {
     div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
     span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
@@ -14,12 +14,18 @@ vi.mock('framer-motion', () => ({
         const Tag = tag as any;
         return <Tag {...props}>{children}</Tag>;
       },
-  },
-  useInView: () => true,
-  useScroll: () => ({ scrollYProgress: { current: 0 } }),
-  useReducedMotion: () => false,
-  AnimatePresence: ({ children }: any) => children,
-}));
+  };
+  return {
+    motion: factories,
+    m: factories,
+    useInView: () => true,
+    useScroll: () => ({ scrollYProgress: { current: 0 } }),
+    useReducedMotion: () => false,
+    AnimatePresence: ({ children }: any) => children,
+    LazyMotion: ({ children }: any) => children,
+    domAnimation: {},
+  };
+});
 
 vi.mock('@/components/ui/NatureElements', () => ({
   FloatingLeaves: () => null,
