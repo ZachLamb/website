@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const SECTION_IDS = [
+export const SECTION_IDS = [
   'hero',
   'about',
   'experience',
@@ -11,7 +11,7 @@ const SECTION_IDS = [
   'services',
   'education',
   'contact',
-];
+] as const;
 
 /**
  * Returns the id of the section currently in view (based on scroll position).

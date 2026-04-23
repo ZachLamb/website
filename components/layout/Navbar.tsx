@@ -8,7 +8,7 @@ import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { LanguageDropdown } from '@/components/ui/LanguageDropdown';
 
-const navLinkIds = [
+export const navLinkIds = [
   { key: 'trailGuide' as const, href: '#about', id: 'about' },
   { key: 'trailLog' as const, href: '#experience', id: 'experience' },
   { key: 'recommendations' as const, href: '#endorsements', id: 'endorsements' },
@@ -16,7 +16,7 @@ const navLinkIds = [
   { key: 'lodge' as const, href: '#services', id: 'services' },
   { key: 'credentials' as const, href: '#education', id: 'education' },
   { key: 'contact' as const, href: '#contact', id: 'contact' },
-];
+] as const;
 
 export function Navbar() {
   const { locale, messages } = useLocaleContext();
