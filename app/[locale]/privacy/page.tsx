@@ -4,7 +4,7 @@ import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { BackToHomeLink } from '@/components/ui/BackToHomeLink';
 import { siteConfig } from '@/data/site';
-import { getMessages, isValidLocale, type Locale } from '@/lib/i18n';
+import { getMessages, isValidLocale, locales } from '@/lib/i18n';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -12,21 +12,38 @@ const PRIVACY_CONTACT_EMAIL = 'hello@zachlamb.com';
 // TODO: verify — set to the date the policy was actually reviewed/published.
 const LAST_UPDATED_ISO = '2026-04-23';
 
+// Intentional: the privacy policy is rendered in English for every locale.
+// Non-English translations of legal text in messages/*.json are placeholder
+// drafts and should not be served. We still honor /<locale>/privacy URLs so
+// the route shape matches the rest of the site (and language switcher / SEO
+// hreflang keep working), but the body text always comes from messages/en.json.
+// The in-page banner informs users; canonical points at /en/privacy.
+// Do not "fix" this by swapping getMessages('en') back to getMessages(locale)
+// until every translation file has reviewed, jurisdiction-accurate legal text.
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isValidLocale(locale)) return {};
-  const messages = getMessages(locale as Locale);
-  const canonical =
+  const messages = getMessages('en');
+  const canonical = `${siteConfig.url}/privacy`;
+  const requestedUrl =
     locale === 'en' ? `${siteConfig.url}/privacy` : `${siteConfig.url}/${locale}/privacy`;
   return {
     title: `${messages.privacy.pageTitle} | ${messages.site.name}`,
     description: messages.privacy.pageDescription,
-    alternates: { canonical },
+    alternates: {
+      canonical,
+      languages: Object.fromEntries(
+        locales.map((loc) => [
+          loc,
+          loc === 'en' ? `${siteConfig.url}/privacy` : `${siteConfig.url}/${loc}/privacy`,
+        ]),
+      ) as Record<string, string>,
+    },
     robots: { index: true, follow: true },
     openGraph: {
       title: `${messages.privacy.pageTitle} | ${messages.site.name}`,
       description: messages.privacy.pageDescription,
-      url: canonical,
+      url: requestedUrl,
       siteName: messages.site.name,
       type: 'article',
     },
@@ -36,7 +53,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PrivacyPage({ params }: Props) {
   const { locale } = await params;
   if (!isValidLocale(locale)) redirect('/');
-  const messages = getMessages(locale as Locale);
+  // See comment above generateMetadata: privacy body is always English.
+  const messages = getMessages('en');
   const p = messages.privacy;
 
   return (
@@ -44,6 +62,23 @@ export default async function PrivacyPage({ params }: Props) {
       <AnimatedHeading as="h1" subtitle={p.lastUpdated} className="mb-8">
         {p.pageTitle}
       </AnimatedHeading>
+
+      {/* Language notice: served in English for every locale — see header comment above generateMetadata. */}
+      <div
+        role="note"
+        className="border-forest/40 bg-forest/5 text-bark mb-4 rounded-md border-l-4 px-4 py-3 text-sm"
+      >
+        <strong className="text-forest font-semibold">Legal content displayed in English. </strong>
+        This page is available at the same URL in every language but the policy itself is maintained
+        in English for accuracy. If you need this information in another language, please contact{' '}
+        <a
+          href={`mailto:${PRIVACY_CONTACT_EMAIL}`}
+          className="text-forest hover:text-gold underline underline-offset-4"
+        >
+          {PRIVACY_CONTACT_EMAIL}
+        </a>
+        .
+      </div>
 
       {/* Draft — needs review. This page is a scaffold; all content below should be confirmed by the site owner before it goes to production. */}
       <div
