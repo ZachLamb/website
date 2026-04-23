@@ -17,24 +17,43 @@ const MAX_MESSAGE_LENGTH = 5000;
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 const RATE_LIMIT_MAX = 5;
 
+const ALLOWED_ORIGINS = new Set<string>([
+  'https://zachlamb.io',
+  'https://www.zachlamb.io',
+  'http://localhost:3000',
+  'http://localhost',
+]);
+
+function isOriginAllowed(origin: string | null): boolean {
+  if (!origin) return false;
+  if (ALLOWED_ORIGINS.has(origin)) return true;
+  try {
+    const { hostname, protocol } = new URL(origin);
+    if (protocol !== 'https:') return false;
+    // Vercel preview deploys for this project
+    if (hostname.endsWith('.vercel.app') && hostname.includes('zachlamb')) return true;
+  } catch {
+    return false;
+  }
+  return false;
+}
+
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 function getClientId(request: Request): string {
-  return (
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown'
-  );
+  // Prefer Vercel-signed header: clients can't forge it because Vercel's edge rewrites it.
+  // Fall back to x-forwarded-for (first hop) for non-Vercel environments, then x-real-ip.
+  const vercelIp = request.headers.get('x-vercel-forwarded-for');
+  if (vercelIp) return vercelIp.split(',')[0].trim();
+  const xff = request.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+  return request.headers.get('x-real-ip') ?? 'unknown';
 }
 
 function checkRateLimit(clientId: string): boolean {
   const now = Date.now();
   const entry = rateLimitMap.get(clientId);
-  if (!entry) {
-    rateLimitMap.set(clientId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return true;
-  }
-  if (now >= entry.resetAt) {
+  if (!entry || now >= entry.resetAt) {
     rateLimitMap.set(clientId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
     return true;
   }
@@ -42,7 +61,17 @@ function checkRateLimit(clientId: string): boolean {
   return entry.count <= RATE_LIMIT_MAX;
 }
 
+// Strip CR/LF so a malicious name can't inject mail headers via the subject line.
+function sanitizeHeader(value: string): string {
+  return value.replace(/[\r\n]+/g, ' ');
+}
+
 export async function POST(request: Request) {
+  const origin = request.headers.get('origin');
+  if (!isOriginAllowed(origin)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   let body: { name?: string; email?: string; message?: string };
 
   try {
@@ -77,12 +106,19 @@ export async function POST(request: Request) {
     );
   }
 
+  const fromEmail = process.env.RESEND_FROM_EMAIL;
+  if (!fromEmail && process.env.NODE_ENV === 'production') {
+    // Fail closed in production: refuse to send via Resend's shared sandbox domain
+    // (onboarding@resend.dev), which would fail SPF/DMARC and land mail in spam.
+    return NextResponse.json({ error: 'Email service is not configured' }, { status: 500 });
+  }
+
   try {
     const { error } = await getResendClient().emails.send({
-      from: `Portfolio Contact <${process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'}>`,
+      from: `Portfolio Contact <${fromEmail ?? 'onboarding@resend.dev'}>`,
       to: TO_EMAIL,
       replyTo: email,
-      subject: `Portfolio message from ${name}`,
+      subject: sanitizeHeader(`Portfolio message from ${name}`),
       text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
     });
 
