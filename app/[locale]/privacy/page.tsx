@@ -8,7 +8,7 @@ import { getMessages, isValidLocale, locales } from '@/lib/i18n';
 
 type Props = { params: Promise<{ locale: string }> };
 
-const PRIVACY_CONTACT_EMAIL = 'hello@zachlamb.com';
+const PRIVACY_CONTACT_EMAIL = 'you@zachlamb.io';
 // TODO: verify — set to the date the policy was actually reviewed/published.
 const LAST_UPDATED_ISO = '2026-04-23';
 

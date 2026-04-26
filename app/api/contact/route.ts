@@ -10,7 +10,11 @@ function getResendClient() {
   return new Resend(key);
 }
 
-const TO_EMAIL = process.env.CONTACT_EMAIL ?? 'hello@zachlamb.com';
+// Where the contact form delivers to (backend-only, never shown to visitors).
+// Defaults to the personal inbox so a misconfigured CONTACT_EMAIL doesn't
+// silently route mail through a forwarding chain. Visitors see
+// NEXT_PUBLIC_CONTACT_EMAIL in the mailto link instead.
+const TO_EMAIL = process.env.CONTACT_EMAIL ?? 'zachlamb94@gmail.com';
 const MAX_NAME_LENGTH = 200;
 const MAX_EMAIL_LENGTH = 320;
 const MAX_MESSAGE_LENGTH = 5000;

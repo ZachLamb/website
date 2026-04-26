@@ -23,7 +23,7 @@ const contactEmail =
   typeof process.env.NEXT_PUBLIC_CONTACT_EMAIL === 'string' &&
   process.env.NEXT_PUBLIC_CONTACT_EMAIL.trim() !== ''
     ? process.env.NEXT_PUBLIC_CONTACT_EMAIL.trim()
-    : 'hello@zachlamb.com';
+    : 'you@zachlamb.io';
 
 /** Paper airplane SVG for success animation */
 function PaperAirplaneIcon({ className }: { className?: string }) {
