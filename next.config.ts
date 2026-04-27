@@ -47,6 +47,12 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
   experimental: {
     turbopackFileSystemCacheForDev: true,
+    // Disable App Router's RSC payload cache so visitors who navigated to a
+    // section, left, and returned after a deploy don't see stale prefetched
+    // content. Default is 5min for static segments — measurable on a personal
+    // site that ships frequently. Trade-off is one extra fetch per nav, which
+    // is fine at this traffic level.
+    staleTimes: { dynamic: 0, static: 0 },
   },
   async headers() {
     return [{ source: '/(.*)', headers: securityHeaders }];

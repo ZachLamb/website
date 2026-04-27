@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { siteConfig } from '@/data/site';
 import { inter, cormorantGaramond } from '@/lib/fonts';
 import { defaultLocale, isValidLocale } from '@/lib/i18n';
+import { SwKillSwitch } from '@/components/providers/SwKillSwitch';
 import './globals.css';
 
 export const viewport = {
@@ -23,7 +24,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={lang} className={`${inter.variable} ${cormorantGaramond.variable}`}>
-      <body className="min-h-[100dvh] min-h-screen antialiased">{children}</body>
+      <body className="min-h-[100dvh] min-h-screen antialiased">
+        <SwKillSwitch />
+        {children}
+      </body>
     </html>
   );
 }
