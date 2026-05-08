@@ -124,9 +124,7 @@
     },
     "thirdParties": {
       "heading": "Third parties",
-      "intro": "This site relies on two services that may process your information on my behalf:",
-      "vercel": "hosts the site and provides privacy-preserving aggregate analytics.",
-      "resend": "delivers the email generated when you submit the contact form.",
+      "intro": "This site relies on the following services that may process your information on my behalf:",
       "note": "Each has its own privacy policy, linked above. I don't share your information with anyone else."
     },
     "contact": {

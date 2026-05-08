@@ -4,6 +4,7 @@ import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { BackToHomeLink } from '@/components/ui/BackToHomeLink';
 import { siteConfig } from '@/data/site';
+import { subProcessors } from '@/data/sub-processors';
 import { getMessages, isValidLocale, locales } from '@/lib/i18n';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -157,7 +158,8 @@ export default async function PrivacyPage({ params }: Props) {
         </section>
 
         <section aria-labelledby="privacy-third-parties">
-          {/* TODO: verify — confirm sub-processor list is complete. Add any additional processors (error monitoring, form spam filters, etc.) if introduced. */}
+          {/* Sub-processors come from data/sub-processors.ts (single source of
+              truth). To add a new processor to the disclosure, add it there. */}
           <h2
             id="privacy-third-parties"
             className="text-forest mb-3 font-serif text-2xl font-semibold"
@@ -166,28 +168,19 @@ export default async function PrivacyPage({ params }: Props) {
           </h2>
           <p className="mb-3">{p.thirdParties.intro}</p>
           <ul className="list-disc space-y-2 pl-6">
-            <li>
-              <a
-                href="https://vercel.com/legal/privacy-policy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-forest hover:text-gold underline underline-offset-4"
-              >
-                Vercel
-              </a>{' '}
-              — {p.thirdParties.vercel}
-            </li>
-            <li>
-              <a
-                href="https://resend.com/legal/privacy-policy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-forest hover:text-gold underline underline-offset-4"
-              >
-                Resend
-              </a>{' '}
-              — {p.thirdParties.resend}
-            </li>
+            {subProcessors.map((proc) => (
+              <li key={proc.id}>
+                <a
+                  href={proc.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-forest hover:text-gold underline underline-offset-4"
+                >
+                  {proc.name}
+                </a>{' '}
+                — {proc.purpose}
+              </li>
+            ))}
           </ul>
           <p className="mt-3">{p.thirdParties.note}</p>
         </section>
