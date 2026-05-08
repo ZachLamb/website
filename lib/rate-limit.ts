@@ -1,14 +1,28 @@
 import { Redis } from '@upstash/redis';
+import * as Sentry from '@sentry/nextjs';
 
 export type RateLimitResult = { allowed: boolean; remaining: number };
 
 let redis: Redis | null = null;
+let warnedMissingUpstash = false;
 
 function getRedis(): Redis | null {
   if (redis) return redis;
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
+  if (!url || !token) {
+    // In production, log once per cold start that the limiter is degraded.
+    // The whole point of this module is to escape per-instance limits — if
+    // Upstash isn't wired up in Vercel, we want it loud at boot, not silent.
+    if (!warnedMissingUpstash && process.env.VERCEL_ENV === 'production') {
+      warnedMissingUpstash = true;
+      console.warn(
+        '[rate-limit] UPSTASH_REDIS_REST_URL/TOKEN not set in production; ' +
+          'falling back to per-instance in-memory limiter (effective cap is N_warm * max).',
+      );
+    }
+    return null;
+  }
   redis = new Redis({ url, token });
   return redis;
 }
@@ -43,7 +57,9 @@ function memoryCheck(key: string, windowMs: number, max: number): RateLimitResul
  *
  * Fails open on Redis errors so a Redis outage doesn't block the contact
  * form. The memory fallback is already per-instance, so fail-open is no
- * worse than current prod behavior; the error is logged for observability.
+ * worse than current prod behavior; the error is logged AND captured to
+ * Sentry (warning level) so a persistent outage surfaces somewhere instead
+ * of silently disabling the limiter.
  */
 export async function rateLimit(
   clientId: string,
@@ -62,23 +78,39 @@ export async function rateLimit(
     const pipe = r.pipeline();
     pipe.incr(key);
     pipe.expire(key, Math.ceil(windowMs / 1000), 'NX');
-    const results = (await pipe.exec()) as [number, unknown];
-    const count = results[0];
+    const results = (await pipe.exec()) as unknown[];
+    const rawCount = results[0];
+    // Pipeline can return null on a transient miss (which JS would coerce to
+    // 0 and false-allow) or an Error object on WRONGTYPE etc. (which would
+    // false-deny). Validate before using.
+    if (typeof rawCount !== 'number' || !Number.isFinite(rawCount)) {
+      Sentry.captureException(
+        new Error(`[rate-limit] unexpected pipeline result type: ${typeof rawCount}`),
+        { tags: { component: 'rate-limit', kind: 'malformed-result' }, level: 'warning' },
+      );
+      return { allowed: true, remaining: max };
+    }
     return {
-      allowed: count <= max,
-      remaining: Math.max(0, max - count),
+      allowed: rawCount <= max,
+      remaining: Math.max(0, max - rawCount),
     };
   } catch (err) {
     console.error('[rate-limit] redis error, failing open', err);
+    Sentry.captureException(err, {
+      tags: { component: 'rate-limit', kind: 'redis-error' },
+      level: 'warning',
+    });
     return { allowed: true, remaining: max };
   }
 }
 
 /**
- * Test-only: reset the module-level Redis client and in-memory buckets.
- * Lets a test toggle env vars mid-suite and re-pick up the new config.
+ * Test-only: reset the module-level Redis client, in-memory buckets, and
+ * the warned-missing-upstash flag. Lets a test toggle env vars mid-suite
+ * and re-pick up the new config (and re-trigger the boot warn).
  */
 export function __resetRateLimitForTests(): void {
   redis = null;
   memoryBuckets.clear();
+  warnedMissingUpstash = false;
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import * as Sentry from '@sentry/nextjs';
 import { rateLimit } from '@/lib/rate-limit';
 
 function getResendClient() {
@@ -115,11 +116,22 @@ export async function POST(request: Request) {
     });
 
     if (error) {
+      // Resend returned a structured error (invalid API key, rate limited,
+      // domain not verified, etc.). Wrap in an Error so Sentry captures the
+      // message + stack. Pass NO PII — never include the request body, name,
+      // email, or message in the captured event.
+      Sentry.captureException(new Error(`Resend send failed: ${error.message ?? 'unknown'}`), {
+        tags: { route: 'contact', source: 'resend', kind: 'response-error' },
+      });
       return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (err) {
+    // Network failure, thrown error from the SDK, etc. Capture without PII.
+    Sentry.captureException(err, {
+      tags: { route: 'contact', source: 'resend', kind: 'thrown' },
+    });
     return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
   }
 }

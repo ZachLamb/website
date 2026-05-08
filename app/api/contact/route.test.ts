@@ -2,16 +2,22 @@
 // Node's native Request preserves the Origin header; happy-dom strips it per the
 // Fetch spec's forbidden-request-header rule, so we run this file in `node`.
 
-const { sendMock, incrMock, expireMock } = vi.hoisted(() => ({
+const { sendMock, incrMock, expireMock, captureExceptionMock } = vi.hoisted(() => ({
   sendMock: vi.fn().mockResolvedValue({ data: { id: 'test-id' }, error: null }),
   incrMock: vi.fn(),
   expireMock: vi.fn().mockResolvedValue(1),
+  captureExceptionMock: vi.fn(),
 }));
 
 vi.mock('resend', () => ({
   Resend: class {
     emails = { send: sendMock };
   },
+}));
+
+// Mock @sentry/nextjs so we can assert capture calls without a real DSN.
+vi.mock('@sentry/nextjs', () => ({
+  captureException: captureExceptionMock,
 }));
 
 // Mock @upstash/redis so we never open a real network connection in tests.
@@ -71,6 +77,7 @@ function nextTestIp(): string {
 describe('POST /api/contact', () => {
   beforeEach(() => {
     sendMock.mockClear();
+    captureExceptionMock.mockClear();
   });
 
   it('returns 400 when name is missing', async () => {
@@ -331,9 +338,86 @@ describe('POST /api/contact', () => {
           expect.stringMatching(/rate-limit/),
           expect.any(Error),
         );
+        // Sentry should also see the failure so a persistent Upstash outage
+        // surfaces somewhere instead of being just a stderr line in Vercel.
+        expect(captureExceptionMock).toHaveBeenCalledWith(
+          expect.any(Error),
+          expect.objectContaining({
+            tags: expect.objectContaining({ component: 'rate-limit', kind: 'redis-error' }),
+            level: 'warning',
+          }),
+        );
       } finally {
         errorSpy.mockRestore();
       }
+    });
+  });
+
+  // Resend errors used to be silent in production — caught and turned into
+  // a generic 500. Without Sentry capture, an invalid API key, a domain
+  // verification regression, or a bounce flood would never surface. These
+  // tests pin that behavior to Sentry.captureException, with NO PII passed.
+  describe('Sentry capture for Resend failures', () => {
+    function assertNoPiiInCaptureCalls() {
+      for (const call of captureExceptionMock.mock.calls) {
+        const flat = JSON.stringify(call);
+        // Names/emails/messages from the test body must never appear in any
+        // Sentry argument. The actual production form payload would be
+        // similar — verify our wiring strips it.
+        expect(flat).not.toContain('Frodo');
+        expect(flat).not.toContain('frodo@shire.me');
+        expect(flat).not.toContain('Hello world body');
+      }
+    }
+
+    it('captures the error object branch (Resend returned an error)', async () => {
+      sendMock.mockResolvedValueOnce({ data: null, error: { message: 'API key invalid' } });
+      const res = await POST(
+        makeRequest(
+          { name: 'Frodo', email: 'frodo@shire.me', message: 'Hello world body' },
+          { 'x-forwarded-for': nextTestIp() },
+        ),
+      );
+      expect(res.status).toBe(500);
+      expect(captureExceptionMock).toHaveBeenCalledTimes(1);
+      const [errArg, ctxArg] = captureExceptionMock.mock.calls[0];
+      expect(errArg).toBeInstanceOf(Error);
+      expect((errArg as Error).message).toContain('API key invalid');
+      expect(ctxArg).toEqual(
+        expect.objectContaining({
+          tags: expect.objectContaining({
+            route: 'contact',
+            source: 'resend',
+            kind: 'response-error',
+          }),
+        }),
+      );
+      assertNoPiiInCaptureCalls();
+    });
+
+    it('captures the thrown branch (network failure / SDK throw)', async () => {
+      sendMock.mockRejectedValueOnce(new Error('Network error'));
+      const res = await POST(
+        makeRequest(
+          { name: 'Frodo', email: 'frodo@shire.me', message: 'Hello world body' },
+          { 'x-forwarded-for': nextTestIp() },
+        ),
+      );
+      expect(res.status).toBe(500);
+      expect(captureExceptionMock).toHaveBeenCalledTimes(1);
+      const [errArg, ctxArg] = captureExceptionMock.mock.calls[0];
+      expect(errArg).toBeInstanceOf(Error);
+      expect((errArg as Error).message).toBe('Network error');
+      expect(ctxArg).toEqual(
+        expect.objectContaining({
+          tags: expect.objectContaining({
+            route: 'contact',
+            source: 'resend',
+            kind: 'thrown',
+          }),
+        }),
+      );
+      assertNoPiiInCaptureCalls();
     });
   });
 });
