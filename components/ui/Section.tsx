@@ -34,10 +34,20 @@ export function Section({
   return (
     <section
       id={id}
+      // tabIndex=-1 makes the section programmatically focusable so hash-jump
+      // navigation (e.g. #projects) can move keyboard focus to the landmark.
+      // Without this, screen-reader/keyboard users scroll but stay tabbed
+      // wherever they were, losing place.
+      tabIndex={-1}
       aria-labelledby={id ? `${id}-heading` : undefined}
       data-map-frame={mapFrame ?? undefined}
       className={cn(
         'relative overflow-hidden py-16 md:py-24',
+        // Suppress the focus ring that tabIndex=-1 would otherwise paint when
+        // we programmatically move focus here — it's not a tabstop, it's an
+        // anchor target. Outline:none is fine here because real focusable
+        // children inside the section keep their own visible focus styles.
+        'focus:outline-none',
         variant === 'dark' ? 'bg-charcoal text-parchment' : 'bg-parchment',
         mapFrame && 'border-bark/10 border-t border-b',
         className,

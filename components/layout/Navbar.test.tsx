@@ -40,6 +40,16 @@ describe('Navbar', () => {
     expect(btn).toHaveAttribute('aria-expanded', 'false');
   });
 
+  it('mobile menu toggle is wired to the menu via aria-controls', () => {
+    // aria-controls + matching id let assistive tech announce "expanded — controls
+    // mobile-nav" so AT users know what's about to open before they activate it.
+    renderWithLocale(<Navbar />);
+    const btn = screen.getByRole('button', { name: /open menu/i });
+    expect(btn).toHaveAttribute('aria-controls', 'mobile-nav');
+    // The controlled element must exist in the DOM.
+    expect(document.getElementById('mobile-nav')).toBeInTheDocument();
+  });
+
   it('toggles mobile menu on button click', () => {
     renderWithLocale(<Navbar />);
     const btn = screen.getByRole('button', { name: /open menu/i });

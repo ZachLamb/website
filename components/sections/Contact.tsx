@@ -293,6 +293,12 @@ export function Contact() {
               </Button>
 
               <div aria-live="polite" aria-atomic="true">
+                {/* Sending announcement — sr-only because the visible "Sending…"
+                    label sits in the disabled submit button, but screen readers
+                    don't re-announce a button's text change after it's already
+                    been read. Routing the state through this live region makes
+                    submit feedback audible to AT users. */}
+                {status === 'sending' && <p className="sr-only">{messages.contact.sending}</p>}
                 {status === 'error' && (
                   <p className="text-center text-sm text-red-400">
                     {errorMessage ?? messages.contact.fallbackError}

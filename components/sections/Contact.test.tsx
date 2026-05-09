@@ -143,6 +143,37 @@ describe('Contact', () => {
     vi.restoreAllMocks();
   });
 
+  it('announces sending state via aria-live region while submitting', async () => {
+    // Hold fetch in a pending state so we can observe the live-region content
+    // during the 'sending' status (between submit and resolution).
+    let resolveFetch!: (v: Response) => void;
+    const pendingFetch = new Promise<Response>((r) => {
+      resolveFetch = r;
+    });
+    vi.spyOn(globalThis, 'fetch').mockReturnValueOnce(pendingFetch);
+
+    renderWithLocale(<Contact />);
+    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Test' } });
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'test@test.com' } });
+    fireEvent.change(screen.getByLabelText('Message'), { target: { value: 'Hello' } });
+    fireEvent.submit(screen.getByText(/Sending|Send Message/i).closest('form')!);
+
+    // The aria-live region inside the form must contain a sr-only sending
+    // announcement so screen readers report the submit state change.
+    await waitFor(() => {
+      const liveRegions = document.querySelectorAll('[aria-live="polite"]');
+      const announcedSending = Array.from(liveRegions).some((r) =>
+        r.querySelector('p.sr-only')?.textContent?.match(/sending/i),
+      );
+      expect(announcedSending).toBe(true);
+    });
+
+    // Cleanly resolve so the test doesn't leak a pending promise.
+    resolveFetch(new Response(JSON.stringify({}), { status: 200 }));
+    await waitFor(() => expect(screen.getByText('Note left at base camp')).toBeInTheDocument());
+    vi.restoreAllMocks();
+  });
+
   it('shows rate limit message when API returns 429', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
       new Response(JSON.stringify({ error: 'Too many attempts. Please try again later.' }), {

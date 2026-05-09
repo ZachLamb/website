@@ -146,6 +146,7 @@ export function Navbar() {
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-label={mobileOpen ? messages.nav.closeMenu : messages.nav.openMenu}
           aria-expanded={mobileOpen}
+          aria-controls="mobile-nav"
         >
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
@@ -153,6 +154,7 @@ export function Navbar() {
 
       {/* Mobile dropdown */}
       <div
+        id="mobile-nav"
         className={cn(
           'border-bark/10 overflow-hidden border-b md:hidden',
           mobileOpen ? 'block' : 'hidden',

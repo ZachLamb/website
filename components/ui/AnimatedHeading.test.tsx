@@ -44,6 +44,18 @@ describe('AnimatedHeading', () => {
     expect(screen.getByText('Main')).toBeInTheDocument();
   });
 
+  it('hides decorative subtitle from assistive tech (aria-hidden)', () => {
+    // Roman-numeral subtitles ("I.", "IIb.") are visual-only section markers.
+    // They render as confusing strings to screen readers, and the real heading
+    // sits in the <h*> below them.
+    render(<AnimatedHeading subtitle="IIb.">Recommendations</AnimatedHeading>);
+    const subtitle = screen.getByText('IIb.');
+    expect(subtitle).toHaveAttribute('aria-hidden', 'true');
+    // The real heading must NOT be aria-hidden.
+    const heading = screen.getByRole('heading', { level: 2 });
+    expect(heading).not.toHaveAttribute('aria-hidden');
+  });
+
   it('applies custom className', () => {
     const { container } = render(
       <AnimatedHeading className="text-center">Centered</AnimatedHeading>,

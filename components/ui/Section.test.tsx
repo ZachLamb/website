@@ -52,6 +52,15 @@ describe('Section', () => {
     expect(section).toHaveAttribute('id', 'about');
   });
 
+  it('section is programmatically focusable for hash-jump anchors (tabIndex=-1)', () => {
+    // Hash-link nav (#projects) should be able to move keyboard focus to the
+    // section landmark — tabIndex=-1 enables that without making the section
+    // a tab stop in the normal Tab order.
+    const { container } = render(<Section id="about">About</Section>);
+    const section = container.querySelector('section')!;
+    expect(section).toHaveAttribute('tabIndex', '-1');
+  });
+
   it('applies custom className', () => {
     const { container } = render(<Section className="pt-0">Custom</Section>);
     const section = container.querySelector('section')!;
