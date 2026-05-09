@@ -337,8 +337,14 @@ export function Hero() {
         <m.div variants={fadeUp} className="mt-6 w-full max-w-2xl">
           <TaglineCycler
             taglines={messages.hero.taglines}
-            intervalMs={3000}
-            className="text-stone min-h-[56px] text-center text-lg break-words md:text-xl"
+            // Default 6s; explicit here so the value is co-located with the
+            // taglines content and easy to tune per-site if needed.
+            intervalMs={6000}
+            // Reserve enough vertical space for the tallest variant so the
+            // CTA buttons below don't shift when the cycler rotates between
+            // 1, 2, and 3-line wrappings. ~3 lines @ 360px (mobile),
+            // ~2 lines @ ≥768px.
+            className="text-stone min-h-[112px] text-center text-lg break-words md:min-h-[64px] md:text-xl"
           />
         </m.div>
 

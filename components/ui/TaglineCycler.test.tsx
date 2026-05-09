@@ -52,20 +52,32 @@ describe('TaglineCycler', () => {
     expect(screen.getByText('Alpha')).toBeInTheDocument();
   });
 
-  it('renders only the first tagline when reduced motion is preferred', () => {
+  it('renders ALL taglines stacked when reduced motion is preferred', () => {
     motionMocks.useReducedMotion.mockReturnValue(true);
     render(<TaglineCycler taglines={['Alpha', 'Beta', 'Gamma']} intervalMs={1000} />);
+    // All three are reachable — reduced-motion users get the full message
+    // statically instead of being trapped on whichever variant is on screen.
     expect(screen.getByText('Alpha')).toBeInTheDocument();
+    expect(screen.getByText('Beta')).toBeInTheDocument();
+    expect(screen.getByText('Gamma')).toBeInTheDocument();
+    // And the cycler still doesn't run an interval.
     act(() => vi.advanceTimersByTime(5000));
-    // Still Alpha — the cycling effect is skipped entirely.
-    expect(screen.getByText('Alpha')).toBeInTheDocument();
-    expect(screen.queryByText('Beta')).not.toBeInTheDocument();
+    expect(screen.getAllByText(/Alpha|Beta|Gamma/)).toHaveLength(3);
   });
 
   it('does not cycle when only a single tagline is provided', () => {
     render(<TaglineCycler taglines={['Only one']} intervalMs={500} />);
     act(() => vi.advanceTimersByTime(2000));
     expect(screen.getByText('Only one')).toBeInTheDocument();
+  });
+
+  it('marks the cycling region with aria-live and a role description', () => {
+    const { container } = render(<TaglineCycler taglines={['Alpha', 'Beta']} intervalMs={1000} />);
+    const region = container.firstChild as HTMLElement;
+    expect(region).toHaveAttribute('role', 'region');
+    expect(region).toHaveAttribute('aria-live', 'polite');
+    expect(region).toHaveAttribute('aria-atomic', 'true');
+    expect(region).toHaveAttribute('aria-roledescription', 'rotating tagline');
   });
 
   it('applies the className to the wrapper', () => {
