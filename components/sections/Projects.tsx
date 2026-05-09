@@ -9,7 +9,7 @@ import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
-import { projects } from '@/data/projects';
+import { publishedProjects } from '@/data/projects';
 import type { Project } from '@/data/projects';
 
 function ProjectLink({
@@ -105,6 +105,13 @@ export function Projects() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
+  // Don't render the section at all when nothing is published. Avoids
+  // shipping placeholder copy or an empty "intro + grid of nothing."
+  // app/[locale]/page.tsx and components/layout/Navbar.tsx use the same
+  // hasPublishedProjects flag so the divider above and the nav entry
+  // disappear in lockstep.
+  if (publishedProjects.length === 0) return null;
+
   return (
     <Section variant="light" id="projects" mapFrame nature={{ leaves: true }}>
       <div ref={ref}>
@@ -114,7 +121,7 @@ export function Projects() {
         <p className="text-bark mb-10 max-w-2xl text-lg">{messages.projects.intro}</p>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {projects.map((project, i) => (
+          {publishedProjects.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} isInView={isInView} />
           ))}
         </div>

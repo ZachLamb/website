@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { LanguageDropdown } from '@/components/ui/LanguageDropdown';
+import { hasPublishedProjects } from '@/data/projects';
 
 export const navLinkIds = [
   { key: 'trailGuide' as const, href: '#about', id: 'about' },
@@ -83,11 +84,17 @@ export function Navbar() {
   const basePath = pathname?.startsWith('/')
     ? pathname.split('/').slice(0, 2).join('/')
     : `/${locale}`;
-  const navLinks = navLinkIds.map((item) => ({
-    label: messages.nav[item.key],
-    href: item.href,
-    id: item.id,
-  }));
+  // Drop the Selected Work entry when no projects are published. Projects.tsx
+  // returns null in the same condition so the section + nav entry vanish in
+  // lockstep — no broken anchor link, no 9-item nav row that wraps on small
+  // laptops just to reach a section that isn't there.
+  const navLinks = navLinkIds
+    .filter((item) => hasPublishedProjects || item.id !== 'projects')
+    .map((item) => ({
+      label: messages.nav[item.key],
+      href: item.href,
+      id: item.id,
+    }));
 
   return (
     <header className="bg-parchment/90 border-bark/10 sticky top-0 z-50 border-b pt-[env(safe-area-inset-top)] backdrop-blur-md">

@@ -8,6 +8,7 @@ import { Services } from '@/components/sections/Services';
 import { Education } from '@/components/sections/Education';
 import { Contact } from '@/components/sections/Contact';
 import { Divider } from '@/components/ui/Divider';
+import { hasPublishedProjects } from '@/data/projects';
 
 export default function Home() {
   return (
@@ -16,8 +17,15 @@ export default function Home() {
       <About />
       <Divider variant="mountains" />
       <Experience />
-      <Divider variant="trail" />
-      <Projects />
+      {/* Projects renders null when nothing is published; the surrounding
+          divider would leave an awkward decorative gap, so it's gated too.
+          Navbar.tsx applies the same flag to its nav entry. */}
+      {hasPublishedProjects && (
+        <>
+          <Divider variant="trail" />
+          <Projects />
+        </>
+      )}
       <Divider variant="treeline" />
       <Endorsements />
       <Skills />

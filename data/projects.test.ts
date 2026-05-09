@@ -1,13 +1,13 @@
-import { projects } from './projects';
+import { projects, publishedProjects, hasPublishedProjects } from './projects';
 
 const MAX_DESCRIPTION_LENGTH = 300;
 
 describe('projects', () => {
-  it('should have at least one entry', () => {
-    expect(projects.length).toBeGreaterThan(0);
+  it('exports a Project[] array (may be empty)', () => {
+    expect(Array.isArray(projects)).toBe(true);
   });
 
-  it('each entry should have required fields', () => {
+  it('every entry should have required fields including published flag', () => {
     projects.forEach((entry) => {
       expect(entry).toHaveProperty('id');
       expect(entry).toHaveProperty('title');
@@ -15,10 +15,12 @@ describe('projects', () => {
       expect(entry).toHaveProperty('stack');
       expect(entry).toHaveProperty('description');
       expect(entry).toHaveProperty('links');
+      expect(entry).toHaveProperty('published');
+      expect(typeof entry.published).toBe('boolean');
     });
   });
 
-  it('each entry should have non-empty string title, tagline, and description', () => {
+  it('every entry should have non-empty string title, tagline, and description', () => {
     projects.forEach((entry) => {
       expect(typeof entry.title).toBe('string');
       expect(entry.title.length).toBeGreaterThan(0);
@@ -53,18 +55,34 @@ describe('projects', () => {
     });
   });
 
-  it('every present link should parse as a URL', () => {
+  it('every present link should parse as a URL with https://', () => {
     projects.forEach((entry) => {
       const { live, repo, writeup } = entry.links;
-      if (live !== undefined) {
-        expect(() => new URL(live), `${entry.id}.links.live`).not.toThrow();
-      }
-      if (repo !== undefined) {
-        expect(() => new URL(repo), `${entry.id}.links.repo`).not.toThrow();
-      }
-      if (writeup !== undefined) {
-        expect(() => new URL(writeup), `${entry.id}.links.writeup`).not.toThrow();
+      for (const [name, url] of [
+        ['live', live],
+        ['repo', repo],
+        ['writeup', writeup],
+      ] as const) {
+        if (url === undefined) continue;
+        expect(() => new URL(url), `${entry.id}.links.${name}`).not.toThrow();
+        expect(new URL(url).protocol, `${entry.id}.links.${name} protocol`).toBe('https:');
       }
     });
+  });
+});
+
+describe('publishedProjects + hasPublishedProjects', () => {
+  it('publishedProjects contains only entries with published === true', () => {
+    expect(publishedProjects.every((p) => p.published === true)).toBe(true);
+  });
+
+  it('publishedProjects is a subset of projects', () => {
+    publishedProjects.forEach((p) => {
+      expect(projects).toContain(p);
+    });
+  });
+
+  it('hasPublishedProjects matches publishedProjects.length > 0', () => {
+    expect(hasPublishedProjects).toBe(publishedProjects.length > 0);
   });
 });
