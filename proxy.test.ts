@@ -73,10 +73,30 @@ describe('proxy (locale middleware)', () => {
       expect(res.headers.get('x-next-locale')).toBe('zh');
     });
 
-    it('redirects unsupported URL locale /fr/about to /en (defaultLocale)', () => {
+    it('redirects unsupported URL locale /fr/about to /en/about (preserves path)', () => {
       const res = proxy(makeRequest('http://localhost/fr/about'));
       expect(res.status).toBe(307);
-      expect(res.headers.get('location')).toBe('http://localhost/en');
+      expect(res.headers.get('location')).toBe('http://localhost/en/about');
+    });
+  });
+
+  describe('non-locale paths preserve the path on default-locale redirect', () => {
+    it('redirects /privacy to /en/privacy (the bug this guards against)', () => {
+      const res = proxy(makeRequest('http://localhost/privacy'));
+      expect(res.status).toBe(307);
+      expect(res.headers.get('location')).toBe('http://localhost/en/privacy');
+    });
+
+    it('redirects multi-segment /foo/bar to /en/foo/bar', () => {
+      const res = proxy(makeRequest('http://localhost/foo/bar'));
+      expect(res.status).toBe(307);
+      expect(res.headers.get('location')).toBe('http://localhost/en/foo/bar');
+    });
+
+    it('redirects deep unsupported-locale path /fr/privacy to /en/privacy', () => {
+      const res = proxy(makeRequest('http://localhost/fr/privacy'));
+      expect(res.status).toBe(307);
+      expect(res.headers.get('location')).toBe('http://localhost/en/privacy');
     });
   });
 
