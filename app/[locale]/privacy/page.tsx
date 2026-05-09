@@ -40,7 +40,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ]),
       ) as Record<string, string>,
     },
-    robots: { index: true, follow: true },
+    // noindex while the policy is in draft. Search engines and AI crawlers
+    // should not pick up unreviewed legal text. Flip to `index: true` when
+    // the body has been reviewed and the "Draft — needs review" banner is
+    // removed; do both edits in the same PR to keep them in lockstep.
+    robots: { index: false, follow: true },
     openGraph: {
       title: `${messages.privacy.pageTitle} | ${messages.site.name}`,
       description: messages.privacy.pageDescription,
@@ -127,11 +131,47 @@ export default async function PrivacyPage({ params }: Props) {
         </section>
 
         <section aria-labelledby="privacy-retention">
-          {/* TODO: verify — confirm Vercel Analytics retention window and whether indefinite inbox retention matches the owner's actual practice. */}
+          {/* TODO: verify — confirm Vercel Analytics retention window and whether the
+              stated contact-form retention matches the owner's actual practice. */}
           <h2 id="privacy-retention" className="text-forest mb-3 font-serif text-2xl font-semibold">
             {p.retention.heading}
           </h2>
           <p>{p.retention.body}</p>
+        </section>
+
+        {/* Lawful basis — added per privacy review (GDPR Art. 13(1)(c)).
+            [unverified] phrasing kept conservative; revisit if site adds
+            features that change the basis (e.g. marketing emails). */}
+        <section aria-labelledby="privacy-lawful-basis">
+          <h2
+            id="privacy-lawful-basis"
+            className="text-forest mb-3 font-serif text-2xl font-semibold"
+          >
+            Lawful basis
+          </h2>
+          <p>
+            For the contact form: <strong>legitimate interest</strong> (GDPR Art. 6(1)(f)) —
+            specifically, replying to inbound inquiries you initiated. For aggregate analytics: also{' '}
+            <strong>legitimate interest</strong>, kept minimal and cookieless. If you&apos;d rather
+            not have your message processed, don&apos;t submit the form — there&apos;s no other
+            collection point on this site.
+          </p>
+        </section>
+
+        {/* International transfers — added per privacy review.
+            [unverified] DPF participation status of each vendor changes; cross-check
+            against the EU Commission DPF participant list before treating this as final. */}
+        <section aria-labelledby="privacy-transfers">
+          <h2 id="privacy-transfers" className="text-forest mb-3 font-serif text-2xl font-semibold">
+            International transfers
+          </h2>
+          <p>
+            The third-party services listed below process data in the United States. For visitors in
+            the EU, UK, or other regions with adequacy-equivalent privacy laws, transfers rely on
+            the EU–US Data Privacy Framework where the vendor participates, and on Standard
+            Contractual Clauses otherwise. <em>[unverified]</em> See each vendor&apos;s privacy
+            policy for current transfer-mechanism details.
+          </p>
         </section>
 
         <section aria-labelledby="privacy-rights">
@@ -147,6 +187,64 @@ export default async function PrivacyPage({ params }: Props) {
               {PRIVACY_CONTACT_EMAIL}
             </a>
             .
+          </p>
+          {/* Complaint pathway — required by GDPR Art. 13(2)(d) for EU/UK visitors. */}
+          <p className="mt-3">
+            If you believe I have mishandled your data, you have the right to lodge a complaint with
+            your local supervisory authority. UK visitors can contact the{' '}
+            <a
+              href="https://ico.org.uk/make-a-complaint/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-forest hover:text-gold underline underline-offset-4"
+            >
+              ICO
+            </a>
+            ; EU visitors can find their national DPA via the{' '}
+            <a
+              href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-forest hover:text-gold underline underline-offset-4"
+            >
+              EDPB members list
+            </a>
+            .
+          </p>
+        </section>
+
+        {/* Children — added per privacy review. Many regimes (GDPR Art. 8 +
+            US COPPA among others) expect a clear "not for under-16s" line. */}
+        <section aria-labelledby="privacy-minors">
+          <h2 id="privacy-minors" className="text-forest mb-3 font-serif text-2xl font-semibold">
+            Children
+          </h2>
+          <p>
+            This site is not directed at children under 16, and I do not knowingly collect
+            information from them. If you believe a child has submitted information through the
+            contact form, email{' '}
+            <a
+              href={`mailto:${PRIVACY_CONTACT_EMAIL}`}
+              className="text-forest hover:text-gold underline underline-offset-4"
+            >
+              {PRIVACY_CONTACT_EMAIL}
+            </a>{' '}
+            and I&apos;ll delete it.
+          </p>
+        </section>
+
+        {/* CCPA — defensive disclosure. The site doesn't meet CCPA's "business"
+            thresholds (revenue, data volume, sale-of-PI), but stating that
+            explicitly is cheaper than the alternative. [unverified] thresholds. */}
+        <section aria-labelledby="privacy-ccpa">
+          <h2 id="privacy-ccpa" className="text-forest mb-3 font-serif text-2xl font-semibold">
+            California (CCPA)
+          </h2>
+          <p>
+            I am not a &ldquo;business&rdquo; as defined by the California Consumer Privacy Act
+            (CCPA). I do not sell or share personal information for cross-context behavioral
+            advertising. If that ever changes, this notice will be updated and a &ldquo;Do Not Sell
+            or Share&rdquo; link will appear in the footer.
           </p>
         </section>
 
