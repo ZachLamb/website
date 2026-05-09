@@ -1,24 +1,6 @@
-// Hide-when-empty behavior. Mocked separately from Projects.test.tsx because
-// vi.mock is per-file and we need a different fixture state here.
-
-vi.mock('framer-motion', () => {
-  const factories = {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
-    span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-    h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
-    svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
-    path: (props: any) => <path {...props} />,
-  };
-  return {
-    motion: factories,
-    m: factories,
-    useInView: () => true,
-    AnimatePresence: ({ children }: any) => children,
-    LazyMotion: ({ children }: any) => children,
-    domAnimation: {},
-  };
-});
+// Hide-when-empty behavior. Different vi.mock for @/data/projects than
+// Projects.test.tsx — that's why the file is separate. framer-motion is
+// mocked globally in vitest.setup.ts.
 
 vi.mock('@/components/ui/NatureElements', () => ({
   FloatingLeaves: () => null,

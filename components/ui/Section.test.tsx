@@ -1,16 +1,6 @@
-vi.mock('framer-motion', () => {
-  const factories = {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-  };
-  return {
-    motion: factories,
-    m: factories,
-    useInView: () => true,
-    LazyMotion: ({ children }: any) => children,
-    domAnimation: {},
-  };
-});
+// framer-motion is mocked globally in vitest.setup.ts. NatureElements is a
+// per-file concern so we still mock it locally to avoid the floating-leaves /
+// fireflies SVG churn during Section unit tests.
 
 vi.mock('./NatureElements', () => ({
   FloatingLeaves: () => null,
