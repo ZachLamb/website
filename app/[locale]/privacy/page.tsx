@@ -10,8 +10,7 @@ import { getMessages, isValidLocale, locales } from '@/lib/i18n';
 type Props = { params: Promise<{ locale: string }> };
 
 const PRIVACY_CONTACT_EMAIL = 'you@zachlamb.io';
-// TODO: verify — set to the date the policy was actually reviewed/published.
-const LAST_UPDATED_ISO = '2026-04-23';
+const LAST_UPDATED_ISO = '2026-04-27';
 
 // Intentional: the privacy policy is rendered in English for every locale.
 // Non-English translations of legal text in messages/*.json are placeholder
@@ -40,11 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ]),
       ) as Record<string, string>,
     },
-    // noindex while the policy is in draft. Search engines and AI crawlers
-    // should not pick up unreviewed legal text. Flip to `index: true` when
-    // the body has been reviewed and the "Draft — needs review" banner is
-    // removed; do both edits in the same PR to keep them in lockstep.
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       title: `${messages.privacy.pageTitle} | ${messages.site.name}`,
       description: messages.privacy.pageDescription,
@@ -85,14 +80,7 @@ export default async function PrivacyPage({ params }: Props) {
         .
       </div>
 
-      {/* Draft — needs review. This page is a scaffold; all content below should be confirmed by the site owner before it goes to production. */}
-      <div
-        role="note"
-        className="border-gold/40 bg-gold/10 text-bark mb-10 rounded-md border-l-4 px-4 py-3 text-sm"
-      >
-        <strong className="text-forest font-semibold">Draft — needs review. </strong>
-        {p.draftBanner}
-      </div>
+      <div className="mb-6" />
 
       <div className="text-bark max-w-3xl space-y-10 text-base leading-relaxed break-words">
         <section aria-labelledby="privacy-at-glance">
@@ -131,17 +119,15 @@ export default async function PrivacyPage({ params }: Props) {
         </section>
 
         <section aria-labelledby="privacy-retention">
-          {/* TODO: verify — confirm Vercel Analytics retention window and whether the
-              stated contact-form retention matches the owner's actual practice. */}
           <h2 id="privacy-retention" className="text-forest mb-3 font-serif text-2xl font-semibold">
             {p.retention.heading}
           </h2>
           <p>{p.retention.body}</p>
         </section>
 
-        {/* Lawful basis — added per privacy review (GDPR Art. 13(1)(c)).
-            [unverified] phrasing kept conservative; revisit if site adds
-            features that change the basis (e.g. marketing emails). */}
+        {/* Lawful basis — GDPR Art. 13(1)(c). Phrasing kept conservative;
+            revisit if the site adds features that change the basis (e.g.
+            marketing emails would shift to consent under Art. 6(1)(a)). */}
         <section aria-labelledby="privacy-lawful-basis">
           <h2
             id="privacy-lawful-basis"
@@ -158,9 +144,11 @@ export default async function PrivacyPage({ params }: Props) {
           </p>
         </section>
 
-        {/* International transfers — added per privacy review.
-            [unverified] DPF participation status of each vendor changes; cross-check
-            against the EU Commission DPF participant list before treating this as final. */}
+        {/* International transfers — GDPR Art. 13(1)(f). The phrasing
+            is intentionally generic so it stays accurate as vendors enter
+            and leave the DPF participant list; for the current status of
+            any specific vendor, the right source is that vendor's own
+            privacy/trust page (linked under "Third parties" below). */}
         <section aria-labelledby="privacy-transfers">
           <h2 id="privacy-transfers" className="text-forest mb-3 font-serif text-2xl font-semibold">
             International transfers
@@ -169,8 +157,8 @@ export default async function PrivacyPage({ params }: Props) {
             The third-party services listed below process data in the United States. For visitors in
             the EU, UK, or other regions with adequacy-equivalent privacy laws, transfers rely on
             the EU–US Data Privacy Framework where the vendor participates, and on Standard
-            Contractual Clauses otherwise. <em>[unverified]</em> See each vendor&apos;s privacy
-            policy for current transfer-mechanism details.
+            Contractual Clauses otherwise. Each vendor&apos;s current transfer-mechanism status is
+            documented in their own privacy policy, linked under &ldquo;Third parties&rdquo; below.
           </p>
         </section>
 
@@ -233,9 +221,11 @@ export default async function PrivacyPage({ params }: Props) {
           </p>
         </section>
 
-        {/* CCPA — defensive disclosure. The site doesn't meet CCPA's "business"
-            thresholds (revenue, data volume, sale-of-PI), but stating that
-            explicitly is cheaper than the alternative. [unverified] thresholds. */}
+        {/* CCPA — defensive disclosure. As a single-operator personal site
+            with no e-commerce, no advertising, and no PI sale, none of
+            CCPA's "business" thresholds (revenue, data volume, sale of PI)
+            apply. The affirmative no-sell/no-share clause is added as a
+            trust signal beyond what's strictly required. */}
         <section aria-labelledby="privacy-ccpa">
           <h2 id="privacy-ccpa" className="text-forest mb-3 font-serif text-2xl font-semibold">
             California (CCPA)

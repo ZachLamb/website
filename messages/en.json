@@ -99,8 +99,8 @@
   "privacy": {
     "pageTitle": "Privacy Policy",
     "pageDescription": "How I handle information you share with this site — contact form data, analytics, and your rights under EU/UK privacy law.",
-    "lastUpdated": "Last updated: 23 April 2026",
-    "draftBanner": "This policy is a draft pending review. If anything here is unclear or you have questions, please email you@zachlamb.io.",
+    "lastUpdated": "Last updated: 27 April 2026",
+    "draftBanner": "If anything here is unclear or you have questions about how I handle your information, please email you@zachlamb.io.",
     "atGlance": {
       "heading": "At a glance",
       "body": "This site collects the information you submit in the contact form — name, email, message — and nothing else. I don't run analytics that profile you."
@@ -116,7 +116,7 @@
     },
     "retention": {
       "heading": "How long I keep it",
-      "body": "Contact-form emails stay in my inbox indefinitely unless you ask me to delete them. Vercel Analytics retains aggregate data per its own retention policy."
+      "body": "Contact-form emails are retained for as long as our conversation is active and up to 24 months after the last reply, after which I delete them. You can ask for earlier deletion at any time. Vercel Analytics retains aggregate data per its own retention policy."
     },
     "rights": {
       "heading": "Your rights (EU/UK)",
