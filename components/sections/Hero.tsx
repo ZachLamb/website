@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { m, useReducedMotion } from 'framer-motion';
 import { GithubIcon, LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
@@ -10,6 +10,13 @@ import { siteConfig } from '@/data/site';
 import { demoTrip } from '@/data/trips';
 import type { MarkerIcon } from '@/data/trips';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
+
+// MotionConfig at the provider would already short-circuit transitions to
+// instant on prefers-reduced-motion, but explicitly omitting
+// initial/animate/transition on the trail-map's many SVG elements is defense
+// in depth: it skips framer-motion's per-element animation setup entirely,
+// removes any reliance on its pathLength reduce-motion semantics, and makes
+// the static branch obvious in code review.
 
 const stagger = {
   hidden: {},
@@ -74,7 +81,10 @@ const markerIcons: Record<MarkerIcon, React.FC> = {
   flag: TrailSignPost,
 };
 
-function MountainBackdrop() {
+function MountainBackdrop({ prefersReducedMotion }: { prefersReducedMotion: boolean }) {
+  // When prefersReducedMotion is on, omit motion props so the paths render
+  // statically at their end-state (opacity 1, y 0). Visual outcome matches
+  // the post-animation state of the motion branch.
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0">
       <svg
@@ -87,25 +97,37 @@ function MountainBackdrop() {
         <m.path
           d="M0 200 L0 120 L100 80 L200 110 L300 60 L400 100 L500 50 L600 90 L700 40 L800 85 L900 55 L1000 95 L1100 70 L1200 100 L1200 200Z"
           fill="rgba(245,240,232,0.03)"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 0.3 }}
+          {...(prefersReducedMotion
+            ? {}
+            : {
+                initial: { opacity: 0, y: 20 },
+                animate: { opacity: 1, y: 0 },
+                transition: { duration: 1.5, delay: 0.3 },
+              })}
         />
         {/* Near mountains */}
         <m.path
           d="M0 200 L0 150 L80 120 L160 145 L260 100 L340 135 L450 90 L540 130 L650 105 L740 140 L840 110 L940 145 L1050 120 L1140 150 L1200 135 L1200 200Z"
           fill="rgba(245,240,232,0.05)"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 0.6 }}
+          {...(prefersReducedMotion
+            ? {}
+            : {
+                initial: { opacity: 0, y: 30 },
+                animate: { opacity: 1, y: 0 },
+                transition: { duration: 1.5, delay: 0.6 },
+              })}
         />
         {/* Treeline silhouette */}
         <m.path
           d="M0 200 L0 170 L20 168 L35 155 L38 168 L55 150 L58 168 L75 158 L78 168 L95 145 L98 168 L120 160 L140 148 L143 168 L165 155 L168 168 L190 162 L210 142 L213 168 L240 158 L260 148 L263 168 L285 155 L305 140 L308 168 L330 160 L350 150 L353 168 L375 155 L395 145 L398 168 L420 160 L440 152 L443 168 L465 155 L485 142 L488 168 L510 158 L530 148 L533 168 L555 155 L575 140 L578 168 L600 162 L620 150 L623 168 L645 155 L665 145 L668 168 L690 160 L710 148 L713 168 L735 155 L755 142 L758 168 L780 160 L800 150 L803 168 L825 155 L845 145 L848 168 L870 160 L890 152 L893 168 L915 155 L935 142 L938 168 L960 158 L980 148 L983 168 L1005 155 L1025 140 L1028 168 L1050 162 L1070 150 L1073 168 L1095 155 L1115 145 L1118 168 L1140 160 L1160 152 L1163 168 L1185 158 L1200 165 L1200 200Z"
           fill="rgba(245,240,232,0.04)"
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.9 }}
+          {...(prefersReducedMotion
+            ? {}
+            : {
+                initial: { opacity: 0, y: 15 },
+                animate: { opacity: 1, y: 0 },
+                transition: { duration: 1.2, delay: 0.9 },
+              })}
         />
       </svg>
     </div>
@@ -115,6 +137,11 @@ function MountainBackdrop() {
 export function Hero() {
   const { locale, messages } = useLocaleContext();
   const basePath = `/${locale}`;
+  // Drives the trail-map SVG: when true, every element below renders at its
+  // animation end-state with no initial/animate/transition. See the doc comment
+  // at the top of this file for why this is explicit instead of relying on
+  // MotionConfig alone.
+  const prefersReducedMotion = useReducedMotion() ?? false;
 
   return (
     <section
@@ -141,16 +168,24 @@ export function Hero() {
             stroke="rgba(245,240,232,0.08)"
             strokeWidth="1.5"
             strokeDasharray="12 8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.8 }}
+            {...(prefersReducedMotion
+              ? {}
+              : {
+                  initial: { opacity: 0 },
+                  animate: { opacity: 1 },
+                  transition: { duration: 1.2, delay: 0.8 },
+                })}
           />
           {/* Trail map label */}
           <m.g
             transform="translate(48, 52)"
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
+            {...(prefersReducedMotion
+              ? {}
+              : {
+                  initial: { opacity: 0, y: -4 },
+                  animate: { opacity: 1, y: 0 },
+                  transition: { duration: 0.8, delay: 1.2 },
+                })}
           >
             <rect
               x="0"
@@ -182,9 +217,13 @@ export function Hero() {
             strokeDasharray="8 6"
             strokeLinecap="round"
             fill="none"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 3.5, ease: 'easeInOut', delay: 0.5 }}
+            {...(prefersReducedMotion
+              ? {}
+              : {
+                  initial: { pathLength: 0 },
+                  animate: { pathLength: 1 },
+                  transition: { duration: 3.5, ease: 'easeInOut', delay: 0.5 },
+                })}
           />
 
           {demoTrip.markers.map((marker) => {
@@ -194,9 +233,13 @@ export function Hero() {
                 key={`${marker.x}-${marker.y}`}
                 transform={`translate(${marker.x}, ${marker.y})`}
                 className="text-parchment/15"
-                initial={{ opacity: 0, scale: 0.4 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: marker.delay, ease: 'easeOut' }}
+                {...(prefersReducedMotion
+                  ? {}
+                  : {
+                      initial: { opacity: 0, scale: 0.4 },
+                      animate: { opacity: 1, scale: 1 },
+                      transition: { duration: 0.6, delay: marker.delay, ease: 'easeOut' },
+                    })}
               >
                 <Icon />
                 {marker.label && (
@@ -225,9 +268,13 @@ export function Hero() {
             fill="none"
             stroke="rgba(245,240,232,0.04)"
             strokeWidth="0.8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2.5 }}
+            {...(prefersReducedMotion
+              ? {}
+              : {
+                  initial: { opacity: 0 },
+                  animate: { opacity: 1 },
+                  transition: { duration: 1, delay: 2.5 },
+                })}
           />
           <m.ellipse
             cx="540"
@@ -237,9 +284,13 @@ export function Hero() {
             fill="none"
             stroke="rgba(245,240,232,0.03)"
             strokeWidth="0.8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2.7 }}
+            {...(prefersReducedMotion
+              ? {}
+              : {
+                  initial: { opacity: 0 },
+                  animate: { opacity: 1 },
+                  transition: { duration: 1, delay: 2.7 },
+                })}
           />
           <m.ellipse
             cx="470"
@@ -249,9 +300,13 @@ export function Hero() {
             fill="none"
             stroke="rgba(245,240,232,0.04)"
             strokeWidth="0.8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 3.1 }}
+            {...(prefersReducedMotion
+              ? {}
+              : {
+                  initial: { opacity: 0 },
+                  animate: { opacity: 1 },
+                  transition: { duration: 1, delay: 3.1 },
+                })}
           />
 
           {/* Secondary trail paths (dotted, decoration) */}
@@ -264,16 +319,27 @@ export function Hero() {
               strokeDasharray={i === 0 ? '4 8' : '6 6'}
               strokeLinecap="round"
               fill="none"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{
-                duration: i === 0 ? 4 : 3.8,
-                ease: 'easeInOut',
-                delay: i === 0 ? 1.2 : 1.8,
-              }}
+              {...(prefersReducedMotion
+                ? {}
+                : {
+                    initial: { pathLength: 0 },
+                    animate: { pathLength: 1 },
+                    transition: {
+                      duration: i === 0 ? 4 : 3.8,
+                      ease: 'easeInOut',
+                      delay: i === 0 ? 1.2 : 1.8,
+                    },
+                  })}
             />
           ))}
-          {/* Trail continues down off the map — follow the path */}
+          {/* Trail continues down off the map — follow the path.
+              L2 timing tighten: was delay 4s (extended the longest tail of
+              the trail-map timeline to 5.2s end-time). 2.5s overlaps the
+              tail of the main trail's draw (which ends at 4s), so trail-
+              continues finishes at 3.3s — the visual narrative still
+              reads "main trail draws, line continues off the map" because
+              the tail-end of both animations runs concurrently rather
+              than sequentially. End-state visual is unchanged. */}
           <m.path
             d="M 220 660 L 220 760"
             stroke="rgba(245,240,232,0.12)"
@@ -281,12 +347,16 @@ export function Hero() {
             strokeDasharray="6 6"
             strokeLinecap="round"
             fill="none"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1.2, ease: 'easeOut', delay: 4 }}
+            {...(prefersReducedMotion
+              ? {}
+              : {
+                  initial: { pathLength: 0 },
+                  animate: { pathLength: 1 },
+                  transition: { duration: 1.2, ease: 'easeOut', delay: 2.5 },
+                })}
           />
         </svg>
-        <MountainBackdrop />
+        <MountainBackdrop prefersReducedMotion={prefersReducedMotion} />
         <MistLayer />
       </div>
 

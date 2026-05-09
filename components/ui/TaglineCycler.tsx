@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { AnimatePresence, m, useReducedMotion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 type Props = {
   taglines: readonly string[];
@@ -56,7 +57,16 @@ export function TaglineCycler({ taglines, intervalMs = 6000, className }: Props)
 
   return (
     <div
-      className={className}
+      // tabIndex=0 makes the cycler reachable by keyboard. Without it the
+      // existing onFocus/onBlur handlers can never fire for keyboard users,
+      // leaving them no way to pause auto-rotation (WCAG 2.2.2). The visible
+      // focus ring is gold-on-forest because the only mount point is Hero.
+      // Mouse users already have hover-pause via the events below.
+      tabIndex={0}
+      className={cn(
+        className,
+        'focus-visible:ring-gold focus-visible:ring-offset-forest rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+      )}
       role="region"
       aria-roledescription="rotating tagline"
       aria-live="polite"

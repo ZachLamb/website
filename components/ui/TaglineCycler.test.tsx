@@ -80,6 +80,31 @@ describe('TaglineCycler', () => {
     expect(region).toHaveAttribute('aria-roledescription', 'rotating tagline');
   });
 
+  it('is keyboard-reachable via tabIndex=0 (WCAG 2.2.2 prerequisite)', () => {
+    // Without tabIndex=0, the existing onFocus/onBlur handlers can never
+    // fire for keyboard users — the pause control would be mouse-only.
+    const { container } = render(<TaglineCycler taglines={['Alpha', 'Beta']} intervalMs={1000} />);
+    const region = container.firstChild as HTMLElement;
+    expect(region).toHaveAttribute('tabIndex', '0');
+  });
+
+  it('pauses rotation on focus (keyboard) and resumes on blur', () => {
+    const { container } = render(<TaglineCycler taglines={['Alpha', 'Beta']} intervalMs={1000} />);
+    const region = container.firstChild as HTMLElement;
+
+    // Focus the region — onFocus flips paused=true, the effect tears down
+    // the interval. Two intervals' worth of time should not advance the
+    // tagline.
+    act(() => region.focus());
+    act(() => vi.advanceTimersByTime(2000));
+    expect(screen.getByText('Alpha')).toBeInTheDocument();
+
+    // Blur resumes — a fresh interval starts, ticking after intervalMs.
+    act(() => region.blur());
+    act(() => vi.advanceTimersByTime(1000));
+    expect(screen.getByText('Beta')).toBeInTheDocument();
+  });
+
   it('applies the className to the wrapper', () => {
     const { container } = render(
       <TaglineCycler taglines={['A', 'B']} intervalMs={1000} className="my-custom-class" />,

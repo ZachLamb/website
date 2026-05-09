@@ -1,3 +1,10 @@
+// Hoisted motion-mock controller so individual tests can flip
+// useReducedMotion's return value (e.g. to exercise the prefers-reduced-motion
+// branch added in H2).
+const { motionMocks } = vi.hoisted(() => ({
+  motionMocks: { useReducedMotion: vi.fn(() => false) },
+}));
+
 vi.mock('framer-motion', () => {
   const factories = {
     div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
@@ -24,7 +31,7 @@ vi.mock('framer-motion', () => {
     m: factories,
     useInView: () => true,
     useScroll: () => ({ scrollYProgress: { current: 0 } }),
-    useReducedMotion: () => false,
+    useReducedMotion: () => motionMocks.useReducedMotion(),
     AnimatePresence: ({ children }: any) => children,
     LazyMotion: ({ children }: any) => children,
     domAnimation: {},
@@ -36,6 +43,10 @@ import { renderWithLocale } from '@/lib/test-utils';
 import { Hero } from './Hero';
 
 describe('Hero', () => {
+  beforeEach(() => {
+    motionMocks.useReducedMotion.mockReturnValue(false);
+  });
+
   it('renders "Zach Lamb" heading', () => {
     renderWithLocale(<Hero />);
     expect(screen.getByText('Zach Lamb')).toBeInTheDocument();
@@ -60,5 +71,18 @@ describe('Hero', () => {
     renderWithLocale(<Hero />);
     expect(screen.getByLabelText(/GitHub/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/LinkedIn/i)).toBeInTheDocument();
+  });
+
+  it('renders cleanly under prefers-reduced-motion (trail-map static branch)', () => {
+    // Smoke-test the H2 branch: every motion element in the trail-map must
+    // skip its initial/animate/transition props yet still render at end-state.
+    // We can't easily inspect framer-motion's inner state, but the static
+    // branch has more conditional-spread sites than the motion branch — if
+    // any one of them throws or mis-spreads, this render breaks.
+    motionMocks.useReducedMotion.mockReturnValue(true);
+    renderWithLocale(<Hero />);
+    expect(screen.getByText('Zach Lamb')).toBeInTheDocument();
+    expect(screen.getByText('Senior Software Engineer')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /get in touch/i })).toBeInTheDocument();
   });
 });
