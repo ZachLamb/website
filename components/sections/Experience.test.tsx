@@ -113,6 +113,16 @@ describe('Experience', () => {
     window.matchMedia = undefined as any;
   });
 
+  it('does not render manual bullet characters in list items', () => {
+    window.matchMedia = mockMatchMedia(false);
+    renderWithLocale(<Experience />);
+    const listItems = document.querySelectorAll('li');
+    listItems.forEach((li) => {
+      expect(li.textContent).not.toMatch(/^[•·‣▪]\s/);
+    });
+    window.matchMedia = undefined as any;
+  });
+
   it('detail panel has aria-hidden for accessibility', async () => {
     window.matchMedia = mockMatchMedia(true);
     renderWithLocale(<Experience />);

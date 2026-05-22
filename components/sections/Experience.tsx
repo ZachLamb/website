@@ -152,7 +152,7 @@ function CardContent({
         {entry.startDate} — {entry.endDate}
       </p>
 
-      <ul className="text-bark mt-3 list-inside space-y-1 text-sm leading-relaxed">
+      <ul className="text-bark mt-3 list-inside list-disc space-y-1 text-sm leading-relaxed">
         {entry.description.map((item, i) => (
           <m.li
             key={item}
@@ -160,7 +160,7 @@ function CardContent({
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isRight ? 8 : -8 }}
             transition={{ duration: 0.35, delay: 0.2 + i * 0.08 }}
           >
-            • {item}
+            {item}
           </m.li>
         ))}
       </ul>
@@ -258,9 +258,9 @@ function ExperienceDetailPanel({
         />
       </div>
 
-      <ul className="text-bark mt-3 list-inside space-y-1 text-sm leading-relaxed">
+      <ul className="text-bark mt-3 list-inside list-disc space-y-1 text-sm leading-relaxed">
         {entry.description.slice(0, 4).map((item, i) => (
-          <li key={i}>• {item}</li>
+          <li key={i}>{item}</li>
         ))}
         {entry.description.length > 4 && (
           <li className="text-stone text-xs">
