@@ -1,7 +1,6 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { GithubIcon, LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
 import { TaglineCycler } from '@/components/ui/TaglineCycler';
@@ -10,6 +9,7 @@ import { siteConfig } from '@/data/site';
 import { demoTrip } from '@/data/trips';
 import type { MarkerIcon } from '@/data/trips';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
+import { socialIconMap } from '@/lib/icons';
 
 const stagger = {
   hidden: {},
@@ -21,11 +21,6 @@ const stagger = {
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
-  github: GithubIcon,
-  linkedin: LinkedinIcon,
 };
 
 /** Default secondary paths when trip has none (decoration only). */
@@ -381,7 +376,7 @@ export function Hero() {
           )}
           <span className="flex items-center gap-2">
             {socialLinks.map((link) => {
-              const Icon = iconMap[link.icon];
+              const Icon = socialIconMap[link.icon];
               if (!Icon) return null;
               return (
                 <a

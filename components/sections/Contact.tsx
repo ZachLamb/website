@@ -3,17 +3,12 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { m, useInView, useReducedMotion } from 'framer-motion';
 import { Send, Mail } from 'lucide-react';
-import { GithubIcon, LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Button } from '@/components/ui/Button';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { socialLinks } from '@/data/social';
-
-const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
-  github: GithubIcon,
-  linkedin: LinkedinIcon,
-};
+import { socialIconMap } from '@/lib/icons';
 
 const inputClasses =
   'w-full rounded-lg border border-bark/30 bg-charcoal px-4 py-3 text-parchment placeholder:text-stone/50 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gold transition-all';
@@ -314,7 +309,7 @@ export function Contact() {
 
           <div className="space-y-1">
             {socialLinks.map((link) => {
-              const Icon = iconMap[link.icon];
+              const Icon = socialIconMap[link.icon];
               if (!Icon) return null;
               return (
                 <a
