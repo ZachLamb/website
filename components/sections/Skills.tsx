@@ -78,7 +78,6 @@ export function Skills() {
         {skillCategories.map((category, i) => (
           <m.div
             key={category.id}
-            role="article"
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}

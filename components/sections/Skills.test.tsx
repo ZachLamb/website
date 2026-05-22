@@ -63,4 +63,10 @@ describe('Skills', () => {
     const { container } = renderWithLocale(<Skills />);
     expect(container.querySelector('#skills')).toBeInTheDocument();
   });
+
+  it('does not use role="article" on skill category cards', () => {
+    renderWithLocale(<Skills />);
+    const articles = document.querySelectorAll('[role="article"]');
+    expect(articles).toHaveLength(0);
+  });
 });
