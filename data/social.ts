@@ -1,7 +1,7 @@
 export type SocialLink = {
   platform: string;
   url: string;
-  icon: string;
+  icon: 'github' | 'linkedin';
 };
 
 export const socialLinks: SocialLink[] = [
