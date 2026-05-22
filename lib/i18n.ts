@@ -25,12 +25,8 @@ export function getLocaleFromAcceptLanguage(acceptLanguage: string | null): Loca
   const parts = acceptLanguage.split(',').map((s) => s.split(';')[0].trim().toLowerCase());
   for (const part of parts) {
     const lang = part.split('-')[0];
-    if (lang === 'en') return 'en';
-    if (lang === 'es') return 'es';
-    if (lang === 'de') return 'de';
-    if (lang === 'it') return 'it';
-    if (lang === 'ja') return 'ja';
-    if (lang === 'zh') return 'zh';
+    const match = locales.find((l) => l === lang);
+    if (match) return match;
   }
   return defaultLocale;
 }
