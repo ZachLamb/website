@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { m, useInView } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { cn } from '@/lib/utils';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 
 export function About() {
@@ -24,7 +25,7 @@ export function About() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
-          className={`text-bark max-w-3xl text-lg leading-relaxed break-words${i > 0 ? 'mt-4' : ''}`}
+          className={cn('text-bark max-w-3xl text-lg leading-relaxed break-words', i > 0 && 'mt-4')}
         >
           {paragraph}
         </m.p>
