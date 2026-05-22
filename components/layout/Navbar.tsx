@@ -153,6 +153,10 @@ export function Navbar() {
 
       {/* Mobile dropdown */}
       <div
+        id="mobile-nav"
+        role={mobileOpen ? 'dialog' : undefined}
+        aria-modal={mobileOpen ? 'true' : undefined}
+        aria-label={mobileOpen ? messages.nav.openMenu : undefined}
         className={cn(
           'border-bark/10 overflow-hidden border-b md:hidden',
           mobileOpen ? 'block' : 'hidden',
