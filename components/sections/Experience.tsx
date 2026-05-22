@@ -283,12 +283,11 @@ function ExperienceDetailPanel({
 export function Experience() {
   const { messages } = useLocaleContext();
   const [hoveredEntry, setHoveredEntry] = useState<ExperienceEntry | null>(null);
-  const [isDesktop, setIsDesktop] = useState(() =>
-    typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : false,
-  );
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
+    setIsDesktop(mq.matches);
     const handler = () => setIsDesktop(mq.matches);
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
