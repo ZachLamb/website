@@ -4,8 +4,8 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "Senior Software-Ingenieur",
-    "description": "Senior Software-Ingenieur mit Schwerpunkt React, TypeScript und KI-gestützte Web-Tools. Zertifizierter ScrumMaster mit Hintergrund in Human Centered Computing, Entwicklung performanter Anwendungen von Cybersicherheitsplattformen bis E-Commerce im großen Maßstab."
+    "title": "Technical Product Manager",
+    "description": "Technical Product Manager mit Schwerpunkt React, TypeScript und KI-gestützte Produktentwicklung. Zertifizierter ScrumMaster, der hochskalierbare Cybersicherheits-Tools entwickelt, Engineering-Teams leitet und technische Partnerschaften verantwortet. Hintergrund in Human Centered Computing."
   },
   "nav": {
     "trailGuide": "Wegweiser",
@@ -23,7 +23,7 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "Senior Software-Ingenieur",
+    "subtitle": "Technical Product Manager",
     "taglines": [
       "Ich baue Werkzeuge für Menschen — und bin immer offen für ein Gespräch über Code, die Natur oder Oreos."
     ],
@@ -34,8 +34,11 @@
   },
   "about": {
     "heading": "Wegweiser",
-    "body": "Ich bin ein Full-Stack-Ingenieur mit Fokus auf Frontend und über zehn Jahre Erfahrung beim Bau von Webanwendungen, die Menschen gerne nutzen. Derzeit arbeite ich bei Circadence an KI-gestützten Tools für Cybersicherheitsprofis. Zuvor habe ich Store-Teams von Starbucks bei der Kommunikation unterstützt und Design-Systeme bei StellarFi aufgebaut. Ich bin zertifizierter ScrumMaster und überzeugt, dass großartige Software aus guten Prozessen und empathischen Teams entsteht. Wenn ich nicht programmiere, unterrichte ich Yoga, erkunde Colorados Wege, mache Krafttraining oder diskutiere den besten Oreo-Geschmack.",
-    "focusAreas": "React & TypeScript · Design-Systeme · KI-gestützte Tools · Zertifizierter ScrumMaster"
+    "body": [
+      "Ich bin Technical Product Manager mit Frontend-Engineering-Hintergrund — das heißt, ich verantworte die Roadmap, leite das Team und kann trotzdem bei den technischen Entscheidungen in die Tiefe gehen, die wirklich zählen. Bei Circadence leite ich Delivery, Produktrichtung und externe Partnerschaften für RangeGPT, eine KI-gestützte Cybersicherheits-Trainingsplattform. Ich habe die Delivery-Infrastruktur des Teams von Grund auf neu aufgebaut, Circadences technische Beziehung zu NTT Data Japan etabliert und KI-gestützte Engineering-Praktiken in die täglichen Workflows eingeführt. Außerdem leite ich ein wachsendes Frontend-Team und steuere gemeinsam mit dem Backend-Lead die technische Richtung.",
+      "Der Engineering-Hintergrund ist bewusst gewählt. Ein Jahrzehnt in EdTech, FinTech, Gesundheitswesen, E-Commerce und Cybersicherheit bedeutet, dass ich die Kosten schlechter Anforderungen kenne, das Risiko von Scope Creep im Sprint und warum eine Roadmap, die Tech Debt ignoriert, Fiktion ist. Dieser Kontext verändert, wie ich mit Ingenieuren arbeite, wie ich Stakeholdern widerspreche und wie ich einen Raum führe. Ich bin zertifizierter ScrumMaster und schreibe immer noch Produktionscode, wenn es die Arbeit erfordert. Wenn ich nicht am Schreibtisch sitze, unterrichte ich Yoga, wandere auf Colorados Wegen oder versuche, die Oreo-Debatte ein für alle Mal zu klären."
+    ],
+    "focusAreas": "Technical Product Management · Roadmap-Verantwortung · React & TypeScript · KI/LLM-Integration · Cross-funktionale Führung · Zertifizierter ScrumMaster"
   },
   "footer": {
     "backToTop": "Nach oben",

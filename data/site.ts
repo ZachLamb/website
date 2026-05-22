@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: 'Zach Lamb',
-  title: 'Senior Software Engineer',
+  title: 'Technical Product Manager',
   description:
-    'Senior Software Engineer specializing in React, TypeScript, and AI-powered web tools. Certified ScrumMaster with a Human Centered Computing background, building performant applications from cybersecurity platforms to e-commerce at scale.',
+    'Technical Product Manager specializing in React, TypeScript, and AI-powered product development. Certified ScrumMaster building high-scale cybersecurity tools, leading engineering teams, and owning technical partnerships. Human Centered Computing background.',
   url: 'https://zachlamb.io',
   ogImage: '/og.png',
   /** Work availability signal surfaced to recruiters. null hides the tag. */

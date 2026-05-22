@@ -52,9 +52,9 @@ describe('Hero', () => {
     expect(screen.getByText('Zach Lamb')).toBeInTheDocument();
   });
 
-  it('renders "Senior Software Engineer" subtitle', () => {
+  it('renders "Technical Product Manager" subtitle', () => {
     renderWithLocale(<Hero />);
-    expect(screen.getByText('Senior Software Engineer')).toBeInTheDocument();
+    expect(screen.getByText('Technical Product Manager')).toBeInTheDocument();
   });
 
   it('renders "Get in Touch" primary CTA', () => {
@@ -82,7 +82,7 @@ describe('Hero', () => {
     motionMocks.useReducedMotion.mockReturnValue(true);
     renderWithLocale(<Hero />);
     expect(screen.getByText('Zach Lamb')).toBeInTheDocument();
-    expect(screen.getByText('Senior Software Engineer')).toBeInTheDocument();
+    expect(screen.getByText('Technical Product Manager')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /get in touch/i })).toBeInTheDocument();
   });
 });

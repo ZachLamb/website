@@ -4,8 +4,8 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "Senior Software Engineer",
-    "description": "Senior Software Engineer specializing in React, TypeScript, and AI-powered web tools. Certified ScrumMaster with a Human Centered Computing background, building performant applications from cybersecurity platforms to e-commerce at scale."
+    "title": "Technical Product Manager",
+    "description": "Technical Product Manager specializing in React, TypeScript, and AI-powered product development. Certified ScrumMaster building high-scale cybersecurity tools, leading engineering teams, and owning technical partnerships. Human Centered Computing background."
   },
   "nav": {
     "trailGuide": "Trail Guide",
@@ -23,9 +23,9 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "Senior Software Engineer",
+    "subtitle": "Technical Product Manager",
     "taglines": [
-      "Full-stack engineer with a PM's instinct — always got a pulse on the latest AI tools and where they actually ship.",
+      "Frontend engineer and technical product lead. I build the product, run the team, and keep both from drifting apart.",
       "React, TypeScript, and LLM apps — with an eye for what to actually build.",
       "Always up for a conversation about code, AI, the outdoors, or Oreos."
     ],
@@ -36,8 +36,11 @@
   },
   "about": {
     "heading": "Trail Guide",
-    "body": "I'm a frontend-leaning full-stack engineer with over a decade of experience building web applications that people actually enjoy using. Currently, I'm at Circadence crafting AI-powered tools for cybersecurity professionals. Before that, I helped Starbucks store teams communicate better and built design systems at StellarFi. I'm a Certified ScrumMaster who believes great software comes from great processes and empathetic teams. When I'm not writing code, you'll find me teaching yoga, exploring Colorado's trails, lifting weights, or debating the best Oreo flavor.",
-    "focusAreas": "React & TypeScript · Design systems · AI-powered tools · Certified ScrumMaster"
+    "body": [
+      "I'm a Technical Product Manager with a frontend engineering background, which means I own the roadmap, run the team, and can still go deep on the technical decisions that actually matter. At Circadence I lead delivery, product direction, and external partnerships for RangeGPT, an AI-powered cybersecurity training platform. I rebuilt the team's delivery infrastructure from scratch, established Circadence's technical relationship with NTT Data Japan, and introduced AI-augmented engineering practices into daily workflows. I also lead a growing frontend team and co-captain technical direction with the backend lead.",
+      "The engineering background is deliberate. A decade across Ed Tech, FinTech, healthcare, e-commerce, and cybersecurity means I understand the cost of bad requirements, the risk of scope creep mid-sprint, and why a roadmap that ignores tech debt is fiction. That context changes how I work with engineers, how I push back on stakeholders, and how I run a room. I'm a Certified ScrumMaster and still write production code when the work calls for it. When I'm not at my desk, I'm teaching yoga, hiking Colorado's trails, or trying to settle the Oreo debate once and for all."
+    ],
+    "focusAreas": "Technical Product Management · Roadmap Ownership · React & TypeScript · AI/LLM Integration · Cross-functional Leadership · Certified ScrumMaster"
   },
   "footer": {
     "backToTop": "Back to top",

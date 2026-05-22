@@ -56,6 +56,10 @@ export const skillCategories: SkillCategory[] = [
     name: 'Practices',
     skills: [
       { name: 'Agile/Scrum', years: 8 },
+      { name: 'Technical Product Management', years: 1 },
+      { name: 'Roadmap Ownership', years: 1 },
+      { name: 'Stakeholder Communication', years: 1 },
+      { name: 'Cross-functional Leadership', years: 1 },
       { name: 'Product Design', years: 6 },
       { name: 'UI/UX', years: 10 },
       { name: 'E2E Testing', years: 2 },

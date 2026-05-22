@@ -47,9 +47,9 @@ describe('About', () => {
     expect(screen.getByText(/Circadence/)).toBeInTheDocument();
   });
 
-  it('renders bio text mentioning frontend-leaning', () => {
+  it('renders bio text mentioning Technical Product Manager', () => {
     renderWithLocale(<About />);
-    expect(screen.getByText(/frontend-leaning/)).toBeInTheDocument();
+    expect(screen.getByText(/Technical Product Manager/)).toBeInTheDocument();
   });
 
   it('has the about section id', () => {

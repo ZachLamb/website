@@ -4,8 +4,8 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "Ingeniero de Software Senior",
-    "description": "Ingeniero de Software Senior especializado en React, TypeScript y herramientas web impulsadas por IA. ScrumMaster certificado con formación en Human Centered Computing, construyendo aplicaciones performantes desde plataformas de ciberseguridad hasta comercio electrónico a escala."
+    "title": "Technical Product Manager",
+    "description": "Technical Product Manager especializado en React, TypeScript y desarrollo de productos impulsados por IA. ScrumMaster certificado que construye herramientas de ciberseguridad a escala, lidera equipos de ingeniería y gestiona alianzas técnicas. Formación en Human Centered Computing."
   },
   "nav": {
     "trailGuide": "Guía del sendero",
@@ -23,7 +23,7 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "Ingeniero de Software Senior",
+    "subtitle": "Technical Product Manager",
     "taglines": [
       "Construyo herramientas para las personas — y siempre estoy dispuesto a conversar sobre código, la naturaleza o las Oreos."
     ],
@@ -34,8 +34,11 @@
   },
   "about": {
     "heading": "Guía del sendero",
-    "body": "Soy un ingeniero full-stack con orientación al frontend y más de una década de experiencia construyendo aplicaciones web que la gente disfruta usar. Actualmente trabajo en Circadence creando herramientas impulsadas por IA para profesionales de ciberseguridad. Antes ayudé a los equipos de tiendas de Starbucks a comunicarse mejor y construí sistemas de diseño en StellarFi. Soy ScrumMaster certificado y creo que un gran software nace de grandes procesos y equipos empáticos. Cuando no estoy programando, me encontrarás dando clases de yoga, explorando los senderos de Colorado, haciendo pesas o debatiendo el mejor sabor de Oreo.",
-    "focusAreas": "React y TypeScript · Sistemas de diseño · Herramientas con IA · ScrumMaster certificado"
+    "body": [
+      "Soy Technical Product Manager con experiencia en ingeniería frontend, lo que significa que soy responsable de la hoja de ruta, dirijo el equipo y puedo profundizar en las decisiones técnicas que realmente importan. En Circadence lidero la entrega, la dirección de producto y las alianzas externas para RangeGPT, una plataforma de formación en ciberseguridad impulsada por IA. Reconstruí la infraestructura de entrega del equipo desde cero, establecí la relación técnica de Circadence con NTT Data Japan e introduje prácticas de ingeniería aumentadas con IA en los flujos de trabajo diarios. También lidero un equipo frontend en crecimiento y colidero la dirección técnica con el líder backend.",
+      "La experiencia en ingeniería es deliberada. Una década en EdTech, FinTech, salud, comercio electrónico y ciberseguridad significa que entiendo el coste de malos requisitos, el riesgo de ampliación de alcance en mitad de un sprint y por qué una hoja de ruta que ignora la deuda técnica es ficción. Ese contexto cambia cómo trabajo con ingenieros, cómo respondo a los stakeholders y cómo dirijo una reunión. Soy ScrumMaster certificado y sigo escribiendo código de producción cuando el trabajo lo requiere. Cuando no estoy en mi escritorio, doy clases de yoga, recorro los senderos de Colorado o intento resolver el debate de las Oreo de una vez por todas."
+    ],
+    "focusAreas": "Technical Product Management · Gestión de hoja de ruta · React y TypeScript · Integración IA/LLM · Liderazgo cross-funcional · ScrumMaster certificado"
   },
   "footer": {
     "backToTop": "Volver arriba",

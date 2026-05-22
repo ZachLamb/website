@@ -17,15 +17,18 @@ export function About() {
         {messages.about.heading}
       </AnimatedHeading>
 
-      <m.p
-        ref={ref}
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="text-bark max-w-3xl text-lg leading-relaxed break-words"
-      >
-        {messages.about.body}
-      </m.p>
+      {messages.about.body.map((paragraph, i) => (
+        <m.p
+          key={i}
+          ref={i === 0 ? ref : undefined}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
+          className={`text-bark max-w-3xl text-lg leading-relaxed break-words${i > 0 ? 'mt-4' : ''}`}
+        >
+          {paragraph}
+        </m.p>
+      ))}
 
       <m.p
         initial={{ opacity: 0, y: 12 }}
