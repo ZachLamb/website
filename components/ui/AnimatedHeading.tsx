@@ -57,7 +57,7 @@ export function AnimatedHeading({
     sectionId != null ? (
       <a
         href={`#${sectionId}`}
-        className="hover:text-gold focus:ring-gold inline-block rounded no-underline transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none"
+        className="hover:text-gold focus-visible:ring-gold inline-block rounded no-underline transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         {children}
       </a>
