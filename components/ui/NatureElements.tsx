@@ -132,10 +132,10 @@ export function BirdSilhouettes({ count = 3 }: { count?: number }) {
       {birds.map((bird) => (
         <m.div
           key={bird.id}
-          className="text-bark/8 absolute"
+          className="text-bark/8 absolute left-0"
           style={{ top: `${bird.y}%`, width: bird.size, height: bird.size }}
           animate={{
-            left: [`${bird.startX}%`, `${bird.endX}%`],
+            x: [`${bird.startX}vw`, `${bird.endX}vw`],
             y: [0, -15, 5, -10, 0],
           }}
           transition={{
