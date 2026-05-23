@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { Analytics } from '@vercel/analytics/react';
 import { siteConfig } from '@/data/site';
+import { socialLinks } from '@/data/social';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { TrailExtension } from '@/components/ui/TrailExtension';
@@ -64,7 +65,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     url: siteConfig.url,
     jobTitle: messages.site.title,
     description: messages.site.description,
-    sameAs: [siteConfig.links.github, siteConfig.links.linkedin].filter(Boolean),
+    sameAs: socialLinks.map((l) => l.url),
   };
 
   return (

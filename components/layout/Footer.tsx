@@ -3,8 +3,9 @@
 import { useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { m, useInView } from 'framer-motion';
-import { GithubIcon, LinkedinIcon } from '@/components/ui/BrandIcons';
 import { siteConfig } from '@/data/site';
+import { socialLinks } from '@/data/social';
+import { socialIconMap } from '@/lib/icons';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 
 function FooterMountains() {
@@ -112,24 +113,22 @@ export function Footer() {
         </p>
 
         <div className="flex items-center gap-2">
-          <a
-            href={siteConfig.links.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub (opens in new tab)"
-            className="text-stone hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-          >
-            <GithubIcon className="h-5 w-5" />
-          </a>
-          <a
-            href={siteConfig.links.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn (opens in new tab)"
-            className="text-stone hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-          >
-            <LinkedinIcon className="h-5 w-5" />
-          </a>
+          {socialLinks.map((link) => {
+            const Icon = socialIconMap[link.icon];
+            if (!Icon) return null;
+            return (
+              <a
+                key={link.platform}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${link.platform} (opens in new tab)`}
+                className="text-stone hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                <Icon className="h-5 w-5" />
+              </a>
+            );
+          })}
         </div>
 
         <p className="text-stone text-sm">

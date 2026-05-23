@@ -10,9 +10,10 @@ import { Card } from '@/components/ui/Card';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import type { Locale, Messages } from '@/lib/i18n';
 import { endorsements } from '@/data/endorsements';
-import { siteConfig } from '@/data/site';
+import { socialLinks } from '@/data/social';
 
-const linkedInRecommendationsUrl = `${siteConfig.links.linkedin}details/recommendations/`;
+const linkedInUrl = socialLinks.find((l) => l.icon === 'linkedin')?.url ?? '';
+const linkedInRecommendationsUrl = `${linkedInUrl}details/recommendations/`;
 
 function EndorsementCard({
   endorsement,

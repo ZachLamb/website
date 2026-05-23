@@ -1,7 +1,7 @@
 'use client';
 
 import { m, useReducedMotion } from 'framer-motion';
-import { GithubIcon, LinkedinIcon } from '@/components/ui/BrandIcons';
+
 import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
 import { TaglineCycler } from '@/components/ui/TaglineCycler';
@@ -10,6 +10,7 @@ import { siteConfig } from '@/data/site';
 import { demoTrip } from '@/data/trips';
 import type { MarkerIcon } from '@/data/trips';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
+import { socialIconMap } from '@/lib/icons';
 
 // MotionConfig at the provider would already short-circuit transitions to
 // instant on prefers-reduced-motion, but explicitly omitting
@@ -29,17 +30,6 @@ const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
-
-const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
-  github: GithubIcon,
-  linkedin: LinkedinIcon,
-};
-
-/** Default secondary paths when trip has none (decoration only). */
-const defaultSecondaryPaths = [
-  'M 740 60 C 700 120 720 180 680 240 S 640 280 660 340 S 620 400 580 460 S 520 500 500 560 S 440 600 400 640 S 340 680 300 720',
-  'M 120 200 Q 280 120 420 180 T 660 260 T 720 380 Q 680 520 520 580 T 280 620',
-];
 
 /** Trail sign: post with horizontal bar and rectangular sign (trailhead style) */
 function TrailSignPost() {
@@ -310,7 +300,7 @@ export function Hero() {
           />
 
           {/* Secondary trail paths (dotted, decoration) */}
-          {(demoTrip.secondaryTrailPaths ?? defaultSecondaryPaths).map((pathD, i) => (
+          {(demoTrip.secondaryTrailPaths ?? []).map((pathD, i) => (
             <m.path
               key={i}
               d={pathD}
@@ -451,7 +441,7 @@ export function Hero() {
           )}
           <span className="flex items-center gap-2">
             {socialLinks.map((link) => {
-              const Icon = iconMap[link.icon];
+              const Icon = socialIconMap[link.icon];
               if (!Icon) return null;
               return (
                 <a
