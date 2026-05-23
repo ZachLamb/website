@@ -60,6 +60,35 @@ html:lang(it) nav [data-nav-link] {
   line-height: 1.35;
 }
 
+/* Nature element animations (M2: offloaded from JS to GPU-composited CSS) */
+@keyframes leaf-fall {
+  from {
+    transform: translateY(0) translateX(0) rotate(var(--leaf-start-rot));
+  }
+  50% {
+    transform: translateY(55vh) translateX(var(--leaf-drift)) rotate(calc(var(--leaf-start-rot) + 180deg));
+  }
+  to {
+    transform: translateY(110vh) translateX(calc(var(--leaf-drift) * 0.5)) rotate(calc(var(--leaf-start-rot) + 360deg));
+  }
+}
+
+@keyframes firefly-pulse {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5) translateY(0) translateX(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2) translateY(-8px) translateX(var(--firefly-drift));
+  }
+}
+
+@keyframes mist-breathe {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
 /* Print: hide decorative/fixed UI, clean single-column look */
 @media print {
   .pointer-events-none.fixed {

@@ -113,25 +113,22 @@ describe('NatureElements reduced-motion handling', () => {
       const { container } = render(<MistLayer />);
       // Wrapper still renders so the gradient remains visible; it is just not animated.
       expect(container.firstChild).not.toBeNull();
-      const gradient = container.querySelector('[data-animate]') as HTMLElement | null;
+      // MistLayer now uses a plain div with CSS animation; when reduced motion is
+      // preferred the animation style property is set to 'none'.
+      const gradient = container.querySelector('.h-32') as HTMLElement | null;
       expect(gradient).not.toBeNull();
-      // The mocked motion.div serializes the animate prop; when reduced motion is preferred
-      // it should be an empty object (no keyframes), not the opacity array.
-      expect(gradient?.getAttribute('data-animate')).toBe('{}');
-      expect(gradient?.getAttribute('data-transition')).toBe('{"duration":0}');
+      expect(gradient?.style.animation).toBe('none');
     });
 
     it('renders the animating gradient when reduced motion is not preferred', () => {
       mockedUseReducedMotion.mockReturnValue(false);
       const { container } = render(<MistLayer />);
       expect(container.firstChild).not.toBeNull();
-      const gradient = container.querySelector('[data-animate]') as HTMLElement | null;
+      // MistLayer now uses CSS animation; the animation style should reference the
+      // mist-breathe keyframe.
+      const gradient = container.querySelector('.h-32') as HTMLElement | null;
       expect(gradient).not.toBeNull();
-      const animateAttr = gradient?.getAttribute('data-animate');
-      expect(animateAttr).toContain('opacity');
-      const transitionAttr = gradient?.getAttribute('data-transition');
-      // JSON.stringify converts Infinity to null, so we check the duration key instead.
-      expect(transitionAttr).toContain('"duration":8');
+      expect(gradient?.style.animation).toContain('mist-breathe');
     });
   });
 

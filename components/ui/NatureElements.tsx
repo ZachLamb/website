@@ -85,7 +85,7 @@ export function FloatingLeaves({
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       {leaves.map((leaf) => (
-        <m.div
+        <div
           key={leaf.id}
           className={`absolute ${color}`}
           style={{
@@ -93,21 +93,13 @@ export function FloatingLeaves({
             width: leaf.size,
             height: leaf.size,
             top: '-5%',
-          }}
-          animate={{
-            y: ['0vh', '110vh'],
-            x: [0, leaf.drift, leaf.drift * 0.5],
-            rotate: [leaf.rotation, leaf.rotation + 180, leaf.rotation + 360],
-          }}
-          transition={{
-            duration: leaf.duration,
-            delay: leaf.delay,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
+            '--leaf-drift': `${leaf.drift}px`,
+            '--leaf-start-rot': `${leaf.rotation}deg`,
+            animation: `leaf-fall ${leaf.duration}s linear ${leaf.delay}s infinite`,
+          } as React.CSSProperties}
         >
           <LeafSVG variant={leaf.variant} />
-        </m.div>
+        </div>
       ))}
     </div>
   );
@@ -132,10 +124,10 @@ export function BirdSilhouettes({ count = 3 }: { count?: number }) {
       {birds.map((bird) => (
         <m.div
           key={bird.id}
-          className="text-bark/8 absolute"
+          className="text-bark/8 absolute left-0"
           style={{ top: `${bird.y}%`, width: bird.size, height: bird.size }}
           animate={{
-            left: [`${bird.startX}%`, `${bird.endX}%`],
+            x: [`${bird.startX}vw`, `${bird.endX}vw`],
             y: [0, -15, 5, -10, 0],
           }}
           transition={{
@@ -192,12 +184,13 @@ export function Fireflies({ count = 12 }: { count?: number }) {
     duration: 3 + (i % 4) * 1.5,
     delay: (i * 0.7) % 5,
     size: 2 + (i % 2),
+    drift: i % 2 === 0 ? 4 : -4,
   }));
 
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       {dots.map((dot) => (
-        <m.div
+        <div
           key={dot.id}
           className="bg-gold-light/30 absolute rounded-full"
           style={{
@@ -205,19 +198,9 @@ export function Fireflies({ count = 12 }: { count?: number }) {
             top: `${dot.y}%`,
             width: dot.size,
             height: dot.size,
-          }}
-          animate={{
-            opacity: [0, 0.8, 0],
-            scale: [0.5, 1.2, 0.5],
-            y: [0, -8, 0],
-            x: [0, dot.id % 2 === 0 ? 4 : -4, 0],
-          }}
-          transition={{
-            duration: dot.duration,
-            delay: dot.delay,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
+            '--firefly-drift': `${dot.drift}px`,
+            animation: `firefly-pulse ${dot.duration}s ease-in-out ${dot.delay}s infinite`,
+          } as React.CSSProperties}
         />
       ))}
     </div>
@@ -232,17 +215,12 @@ export function MistLayer({ className = '' }: { className?: string }) {
       aria-hidden="true"
       className={`pointer-events-none absolute inset-x-0 bottom-0 ${className}`}
     >
-      <m.div
+      <div
         className="h-32 w-full"
         style={{
           background: 'linear-gradient(to top, rgba(245,240,232,0.08), transparent)',
+          animation: prefersReducedMotion ? 'none' : 'mist-breathe 8s ease-in-out infinite',
         }}
-        animate={prefersReducedMotion ? {} : { opacity: [0.3, 0.6, 0.3] }}
-        transition={
-          prefersReducedMotion
-            ? { duration: 0 }
-            : { duration: 8, repeat: Infinity, ease: 'easeInOut' }
-        }
       />
     </div>
   );
