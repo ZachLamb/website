@@ -56,4 +56,10 @@ describe('About', () => {
     const { container } = renderWithLocale(<About />);
     expect(container.querySelector('#about')).toBeInTheDocument();
   });
+
+  it('does not use aria-label on non-interactive paragraph elements', () => {
+    renderWithLocale(<About />);
+    const paragraphs = document.querySelectorAll('p[aria-label]');
+    expect(paragraphs).toHaveLength(0);
+  });
 });
