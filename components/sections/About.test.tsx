@@ -1,29 +1,3 @@
-vi.mock('framer-motion', () => {
-  const factories = {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
-    h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
-    h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
-    h3: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
-    svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
-    create:
-      (tag: string) =>
-      ({ children, ...props }: any) => {
-        const Tag = tag as any;
-        return <Tag {...props}>{children}</Tag>;
-      },
-  };
-  return {
-    motion: factories,
-    m: factories,
-    useInView: () => true,
-    useScroll: () => ({ scrollYProgress: { current: 0 } }),
-    AnimatePresence: ({ children }: any) => children,
-    LazyMotion: ({ children }: any) => children,
-    domAnimation: {},
-  };
-});
-
 vi.mock('@/components/ui/NatureElements', () => ({
   FloatingLeaves: () => null,
   Fireflies: () => null,
@@ -55,6 +29,13 @@ describe('About', () => {
   it('has the about section id', () => {
     const { container } = renderWithLocale(<About />);
     expect(container.querySelector('#about')).toBeInTheDocument();
+  });
+
+  it('renders all paragraphs from messages.about.body array', () => {
+    renderWithLocale(<About />);
+    // The en.json about.body has 2 paragraphs — match one unique phrase from each
+    expect(screen.getByText(/I'm a Technical Product Manager/)).toBeInTheDocument();
+    expect(screen.getByText(/The engineering background is deliberate/)).toBeInTheDocument();
   });
 
   it('does not use aria-label on non-interactive paragraph elements', () => {

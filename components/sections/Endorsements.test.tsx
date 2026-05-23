@@ -1,28 +1,3 @@
-vi.mock('framer-motion', () => {
-  const factories = {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
-    span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-    h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
-    svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
-    path: (props: any) => <path {...props} />,
-    create:
-      (tag: string) =>
-      ({ children, ...props }: any) => {
-        const Tag = tag as any;
-        return <Tag {...props}>{children}</Tag>;
-      },
-  };
-  return {
-    motion: factories,
-    m: factories,
-    useInView: () => true,
-    AnimatePresence: ({ children }: any) => children,
-    LazyMotion: ({ children }: any) => children,
-    domAnimation: {},
-  };
-});
-
 vi.mock('@/components/ui/NatureElements', () => ({
   FloatingLeaves: () => null,
   Fireflies: () => null,

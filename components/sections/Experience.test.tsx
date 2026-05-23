@@ -1,33 +1,3 @@
-vi.mock('framer-motion', () => {
-  const factories = {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    li: ({ children, ...props }: any) => <li {...props}>{children}</li>,
-    span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-    p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
-    h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
-    h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
-    h3: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
-    svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
-    path: (props: any) => <path {...props} />,
-    circle: (props: any) => <circle {...props} />,
-    create:
-      (tag: string) =>
-      ({ children, ...props }: any) => {
-        const Tag = tag as any;
-        return <Tag {...props}>{children}</Tag>;
-      },
-  };
-  return {
-    motion: factories,
-    m: factories,
-    useInView: () => true,
-    useScroll: () => ({ scrollYProgress: { current: 0 } }),
-    AnimatePresence: ({ children }: any) => children,
-    LazyMotion: ({ children }: any) => children,
-    domAnimation: {},
-  };
-});
-
 vi.mock('@/components/ui/NatureElements', () => ({
   FloatingLeaves: () => null,
   Fireflies: () => null,
@@ -110,6 +80,17 @@ describe('Experience', () => {
       screen.getAllByText((content) => content.includes(firstDescription)).length,
     ).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('TypeScript').length).toBeGreaterThanOrEqual(1);
+    window.matchMedia = undefined as any;
+  });
+
+  it('initializes isDesktop to false (SSR-safe)', () => {
+    // Mock matchMedia to return false (mobile) — isDesktop starts as false
+    window.matchMedia = mockMatchMedia(false);
+    renderWithLocale(<Experience />);
+    // ExperienceDetailPanel only renders when isDesktop && hoveredEntry.
+    // Since isDesktop initializes to false, no fixed detail panel appears.
+    const detailPanels = document.querySelectorAll('[aria-hidden="true"].fixed');
+    expect(detailPanels).toHaveLength(0);
     window.matchMedia = undefined as any;
   });
 
