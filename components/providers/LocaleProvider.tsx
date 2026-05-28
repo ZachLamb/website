@@ -4,7 +4,7 @@ import { createContext, useContext, type ReactNode } from 'react';
 import type { Locale } from '@/lib/i18n';
 import type { Messages } from '@/lib/i18n';
 
-const LocaleContext = createContext<{ locale: Locale; messages: Messages } | null>(null);
+export const LocaleContext = createContext<{ locale: Locale; messages: Messages } | null>(null);
 
 export function LocaleProvider({
   locale,
