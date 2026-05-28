@@ -55,7 +55,7 @@ const nextConfig: NextConfig = {
     // content. Default is 5min for static segments — measurable on a personal
     // site that ships frequently. Trade-off is one extra fetch per nav, which
     // is fine at this traffic level.
-    staleTimes: { dynamic: 0, static: 0 },
+    staleTimes: { dynamic: 0, static: 30 },
   },
   async headers() {
     return [{ source: '/(.*)', headers: securityHeaders }];
