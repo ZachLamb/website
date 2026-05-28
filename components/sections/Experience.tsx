@@ -287,9 +287,11 @@ export function Experience() {
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
-    setIsDesktop(mq.matches);
     const handler = () => setIsDesktop(mq.matches);
     mq.addEventListener('change', handler);
+    // Read initial value via the handler to avoid synchronous setState in
+    // the effect body (react-hooks/set-state-in-effect).
+    handler();
     return () => mq.removeEventListener('change', handler);
   }, []);
 
