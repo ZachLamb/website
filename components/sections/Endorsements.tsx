@@ -114,7 +114,7 @@ export function Endorsements() {
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
-    <Section variant="light" id="endorsements" nature={{ leaves: true }}>
+    <Section variant="light" id="endorsements" tone="cool" nature={{ leaves: true }}>
       <div ref={ref}>
         <AnimatedHeading sectionId="endorsements" subtitle="IIc." className="mb-4">
           {messages.sections.endorsements}
