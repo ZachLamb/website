@@ -76,7 +76,7 @@ export function AnimatedHeading({
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-stone flex items-center gap-2 text-sm tracking-[0.2em] uppercase"
+          className="text-stone flex items-center gap-2 text-xs tracking-[0.2em] uppercase"
         >
           <LeafAccent />
           {subtitle}
@@ -87,7 +87,7 @@ export function AnimatedHeading({
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.6, delay: subtitle ? 0.1 : 0 }}
-        className="text-forest font-serif text-3xl font-semibold break-words md:text-4xl"
+        className="text-forest font-serif text-4xl font-semibold break-words md:text-5xl"
       >
         {headingContent}
       </MotionTag>
