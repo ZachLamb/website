@@ -11,7 +11,7 @@ import { socialLinks } from '@/data/social';
 import { socialIconMap } from '@/lib/icons';
 
 const inputClasses =
-  'w-full rounded-lg border border-bark/30 bg-charcoal px-4 py-3 text-parchment placeholder:text-stone/50 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gold transition-all';
+  'w-full rounded-lg border border-bark/30 bg-charcoal px-4 py-3 text-parchment placeholder:text-stone/50 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gold focus:shadow-[0_0_12px_rgba(184,134,11,0.2)] transition-all';
 
 /** Mailto link and display: use NEXT_PUBLIC_CONTACT_EMAIL or fallback so form recipient and link stay in sync when set. */
 const contactEmail =
@@ -36,6 +36,40 @@ function PaperAirplaneIcon({ className }: { className?: string }) {
       <path d="M22 2L11 13" />
       <path d="M22 2L15 22L11 13L2 9L22 2Z" />
     </svg>
+  );
+}
+
+function ConstellationBackground() {
+  const stars = Array.from({ length: 20 }, (_, i) => ({
+    left: `${(i * 37 + 13) % 100}%`,
+    top: `${(i * 53 + 7) % 100}%`,
+    size: 1 + (i % 3) * 0.5,
+    duration: 12 + (i % 5) * 4,
+    delay: (i % 7) * 2,
+    opacity: 0.04 + (i % 4) * 0.02,
+    dx: `${((i % 3) - 1) * 8}px`,
+    dy: `${((i % 2) === 0 ? -1 : 1) * 6}px`,
+  }));
+
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+      {stars.map((star, i) => (
+        <div
+          key={i}
+          className="bg-parchment absolute rounded-full"
+          style={{
+            left: star.left,
+            top: star.top,
+            width: `${star.size}px`,
+            height: `${star.size}px`,
+            '--star-opacity': String(star.opacity),
+            '--star-dx': star.dx,
+            '--star-dy': star.dy,
+            animation: `star-drift ${star.duration}s ease-in-out ${star.delay}s infinite`,
+          } as React.CSSProperties}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -101,6 +135,7 @@ export function Contact() {
 
   return (
     <Section variant="dark" id="contact" nature={{ fireflies: true }}>
+      <ConstellationBackground />
       <AnimatedHeading
         sectionId="contact"
         subtitle="VI."

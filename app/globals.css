@@ -89,6 +89,11 @@ html:lang(it) nav [data-nav-link] {
   50% { opacity: 0.6; }
 }
 
+@keyframes star-drift {
+  0%, 100% { transform: translate(0, 0); opacity: var(--star-opacity); }
+  50% { transform: translate(var(--star-dx), var(--star-dy)); opacity: calc(var(--star-opacity) * 1.5); }
+}
+
 /* Print: hide decorative/fixed UI, clean single-column look */
 @media print {
   .pointer-events-none.fixed {
