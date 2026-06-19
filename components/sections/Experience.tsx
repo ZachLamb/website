@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/Badge';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { experiences } from '@/data/experience';
 import type { ExperienceEntry } from '@/data/experience';
+import { cn } from '@/lib/utils';
 
 function TimelineCard({
   entry,
@@ -47,6 +48,7 @@ function TimelineCard({
         data-testid={`experience-card-${entry.id}`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
+        onClick={handleEnter}
       >
         {isLeft ? (
           <m.div
@@ -104,6 +106,7 @@ function TimelineCard({
         data-testid={!isLeft ? `experience-card-${entry.id}` : undefined}
         onMouseEnter={!isLeft ? handleEnter : undefined}
         onMouseLeave={!isLeft ? handleLeave : undefined}
+        onClick={!isLeft ? handleEnter : undefined}
       >
         {isLeft ? (
           <m.div
@@ -181,12 +184,21 @@ function CardContent({
           ))}
         </div>
       )}
+
+      {/* Inline trail elevation profile */}
+      <div className="border-bark/10 mt-3 overflow-hidden rounded-md border">
+        <TrailProfileGraph
+          id={`inline-${entry.id}`}
+          count={entry.description.length + entry.techStack.length}
+          className="h-10"
+        />
+      </div>
     </div>
   );
 }
 
 /** Trail profile / elevation-style line (abstract "path" for this role) */
-function TrailProfileGraph({ count, id }: { count: number; id: string }) {
+function TrailProfileGraph({ count, id, className }: { count: number; id: string; className?: string }) {
   const points = 8;
   const steps = Array.from({ length: points }, (_, i) => {
     const t = i / (points - 1);
@@ -198,7 +210,7 @@ function TrailProfileGraph({ count, id }: { count: number; id: string }) {
   return (
     <svg
       viewBox="0 0 100 100"
-      className="text-gold h-14 w-full"
+      className={cn('text-gold w-full', className ?? 'h-14')}
       preserveAspectRatio="none"
       aria-hidden
     >
@@ -295,11 +307,22 @@ export function Experience() {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
+  useEffect(() => {
+    if (!hoveredEntry) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setHoveredEntry(null);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [hoveredEntry]);
+
   return (
     <Section variant="light" id="experience" mapFrame nature={{ leaves: true, pines: true }}>
-      <AnimatedHeading sectionId="experience" subtitle="II." className="mb-12">
-        {messages.sections.experience}
-      </AnimatedHeading>
+      <div className="bg-parchment/95 sticky top-16 z-30 -mx-4 mb-12 px-4 py-2 backdrop-blur-sm sm:-mx-6 sm:px-6 md:static md:mx-0 md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
+        <AnimatedHeading sectionId="experience" subtitle="II." className="md:mb-0">
+          {messages.sections.experience}
+        </AnimatedHeading>
+      </div>
 
       <AnimatePresence>
         {isDesktop && hoveredEntry && (
