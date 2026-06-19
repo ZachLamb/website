@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { siteConfig } from '@/data/site';
 import { socialLinks } from '@/data/social';
 import { Navbar } from '@/components/layout/Navbar';
+import { ScrollProgressBar } from '@/components/ui/ScrollProgressBar';
 import { Footer } from '@/components/layout/Footer';
 import { TrailExtension } from '@/components/ui/TrailExtension';
 import { LocaleProvider } from '@/components/providers/LocaleProvider';
@@ -83,6 +84,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         </a>
         <TrailExtension />
         <Navbar />
+        <ScrollProgressBar />
         <main id="main-content">{children}</main>
         <Footer />
         <Analytics />
