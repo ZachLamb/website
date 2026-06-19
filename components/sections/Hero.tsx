@@ -389,7 +389,8 @@ export function Hero() {
 
         <m.h1
           variants={fadeUp}
-          className="text-parchment mt-4 text-center font-serif text-5xl font-bold break-words md:text-7xl"
+          className="text-parchment mt-4 text-center font-serif text-6xl font-bold break-words md:text-8xl"
+          style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
         >
           {messages.hero.title}
         </m.h1>
