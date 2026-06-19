@@ -8,6 +8,8 @@ interface SectionProps {
   children: React.ReactNode;
   className?: string;
   variant?: 'light' | 'dark';
+  /** Color tone applied to light sections only; dark sections ignore this */
+  tone?: 'warm' | 'cool' | 'dusk';
   /** Trail-map style framing: thin top/bottom rules */
   mapFrame?: boolean;
   nature?: {
@@ -23,6 +25,7 @@ export function Section({
   children,
   className,
   variant = 'light',
+  tone,
   mapFrame,
   nature,
 }: SectionProps) {
@@ -48,7 +51,13 @@ export function Section({
         // anchor target. Outline:none is fine here because real focusable
         // children inside the section keep their own visible focus styles.
         'focus:outline-none',
-        variant === 'dark' ? 'bg-charcoal text-parchment' : 'bg-parchment',
+        variant === 'dark'
+          ? 'bg-charcoal text-parchment'
+          : tone === 'cool'
+            ? 'bg-parchment-cool'
+            : tone === 'dusk'
+              ? 'bg-parchment-warm'
+              : 'bg-parchment',
         mapFrame && 'border-bark/10 border-t border-b',
         className,
       )}
