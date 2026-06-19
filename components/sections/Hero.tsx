@@ -1,6 +1,7 @@
 'use client';
 
 import { m, useReducedMotion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/Button';
 import { MistLayer } from '@/components/ui/NatureElements';
@@ -404,7 +405,7 @@ export function Hero() {
             // CTA buttons below don't shift when the cycler rotates between
             // 1, 2, and 3-line wrappings. ~3 lines @ 360px (mobile),
             // ~2 lines @ ≥768px.
-            className="text-stone min-h-[112px] text-center text-lg break-words md:min-h-[64px] md:text-xl"
+            className="text-stone text-center text-lg break-words md:text-xl"
           />
         </m.div>
 
@@ -450,7 +451,10 @@ export function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${link.platform} (opens in new tab)`}
-                  className="text-stone hover:text-gold focus-visible:ring-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  className={cn(
+                    'text-stone hover:text-gold focus-visible:ring-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                    link.icon === 'linkedin' && 'hover:shadow-[0_0_12px_rgba(184,134,11,0.3)]',
+                  )}
                 >
                   <Icon className="h-5 w-5" />
                 </a>
