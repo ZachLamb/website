@@ -89,6 +89,36 @@ html:lang(it) nav [data-nav-link] {
   50% { opacity: 0.6; }
 }
 
+@keyframes contour-drift-a {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(8px, -5px); }
+}
+
+@keyframes contour-drift-b {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-6px, 8px); }
+}
+
+@keyframes contour-drift-c {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(10px, 6px); }
+}
+
+@keyframes mountain-sway-far {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+
+@keyframes mountain-sway-near {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes mountain-sway-tree {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.5px); }
+}
+
 /* Print: hide decorative/fixed UI, clean single-column look */
 @media print {
   .pointer-events-none.fixed {
