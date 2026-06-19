@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { m, useInView, AnimatePresence } from 'framer-motion';
-import { Quote, ChevronDown, ChevronUp } from 'lucide-react';
+import { m, useInView, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Quote, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import { LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
@@ -18,14 +18,14 @@ const linkedInRecommendationsUrl = `${linkedInUrl}details/recommendations/`;
 function EndorsementCard({
   endorsement,
   index,
-  isInView,
+  totalCount,
   linkedInUrl,
   messages,
   locale,
 }: {
   endorsement: (typeof endorsements)[number];
   index: number;
-  isInView: boolean;
+  totalCount: number;
   linkedInUrl: string;
   messages: Messages['endorsements'];
   locale: Locale;
@@ -36,10 +36,11 @@ function EndorsementCard({
   const lineClampClass = longTextLocales.has(locale) ? 'line-clamp-5' : 'line-clamp-4';
 
   return (
-    <m.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      transition={{ duration: 0.5, delay: index * 0.12 }}
+    <div
+      role="group"
+      aria-roledescription="slide"
+      aria-label={`${index + 1} of ${totalCount}`}
+      className="w-[85vw] shrink-0 px-3 md:w-[400px]"
     >
       <Card className="group hover:border-gold/40 relative overflow-hidden transition-all duration-300">
         <div className="relative">
@@ -104,7 +105,7 @@ function EndorsementCard({
           </footer>
         </div>
       </Card>
-    </m.div>
+    </div>
   );
 }
 
@@ -112,6 +113,18 @@ export function Endorsements() {
   const { locale, messages } = useLocaleContext();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  const scrollBy = (direction: 'left' | 'right') => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = el.querySelector('[role="group"]')?.clientWidth ?? 400;
+    el.scrollBy({ left: direction === 'right' ? cardWidth : -cardWidth, behavior: 'smooth' });
+  };
+
+  const totalCount = endorsements.length;
+  const duplicatedEndorsements = [...endorsements, ...endorsements];
 
   return (
     <Section variant="light" id="endorsements" nature={{ leaves: true }}>
@@ -138,18 +151,73 @@ export function Endorsements() {
           </a>
         </m.p>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {endorsements.map((endorsement, i) => (
-            <EndorsementCard
-              key={endorsement.id}
-              endorsement={endorsement}
-              index={i}
-              isInView={isInView}
-              linkedInUrl={linkedInRecommendationsUrl}
-              messages={messages.endorsements}
-              locale={locale}
-            />
-          ))}
+        {/* Carousel */}
+        <div
+          role="region"
+          aria-roledescription="carousel"
+          aria-label={messages.sections.endorsements}
+          className="relative"
+        >
+          {/* Navigation arrows — desktop only */}
+          <button
+            type="button"
+            onClick={() => scrollBy('left')}
+            aria-label={(messages.endorsements as Record<string, string>)['previousAria'] ?? 'Previous endorsement'}
+            className="text-bark hover:text-gold focus-visible:ring-gold bg-parchment/80 absolute top-1/2 -left-4 z-20 hidden -translate-y-1/2 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:flex"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollBy('right')}
+            aria-label={(messages.endorsements as Record<string, string>)['nextAria'] ?? 'Next endorsement'}
+            className="text-bark hover:text-gold focus-visible:ring-gold bg-parchment/80 absolute top-1/2 -right-4 z-20 hidden -translate-y-1/2 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:flex"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+
+          {/* Desktop: auto-scrolling marquee */}
+          <div className="hidden overflow-hidden md:block">
+            <div
+              className="flex hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]"
+              style={{
+                animation: prefersReducedMotion
+                  ? 'none'
+                  : 'endorsement-marquee 40s linear infinite',
+              }}
+            >
+              {duplicatedEndorsements.map((endorsement, i) => (
+                <EndorsementCard
+                  key={`${endorsement.id}-${i}`}
+                  endorsement={endorsement}
+                  index={i % totalCount}
+                  totalCount={totalCount}
+                  linkedInUrl={linkedInRecommendationsUrl}
+                  messages={messages.endorsements}
+                  locale={locale}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile: horizontal scroll with snap */}
+          <div
+            ref={scrollRef}
+            className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-0 overflow-x-auto px-4 md:hidden"
+          >
+            {endorsements.map((endorsement, i) => (
+              <div key={endorsement.id} className="snap-center">
+                <EndorsementCard
+                  endorsement={endorsement}
+                  index={i}
+                  totalCount={totalCount}
+                  linkedInUrl={linkedInRecommendationsUrl}
+                  messages={messages.endorsements}
+                  locale={locale}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </Section>

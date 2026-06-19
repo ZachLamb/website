@@ -25,10 +25,11 @@ describe('Endorsements', () => {
 
   it('renders endorsement cards from data', () => {
     renderWithLocale(<Endorsements />);
-    expect(screen.getByText('Kimball Heaton')).toBeInTheDocument();
-    expect(screen.getByText('Katherine Liu')).toBeInTheDocument();
-    expect(screen.getByText('Lia Young')).toBeInTheDocument();
-    expect(screen.getAllByLabelText(/View this recommendation on LinkedIn/i).length).toBe(3);
+    // Desktop marquee duplicates cards for seamless loop, so use getAllByText
+    expect(screen.getAllByText('Kimball Heaton').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Katherine Liu').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Lia Young').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByLabelText(/View this recommendation on LinkedIn/i).length).toBeGreaterThanOrEqual(3);
   });
 
   it('has the endorsements section id', () => {
