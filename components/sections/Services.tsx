@@ -23,7 +23,7 @@ export function Services() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <Section variant="light" id="services" mapFrame nature={{ leaves: true }}>
+    <Section variant="light" id="services" tone="dusk" mapFrame nature={{ leaves: true }}>
       <AnimatedHeading sectionId="services" subtitle="IV.">
         {messages.sections.services}
       </AnimatedHeading>

@@ -16,7 +16,7 @@ export function Education() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <Section variant="light" id="education" nature={{ leaves: true, pines: true }}>
+    <Section variant="light" id="education" tone="dusk" nature={{ leaves: true, pines: true }}>
       <AnimatedHeading sectionId="education" subtitle="V.">
         {messages.sections.education}
       </AnimatedHeading>
