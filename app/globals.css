@@ -148,6 +148,20 @@ html:lang(it) nav [data-nav-link] {
   50% { transform: translate(var(--star-dx), var(--star-dy)); opacity: calc(var(--star-opacity) * 1.5); }
 }
 
+@keyframes endorsement-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Hide scrollbar utility (used by carousel on mobile) */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* Print: hide decorative/fixed UI, clean single-column look */
 @media print {
   .pointer-events-none.fixed {
