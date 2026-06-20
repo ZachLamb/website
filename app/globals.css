@@ -178,3 +178,17 @@ html:lang(it) nav [data-nav-link] {
     color: inherit;
   }
 }
+
+/* Mobile scroll snap with proximity mode (T4C) */
+@media (max-width: 767px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+  section[id] {
+    scroll-snap-align: start;
+  }
+  /* Experience has a sticky heading that conflicts with snap */
+  section#experience {
+    scroll-snap-align: none;
+  }
+}
