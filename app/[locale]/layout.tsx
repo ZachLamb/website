@@ -7,6 +7,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { ScrollProgressBar } from '@/components/ui/ScrollProgressBar';
 import { Footer } from '@/components/layout/Footer';
 import { TrailExtension } from '@/components/ui/TrailExtension';
+import { BackToTopButton } from '@/components/ui/BackToTopButton';
 import { LocaleProvider } from '@/components/providers/LocaleProvider';
 import { MotionProvider } from '@/components/providers/MotionProvider';
 import { getMessages, isValidLocale, locales, type Locale } from '@/lib/i18n';
@@ -87,6 +88,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         <ScrollProgressBar />
         <main id="main-content">{children}</main>
         <Footer />
+        <BackToTopButton />
         <Analytics />
       </MotionProvider>
     </LocaleProvider>
