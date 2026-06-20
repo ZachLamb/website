@@ -54,17 +54,14 @@ export function Skills() {
                       >
                         {skill.name}
                       </m.span>
-                      <m.span
-                        initial={{ opacity: 0 }}
-                        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                        transition={{ duration: 0.35, delay: i * 0.08 + j * 0.04 + 0.3 }}
+                      <span
                         className="text-parchment/50 text-xs opacity-0 transition-opacity group-hover/bar:opacity-100"
                       >
                         {skill.years}{' '}
                         {skill.years === 1
                           ? messages.skills?.yearAbbrev
                           : messages.skills?.yearAbbrevPlural}
-                      </m.span>
+                      </span>
                     </div>
                     <div className="bg-forest/40 relative h-2.5 overflow-hidden rounded-full" aria-hidden>
                       <m.div

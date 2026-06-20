@@ -53,7 +53,18 @@ export function Navbar() {
     };
 
     mq.addEventListener('change', onResize);
+
+    // Make page content inert while overlay is open (focus trap)
+    const main = document.getElementById('main-content');
+    const footer = document.querySelector('footer');
+    if (mobileOpen) {
+      main?.setAttribute('inert', '');
+      footer?.setAttribute('inert', '');
+    }
+
     return () => {
+      main?.removeAttribute('inert');
+      footer?.removeAttribute('inert');
       // Restore on cleanup (also fires when mobileOpen flips to false).
       // Do NOT touch document.documentElement — that was the iOS bug.
       if (document.body.style.position === 'fixed') {

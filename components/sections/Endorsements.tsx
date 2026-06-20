@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { m, useInView, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Quote, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Quote, ChevronDown, ChevronUp } from 'lucide-react';
 import { LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
@@ -116,13 +116,6 @@ export function Endorsements() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  const scrollBy = (direction: 'left' | 'right') => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const cardWidth = el.querySelector('[role="group"]')?.clientWidth ?? 400;
-    el.scrollBy({ left: direction === 'right' ? cardWidth : -cardWidth, behavior: 'smooth' });
-  };
-
   const totalCount = endorsements.length;
   const duplicatedEndorsements = [...endorsements, ...endorsements];
 
@@ -158,24 +151,6 @@ export function Endorsements() {
           aria-label={messages.sections.endorsements}
           className="relative"
         >
-          {/* Navigation arrows — desktop only */}
-          <button
-            type="button"
-            onClick={() => scrollBy('left')}
-            aria-label={(messages.endorsements as Record<string, string>)['previousAria'] ?? 'Previous endorsement'}
-            className="text-bark hover:text-gold focus-visible:ring-gold bg-parchment/80 absolute top-1/2 -left-4 z-20 hidden -translate-y-1/2 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:flex"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollBy('right')}
-            aria-label={(messages.endorsements as Record<string, string>)['nextAria'] ?? 'Next endorsement'}
-            className="text-bark hover:text-gold focus-visible:ring-gold bg-parchment/80 absolute top-1/2 -right-4 z-20 hidden -translate-y-1/2 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:flex"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-
           {/* Desktop: auto-scrolling marquee */}
           <div className="hidden overflow-hidden md:block">
             <div
