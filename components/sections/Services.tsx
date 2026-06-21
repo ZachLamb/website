@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { m, useInView } from 'framer-motion';
-import { Code, Sparkles, Users, Palette } from 'lucide-react';
+import { Code, Sparkles, Users, Palette, Compass } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
@@ -15,6 +15,7 @@ const iconMap: Record<string, LucideIcon> = {
   sparkles: Sparkles,
   users: Users,
   palette: Palette,
+  compass: Compass,
 };
 
 function CodeBracketsIllustration() {
@@ -62,11 +63,24 @@ function PaletteIllustration() {
   );
 }
 
+function CompassIllustration() {
+  return (
+    <svg viewBox="0 0 80 80" className="h-20 w-20 opacity-[0.08]" aria-hidden>
+      <circle cx="40" cy="40" r="30" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="40" cy="40" r="3" fill="currentColor" opacity="0.5" />
+      <path d="M40 12 L43 37 L40 35 L37 37 Z" fill="currentColor" opacity="0.6" />
+      <path d="M40 68 L43 43 L40 45 L37 43 Z" fill="currentColor" opacity="0.3" />
+      <line x1="12" y1="40" x2="68" y2="40" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+    </svg>
+  );
+}
+
 const illustrationMap: Record<string, React.FC> = {
   code: CodeBracketsIllustration,
   sparkles: SparkleIllustration,
   users: ConnectedUsersIllustration,
   palette: PaletteIllustration,
+  compass: CompassIllustration,
 };
 
 export function Services() {

@@ -16,7 +16,7 @@ export const siteConfig = {
   name: 'Zach Lamb',
   title: 'Technical Product Manager',
   description:
-    'Technical Product Manager specializing in React, TypeScript, and AI-powered product development. Certified ScrumMaster building high-scale cybersecurity tools, leading engineering teams, and owning technical partnerships. Human Centered Computing background.',
+    'Technical Product Manager who owns the roadmap, runs the team, and goes deep on the technical decisions that matter. React, TypeScript, and AI-powered product development. Certified ScrumMaster with a Human Centered Computing background.',
   url: 'https://zachlamb.io',
   ogImage: '/og.png',
   availability: 'Open to remote',

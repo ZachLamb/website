@@ -7,28 +7,31 @@ export type ServiceEntry = {
 
 export const services: ServiceEntry[] = [
   {
-    id: 'frontend-engineering',
-    title: 'Frontend Engineering',
+    id: 'technical-product-strategy',
+    title: 'Technical Product Strategy',
+    icon: 'compass',
+    description:
+      'I own the roadmap from discovery to delivery, balancing technical constraints with business outcomes. I\'ve consolidated 400+ backlog items into structured projects and built dual roadmaps spanning multiple teams.',
+  },
+  {
+    id: 'ai-augmented-engineering',
+    title: 'AI-Augmented Engineering',
+    icon: 'sparkles',
+    description:
+      'I embed AI tooling into team workflows — Claude Code in grooming, MCP for roadmap surfacing, shared agent configs — so quality scales without bottlenecking on review.',
+  },
+  {
+    id: 'process-delivery',
+    title: 'Process & Delivery',
+    icon: 'users',
+    description:
+      'Certified ScrumMaster who builds the sprint cadence, retros, and cross-functional rhythms that let teams ship reliably. I\'ve designed hiring processes adopted company-wide.',
+  },
+  {
+    id: 'engineering-product-bridge',
+    title: 'Engineering ↔ Product Bridge',
     icon: 'code',
     description:
-      'Building performant, accessible web applications with React, TypeScript, and Next.js',
-  },
-  {
-    id: 'ai-powered-tools',
-    title: 'AI-Powered Web Tools',
-    icon: 'sparkles',
-    description: 'Developing LLM-powered interfaces for cybersecurity and beyond',
-  },
-  {
-    id: 'agile-coaching',
-    title: 'Agile Coaching',
-    icon: 'users',
-    description: 'Certified ScrumMaster who builds processes that help teams ship better software',
-  },
-  {
-    id: 'ui-ux-design',
-    title: 'UI/UX Design',
-    icon: 'palette',
-    description: 'Bridging design and development with a Human Centered Computing background',
+      'I go deep on React, TypeScript, and system architecture when the work calls for it, so product decisions stay technically grounded.',
   },
 ];
