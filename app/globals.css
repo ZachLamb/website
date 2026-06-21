@@ -153,6 +153,23 @@ html:lang(it) nav [data-nav-link] {
   to { transform: translateX(-50%); }
 }
 
+@keyframes topo-pulse {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(92, 64, 51, 0.06),
+      0 0 0 0 rgba(92, 64, 51, 0.04),
+      0 0 0 0 rgba(92, 64, 51, 0.02);
+    opacity: 1;
+  }
+  100% {
+    box-shadow:
+      0 0 0 6px rgba(92, 64, 51, 0),
+      0 0 0 12px rgba(92, 64, 51, 0),
+      0 0 0 18px rgba(92, 64, 51, 0);
+    opacity: 0;
+  }
+}
+
 /* Hide scrollbar utility (used by carousel on mobile) */
 .scrollbar-none {
   -ms-overflow-style: none;
