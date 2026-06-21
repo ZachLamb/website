@@ -6,6 +6,7 @@ import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { skillCategories } from '@/data/skills';
+import { cn } from '@/lib/utils';
 
 export function Skills() {
   const { messages } = useLocaleContext();
@@ -36,14 +37,25 @@ export function Skills() {
               {category.name}
             </h3>
             <div className="flex flex-wrap gap-2">
-              {category.skills.map((skill) => (
-                <span
-                  key={skill.name}
-                  className="bg-moss/20 border-moss/30 text-parchment/85 rounded-md border px-3 py-1.5 text-sm"
-                >
-                  {skill.name}
-                </span>
-              ))}
+              {category.skills.map((skill) => {
+                const isPrimary = skill.years >= 5;
+                const isEmerging = skill.years <= 1;
+                return (
+                  <span
+                    key={skill.name}
+                    className={cn(
+                      'rounded-md border px-3 py-1.5 text-sm',
+                      isPrimary
+                        ? 'border-gold/50 bg-gold/10 text-parchment font-medium'
+                        : isEmerging
+                          ? 'border-moss/20 bg-moss/10 text-parchment/60'
+                          : 'bg-moss/20 border-moss/30 text-parchment/85',
+                    )}
+                  >
+                    {skill.name} · {skill.years}y
+                  </span>
+                );
+              })}
             </div>
           </m.div>
         ))}

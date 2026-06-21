@@ -24,12 +24,18 @@ describe('Skills', () => {
     expect(screen.getByText('Practices')).toBeInTheDocument();
   });
 
-  it('renders individual skills', () => {
+  it('renders individual skills with years', () => {
     renderWithLocale(<Skills />);
-    expect(screen.getByText('React')).toBeInTheDocument();
-    expect(screen.getByText('TypeScript')).toBeInTheDocument();
-    expect(screen.getByText('Docker')).toBeInTheDocument();
-    expect(screen.getByText('Agile/Scrum')).toBeInTheDocument();
+    expect(screen.getByText('React · 8y')).toBeInTheDocument();
+    expect(screen.getByText('TypeScript · 4y')).toBeInTheDocument();
+    expect(screen.getByText('Docker · 2y')).toBeInTheDocument();
+    expect(screen.getByText('Agile/Scrum · 8y')).toBeInTheDocument();
+  });
+
+  it('shows years suffix on skill chips', () => {
+    renderWithLocale(<Skills />);
+    expect(screen.getByText('React · 8y')).toBeInTheDocument();
+    expect(screen.getByText('TypeScript · 4y')).toBeInTheDocument();
   });
 
   it('has the skills section id', () => {
