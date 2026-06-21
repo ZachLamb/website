@@ -16,9 +16,12 @@ describe('About', () => {
     expect(screen.getByText('Trail Guide')).toBeInTheDocument();
   });
 
-  it('renders bio text mentioning Circadence', () => {
+  it('renders stats grid with 4 stat cards', () => {
     renderWithLocale(<About />);
-    expect(screen.getByText(/Circadence/)).toBeInTheDocument();
+    expect(screen.getByText('10+')).toBeInTheDocument();
+    expect(screen.getByText('Years Building')).toBeInTheDocument();
+    expect(screen.getByText('CSM')).toBeInTheDocument();
+    expect(screen.getByText('IC↔PM')).toBeInTheDocument();
   });
 
   it('renders bio text mentioning Technical Product Manager', () => {
@@ -31,11 +34,10 @@ describe('About', () => {
     expect(container.querySelector('#about')).toBeInTheDocument();
   });
 
-  it('renders all paragraphs from messages.about.body array', () => {
+  it('renders pull-quote and personal note', () => {
     renderWithLocale(<About />);
-    // The en.json about.body has 2 paragraphs — match one unique phrase from each
     expect(screen.getByText(/I'm a Technical Product Manager/)).toBeInTheDocument();
-    expect(screen.getByText(/The engineering background is deliberate/)).toBeInTheDocument();
+    expect(screen.getByText(/Oreo debate/)).toBeInTheDocument();
   });
 
   it('does not use aria-label on non-interactive paragraph elements', () => {

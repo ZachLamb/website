@@ -36,23 +36,14 @@ describe('Experience', () => {
     expect(screen.getByText('Trail Log')).toBeInTheDocument();
   });
 
-  it('renders all 10 company names', () => {
+  it('renders 4 featured company names by default', () => {
     renderWithLocale(<Experience />);
-    const companies = [
-      'Circadence',
-      'Starbucks',
-      'StellarFi',
-      'Sana Benefits',
-      'Purple',
-      'The Regis Company',
-      'Charter Communications',
-      'Freelance Designer',
-      'Lab for Playful Computation',
-      'CU Boulder IT / MCDB',
-    ];
-    for (const company of companies) {
+    const featured = ['Circadence', 'Starbucks', 'StellarFi', 'Sana Benefits'];
+    for (const company of featured) {
       expect(screen.getAllByText(company).length).toBeGreaterThanOrEqual(1);
     }
+    expect(screen.queryByText('Purple')).not.toBeInTheDocument();
+    expect(screen.getByText(/View full trail history/)).toBeInTheDocument();
   });
 
   it('has the experience section id', () => {
