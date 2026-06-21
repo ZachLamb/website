@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useActiveSection, SECTION_IDS } from '@/hooks/useActiveSection';
 import { cn } from '@/lib/utils';
 
@@ -11,7 +11,17 @@ const WAYPOINT_SECTIONS = SECTION_IDS.filter((id) => id !== 'hero');
 export function TrailWaypoints() {
   const activeSection = useActiveSection();
   const [positions, setPositions] = useState<WaypointPosition[]>([]);
-  const passedRef = useRef(new Set<string>());
+
+  const passedSections = useMemo(() => {
+    const idx = SECTION_IDS.indexOf(activeSection as (typeof SECTION_IDS)[number]);
+    const passed = new Set<string>();
+    if (idx >= 0) {
+      for (let i = 0; i <= idx; i++) {
+        passed.add(SECTION_IDS[i]);
+      }
+    }
+    return passed;
+  }, [activeSection]);
 
   useEffect(() => {
     function measure() {
@@ -32,15 +42,6 @@ export function TrailWaypoints() {
     return () => ro.disconnect();
   }, []);
 
-  useEffect(() => {
-    const idx = SECTION_IDS.indexOf(activeSection as (typeof SECTION_IDS)[number]);
-    if (idx >= 0) {
-      for (let i = 0; i <= idx; i++) {
-        passedRef.current.add(SECTION_IDS[i]);
-      }
-    }
-  }, [activeSection]);
-
   if (positions.length === 0) return null;
 
   return (
@@ -50,7 +51,7 @@ export function TrailWaypoints() {
     >
       {positions.map(({ id, top }) => {
         const isActive = activeSection === id;
-        const isPassed = passedRef.current.has(id);
+        const isPassed = passedSections.has(id);
 
         return (
           <div
