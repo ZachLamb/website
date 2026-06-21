@@ -90,7 +90,9 @@
     "viewAllOnLinkedInAria": "在 LinkedIn 上查看全部推荐（在新标签页中打开）"
   },
   "experience": {
-    "more": "更多"
+    "more": "更多",
+    "viewFullHistory": "查看完整经历",
+    "hideHistory": "隐藏早期经历"
   },
   "education": {
     "certifications": "认证"

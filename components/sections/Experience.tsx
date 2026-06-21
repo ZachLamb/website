@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { m, useInView, AnimatePresence } from 'framer-motion';
+import { AutoHeight } from '@/components/ui/AutoHeight';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
@@ -156,7 +157,7 @@ function CardContent({
       </p>
 
       <ul className="text-bark mt-3 list-inside list-disc space-y-1 text-sm leading-relaxed">
-        {entry.description.map((item, i) => (
+        {entry.description.slice(0, 3).map((item, i) => (
           <m.li
             key={item}
             initial={{ opacity: 0, x: isRight ? 8 : -8 }}
@@ -296,13 +297,12 @@ export function Experience() {
   const { messages } = useLocaleContext();
   const [hoveredEntry, setHoveredEntry] = useState<ExperienceEntry | null>(null);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
     const handler = () => setIsDesktop(mq.matches);
     mq.addEventListener('change', handler);
-    // Read initial value via the handler to avoid synchronous setState in
-    // the effect body (react-hooks/set-state-in-effect).
     handler();
     return () => mq.removeEventListener('change', handler);
   }, []);
@@ -315,6 +315,12 @@ export function Experience() {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [hoveredEntry]);
+
+  const featuredExperiences = experiences.filter((e) => e.featured);
+  const olderExperiences = experiences.filter((e) => !e.featured);
+  const olderDateRange = olderExperiences.length > 0
+    ? `${olderExperiences[olderExperiences.length - 1].startDate.split(' ')[1]}–${olderExperiences[0].endDate === 'Present' ? 'Present' : olderExperiences[0].endDate.split(' ')[1]}`
+    : '';
 
   return (
     <Section variant="light" id="experience" mapFrame nature={{ leaves: true, pines: true }}>
@@ -336,10 +342,45 @@ export function Experience() {
       </AnimatePresence>
 
       <div className="flex flex-col gap-8">
-        {experiences.map((entry, i) => (
+        {featuredExperiences.map((entry, i) => (
           <TimelineCard key={entry.id} entry={entry} index={i} onHover={setHoveredEntry} />
         ))}
       </div>
+
+      {olderExperiences.length > 0 && (
+        <div className="mt-8">
+          <button
+            type="button"
+            onClick={() => setShowHistory((prev) => !prev)}
+            className="border-gold/40 text-gold hover:border-gold/60 focus-visible:ring-gold flex w-full items-center justify-between rounded-lg border border-dashed px-5 py-3 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            <span className="font-medium">
+              {showHistory ? '▾' : '▸'}{' '}
+              {showHistory
+                ? messages.experience.hideHistory
+                : messages.experience.viewFullHistory}
+            </span>
+            <span className="text-stone text-sm">
+              {olderExperiences.length} earlier roles · {olderDateRange}
+            </span>
+          </button>
+
+          <AutoHeight>
+            {showHistory && (
+              <div className="mt-8 flex flex-col gap-8">
+                {olderExperiences.map((entry, i) => (
+                  <TimelineCard
+                    key={entry.id}
+                    entry={entry}
+                    index={featuredExperiences.length + i}
+                    onHover={setHoveredEntry}
+                  />
+                ))}
+              </div>
+            )}
+          </AutoHeight>
+        </div>
+      )}
     </Section>
   );
 }

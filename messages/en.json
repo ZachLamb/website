@@ -94,7 +94,9 @@
     "viewAllOnLinkedInAria": "View all recommendations on LinkedIn (opens in new tab)"
   },
   "experience": {
-    "more": "more"
+    "more": "more",
+    "viewFullHistory": "View full trail history",
+    "hideHistory": "Hide earlier roles"
   },
   "education": {
     "certifications": "Certifications"

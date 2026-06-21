@@ -6,6 +6,7 @@ export type ExperienceEntry = {
   endDate: string;
   description: string[];
   techStack: string[];
+  featured: boolean;
 };
 
 export const experiences: ExperienceEntry[] = [
@@ -33,6 +34,7 @@ export const experiences: ExperienceEntry[] = [
       'Cross-functional Leadership',
       'Agile',
     ],
+    featured: true,
   },
   {
     id: 'starbucks',
@@ -46,6 +48,7 @@ export const experiences: ExperienceEntry[] = [
       'Collaborated across teams on a new web application for store managers and developed Agile processes',
     ],
     techStack: ['TypeScript', 'React', 'GraphQL', 'Apollo Client'],
+    featured: true,
   },
   {
     id: 'stellarfi',
@@ -60,6 +63,7 @@ export const experiences: ExperienceEntry[] = [
       'Initiated and facilitated bi-weekly retrospectives for the engineering team, leading to a documentation-focused sprint and broader process improvements',
     ],
     techStack: ['TypeScript', 'React', 'E2E Testing'],
+    featured: true,
   },
   {
     id: 'sana-benefits',
@@ -73,6 +77,7 @@ export const experiences: ExperienceEntry[] = [
       'Created standardized testing process improving code reliability',
     ],
     techStack: ['React', 'Jest', 'SASS', 'Ruby on Rails'],
+    featured: true,
   },
   {
     id: 'purple',
@@ -86,6 +91,7 @@ export const experiences: ExperienceEntry[] = [
       'Developed A/B tests for the cart checkout flow with React, Redux, and the Google Places API, lifting test coverage across the codebase by 40% using Jest and React Testing Library',
     ],
     techStack: ['Vue.js', 'React', 'Redux', 'SASS', 'Docker', 'AWS', 'Commerce Tools'],
+    featured: false,
   },
   {
     id: 'regis-company',
@@ -100,6 +106,7 @@ export const experiences: ExperienceEntry[] = [
       'Used my UX background to bridge UX, Dev, and Product teams, driving a 20% productivity increase as measured by burndown charts',
     ],
     techStack: ['React', 'Python', 'MobX'],
+    featured: false,
   },
   {
     id: 'charter',
@@ -113,6 +120,7 @@ export const experiences: ExperienceEntry[] = [
       'Conducted user testing that informed the product roadmap for the following six months',
     ],
     techStack: ['React', 'Redux', 'WebSockets', 'RethinkDB'],
+    featured: false,
   },
   {
     id: 'freelance',
@@ -125,6 +133,7 @@ export const experiences: ExperienceEntry[] = [
       'Delivered polished visual assets and interactive prototypes',
     ],
     techStack: [],
+    featured: false,
   },
   {
     id: 'gogo-business-aviation',
@@ -138,6 +147,7 @@ export const experiences: ExperienceEntry[] = [
       'Wrote end-to-end tests with Mocha.js',
     ],
     techStack: ['MongoDB', 'Express', 'Angular', 'Node.js', 'Mocha.js'],
+    featured: false,
   },
   {
     id: 'playful-computation',
@@ -151,6 +161,7 @@ export const experiences: ExperienceEntry[] = [
       'Led marketing efforts for a university hackathon',
     ],
     techStack: ['Jekyll', 'HTML', 'CSS', 'jQuery', 'Android'],
+    featured: false,
   },
   {
     id: 'cu-boulder-it',
@@ -163,5 +174,6 @@ export const experiences: ExperienceEntry[] = [
       'Developed a lab website and built a web app tracking department printer charges',
     ],
     techStack: ['HTML', 'CSS', 'Django', 'MySQL', 'Git'],
+    featured: false,
   },
 ];

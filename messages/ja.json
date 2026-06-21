@@ -92,7 +92,9 @@
     "viewAllOnLinkedInAria": "LinkedInで全ての推薦を見る（新しいタブで開く）"
   },
   "experience": {
-    "more": "件"
+    "more": "件",
+    "viewFullHistory": "すべての経歴を表示",
+    "hideHistory": "過去の経歴を非表示"
   },
   "education": {
     "certifications": "認定資格"

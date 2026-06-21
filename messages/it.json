@@ -92,7 +92,9 @@
     "viewAllOnLinkedInAria": "Vedi tutte le raccomandazioni su LinkedIn (si apre in nuova scheda)"
   },
   "experience": {
-    "more": "altri"
+    "more": "altri",
+    "viewFullHistory": "Mostra tutto il percorso",
+    "hideHistory": "Nascondi ruoli precedenti"
   },
   "education": {
     "certifications": "Certificazioni"
