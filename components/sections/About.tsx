@@ -5,6 +5,7 @@ import { m, useInView } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
+import { waypointPop } from '@/lib/trail-animations';
 
 export function About() {
   const { messages } = useLocaleContext();
@@ -36,9 +37,10 @@ export function About() {
           {messages.about.stats.map((stat, i) => (
             <m.div
               key={stat.label}
-              initial={{ opacity: 0, y: 16 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-              transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              variants={waypointPop}
+              transition={{ delay: 0.3 + i * 0.1 }}
               className="border-gold/30 rounded-lg border border-dashed px-4 py-3 text-center"
             >
               <div className="text-gold font-serif text-3xl font-bold">{stat.value}</div>

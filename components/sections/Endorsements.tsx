@@ -11,6 +11,7 @@ import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import type { Locale, Messages } from '@/lib/i18n';
 import { endorsements } from '@/data/endorsements';
 import { socialLinks } from '@/data/social';
+import { trailFadeUp } from '@/lib/trail-animations';
 
 const linkedInUrl = socialLinks.find((l) => l.icon === 'linkedin')?.url ?? '';
 const linkedInRecommendationsUrl = `${linkedInUrl}details/recommendations/`;
@@ -127,9 +128,9 @@ export function Endorsements() {
         </AnimatedHeading>
         <p className="text-bark mb-6 max-w-2xl text-lg">{messages.endorsements.intro}</p>
         <m.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          variants={trailFadeUp}
           className="mb-10"
         >
           <a

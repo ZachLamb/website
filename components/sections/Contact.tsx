@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { socialLinks } from '@/data/social';
 import { socialIconMap } from '@/lib/icons';
+import { elevationSlideLeft, elevationSlideRight } from '@/lib/trail-animations';
 
 const inputClasses =
   'w-full rounded-lg border border-bark/30 bg-charcoal px-4 py-3 text-parchment placeholder:text-stone/50 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gold focus:shadow-[0_0_12px_rgba(184,134,11,0.2)] transition-all';
@@ -239,9 +240,9 @@ export function Contact() {
               key="form"
               onSubmit={handleSubmit}
               className="space-y-6"
-              initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              variants={elevationSlideLeft}
             >
               <div>
                 <label htmlFor="name" className="text-parchment mb-1 block text-sm font-medium">
@@ -340,9 +341,9 @@ export function Contact() {
         </div>
 
         <m.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          variants={elevationSlideRight}
         >
           <h3 className="text-parchment mb-6 font-serif text-xl font-semibold">
             {messages.contact.orReachOut}

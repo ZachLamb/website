@@ -8,6 +8,7 @@ import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Badge } from '@/components/ui/Badge';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { education, certifications } from '@/data/education';
+import { trailFadeUp, waypointPop } from '@/lib/trail-animations';
 
 function EducationRow({ entry, index, isInView }: { entry: (typeof education)[number]; index: number; isInView: boolean }) {
   const [expanded, setExpanded] = useState(false);
@@ -15,9 +16,10 @@ function EducationRow({ entry, index, isInView }: { entry: (typeof education)[nu
 
   return (
     <m.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
+      initial="hidden"
+      animate={isInView ? 'visible' : 'hidden'}
+      variants={trailFadeUp}
+      transition={{ delay: index * 0.1 }}
     >
       <button
         type="button"
@@ -87,9 +89,10 @@ export function Education() {
           {certifications.map((cert, i) => (
             <m.div
               key={cert.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3, delay: education.length * 0.1 + i * 0.1 }}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              variants={waypointPop}
+              transition={{ delay: education.length * 0.1 + i * 0.1 }}
               className="border-bark/20 bg-sand inline-flex items-center gap-2 rounded-full border px-3 py-1.5"
             >
               <Award className="text-gold h-4 w-4 shrink-0" />

@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/Badge';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { publishedProjects } from '@/data/projects';
 import type { Project } from '@/data/projects';
+import { trailFadeUp } from '@/lib/trail-animations';
 
 function ProjectLink({
   href,
@@ -45,9 +46,10 @@ function ProjectCard({
 }) {
   return (
     <m.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      initial="hidden"
+      animate={isInView ? 'visible' : 'hidden'}
+      variants={trailFadeUp}
+      transition={{ delay: index * 0.1 }}
     >
       <Card variant="map" className="flex h-full flex-col">
         <h3 className="text-forest font-serif text-xl font-semibold">{project.title}</h3>

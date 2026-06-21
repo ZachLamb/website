@@ -8,6 +8,7 @@ import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { services } from '@/data/services';
 import { cn } from '@/lib/utils';
+import { elevationSlideLeft, elevationSlideRight } from '@/lib/trail-animations';
 import type { LucideIcon } from 'lucide-react';
 
 const iconMap: Record<string, LucideIcon> = {
@@ -103,9 +104,10 @@ export function Services() {
           return (
             <m.div
               key={service.id}
-              initial={{ opacity: 0, x: isEven ? -30 : 30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isEven ? -30 : 30 }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              variants={isEven ? elevationSlideLeft : elevationSlideRight}
+              transition={{ delay: i * 0.1 }}
               className="relative flex flex-col items-start gap-6 md:flex-row md:items-center"
             >
               {/* Icon + illustration side */}
