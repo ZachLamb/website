@@ -24,8 +24,8 @@ export function TrailExtension() {
         <m.path
           d="M 12 0 L 12 100"
           fill="none"
-          stroke="rgba(184,134,11,0.2)"
-          strokeWidth="2"
+          stroke="rgba(184,134,11,0.3)"
+          strokeWidth="2.5"
           strokeDasharray="6 6"
           strokeLinecap="round"
           style={{ pathLength }}
