@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import { X, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -80,6 +81,8 @@ export function Navbar() {
     };
   }, [mobileOpen]);
 
+  const mounted = typeof document !== 'undefined';
+
   const prevMobileOpen = useRef(false);
   // Focus first nav link when mobile menu opens; return focus to toggle when it closes
   useEffect(() => {
@@ -108,6 +111,7 @@ export function Navbar() {
     }));
 
   return (
+    <>
     <header className="bg-parchment/90 border-bark/10 sticky top-0 z-50 border-b pt-[env(safe-area-inset-top)] backdrop-blur-md">
       <nav
         aria-label="Main navigation"
@@ -168,65 +172,70 @@ export function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile fullscreen overlay */}
-      <div
-        id="mobile-nav"
-        role={mobileOpen ? 'dialog' : undefined}
-        aria-modal={mobileOpen ? 'true' : undefined}
-        aria-label={mobileOpen ? messages.nav.openMenu : undefined}
-        className={cn(
-          'fixed inset-0 z-[60] flex flex-col items-center justify-center bg-forest transition-opacity duration-300 md:hidden',
-          mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
-        )}
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 20h40M20 0v40' fill='none' stroke='%23f5f0e8' stroke-width='0.15' opacity='0.04'/%3E%3C/svg%3E")`,
-        }}
-        onClick={(e) => {
-          if (e.target === e.currentTarget) setMobileOpen(false);
-        }}
-      >
-        {/* Close button — same position as toggle */}
-        <button
-          type="button"
-          className="text-parchment hover:text-gold absolute top-[env(safe-area-inset-top)] right-0 flex min-h-11 min-w-11 touch-manipulation items-center justify-center p-6"
-          onClick={() => setMobileOpen(false)}
-          aria-label={messages.nav.closeMenu}
+    </header>
+
+      {/* Mobile fullscreen overlay — portaled to <body> so backdrop-blur on <header> doesn't create a containing block that traps the fixed positioning */}
+      {mounted && createPortal(
+        <div
+          id="mobile-nav"
+          role={mobileOpen ? 'dialog' : undefined}
+          aria-modal={mobileOpen ? 'true' : undefined}
+          aria-label={mobileOpen ? messages.nav.openMenu : undefined}
+          className={cn(
+            'fixed inset-0 z-[60] flex flex-col items-center justify-center bg-forest transition-opacity duration-300 md:hidden',
+            mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
+          )}
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 20h40M20 0v40' fill='none' stroke='%23f5f0e8' stroke-width='0.15' opacity='0.04'/%3E%3C/svg%3E")`,
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setMobileOpen(false);
+          }}
         >
-          <X className="h-6 w-6" />
-        </button>
-        <ul ref={menuRef} className="flex flex-col items-center gap-6">
-          {navLinks.map((link, i) => (
+          {/* Close button — same position as toggle */}
+          <button
+            type="button"
+            className="text-parchment hover:text-gold absolute top-[env(safe-area-inset-top)] right-0 flex min-h-11 min-w-11 touch-manipulation items-center justify-center p-6"
+            onClick={() => setMobileOpen(false)}
+            aria-label={messages.nav.closeMenu}
+          >
+            <X className="h-6 w-6" />
+          </button>
+          <ul ref={menuRef} className="flex flex-col items-center gap-6">
+            {navLinks.map((link, i) => (
+              <li
+                key={link.href}
+                style={{
+                  transitionDelay: mobileOpen ? `${i * 50}ms` : '0ms',
+                  opacity: mobileOpen ? 1 : 0,
+                  transform: mobileOpen ? 'translateY(0)' : 'translateY(16px)',
+                  transition: 'opacity 300ms ease, transform 300ms ease',
+                }}
+              >
+                <a
+                  href={link.href}
+                  className="text-parchment hover:text-gold focus-visible:ring-gold flex min-h-11 touch-manipulation items-center rounded-md px-4 py-2 font-serif text-xl transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
             <li
-              key={link.href}
+              className="border-parchment/10 mt-4 border-t pt-4"
               style={{
-                transitionDelay: mobileOpen ? `${i * 50}ms` : '0ms',
+                transitionDelay: mobileOpen ? `${navLinks.length * 50}ms` : '0ms',
                 opacity: mobileOpen ? 1 : 0,
                 transform: mobileOpen ? 'translateY(0)' : 'translateY(16px)',
                 transition: 'opacity 300ms ease, transform 300ms ease',
               }}
             >
-              <a
-                href={link.href}
-                className="text-parchment hover:text-gold focus-visible:ring-gold flex min-h-11 touch-manipulation items-center rounded-md px-4 py-2 font-serif text-xl transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </a>
+              <LanguageDropdown compact id="language-select-mobile" />
             </li>
-          ))}
-          <li
-            className="border-parchment/10 mt-4 border-t pt-4"
-            style={{
-              transitionDelay: mobileOpen ? `${navLinks.length * 50}ms` : '0ms',
-              opacity: mobileOpen ? 1 : 0,
-              transform: mobileOpen ? 'translateY(0)' : 'translateY(16px)',
-              transition: 'opacity 300ms ease, transform 300ms ease',
-            }}
-          >
-            <LanguageDropdown compact id="language-select-mobile" />
-          </li>
-        </ul>
-      </div>
-    </header>
+          </ul>
+        </div>,
+        document.body,
+      )}
+    </>
   );
 }
