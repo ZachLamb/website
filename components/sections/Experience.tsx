@@ -361,7 +361,7 @@ export function Experience() {
                 : messages.experience.viewFullHistory}
             </span>
             <span className="text-stone text-sm">
-              {olderExperiences.length} earlier roles · {olderDateRange}
+              {olderExperiences.length} {messages.experience.earlierRoles} · {olderDateRange}
             </span>
           </button>
 

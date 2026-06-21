@@ -96,7 +96,8 @@
   "experience": {
     "more": "more",
     "viewFullHistory": "View full trail history",
-    "hideHistory": "Hide earlier roles"
+    "hideHistory": "Hide earlier roles",
+    "earlierRoles": "earlier roles"
   },
   "education": {
     "certifications": "Certifications"

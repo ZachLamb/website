@@ -94,7 +94,8 @@
   "experience": {
     "more": "weitere",
     "viewFullHistory": "Vollständigen Werdegang anzeigen",
-    "hideHistory": "Frühere Rollen ausblenden"
+    "hideHistory": "Frühere Rollen ausblenden",
+    "earlierRoles": "frühere Rollen"
   },
   "education": {
     "certifications": "Zertifizierungen"

@@ -94,7 +94,8 @@
   "experience": {
     "more": "件",
     "viewFullHistory": "すべての経歴を表示",
-    "hideHistory": "過去の経歴を非表示"
+    "hideHistory": "過去の経歴を非表示",
+    "earlierRoles": "以前の経歴"
   },
   "education": {
     "certifications": "認定資格"

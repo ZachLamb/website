@@ -92,7 +92,8 @@
   "experience": {
     "more": "更多",
     "viewFullHistory": "查看完整经历",
-    "hideHistory": "隐藏早期经历"
+    "hideHistory": "隐藏早期经历",
+    "earlierRoles": "早期经历"
   },
   "education": {
     "certifications": "认证"
