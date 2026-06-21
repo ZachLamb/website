@@ -102,10 +102,7 @@
     "certifications": "Certifications"
   },
   "skills": {
-    "intro": "Years of hands-on experience with each technology — trail-tested and production-ready.",
-    "scaleDescription": "Scale: 0–{max} years. Based on professional experience.",
-    "yearAbbrev": "yr",
-    "yearAbbrevPlural": "yrs"
+    "intro": "The tools and practices I reach for — trail-tested and production-ready."
   },
   "privacy": {
     "pageTitle": "Privacy Policy",

@@ -100,10 +100,7 @@
     "certifications": "認定資格"
   },
   "skills": {
-    "intro": "各技術の実務経験年数 — 実践で試され、本番対応済み。",
-    "scaleDescription": "スケール：0–{max}年。専門経験に基づく。",
-    "yearAbbrev": "年",
-    "yearAbbrevPlural": "年"
+    "intro": "実践で選ぶツールとプラクティス — 実戦で試され、本番対応済み。"
   },
   "privacy": {
     "pageTitle": "Privacy Policy",

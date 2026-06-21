@@ -98,10 +98,7 @@
     "certifications": "认证"
   },
   "skills": {
-    "intro": "各项技术的实践年数 —— 经步道与生产环境验证。",
-    "scaleDescription": "刻度：0–{max} 年。基于专业经验。",
-    "yearAbbrev": "年",
-    "yearAbbrevPlural": "年"
+    "intro": "我常用的工具和实践 —— 经实战验证，可用于生产环境。"
   },
   "privacy": {
     "pageTitle": "Privacy Policy",

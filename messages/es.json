@@ -100,10 +100,7 @@
     "certifications": "Certificaciones"
   },
   "skills": {
-    "intro": "Años de experiencia práctica con cada tecnología — probado en el camino y listo para producción.",
-    "scaleDescription": "Escala: 0–{max} años. Según experiencia profesional.",
-    "yearAbbrev": "año",
-    "yearAbbrevPlural": "años"
+    "intro": "Las herramientas y prácticas que uso — probadas en el camino y listas para producción."
   },
   "privacy": {
     "pageTitle": "Privacy Policy",

@@ -100,10 +100,7 @@
     "certifications": "Zertifizierungen"
   },
   "skills": {
-    "intro": "Jahre praktische Erfahrung mit jeder Technologie — wegerprobt und produktionsreif.",
-    "scaleDescription": "Skala: 0–{max} Jahre. Basierend auf Berufserfahrung.",
-    "yearAbbrev": "J.",
-    "yearAbbrevPlural": "J."
+    "intro": "Die Werkzeuge und Praktiken, auf die ich setze — wegerprobt und produktionsreif."
   },
   "privacy": {
     "pageTitle": "Privacy Policy",
