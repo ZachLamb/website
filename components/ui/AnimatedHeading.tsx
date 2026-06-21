@@ -28,9 +28,9 @@ function LeafAccent() {
       viewBox="0 0 12 16"
       className="text-gold inline-block h-3.5 w-3.5"
       aria-hidden="true"
-      initial={{ opacity: 0, rotate: -30, scale: 0.5 }}
-      animate={{ opacity: 1, rotate: 0, scale: 1 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
+      initial={{ opacity: 0, y: -12, scale: 0.5 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 15, delay: 0.2 }}
     >
       <path
         d="M6 0 C9 3 11 7 10 12 C8 15 6 16 6 16 C6 16 4 15 2 12 C1 7 3 3 6 0Z"
@@ -91,6 +91,15 @@ export function AnimatedHeading({
       >
         {headingContent}
       </MotionTag>
+      <m.div
+        aria-hidden="true"
+        className="mt-1 h-px overflow-hidden"
+        initial={{ width: 0 }}
+        animate={isInView ? { width: '6rem' } : { width: 0 }}
+        transition={{ duration: 0.6, delay: subtitle ? 0.5 : 0.3, ease: 'easeOut' }}
+      >
+        <div className="bg-gold/30 h-full w-full" />
+      </m.div>
     </div>
   );
 }
