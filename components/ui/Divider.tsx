@@ -59,6 +59,18 @@ function TrailDivider({ isInView }: { isInView: boolean }) {
         className="border-bark/15 h-0 border-t border-dashed"
         style={{ maxWidth: '100%' }}
       />
+      {isInView && (
+        <>
+          <div
+            className="bg-bark/15 absolute top-1/2 left-[45%] h-1 w-0.5 rounded-full"
+            style={{ animation: 'footstep-appear 1s ease-out 0.8s both' }}
+          />
+          <div
+            className="bg-bark/15 absolute top-1/2 left-[48%] h-1 w-0.5 rounded-full"
+            style={{ animation: 'footstep-appear 1s ease-out 1s both' }}
+          />
+        </>
+      )}
       <div className="bg-parchment absolute px-3">
         <m.svg
           viewBox="0 0 24 24"
@@ -96,9 +108,9 @@ export function Divider({ className, variant = 'trail', flip = false }: DividerP
       style={{
         transform:
           variant === 'mountains'
-            ? 'translateY(calc(var(--scroll-y, 0px) * -0.02))'
+            ? 'translateY(clamp(-8px, calc(var(--scroll-y, 0px) * -0.003), 8px))'
             : variant === 'treeline'
-              ? 'translateY(calc(var(--scroll-y, 0px) * -0.01))'
+              ? 'translateY(clamp(-4px, calc(var(--scroll-y, 0px) * -0.002), 4px))'
               : undefined,
       }}
     >
