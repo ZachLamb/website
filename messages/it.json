@@ -33,12 +33,18 @@
     "viewResume": "Vedi curriculum (si apre in nuova scheda)"
   },
   "about": {
-    "heading": "Guida del sentiero",
+    "heading": "Guida del Sentiero",
     "body": [
-      "Sono un Technical Product Manager con background in ingegneria frontend, il che significa che gestisco la roadmap, guido il team e posso ancora approfondire le decisioni tecniche che contano davvero. In Circadence guido delivery, direzione prodotto e partnership esterne per RangeGPT, una piattaforma di formazione in cybersecurity basata su IA. Ho ricostruito da zero l'infrastruttura di delivery del team, stabilito la relazione tecnica di Circadence con NTT Data Japan e introdotto pratiche di ingegneria potenziate dall'IA nei flussi di lavoro quotidiani. Guido inoltre un team frontend in crescita e co-dirigo la direzione tecnica con il lead backend.",
-      "Il background ingegneristico è una scelta deliberata. Un decennio tra EdTech, FinTech, sanità, e-commerce e cybersecurity significa che comprendo il costo di requisiti scadenti, il rischio di scope creep a metà sprint e perché una roadmap che ignora il debito tecnico è pura finzione. Questo contesto cambia il modo in cui lavoro con gli ingegneri, come rispondo agli stakeholder e come conduco una riunione. Sono uno ScrumMaster certificato e scrivo ancora codice di produzione quando il lavoro lo richiede. Quando non sono alla scrivania, insegno yoga, faccio trekking sui sentieri del Colorado o cerco di risolvere una volta per tutte il dibattito sugli Oreo."
+      "Sono un Technical Product Manager con background in ingegneria frontend, il che significa che gestisco la roadmap, guido il team e posso ancora approfondire le decisioni tecniche che contano davvero."
     ],
-    "focusAreas": "Technical Product Management · Gestione della roadmap · React e TypeScript · Integrazione IA/LLM · Leadership cross-funzionale · ScrumMaster certificato"
+    "stats": [
+      { "value": "10+", "label": "Anni di Esperienza" },
+      { "value": "5", "label": "Settori" },
+      { "value": "CSM", "label": "Certificato" },
+      { "value": "IC↔PM", "label": "Doppio Ruolo" }
+    ],
+    "personalNote": "Quando non sono alla scrivania, insegno yoga, percorro i sentieri del Colorado o cerco di risolvere una volta per tutte il dibattito sugli Oreo.",
+    "focusAreas": "Gestione Tecnica del Prodotto · Gestione Roadmap · React e TypeScript · Integrazione AI/LLM · Leadership Interfunzionale · Certified ScrumMaster"
   },
   "footer": {
     "backToTop": "Torna in alto",

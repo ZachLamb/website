@@ -35,10 +35,16 @@
   "about": {
     "heading": "Wegweiser",
     "body": [
-      "Ich bin Technical Product Manager mit Frontend-Engineering-Hintergrund — das heißt, ich verantworte die Roadmap, leite das Team und kann trotzdem bei den technischen Entscheidungen in die Tiefe gehen, die wirklich zählen. Bei Circadence leite ich Delivery, Produktrichtung und externe Partnerschaften für RangeGPT, eine KI-gestützte Cybersicherheits-Trainingsplattform. Ich habe die Delivery-Infrastruktur des Teams von Grund auf neu aufgebaut, Circadences technische Beziehung zu NTT Data Japan etabliert und KI-gestützte Engineering-Praktiken in die täglichen Workflows eingeführt. Außerdem leite ich ein wachsendes Frontend-Team und steuere gemeinsam mit dem Backend-Lead die technische Richtung.",
-      "Der Engineering-Hintergrund ist bewusst gewählt. Ein Jahrzehnt in EdTech, FinTech, Gesundheitswesen, E-Commerce und Cybersicherheit bedeutet, dass ich die Kosten schlechter Anforderungen kenne, das Risiko von Scope Creep im Sprint und warum eine Roadmap, die Tech Debt ignoriert, Fiktion ist. Dieser Kontext verändert, wie ich mit Ingenieuren arbeite, wie ich Stakeholdern widerspreche und wie ich einen Raum führe. Ich bin zertifizierter ScrumMaster und schreibe immer noch Produktionscode, wenn es die Arbeit erfordert. Wenn ich nicht am Schreibtisch sitze, unterrichte ich Yoga, wandere auf Colorados Wegen oder versuche, die Oreo-Debatte ein für alle Mal zu klären."
+      "Ich bin Technical Product Manager mit Frontend-Engineering-Hintergrund — das heißt, ich verantworte die Roadmap, leite das Team und kann trotzdem bei den technischen Entscheidungen in die Tiefe gehen, die wirklich zählen."
     ],
-    "focusAreas": "Technical Product Management · Roadmap-Verantwortung · React & TypeScript · KI/LLM-Integration · Cross-funktionale Führung · Zertifizierter ScrumMaster"
+    "stats": [
+      { "value": "10+", "label": "Jahre Erfahrung" },
+      { "value": "5", "label": "Branchen" },
+      { "value": "CSM", "label": "Zertifiziert" },
+      { "value": "IC↔PM", "label": "Doppelrolle" }
+    ],
+    "personalNote": "Wenn ich nicht am Schreibtisch sitze, unterrichte ich Yoga, wandere auf Colorados Trails oder versuche, die Oreo-Debatte ein für alle Mal zu klären.",
+    "focusAreas": "Technisches Produktmanagement · Roadmap-Verantwortung · React & TypeScript · AI/LLM-Integration · Bereichsübergreifende Führung · Certified ScrumMaster"
   },
   "footer": {
     "backToTop": "Nach oben",
