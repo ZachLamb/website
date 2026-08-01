@@ -23,6 +23,7 @@
 ### Task 1: About — Stats Row
 
 **Files:**
+
 - Modify: `messages/en.json`
 - Modify: `messages/es.json`
 - Modify: `messages/de.json`
@@ -32,6 +33,7 @@
 - Modify: `components/sections/About.tsx`
 
 **Interfaces:**
+
 - Consumes: `messages.about.body` (changed from 2-element to 1-element array), `messages.about.stats` (new), `messages.about.personalNote` (new)
 - Produces: No exports consumed by other tasks
 
@@ -254,6 +256,7 @@ git commit -m "feat(about): replace paragraph 2 with stats grid and personal clo
 ### Task 2: Experience — Featured Roles + Collapsible History
 
 **Files:**
+
 - Modify: `data/experience.ts`
 - Modify: `components/sections/Experience.tsx`
 - Modify: `messages/en.json`
@@ -264,6 +267,7 @@ git commit -m "feat(about): replace paragraph 2 with stats grid and personal clo
 - Modify: `messages/zh.json`
 
 **Interfaces:**
+
 - Consumes: `ExperienceEntry` type (adding `featured` field), `AutoHeight` component from `@/components/ui/AutoHeight`
 - Produces: No exports consumed by other tasks
 
@@ -293,6 +297,7 @@ Then add `featured: true` to the circadence, starbucks, stellarfi, and sana-bene
 Add to the `experience` object in each locale file:
 
 **en.json:**
+
 ```json
 "experience": {
   "more": "more",
@@ -302,6 +307,7 @@ Add to the `experience` object in each locale file:
 ```
 
 **es.json:**
+
 ```json
 "experience": {
   "more": "más",
@@ -311,6 +317,7 @@ Add to the `experience` object in each locale file:
 ```
 
 **de.json:**
+
 ```json
 "experience": {
   "more": "weitere",
@@ -320,6 +327,7 @@ Add to the `experience` object in each locale file:
 ```
 
 **it.json:**
+
 ```json
 "experience": {
   "more": "altri",
@@ -329,6 +337,7 @@ Add to the `experience` object in each locale file:
 ```
 
 **ja.json:**
+
 ```json
 "experience": {
   "more": "件",
@@ -338,6 +347,7 @@ Add to the `experience` object in each locale file:
 ```
 
 **zh.json:**
+
 ```json
 "experience": {
   "more": "更多",
@@ -353,11 +363,13 @@ Three changes to this file:
 **Change A:** In the `CardContent` component, cap inline bullets at 3. Find the `<ul>` that maps `entry.description` and change the map to `.slice(0, 3)`:
 
 Replace:
+
 ```tsx
         {entry.description.map((item, i) => (
 ```
 
 With:
+
 ```tsx
         {entry.description.slice(0, 3).map((item, i) => (
 ```
@@ -390,9 +402,10 @@ export function Experience() {
 
   const featuredExperiences = experiences.filter((e) => e.featured);
   const olderExperiences = experiences.filter((e) => !e.featured);
-  const olderDateRange = olderExperiences.length > 0
-    ? `${olderExperiences[olderExperiences.length - 1].startDate.split(' ')[1]}–${olderExperiences[0].endDate === 'Present' ? 'Present' : olderExperiences[0].endDate.split(' ')[1]}`
-    : '';
+  const olderDateRange =
+    olderExperiences.length > 0
+      ? `${olderExperiences[olderExperiences.length - 1].startDate.split(' ')[1]}–${olderExperiences[0].endDate === 'Present' ? 'Present' : olderExperiences[0].endDate.split(' ')[1]}`
+      : '';
 
   return (
     <Section variant="light" id="experience" mapFrame nature={{ leaves: true, pines: true }}>
@@ -428,9 +441,7 @@ export function Experience() {
           >
             <span className="font-medium">
               {showHistory ? '▾' : '▸'}{' '}
-              {showHistory
-                ? messages.experience.hideHistory
-                : messages.experience.viewFullHistory}
+              {showHistory ? messages.experience.hideHistory : messages.experience.viewFullHistory}
             </span>
             <span className="text-stone text-sm">
               {olderExperiences.length} earlier roles · {olderDateRange}
@@ -481,6 +492,7 @@ git commit -m "feat(experience): show 4 featured roles, collapse 7 older behind 
 ### Task 3: Skills — Grouped Chip Grid
 
 **Files:**
+
 - Modify: `data/skills.ts`
 - Modify: `components/sections/Skills.tsx`
 - Modify: `messages/en.json`
@@ -491,12 +503,14 @@ git commit -m "feat(experience): show 4 featured roles, collapse 7 older behind 
 - Modify: `messages/zh.json`
 
 **Interfaces:**
+
 - Consumes: `skillCategories` from `data/skills.ts` (shape unchanged), `messages.skills.intro` (updated text)
 - Produces: No exports consumed by other tasks
 
 - [ ] **Step 1: Trim Practices category in `data/skills.ts`**
 
 In the `practices` category, make these changes:
+
 - Rename `'Technical Product Management'` → `'Product Management'`
 - Remove the `{ name: 'Stakeholder Communication', years: 1 }` entry
 - Remove the `{ name: 'Roadmap Ownership', years: 1 }` entry
@@ -524,6 +538,7 @@ The resulting practices skills array should be:
 Replace `skills.intro` and remove `skills.scaleDescription`, `skills.yearAbbrev`, `skills.yearAbbrevPlural` from each locale file. The `skills` object should have only `intro` as its key.
 
 **en.json:**
+
 ```json
 "skills": {
   "intro": "The tools and practices I reach for — trail-tested and production-ready."
@@ -531,6 +546,7 @@ Replace `skills.intro` and remove `skills.scaleDescription`, `skills.yearAbbrev`
 ```
 
 **es.json:**
+
 ```json
 "skills": {
   "intro": "Las herramientas y prácticas que uso — probadas en el camino y listas para producción."
@@ -538,6 +554,7 @@ Replace `skills.intro` and remove `skills.scaleDescription`, `skills.yearAbbrev`
 ```
 
 **de.json:**
+
 ```json
 "skills": {
   "intro": "Die Werkzeuge und Praktiken, auf die ich setze — wegerprobt und produktionsreif."
@@ -545,6 +562,7 @@ Replace `skills.intro` and remove `skills.scaleDescription`, `skills.yearAbbrev`
 ```
 
 **it.json:**
+
 ```json
 "skills": {
   "intro": "Gli strumenti e le pratiche che utilizzo — testati sul campo e pronti per la produzione."
@@ -552,6 +570,7 @@ Replace `skills.intro` and remove `skills.scaleDescription`, `skills.yearAbbrev`
 ```
 
 **ja.json:**
+
 ```json
 "skills": {
   "intro": "実践で選ぶツールとプラクティス — 実戦で試され、本番対応済み。"
@@ -559,6 +578,7 @@ Replace `skills.intro` and remove `skills.scaleDescription`, `skills.yearAbbrev`
 ```
 
 **zh.json:**
+
 ```json
 "skills": {
   "intro": "我常用的工具和实践 —— 经实战验证，可用于生产环境。"
@@ -642,9 +662,11 @@ git commit -m "feat(skills): replace proficiency bars with grouped chip grid"
 ### Task 4: Visual Verification
 
 **Files:**
+
 - No file changes — this is a verification task
 
 **Interfaces:**
+
 - Consumes: All changes from Tasks 1-3
 
 - [ ] **Step 1: Start dev server and take screenshots**
@@ -664,6 +686,7 @@ Take screenshots at 360px (mobile) and 1280px (desktop) of the About, Experience
 - [ ] **Step 2: Spot-check a non-Latin locale**
 
 Navigate to `/ja` or `/zh` and verify:
+
 - Stats grid values render correctly (e.g. `10年+` in Japanese)
 - Skills chips render with correct text
 - Experience expandable button text is translated
@@ -671,6 +694,7 @@ Navigate to `/ja` or `/zh` and verify:
 - [ ] **Step 3: Test reduced motion**
 
 In Chrome DevTools → Rendering → check "Emulate CSS prefers-reduced-motion: reduce". Reload. Verify:
+
 - Stats cards appear without animation
 - Experience cards appear without animation
 - Skills chips appear without animation

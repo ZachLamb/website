@@ -22,8 +22,20 @@ const iconMap: Record<string, LucideIcon> = {
 function CodeBracketsIllustration() {
   return (
     <svg viewBox="0 0 80 80" className="h-20 w-20 opacity-[0.08]" aria-hidden>
-      <path d="M25 15 L10 40 L25 65" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-      <path d="M55 15 L70 40 L55 65" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      <path
+        d="M25 15 L10 40 L25 65"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M55 15 L70 40 L55 65"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
       <line x1="35" y1="10" x2="45" y2="70" stroke="currentColor" strokeWidth="2" opacity="0.6" />
     </svg>
   );
@@ -55,7 +67,12 @@ function ConnectedUsersIllustration() {
 function PaletteIllustration() {
   return (
     <svg viewBox="0 0 80 80" className="h-20 w-20 opacity-[0.08]" aria-hidden>
-      <path d="M40 10 C55 10 70 25 70 40 C70 55 55 70 40 70 C25 70 10 55 10 40 C10 25 25 10 40 10" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M40 10 C55 10 70 25 70 40 C70 55 55 70 40 70 C25 70 10 55 10 40 C10 25 25 10 40 10"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
       <circle cx="30" cy="30" r="4" fill="currentColor" opacity="0.5" />
       <circle cx="50" cy="28" r="3" fill="currentColor" opacity="0.4" />
       <circle cx="55" cy="45" r="3.5" fill="currentColor" opacity="0.45" />
@@ -111,10 +128,7 @@ export function Services() {
               className="relative flex flex-col items-start gap-6 md:flex-row md:items-center"
             >
               {/* Icon + illustration side */}
-              <div className={cn(
-                'flex shrink-0 items-center gap-4',
-                !isEven && 'md:order-2',
-              )}>
+              <div className={cn('flex shrink-0 items-center gap-4', !isEven && 'md:order-2')}>
                 <div className="bg-gold/10 flex h-12 w-12 items-center justify-center rounded-full">
                   {Icon && <Icon className="text-gold h-6 w-6" />}
                 </div>

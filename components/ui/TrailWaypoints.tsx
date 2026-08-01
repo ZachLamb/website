@@ -68,7 +68,9 @@ export function TrailWaypoints() {
                 stroke={isActive ? 'var(--color-gold)' : 'rgba(184,134,11,0.3)'}
                 strokeWidth="1.5"
                 className={cn('transition-all duration-300')}
-                style={isActive ? { filter: 'drop-shadow(0 0 4px rgba(184,134,11,0.5))' } : undefined}
+                style={
+                  isActive ? { filter: 'drop-shadow(0 0 4px rgba(184,134,11,0.5))' } : undefined
+                }
               />
             </svg>
           </div>

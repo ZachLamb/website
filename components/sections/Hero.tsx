@@ -88,7 +88,11 @@ function MountainBackdrop({ prefersReducedMotion }: { prefersReducedMotion: bool
         <m.path
           d="M0 200 L0 120 L100 80 L200 110 L300 60 L400 100 L500 50 L600 90 L700 40 L800 85 L900 55 L1000 95 L1100 70 L1200 100 L1200 200Z"
           fill="rgba(245,240,232,0.06)"
-          style={prefersReducedMotion ? undefined : { animation: 'mountain-sway-far 10s ease-in-out infinite' }}
+          style={
+            prefersReducedMotion
+              ? undefined
+              : { animation: 'mountain-sway-far 10s ease-in-out infinite' }
+          }
           {...(prefersReducedMotion
             ? {}
             : {
@@ -101,7 +105,11 @@ function MountainBackdrop({ prefersReducedMotion }: { prefersReducedMotion: bool
         <m.path
           d="M0 200 L0 150 L80 120 L160 145 L260 100 L340 135 L450 90 L540 130 L650 105 L740 140 L840 110 L940 145 L1050 120 L1140 150 L1200 135 L1200 200Z"
           fill="rgba(245,240,232,0.10)"
-          style={prefersReducedMotion ? undefined : { animation: 'mountain-sway-near 8s ease-in-out infinite' }}
+          style={
+            prefersReducedMotion
+              ? undefined
+              : { animation: 'mountain-sway-near 8s ease-in-out infinite' }
+          }
           {...(prefersReducedMotion
             ? {}
             : {
@@ -114,7 +122,11 @@ function MountainBackdrop({ prefersReducedMotion }: { prefersReducedMotion: bool
         <m.path
           d="M0 200 L0 170 L20 168 L35 155 L38 168 L55 150 L58 168 L75 158 L78 168 L95 145 L98 168 L120 160 L140 148 L143 168 L165 155 L168 168 L190 162 L210 142 L213 168 L240 158 L260 148 L263 168 L285 155 L305 140 L308 168 L330 160 L350 150 L353 168 L375 155 L395 145 L398 168 L420 160 L440 152 L443 168 L465 155 L485 142 L488 168 L510 158 L530 148 L533 168 L555 155 L575 140 L578 168 L600 162 L620 150 L623 168 L645 155 L665 145 L668 168 L690 160 L710 148 L713 168 L735 155 L755 142 L758 168 L780 160 L800 150 L803 168 L825 155 L845 145 L848 168 L870 160 L890 152 L893 168 L915 155 L935 142 L938 168 L960 158 L980 148 L983 168 L1005 155 L1025 140 L1028 168 L1050 162 L1070 150 L1073 168 L1095 155 L1115 145 L1118 168 L1140 160 L1160 152 L1163 168 L1185 158 L1200 165 L1200 200Z"
           fill="rgba(245,240,232,0.08)"
-          style={prefersReducedMotion ? undefined : { animation: 'mountain-sway-tree 12s ease-in-out infinite' }}
+          style={
+            prefersReducedMotion
+              ? undefined
+              : { animation: 'mountain-sway-tree 12s ease-in-out infinite' }
+          }
           {...(prefersReducedMotion
             ? {}
             : {
@@ -255,29 +267,133 @@ export function Hero() {
 
           {/* Elevation contour hints */}
           {/* Contour group A — upper right */}
-          <g style={prefersReducedMotion ? undefined : { animation: 'contour-drift-a 15s ease-in-out infinite' }}>
-            <ellipse cx="560" cy="140" rx="90" ry="45" fill="none" stroke="rgba(245,240,232,0.12)" strokeWidth="0.8" />
-            <ellipse cx="560" cy="140" rx="65" ry="32" fill="none" stroke="rgba(245,240,232,0.10)" strokeWidth="0.8" />
-            <ellipse cx="560" cy="140" rx="40" ry="20" fill="none" stroke="rgba(245,240,232,0.08)" strokeWidth="0.8" />
+          <g
+            style={
+              prefersReducedMotion
+                ? undefined
+                : { animation: 'contour-drift-a 15s ease-in-out infinite' }
+            }
+          >
+            <ellipse
+              cx="560"
+              cy="140"
+              rx="90"
+              ry="45"
+              fill="none"
+              stroke="rgba(245,240,232,0.12)"
+              strokeWidth="0.8"
+            />
+            <ellipse
+              cx="560"
+              cy="140"
+              rx="65"
+              ry="32"
+              fill="none"
+              stroke="rgba(245,240,232,0.10)"
+              strokeWidth="0.8"
+            />
+            <ellipse
+              cx="560"
+              cy="140"
+              rx="40"
+              ry="20"
+              fill="none"
+              stroke="rgba(245,240,232,0.08)"
+              strokeWidth="0.8"
+            />
           </g>
 
           {/* Contour group B — lower left */}
-          <g style={prefersReducedMotion ? undefined : { animation: 'contour-drift-b 18s ease-in-out infinite' }}>
-            <ellipse cx="200" cy="420" rx="70" ry="35" fill="none" stroke="rgba(245,240,232,0.10)" strokeWidth="0.8" />
-            <ellipse cx="200" cy="420" rx="50" ry="25" fill="none" stroke="rgba(245,240,232,0.08)" strokeWidth="0.8" />
-            <ellipse cx="200" cy="420" rx="30" ry="15" fill="none" stroke="rgba(245,240,232,0.06)" strokeWidth="0.8" />
+          <g
+            style={
+              prefersReducedMotion
+                ? undefined
+                : { animation: 'contour-drift-b 18s ease-in-out infinite' }
+            }
+          >
+            <ellipse
+              cx="200"
+              cy="420"
+              rx="70"
+              ry="35"
+              fill="none"
+              stroke="rgba(245,240,232,0.10)"
+              strokeWidth="0.8"
+            />
+            <ellipse
+              cx="200"
+              cy="420"
+              rx="50"
+              ry="25"
+              fill="none"
+              stroke="rgba(245,240,232,0.08)"
+              strokeWidth="0.8"
+            />
+            <ellipse
+              cx="200"
+              cy="420"
+              rx="30"
+              ry="15"
+              fill="none"
+              stroke="rgba(245,240,232,0.06)"
+              strokeWidth="0.8"
+            />
           </g>
 
           {/* Contour group C — center */}
-          <g style={prefersReducedMotion ? undefined : { animation: 'contour-drift-c 20s ease-in-out infinite' }}>
-            <ellipse cx="470" cy="350" rx="60" ry="30" fill="none" stroke="rgba(245,240,232,0.10)" strokeWidth="0.8" />
-            <ellipse cx="470" cy="350" rx="38" ry="18" fill="none" stroke="rgba(245,240,232,0.08)" strokeWidth="0.8" />
+          <g
+            style={
+              prefersReducedMotion
+                ? undefined
+                : { animation: 'contour-drift-c 20s ease-in-out infinite' }
+            }
+          >
+            <ellipse
+              cx="470"
+              cy="350"
+              rx="60"
+              ry="30"
+              fill="none"
+              stroke="rgba(245,240,232,0.10)"
+              strokeWidth="0.8"
+            />
+            <ellipse
+              cx="470"
+              cy="350"
+              rx="38"
+              ry="18"
+              fill="none"
+              stroke="rgba(245,240,232,0.08)"
+              strokeWidth="0.8"
+            />
           </g>
 
           {/* Contour group D — upper left */}
-          <g style={prefersReducedMotion ? undefined : { animation: 'contour-drift-a 14s ease-in-out infinite 3s' }}>
-            <ellipse cx="130" cy="180" rx="55" ry="28" fill="none" stroke="rgba(245,240,232,0.08)" strokeWidth="0.8" />
-            <ellipse cx="130" cy="180" rx="35" ry="18" fill="none" stroke="rgba(245,240,232,0.06)" strokeWidth="0.8" />
+          <g
+            style={
+              prefersReducedMotion
+                ? undefined
+                : { animation: 'contour-drift-a 14s ease-in-out infinite 3s' }
+            }
+          >
+            <ellipse
+              cx="130"
+              cy="180"
+              rx="55"
+              ry="28"
+              fill="none"
+              stroke="rgba(245,240,232,0.08)"
+              strokeWidth="0.8"
+            />
+            <ellipse
+              cx="130"
+              cy="180"
+              rx="35"
+              ry="18"
+              fill="none"
+              stroke="rgba(245,240,232,0.06)"
+              strokeWidth="0.8"
+            />
           </g>
 
           {/* Secondary trail paths (dotted, decoration) */}
