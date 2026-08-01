@@ -37,7 +37,7 @@ describe('About', () => {
   it('renders pull-quote and personal note', () => {
     renderWithLocale(<About />);
     expect(screen.getByText(/I'm a Technical Product Manager/)).toBeInTheDocument();
-    expect(screen.getByText(/Oreo debate/)).toBeInTheDocument();
+    expect(screen.getByText(/strong opinions about Oreos/)).toBeInTheDocument();
   });
 
   it('does not use aria-label on non-interactive paragraph elements', () => {

@@ -11,9 +11,9 @@ import { renderWithLocale } from '@/lib/test-utils';
 import { Services } from './Services';
 
 describe('Services', () => {
-  it('renders "What I Bring" heading', () => {
+  it('renders "How I Work" heading', () => {
     renderWithLocale(<Services />);
-    expect(screen.getByText('What I Bring')).toBeInTheDocument();
+    expect(screen.getByText('How I Work')).toBeInTheDocument();
   });
 
   it('renders all 4 service titles', () => {
