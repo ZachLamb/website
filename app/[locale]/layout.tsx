@@ -12,6 +12,7 @@ import { BackToTopButton } from '@/components/ui/BackToTopButton';
 import { LocaleProvider } from '@/components/providers/LocaleProvider';
 import { MotionProvider } from '@/components/providers/MotionProvider';
 import { getMessages, isValidLocale, locales, type Locale } from '@/lib/i18n';
+import { toJsonLd } from '@/lib/json-ld';
 
 type Props = { children: React.ReactNode; params: Promise<{ locale: string }> };
 
@@ -76,7 +77,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <MotionProvider>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: toJsonLd(personJsonLd) }}
         />
         <a
           href="#main-content"

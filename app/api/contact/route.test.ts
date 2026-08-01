@@ -202,14 +202,40 @@ describe('POST /api/contact', () => {
       expect(res.status).toBe(200);
     });
 
-    it('allows Vercel preview deploys matching the project', async () => {
-      const res = await POST(
-        makeRequest(validBody, {
-          Origin: 'https://zachlamb-git-pr-123.vercel.app',
-          'x-forwarded-for': nextTestIp(),
-        }),
-      );
-      expect(res.status).toBe(200);
+    it('allows the Vercel preview deploy named by VERCEL_BRANCH_URL', async () => {
+      vi.stubEnv('VERCEL_BRANCH_URL', 'zachlamb-git-pr-123.vercel.app');
+      try {
+        const res = await POST(
+          makeRequest(validBody, {
+            Origin: 'https://zachlamb-git-pr-123.vercel.app',
+            'x-forwarded-for': nextTestIp(),
+          }),
+        );
+        expect(res.status).toBe(200);
+      } finally {
+        vi.unstubAllEnvs();
+        vi.stubEnv('RESEND_API_KEY', 'test_key');
+      }
+    });
+
+    // Regression: the origin check used to accept any *.vercel.app host whose
+    // name merely contained "zachlamb". Vercel project names are globally
+    // claimable, so a third party could deploy "zachlamb-evil" and satisfy the
+    // CSRF gate. Only exact matches against Vercel's own env vars count now.
+    it('rejects a third-party vercel.app host that merely contains the project name', async () => {
+      vi.stubEnv('VERCEL_BRANCH_URL', 'zachlamb-git-pr-123.vercel.app');
+      try {
+        const res = await POST(
+          makeRequest(validBody, {
+            Origin: 'https://zachlamb-evil.vercel.app',
+            'x-forwarded-for': nextTestIp(),
+          }),
+        );
+        expect(res.status).toBe(403);
+      } finally {
+        vi.unstubAllEnvs();
+        vi.stubEnv('RESEND_API_KEY', 'test_key');
+      }
     });
 
     it('rejects a non-https Origin that spoofs the vercel.app suffix', async () => {
@@ -220,6 +246,85 @@ describe('POST /api/contact', () => {
         }),
       );
       expect(res.status).toBe(403);
+    });
+
+    it('rejects a plaintext localhost Origin in production', async () => {
+      vi.stubEnv('NODE_ENV', 'production');
+      try {
+        const res = await POST(
+          makeRequest(validBody, {
+            Origin: 'http://localhost:3000',
+            'x-forwarded-for': nextTestIp(),
+          }),
+        );
+        expect(res.status).toBe(403);
+      } finally {
+        vi.unstubAllEnvs();
+        vi.stubEnv('RESEND_API_KEY', 'test_key');
+      }
+    });
+  });
+
+  describe('Body type validation', () => {
+    const ip = () => ({ 'x-forwarded-for': nextTestIp() });
+
+    it.each([
+      ['number', 42],
+      ['object', { toString: 'x' }],
+      ['array', ['Frodo']],
+      ['boolean', true],
+      ['null', null],
+    ])('returns 400 (not 500) when name is a %s', async (_label, value) => {
+      const res = await POST(
+        makeRequest({ name: value, email: 'frodo@shire.me', message: 'Hello!' }, ip()),
+      );
+      expect(res.status).toBe(400);
+    });
+
+    it('returns 400 when email is a non-string that would coerce past the regex', async () => {
+      const res = await POST(
+        makeRequest({ name: 'Frodo', email: ['frodo@shire.me'], message: 'Hello!' }, ip()),
+      );
+      expect(res.status).toBe(400);
+      expect(sendMock).not.toHaveBeenCalled();
+    });
+
+    it('returns 400 when the JSON body is an array', async () => {
+      const req = new Request('http://localhost/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Origin: 'http://localhost:3000',
+          ...ip(),
+        } as HeadersInit,
+        body: JSON.stringify([{ name: 'Frodo' }]),
+      });
+      expect((await POST(req)).status).toBe(400);
+    });
+
+    it('returns 400 when the JSON body is a bare string', async () => {
+      const req = new Request('http://localhost/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Origin: 'http://localhost:3000',
+          ...ip(),
+        } as HeadersInit,
+        body: JSON.stringify('nope'),
+      });
+      expect((await POST(req)).status).toBe(400);
+    });
+
+    it('trims surrounding whitespace rather than rejecting the message', async () => {
+      const res = await POST(
+        makeRequest(
+          { name: 'Frodo', email: 'frodo@shire.me', message: `${' '.repeat(10)}hello` },
+          ip(),
+        ),
+      );
+      expect(res.status).toBe(200);
+      const text = sendMock.mock.calls.at(-1)?.[0]?.text as string;
+      expect(text).toContain('hello');
     });
   });
 
@@ -262,7 +367,9 @@ describe('POST /api/contact', () => {
         const res = await POST(
           makeRequest(
             { name: 'Frodo', email: 'frodo@shire.me', message: 'Hello!' },
-            { 'x-forwarded-for': nextTestIp() },
+            // Must be a production-valid Origin: localhost is only trusted
+            // outside production now.
+            { Origin: 'https://zachlamb.io', 'x-forwarded-for': nextTestIp() },
           ),
         );
         expect(res.status).toBe(500);
