@@ -88,15 +88,17 @@ export function FloatingLeaves({
         <div
           key={leaf.id}
           className={`absolute ${color}`}
-          style={{
-            left: `${leaf.x}%`,
-            width: leaf.size,
-            height: leaf.size,
-            top: '-5%',
-            '--leaf-drift': `${leaf.drift}px`,
-            '--leaf-start-rot': `${leaf.rotation}deg`,
-            animation: `leaf-fall ${leaf.duration}s linear ${leaf.delay}s infinite`,
-          } as React.CSSProperties}
+          style={
+            {
+              left: `${leaf.x}%`,
+              width: leaf.size,
+              height: leaf.size,
+              top: '-5%',
+              '--leaf-drift': `${leaf.drift}px`,
+              '--leaf-start-rot': `${leaf.rotation}deg`,
+              animation: `leaf-fall ${leaf.duration}s linear ${leaf.delay}s infinite`,
+            } as React.CSSProperties
+          }
         >
           <LeafSVG variant={leaf.variant} />
         </div>
@@ -193,14 +195,16 @@ export function Fireflies({ count = 12 }: { count?: number }) {
         <div
           key={dot.id}
           className="bg-gold-light/30 absolute rounded-full"
-          style={{
-            left: `${dot.x}%`,
-            top: `${dot.y}%`,
-            width: dot.size,
-            height: dot.size,
-            '--firefly-drift': `${dot.drift}px`,
-            animation: `firefly-pulse ${dot.duration}s ease-in-out ${dot.delay}s infinite`,
-          } as React.CSSProperties}
+          style={
+            {
+              left: `${dot.x}%`,
+              top: `${dot.y}%`,
+              width: dot.size,
+              height: dot.size,
+              '--firefly-drift': `${dot.drift}px`,
+              animation: `firefly-pulse ${dot.duration}s ease-in-out ${dot.delay}s infinite`,
+            } as React.CSSProperties
+          }
         />
       ))}
     </div>

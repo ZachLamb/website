@@ -155,7 +155,7 @@ export function Endorsements() {
           {/* Desktop: auto-scrolling marquee */}
           <div className="hidden overflow-hidden md:block">
             <div
-              className="flex hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]"
+              className="flex focus-within:[animation-play-state:paused] hover:[animation-play-state:paused]"
               style={{
                 animation: prefersReducedMotion
                   ? 'none'
@@ -179,7 +179,7 @@ export function Endorsements() {
           {/* Mobile: horizontal scroll with snap */}
           <div
             ref={scrollRef}
-            className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-0 overflow-x-auto px-4 md:hidden"
+            className="-mx-4 flex snap-x snap-mandatory scrollbar-none gap-0 overflow-x-auto px-4 md:hidden"
           >
             {endorsements.map((endorsement, i) => (
               <div key={endorsement.id} className="snap-center">

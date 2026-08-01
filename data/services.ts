@@ -11,7 +11,7 @@ export const services: ServiceEntry[] = [
     title: 'Technical Product Strategy',
     icon: 'compass',
     description:
-      'I own the roadmap from discovery to delivery, balancing technical constraints with business outcomes. I\'ve consolidated 400+ backlog items into structured projects and built dual roadmaps spanning multiple teams.',
+      "I own the roadmap from discovery to delivery, balancing technical constraints with business outcomes. I've consolidated 400+ backlog items into structured projects and built dual roadmaps spanning multiple teams.",
   },
   {
     id: 'ai-augmented-engineering',
@@ -25,7 +25,7 @@ export const services: ServiceEntry[] = [
     title: 'Process & Delivery',
     icon: 'users',
     description:
-      'Certified ScrumMaster who builds the sprint cadence, retros, and cross-functional rhythms that let teams ship reliably. I\'ve designed hiring processes adopted company-wide.',
+      "Certified ScrumMaster who builds the sprint cadence, retros, and cross-functional rhythms that let teams ship reliably. I've designed hiring processes adopted company-wide.",
   },
   {
     id: 'engineering-product-bridge',
