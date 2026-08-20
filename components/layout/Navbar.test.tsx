@@ -104,4 +104,18 @@ describe('Navbar', () => {
     matchMediaSpy.mockRestore();
     scrollYSpy.mockRestore();
   });
+
+  it('renders the mobile-nav portal only after mount (hydration-safe)', () => {
+    // Server snapshot: renderToString has no effects, so a hydration-safe
+    // Navbar must NOT include the portal container in server HTML.
+    // In jsdom, renderWithLocale runs effects, so after render the portal exists.
+    renderWithLocale(<Navbar />);
+    expect(document.getElementById('mobile-nav')).toBeInTheDocument();
+  });
+
+  it('portals the mobile nav to document.body', () => {
+    renderWithLocale(<Navbar />);
+    const overlay = document.getElementById('mobile-nav');
+    expect(overlay?.parentElement).toBe(document.body);
+  });
 });
