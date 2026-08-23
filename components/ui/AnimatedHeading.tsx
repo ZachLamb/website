@@ -96,7 +96,7 @@ export function AnimatedHeading({
         className="mt-1 h-px overflow-hidden"
         initial={{ width: 0 }}
         animate={isInView ? { width: '6rem' } : { width: 0 }}
-        transition={{ duration: 0.4, delay: subtitle ? 0.25 : 0.15, ease: 'easeOut' }}
+        transition={{ duration: 0.35, delay: subtitle ? 0.25 : 0.15, ease: 'easeOut' }}
       >
         <div className="bg-gold/30 h-full w-full" />
       </m.div>
