@@ -79,6 +79,16 @@
     "services": "Was ich mitbringe",
     "education": "Qualifikationen"
   },
+  "kickers": {
+    "about": "der Ausgangspunkt",
+    "experience": "das Wanderlogbuch",
+    "projects": "die Aussichtspunkte",
+    "endorsements": "Stimmen vom Weg",
+    "skills": "die Ausrüstung",
+    "services": "die Hütte",
+    "education": "das Gipfelbuch",
+    "contact": "das Wegende"
+  },
   "projects": {
     "intro": "Einige Projekte, die zeigen, wie ich über Nutzer, das Ausliefern und den sinnvollen Einsatz von KI denke."
   },

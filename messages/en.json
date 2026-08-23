@@ -81,6 +81,16 @@
     "services": "What I Bring",
     "education": "Credentials"
   },
+  "kickers": {
+    "about": "the trailhead",
+    "experience": "the trail log",
+    "projects": "the vistas",
+    "endorsements": "voices from the trail",
+    "skills": "the pack",
+    "services": "the lodge",
+    "education": "the summit ledger",
+    "contact": "end of trail"
+  },
   "projects": {
     "intro": "A handful of projects that show how I think about users, shipping, and where AI earns its keep."
   },

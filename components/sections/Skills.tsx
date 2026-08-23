@@ -17,7 +17,7 @@ export function Skills() {
     <Section variant="dark" id="skills" nature={{ fireflies: true }}>
       <AnimatedHeading
         sectionId="skills"
-        subtitle="III."
+        subtitle={`III · ${messages.kickers.skills}`}
         className="[&_p]:text-gold [&_h2]:text-parchment"
       >
         {messages.sections.skills}

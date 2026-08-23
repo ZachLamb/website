@@ -79,6 +79,16 @@
     "services": "Cosa porto",
     "education": "Credenziali"
   },
+  "kickers": {
+    "about": "il punto di partenza",
+    "experience": "il diario del sentiero",
+    "projects": "i belvedere",
+    "endorsements": "voci dal sentiero",
+    "skills": "lo zaino",
+    "services": "il rifugio",
+    "education": "il libro di vetta",
+    "contact": "fine del sentiero"
+  },
   "projects": {
     "intro": "Alcuni progetti che mostrano come penso agli utenti, a rilasciare e a dove l'IA porta davvero valore."
   },

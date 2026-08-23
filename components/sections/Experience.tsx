@@ -199,7 +199,15 @@ function CardContent({
 }
 
 /** Trail profile / elevation-style line (abstract "path" for this role) */
-function TrailProfileGraph({ count, id, className }: { count: number; id: string; className?: string }) {
+function TrailProfileGraph({
+  count,
+  id,
+  className,
+}: {
+  count: number;
+  id: string;
+  className?: string;
+}) {
   const points = 8;
   const steps = Array.from({ length: points }, (_, i) => {
     const t = i / (points - 1);
@@ -318,14 +326,19 @@ export function Experience() {
 
   const featuredExperiences = experiences.filter((e) => e.featured);
   const olderExperiences = experiences.filter((e) => !e.featured);
-  const olderDateRange = olderExperiences.length > 0
-    ? `${olderExperiences[olderExperiences.length - 1].startDate.split(' ')[1]}–${olderExperiences[0].endDate === 'Present' ? 'Present' : olderExperiences[0].endDate.split(' ')[1]}`
-    : '';
+  const olderDateRange =
+    olderExperiences.length > 0
+      ? `${olderExperiences[olderExperiences.length - 1].startDate.split(' ')[1]}–${olderExperiences[0].endDate === 'Present' ? 'Present' : olderExperiences[0].endDate.split(' ')[1]}`
+      : '';
 
   return (
     <Section variant="light" id="experience" mapFrame nature={{ leaves: true, pines: true }}>
       <div className="bg-parchment/95 sticky top-16 z-30 -mx-4 mb-12 px-4 py-2 backdrop-blur-sm sm:-mx-6 sm:px-6 md:static md:mx-0 md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
-        <AnimatedHeading sectionId="experience" subtitle="II." className="md:mb-0">
+        <AnimatedHeading
+          sectionId="experience"
+          subtitle={`II · ${messages.kickers.experience}`}
+          className="md:mb-0"
+        >
           {messages.sections.experience}
         </AnimatedHeading>
       </div>
@@ -356,9 +369,7 @@ export function Experience() {
           >
             <span className="font-medium">
               {showHistory ? '▾' : '▸'}{' '}
-              {showHistory
-                ? messages.experience.hideHistory
-                : messages.experience.viewFullHistory}
+              {showHistory ? messages.experience.hideHistory : messages.experience.viewFullHistory}
             </span>
             <span className="text-stone text-sm">
               {olderExperiences.length} {messages.experience.earlierRoles} · {olderDateRange}

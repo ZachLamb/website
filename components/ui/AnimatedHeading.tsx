@@ -73,10 +73,10 @@ export function AnimatedHeading({
         // The real semantic title sits in the <MotionTag> below.
         <m.p
           aria-hidden="true"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-stone flex items-center gap-2 text-xs tracking-[0.2em] uppercase"
+          transition={{ duration: 0.3 }}
+          className="text-gold-deep flex items-center gap-2 font-serif text-sm tracking-[0.2em] italic"
         >
           <LeafAccent />
           {subtitle}
@@ -84,9 +84,9 @@ export function AnimatedHeading({
       )}
       <MotionTag
         id={sectionId ? `${sectionId}-heading` : undefined}
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, delay: subtitle ? 0.1 : 0 }}
+        initial={{ opacity: 0, y: 12 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+        transition={{ duration: 0.35, delay: subtitle ? 0.05 : 0 }}
         className="text-forest font-serif text-4xl font-semibold break-words md:text-5xl"
       >
         {headingContent}
@@ -96,7 +96,7 @@ export function AnimatedHeading({
         className="mt-1 h-px overflow-hidden"
         initial={{ width: 0 }}
         animate={isInView ? { width: '6rem' } : { width: 0 }}
-        transition={{ duration: 0.6, delay: subtitle ? 0.5 : 0.3, ease: 'easeOut' }}
+        transition={{ duration: 0.4, delay: subtitle ? 0.25 : 0.15, ease: 'easeOut' }}
       >
         <div className="bg-gold/30 h-full w-full" />
       </m.div>

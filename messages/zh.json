@@ -77,6 +77,16 @@
     "services": "我的优势",
     "education": "资历"
   },
+  "kickers": {
+    "about": "起点",
+    "experience": "行山日志",
+    "projects": "观景点",
+    "endorsements": "路上之声",
+    "skills": "行囊",
+    "services": "山屋",
+    "education": "登顶簿",
+    "contact": "终点"
+  },
   "projects": {
     "intro": "几个项目，展现我如何思考用户、交付以及 AI 真正发挥作用的地方。"
   },

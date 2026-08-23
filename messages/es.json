@@ -79,6 +79,16 @@
     "services": "Lo que aporto",
     "education": "Credenciales"
   },
+  "kickers": {
+    "about": "el punto de partida",
+    "experience": "el diario de ruta",
+    "projects": "los miradores",
+    "endorsements": "voces del camino",
+    "skills": "la mochila",
+    "services": "el refugio",
+    "education": "el libro de cumbre",
+    "contact": "fin del sendero"
+  },
   "projects": {
     "intro": "Algunos proyectos que muestran cómo pienso en los usuarios, en entregar y en dónde la IA realmente aporta valor."
   },

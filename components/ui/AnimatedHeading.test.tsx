@@ -49,4 +49,10 @@ describe('AnimatedHeading', () => {
     expect(link).toHaveAttribute('href', '#about');
     expect(screen.getByRole('heading', { level: 2 })).toHaveAttribute('id', 'about-heading');
   });
+
+  it('styles the subtitle as a serif-italic gold kicker', () => {
+    render(<AnimatedHeading subtitle="I · the trailhead">Trail Guide</AnimatedHeading>);
+    const kicker = screen.getByText('I · the trailhead');
+    expect(kicker).toHaveClass('font-serif', 'italic', 'text-gold-deep');
+  });
 });

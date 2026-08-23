@@ -49,7 +49,7 @@ function ConstellationBackground() {
     delay: (i % 7) * 2,
     opacity: 0.04 + (i % 4) * 0.02,
     dx: `${((i % 3) - 1) * 8}px`,
-    dy: `${((i % 2) === 0 ? -1 : 1) * 6}px`,
+    dy: `${(i % 2 === 0 ? -1 : 1) * 6}px`,
   }));
 
   return (
@@ -58,16 +58,18 @@ function ConstellationBackground() {
         <div
           key={i}
           className="bg-parchment absolute rounded-full"
-          style={{
-            left: star.left,
-            top: star.top,
-            width: `${star.size}px`,
-            height: `${star.size}px`,
-            '--star-opacity': String(star.opacity),
-            '--star-dx': star.dx,
-            '--star-dy': star.dy,
-            animation: `star-drift ${star.duration}s ease-in-out ${star.delay}s infinite`,
-          } as React.CSSProperties}
+          style={
+            {
+              left: star.left,
+              top: star.top,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              '--star-opacity': String(star.opacity),
+              '--star-dx': star.dx,
+              '--star-dy': star.dy,
+              animation: `star-drift ${star.duration}s ease-in-out ${star.delay}s infinite`,
+            } as React.CSSProperties
+          }
         />
       ))}
     </div>
@@ -139,7 +141,7 @@ export function Contact() {
       <ConstellationBackground />
       <AnimatedHeading
         sectionId="contact"
-        subtitle="VI."
+        subtitle={`VI · ${messages.kickers.contact}`}
         className="[&_h2]:text-parchment [&_p]:text-gold"
       >
         {messages.contact.heading}

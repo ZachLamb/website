@@ -17,7 +17,11 @@ export function About() {
 
   return (
     <Section variant="light" id="about" nature={{ leaves: true, birds: true }}>
-      <AnimatedHeading sectionId="about" subtitle="I." className="mb-8">
+      <AnimatedHeading
+        sectionId="about"
+        subtitle={`I · ${messages.kickers.about}`}
+        className="mb-8"
+      >
         {messages.about.heading}
       </AnimatedHeading>
 

@@ -16,6 +16,8 @@
   --color-copper: #b87333;
   --color-parchment-cool: #f0f0e8;
   --color-parchment-warm: #e8ddd0;
+  --color-forest-deep: #243325;
+  --color-gold-deep: #a67c0b;
 }
 
 /* Single scroll context: viewport scrolls; body clips horizontal overflow (fixes multiple scroll bars on desktop) */
@@ -114,43 +116,84 @@ html:lang(it) nav [data-nav-link] {
 }
 
 @keyframes contour-drift-a {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(8px, -5px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(8px, -5px);
+  }
 }
 
 @keyframes contour-drift-b {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-6px, 8px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-6px, 8px);
+  }
 }
 
 @keyframes contour-drift-c {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(10px, 6px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, 6px);
+  }
 }
 
 @keyframes mountain-sway-far {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-1px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1px);
+  }
 }
 
 @keyframes mountain-sway-near {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
 }
 
 @keyframes mountain-sway-tree {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-1.5px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
 }
 
 @keyframes star-drift {
-  0%, 100% { transform: translate(0, 0); opacity: var(--star-opacity); }
-  50% { transform: translate(var(--star-dx), var(--star-dy)); opacity: calc(var(--star-opacity) * 1.5); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: var(--star-opacity);
+  }
+  50% {
+    transform: translate(var(--star-dx), var(--star-dy));
+    opacity: calc(var(--star-opacity) * 1.5);
+  }
 }
 
 @keyframes endorsement-marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes topo-pulse {
