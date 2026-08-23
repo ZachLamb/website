@@ -27,4 +27,11 @@ describe('Card', () => {
     const card = container.firstElementChild!;
     expect(card).toHaveClass('border-dashed', 'border-bark/20');
   });
+
+  it('applies plate variant (map-plate: light fill + gold corner tick)', () => {
+    const { container } = render(<Card variant="plate">Plate card</Card>);
+    const card = container.firstElementChild!;
+    expect(card).toHaveClass('bg-white/40', 'border-bark/15');
+    expect(card.className).toContain('before:bg-gold');
+  });
 });
