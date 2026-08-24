@@ -379,6 +379,26 @@ export function Contact() {
               <span className="font-medium">{contactEmail}</span>
             </a>
           </div>
+
+          {/* End-of-trail cairn — designed terminus for the empty column space */}
+          <div
+            data-cairn
+            aria-hidden="true"
+            className="mt-12 hidden flex-col items-center gap-3 md:flex"
+          >
+            <svg viewBox="0 0 60 64" className="text-parchment/25 h-16 w-16">
+              <ellipse cx="30" cy="58" rx="22" ry="6" fill="currentColor" opacity="0.5" />
+              <ellipse cx="30" cy="48" rx="17" ry="7" fill="currentColor" opacity="0.7" />
+              <ellipse cx="30" cy="37" rx="13" ry="6" fill="currentColor" opacity="0.85" />
+              <ellipse cx="30" cy="27" rx="9" ry="5" fill="currentColor" />
+              <ellipse cx="30" cy="19" rx="5" ry="3.5" fill="currentColor" />
+            </svg>
+            <div className="text-stone flex items-center gap-3 text-xs tracking-[0.3em] uppercase">
+              <span className="bg-stone/40 h-px w-8" />
+              {messages.footer.endOfTrail}
+              <span className="bg-stone/40 h-px w-8" />
+            </div>
+          </div>
         </m.div>
       </div>
     </Section>

@@ -161,4 +161,9 @@ describe('Contact', () => {
     );
     vi.restoreAllMocks();
   });
+
+  it('renders the end-of-trail cairn beside the direct links', () => {
+    const { container } = renderWithLocale(<Contact />);
+    expect(container.querySelector('[data-cairn]')).not.toBeNull();
+  });
 });

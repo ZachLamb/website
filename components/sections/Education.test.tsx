@@ -35,4 +35,9 @@ describe('Education', () => {
     const { container } = renderWithLocale(<Education />);
     expect(container.querySelector('#education')).toBeInTheDocument();
   });
+
+  it('renders certification chips with plate styling', () => {
+    const { container } = renderWithLocale(<Education />);
+    expect(container.querySelectorAll('.border-bark\\/15').length).toBeGreaterThan(0);
+  });
 });
