@@ -43,7 +43,11 @@ describe('TrailExtension', () => {
     expect(wrapper).toHaveAttribute('aria-hidden');
     // Structural sanity: SVG with one path inside.
     expect(container.querySelector('svg')).toBeInTheDocument();
-    expect(container.querySelector('svg path')).toBeInTheDocument();
+    const path = container.querySelector('svg path');
+    expect(path).toBeInTheDocument();
+    // Strengthened stroke — see lib/trail-position.ts for the shared gutter positioning.
+    expect(path).toHaveAttribute('stroke', 'rgba(184,134,11,0.5)');
+    expect(path).toHaveAttribute('stroke-width', '3');
   });
 
   it('renders cleanly under prefers-reduced-motion', () => {

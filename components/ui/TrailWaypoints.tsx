@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import { useActiveSection, SECTION_IDS } from '@/hooks/useActiveSection';
+import { TRAIL_GUTTER_CLASS, SECTION_NUMERALS } from '@/lib/trail-position';
 import { cn } from '@/lib/utils';
 
 type WaypointPosition = { id: string; top: number };
@@ -45,10 +46,7 @@ export function TrailWaypoints() {
   if (positions.length === 0) return null;
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-y-0 left-0 z-0 w-4 md:left-[max(0.5rem,calc((100vw-1280px)/2))] md:w-5"
-    >
+    <div aria-hidden="true" className={TRAIL_GUTTER_CLASS}>
       {positions.map(({ id, top }) => {
         const isActive = activeSection === id;
         const isPassed = passedSections.has(id);
@@ -59,18 +57,18 @@ export function TrailWaypoints() {
             className="absolute left-1/2 -translate-x-1/2"
             style={{ top: `${top * 100}%` }}
           >
-            <svg viewBox="0 0 12 12" className="h-3 w-3">
-              <circle
-                cx="6"
-                cy="6"
-                r="5"
-                fill={isActive ? 'var(--color-gold)' : isPassed ? 'rgba(184,134,11,0.5)' : 'none'}
-                stroke={isActive ? 'var(--color-gold)' : 'rgba(184,134,11,0.3)'}
-                strokeWidth="1.5"
-                className={cn('transition-all duration-300')}
-                style={isActive ? { filter: 'drop-shadow(0 0 4px rgba(184,134,11,0.5))' } : undefined}
-              />
-            </svg>
+            <div
+              className={cn(
+                'flex h-5 w-5 items-center justify-center rounded-full border font-serif text-[9px] font-semibold transition-all duration-300',
+                isActive
+                  ? 'border-gold bg-gold text-forest shadow-[0_0_6px_rgba(184,134,11,0.5)]'
+                  : isPassed
+                    ? 'border-gold/60 bg-gold/60 text-forest'
+                    : 'border-gold/40 bg-parchment text-gold-deep',
+              )}
+            >
+              {SECTION_NUMERALS[id] ?? ''}
+            </div>
           </div>
         );
       })}
