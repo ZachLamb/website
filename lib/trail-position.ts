@@ -8,7 +8,9 @@
  * Tailwind class wrapper, so other absolutely-positioned elements that need
  * to align to the trail's horizontal position — e.g. the divider "crossing
  * dot" — can consume it directly instead of re-deriving the formula.
- * `TRAIL_GUTTER_CLASS` embeds this same expression via `md:left-[...]`.
+ * `TRAIL_GUTTER_CLASS` duplicates this same expression as a literal
+ * `md:left-[...]` class string (see the comment above it for why it can't
+ * just interpolate this constant).
  *
  * The line itself is drawn at the horizontal center of the gutter box (the
  * gutter is `w-5`/`md:w-6`; the SVG path sits at x=12 of a 0-24 viewBox, i.e.
@@ -21,7 +23,18 @@ export const TRAIL_OFFSET_LEFT = 'max(0.5rem,calc((100vw-1024px)/2-2.5rem))';
 /** Half the desktop gutter width (`md:w-6` = 1.5rem) — the line sits at the gutter's horizontal center. */
 export const TRAIL_LINE_CENTER_INSET = '0.75rem';
 
-export const TRAIL_GUTTER_CLASS = `pointer-events-none fixed inset-y-0 left-0 z-0 w-5 md:left-[${TRAIL_OFFSET_LEFT}] md:w-6`;
+/** Half the mobile gutter width (w-5 = 1.25rem) — the line sits at the mobile gutter's horizontal center. */
+export const TRAIL_LINE_CENTER_INSET_MOBILE = '0.625rem';
+
+// Tailwind v4 extracts class candidates as literal substrings of source files
+// at build time — it never evaluates JS template literals or interpolates
+// `TRAIL_OFFSET_LEFT` into this string. This MUST be a plain string literal
+// containing the full, real class text so Tailwind's static scanner finds
+// `md:left-[max(0.5rem,calc((100vw-1024px)/2-2.5rem))]` here, in this file.
+// Keep the `md:left-[...]` value below in sync with `TRAIL_OFFSET_LEFT`
+// by hand — the duplication is required, not accidental.
+export const TRAIL_GUTTER_CLASS =
+  'pointer-events-none fixed inset-y-0 left-0 z-30 w-5 md:left-[max(0.5rem,calc((100vw-1024px)/2-2.5rem))] md:w-6';
 
 /** Numerals match the section kickers ("I · the trailhead" etc.). */
 export const SECTION_NUMERALS: Record<string, string> = {
