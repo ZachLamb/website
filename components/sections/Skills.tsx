@@ -14,7 +14,33 @@ export function Skills() {
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
-    <Section variant="dark" id="skills" nature={{ fireflies: true }}>
+    <Section
+      variant="dark"
+      id="skills"
+      nature={{ fireflies: true }}
+      decoration={
+        // Section-level (not content-column-clipped) so this reaches the
+        // section's true bottom edge, below the py-24 padding — filling the
+        // actual dead space instead of stopping above it.
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 1200 100"
+          preserveAspectRatio="none"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-20 w-full"
+        >
+          <path
+            d="M0 100 L0 70 L120 45 L240 65 L360 30 L480 55 L600 20 L720 50 L840 35 L960 60 L1080 40 L1200 55 L1200 100 Z"
+            fill="rgba(245,240,232,0.06)"
+          />
+          <path
+            d="M0 70 L120 45 L240 65 L360 30 L480 55 L600 20 L720 50 L840 35 L960 60 L1080 40 L1200 55"
+            fill="none"
+            stroke="rgba(245,240,232,0.10)"
+            strokeWidth="1.5"
+          />
+        </svg>
+      }
+    >
       <AnimatedHeading
         sectionId="skills"
         subtitle={`III · ${messages.kickers.skills}`}
@@ -62,25 +88,6 @@ export function Skills() {
           </m.div>
         ))}
       </div>
-
-      {/* Elevation cross-section fills the section's lower dead space */}
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 1200 100"
-        preserveAspectRatio="none"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-20 w-full"
-      >
-        <path
-          d="M0 100 L0 70 L120 45 L240 65 L360 30 L480 55 L600 20 L720 50 L840 35 L960 60 L1080 40 L1200 55 L1200 100 Z"
-          fill="rgba(245,240,232,0.06)"
-        />
-        <path
-          d="M0 70 L120 45 L240 65 L360 30 L480 55 L600 20 L720 50 L840 35 L960 60 L1080 40 L1200 55"
-          fill="none"
-          stroke="rgba(245,240,232,0.10)"
-          strokeWidth="1.5"
-        />
-      </svg>
     </Section>
   );
 }

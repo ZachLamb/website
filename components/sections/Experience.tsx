@@ -41,9 +41,9 @@ function TimelineCard({
 
   return (
     <div ref={ref} className="group/timeline grid grid-cols-[32px_1fr] gap-x-4 md:gap-x-6">
-      {/* Trail line + numbered marker */}
+      {/* Numbered marker (the trail line itself is drawn once, continuously,
+          by the parent TimelineList — see its own comment for why) */}
       <div className="relative flex justify-center">
-        <div className="border-gold/40 absolute inset-y-0 left-1/2 w-px -translate-x-1/2 border-l border-dashed" />
         <EntryMarker number={number} />
       </div>
 
@@ -66,6 +66,25 @@ function TimelineCard({
           </Card>
         </m.div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Wraps a group of TimelineCards with one continuous dashed trail line
+ * behind them. Drawing the line once here — instead of one segment per
+ * entry — keeps it visually unbroken across the `gap-2` seams between
+ * entries; a per-entry `inset-y-0` line only spans its own row's box and
+ * leaves an 8px break at every gap.
+ */
+function TimelineList({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={cn('relative', className)}>
+      <div
+        aria-hidden="true"
+        className="border-gold/40 absolute inset-y-0 left-4 w-px -translate-x-1/2 border-l border-dashed"
+      />
+      {children}
     </div>
   );
 }
@@ -290,11 +309,11 @@ export function Experience() {
         )}
       </AnimatePresence>
 
-      <div className="flex flex-col gap-2">
+      <TimelineList className="flex flex-col gap-2">
         {featuredExperiences.map((entry, i) => (
           <TimelineCard key={entry.id} entry={entry} number={i + 1} onHover={setHoveredEntry} />
         ))}
-      </div>
+      </TimelineList>
 
       {olderExperiences.length > 0 && (
         <div className="mt-8">
@@ -314,7 +333,7 @@ export function Experience() {
 
           <AutoHeight>
             {showHistory && (
-              <div className="mt-8 flex flex-col gap-2">
+              <TimelineList className="mt-8 flex flex-col gap-2">
                 {olderExperiences.map((entry, i) => (
                   <TimelineCard
                     key={entry.id}
@@ -323,7 +342,7 @@ export function Experience() {
                     onHover={setHoveredEntry}
                   />
                 ))}
-              </div>
+              </TimelineList>
             )}
           </AutoHeight>
         </div>

@@ -23,6 +23,17 @@ export function Card({ children, className, variant = 'default' }: CardProps) {
         className,
       )}
     >
+      {variant === 'plate' && (
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 60 60"
+          className="text-bark pointer-events-none absolute right-2 bottom-2 h-12 w-12 opacity-[0.05]"
+        >
+          <path d="M60 60 A56 56 0 0 1 4 60" fill="none" stroke="currentColor" strokeWidth="1" />
+          <path d="M60 60 A40 40 0 0 1 20 60" fill="none" stroke="currentColor" strokeWidth="1" />
+          <path d="M60 60 A24 24 0 0 1 36 60" fill="none" stroke="currentColor" strokeWidth="1" />
+        </svg>
+      )}
       {children}
     </div>
   );

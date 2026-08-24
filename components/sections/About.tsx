@@ -17,7 +17,44 @@ export function About() {
   const focusAreas = messages.about.focusAreas.split(' · ').filter(Boolean);
 
   return (
-    <Section variant="light" id="about" nature={{ leaves: true, birds: true }} className="md:pb-16">
+    <Section
+      variant="light"
+      id="about"
+      nature={{ leaves: true, birds: true }}
+      className="md:pb-16"
+      decoration={
+        // Section-level (not content-column-clipped) so this can use the
+        // true page margin outside the max-w-5xl column on wide viewports,
+        // rather than being boxed into the same 1024px column as the prose
+        // it would otherwise overlap. `right` grows with viewport width
+        // past the column (mirrors the pattern used by
+        // ExperienceDetailPanel's column-relative anchoring), so the
+        // watermark only appears once real dead space exists.
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 100 100"
+          className="text-bark pointer-events-none absolute top-24 hidden h-52 w-52 opacity-[0.06] lg:block"
+          style={{ right: 'max(2rem, calc((100vw - 1024px) / 2 + 3rem))' }}
+        >
+          <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="1" />
+          <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" strokeWidth="0.5" />
+          <path d="M50 6 L54 46 L50 42 L46 46 Z" fill="currentColor" />
+          <path d="M50 94 L54 54 L50 58 L46 54 Z" fill="currentColor" opacity="0.5" />
+          <path d="M6 50 L46 46 L42 50 L46 54 Z" fill="currentColor" opacity="0.5" />
+          <path d="M94 50 L54 46 L58 50 L54 54 Z" fill="currentColor" opacity="0.5" />
+          <text
+            x="50"
+            y="16"
+            textAnchor="middle"
+            fontSize="8"
+            fill="currentColor"
+            fontFamily="var(--font-serif)"
+          >
+            N
+          </text>
+        </svg>
+      }
+    >
       <AnimatedHeading
         sectionId="about"
         subtitle={`I · ${messages.kickers.about}`}
@@ -25,30 +62,6 @@ export function About() {
       >
         {messages.about.heading}
       </AnimatedHeading>
-
-      {/* Compass-rose watermark fills the right-side dead space (desktop only) */}
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 100 100"
-        className="text-bark pointer-events-none absolute top-24 right-8 hidden h-52 w-52 opacity-[0.06] lg:block"
-      >
-        <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="1" />
-        <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" strokeWidth="0.5" />
-        <path d="M50 6 L54 46 L50 42 L46 46 Z" fill="currentColor" />
-        <path d="M50 94 L54 54 L50 58 L46 54 Z" fill="currentColor" opacity="0.5" />
-        <path d="M6 50 L46 46 L42 50 L46 54 Z" fill="currentColor" opacity="0.5" />
-        <path d="M94 50 L54 46 L58 50 L54 54 Z" fill="currentColor" opacity="0.5" />
-        <text
-          x="50"
-          y="16"
-          textAnchor="middle"
-          fontSize="8"
-          fill="currentColor"
-          fontFamily="var(--font-serif)"
-        >
-          N
-        </text>
-      </svg>
 
       <div ref={ref}>
         {/* Pull-quote: sentence 1 at display size with gold left accent */}
