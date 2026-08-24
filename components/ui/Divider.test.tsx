@@ -46,4 +46,12 @@ describe('Divider', () => {
     const { container } = render(<Divider variant="mountains" flip />);
     expect(container.firstElementChild).toBeInTheDocument();
   });
+
+  it('renders a trail crossing dot on mountain and treeline dividers', () => {
+    const { container: mountains } = render(<Divider variant="mountains" />);
+    expect(mountains.querySelector('[data-trail-crossing]')).not.toBeNull();
+
+    const { container: trail } = render(<Divider variant="trail" />);
+    expect(trail.querySelector('[data-trail-crossing]')).toBeNull();
+  });
 });
