@@ -20,25 +20,39 @@ const MAX_NAME_LENGTH = 200;
 const MAX_EMAIL_LENGTH = 320;
 const MAX_MESSAGE_LENGTH = 5000;
 
-const ALLOWED_ORIGINS = new Set<string>([
-  'https://zachlamb.io',
-  'https://www.zachlamb.io',
-  'http://localhost:3000',
-  'http://localhost',
-]);
+const ALLOWED_ORIGINS = new Set<string>(['https://zachlamb.io', 'https://www.zachlamb.io']);
+
+// Only trusted outside production, so a prod deploy never accepts a plaintext
+// localhost Origin as a same-site request.
+const DEV_ALLOWED_ORIGINS = new Set<string>(['http://localhost:3000', 'http://localhost']);
+
+/**
+ * Origins for the current Vercel deployment, derived from the server-only env
+ * vars Vercel injects at runtime (no NEXT_PUBLIC_ prefix, so they never reach
+ * the client bundle).
+ *
+ * This replaces a substring heuristic (`hostname.endsWith('.vercel.app') &&
+ * hostname.includes('zachlamb')`) that any third party could satisfy: Vercel
+ * project names are globally claimable, so deploying a project named
+ * `zachlamb-anything` yields `zachlamb-anything.vercel.app` and passed the old
+ * check — defeating the CSRF origin gate. Exact matching against the values
+ * Vercel gives us keeps preview deploys working with no wildcard to abuse.
+ */
+function getVercelOrigins(): string[] {
+  return [
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.VERCEL_BRANCH_URL,
+    process.env.VERCEL_URL,
+  ]
+    .filter((host): host is string => typeof host === 'string' && host.trim() !== '')
+    .map((host) => `https://${host.trim()}`);
+}
 
 function isOriginAllowed(origin: string | null): boolean {
   if (!origin) return false;
   if (ALLOWED_ORIGINS.has(origin)) return true;
-  try {
-    const { hostname, protocol } = new URL(origin);
-    if (protocol !== 'https:') return false;
-    // Vercel preview deploys for this project
-    if (hostname.endsWith('.vercel.app') && hostname.includes('zachlamb')) return true;
-  } catch {
-    return false;
-  }
-  return false;
+  if (process.env.NODE_ENV !== 'production' && DEV_ALLOWED_ORIGINS.has(origin)) return true;
+  return getVercelOrigins().includes(origin);
 }
 
 function getClientId(request: Request): string {
@@ -62,7 +76,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  let body: { name?: string; email?: string; message?: string };
+  let body: unknown;
 
   try {
     body = await request.json();
@@ -70,9 +84,29 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  const { name, email, message } = body;
+  // Parse, don't validate: everything past this point is a known-good string.
+  // The body is attacker-controlled JSON, so each field must be type-checked
+  // before any string method touches it — `name.trim()` on a number, array, or
+  // object throws a TypeError that would escape the handler as an opaque 500.
+  if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+  }
 
-  if (!name?.trim() || !email?.trim() || !message?.trim()) {
+  const { name: rawName, email: rawEmail, message: rawMessage } = body as Record<string, unknown>;
+
+  if (
+    typeof rawName !== 'string' ||
+    typeof rawEmail !== 'string' ||
+    typeof rawMessage !== 'string'
+  ) {
+    return NextResponse.json({ error: 'Name, email, and message are required' }, { status: 400 });
+  }
+
+  const name = rawName.trim();
+  const email = rawEmail.trim();
+  const message = rawMessage.trim();
+
+  if (!name || !email || !message) {
     return NextResponse.json({ error: 'Name, email, and message are required' }, { status: 400 });
   }
 

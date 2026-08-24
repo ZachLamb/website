@@ -9,15 +9,8 @@ export function ScrollProgressBar() {
   useScrollProgress();
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed top-16 left-0 z-50 h-1.5 w-full"
-    >
-      <svg
-        viewBox="0 0 200 18"
-        preserveAspectRatio="none"
-        className="h-full w-full"
-      >
+    <div aria-hidden="true" className="pointer-events-none fixed top-16 left-0 z-50 h-1.5 w-full">
+      <svg viewBox="0 0 200 18" preserveAspectRatio="none" className="h-full w-full">
         {/* Track (unfilled ridge silhouette) */}
         <path
           d={ridgePath}
@@ -37,9 +30,11 @@ export function ScrollProgressBar() {
           strokeLinejoin="round"
           pathLength={1}
           strokeDasharray={1}
-          style={{
-            strokeDashoffset: 'calc(1 - var(--scroll-progress, 0))',
-          } as React.CSSProperties}
+          style={
+            {
+              strokeDashoffset: 'calc(1 - var(--scroll-progress, 0))',
+            } as React.CSSProperties
+          }
         />
       </svg>
     </div>

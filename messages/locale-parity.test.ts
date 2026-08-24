@@ -20,7 +20,12 @@ function collectLeafPaths(obj: Dict, prefix = ''): string[] {
     const path = prefix ? `${prefix}.${key}` : key;
     if (value && typeof value === 'object' && !Array.isArray(value)) {
       out.push(...collectLeafPaths(value as Dict, path));
-    } else if (Array.isArray(value) && value.length > 0 && value[0] && typeof value[0] === 'object') {
+    } else if (
+      Array.isArray(value) &&
+      value.length > 0 &&
+      value[0] &&
+      typeof value[0] === 'object'
+    ) {
       // Array of objects (e.g., about.stats): recurse into each item by index.
       value.forEach((item, idx) => {
         if (item && typeof item === 'object' && !Array.isArray(item)) {
@@ -53,7 +58,12 @@ function collectLeafEntries(obj: Dict, prefix = ''): Array<[string, unknown]> {
     const path = prefix ? `${prefix}.${key}` : key;
     if (value && typeof value === 'object' && !Array.isArray(value)) {
       out.push(...collectLeafEntries(value as Dict, path));
-    } else if (Array.isArray(value) && value.length > 0 && value[0] && typeof value[0] === 'object') {
+    } else if (
+      Array.isArray(value) &&
+      value.length > 0 &&
+      value[0] &&
+      typeof value[0] === 'object'
+    ) {
       // Array of objects (e.g., about.stats): recurse into each item by index.
       value.forEach((item, idx) => {
         if (item && typeof item === 'object' && !Array.isArray(item)) {

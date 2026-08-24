@@ -5,10 +5,11 @@ import { withSentryConfig } from '@sentry/nextjs';
 // Content Security Policy.
 // - 'unsafe-inline' is needed for styles because Next/Tailwind inject inline
 //   style attributes. We could swap to nonces once the stack supports it.
-// - 'unsafe-inline' is also required on script-src because the JSON-LD tag in
-//   [locale]/layout.tsx uses dangerouslySetInnerHTML. Inputs are fully static,
-//   so this is safe today; if user-authored content ever reaches that tag, we
-//   must move to nonced scripts.
+// - 'unsafe-inline' is required on script-src because Next's App Router emits
+//   inline bootstrap/RSC-payload scripts. The JSON-LD tag in [locale]/layout.tsx
+//   also uses dangerouslySetInnerHTML, but its payload is now encoded through
+//   lib/json-ld.ts, which escapes `<` so a closing-tag breakout is impossible
+//   regardless of what data reaches it.
 // - Vercel Analytics ships from va.vercel-scripts.com.
 // - Sentry ingest is allowed as a fallback; in practice, client-side events
 //   are tunneled through /monitoring (same-origin), so this only matters if
@@ -21,8 +22,7 @@ const csp = [
   "form-action 'self'",
   "frame-ancestors 'none'",
   // TODO(M3): Replace 'unsafe-inline' with nonces once Next.js supports
-  // per-request nonce injection for script-src. Inputs to the JSON-LD
-  // dangerouslySetInnerHTML in [locale]/layout.tsx are fully static today.
+  // per-request nonce injection for script-src.
   "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
