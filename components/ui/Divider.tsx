@@ -119,14 +119,23 @@ export function Divider({ className, variant = 'trail', flip = false }: DividerP
       {variant === 'treeline' && <TreelineDivider flip={flip} />}
       {variant === 'trail' && <TrailDivider isInView={isInView} />}
       {(variant === 'mountains' || variant === 'treeline') && (
-        <div
-          data-trail-crossing
-          aria-hidden="true"
-          className="bg-gold/70 absolute top-1/2 left-[calc(0.5rem+10px)] h-2 w-2 -translate-y-1/2 rounded-full shadow-[0_0_4px_rgba(184,134,11,0.4)]"
-          style={{
-            left: `calc(${TRAIL_OFFSET_LEFT} + ${TRAIL_LINE_CENTER_INSET})`,
-          }}
-        />
+        <>
+          {/* Mobile crossing dot */}
+          <div
+            data-trail-crossing
+            aria-hidden="true"
+            className="bg-gold/70 absolute top-1/2 left-[calc(0.5rem+10px)] h-2 w-2 -translate-y-1/2 rounded-full shadow-[0_0_4px_rgba(184,134,11,0.4)] md:hidden"
+          />
+          {/* Desktop crossing dot */}
+          <div
+            data-trail-crossing
+            aria-hidden="true"
+            className="bg-gold/70 absolute top-1/2 hidden h-2 w-2 -translate-y-1/2 rounded-full shadow-[0_0_4px_rgba(184,134,11,0.4)] md:block"
+            style={{
+              left: `calc(${TRAIL_OFFSET_LEFT} + ${TRAIL_LINE_CENTER_INSET})`,
+            }}
+          />
+        </>
       )}
     </div>
   );

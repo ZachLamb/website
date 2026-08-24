@@ -49,7 +49,12 @@ describe('Divider', () => {
 
   it('renders a trail crossing dot on mountain and treeline dividers', () => {
     const { container: mountains } = render(<Divider variant="mountains" />);
-    expect(mountains.querySelector('[data-trail-crossing]')).not.toBeNull();
+    const mountainDots = mountains.querySelectorAll('[data-trail-crossing]');
+    expect(mountainDots.length).toBe(2); // mobile and desktop dots
+
+    const { container: treeline } = render(<Divider variant="treeline" />);
+    const treelineDots = treeline.querySelectorAll('[data-trail-crossing]');
+    expect(treelineDots.length).toBe(2); // mobile and desktop dots
 
     const { container: trail } = render(<Divider variant="trail" />);
     expect(trail.querySelector('[data-trail-crossing]')).toBeNull();
