@@ -63,4 +63,18 @@ describe('Section', () => {
     expect(section).toHaveAttribute('data-map-frame', 'true');
     expect(section).toHaveClass('border-t', 'border-b', 'border-bark/10');
   });
+
+  it('renders decoration outside the content column, as a direct child of <section>', () => {
+    const { container } = render(
+      <Section decoration={<div data-testid="deco">watermark</div>}>
+        <p>Content</p>
+      </Section>,
+    );
+    const section = container.querySelector('section')!;
+    const decoration = screen.getByTestId('deco');
+    // A direct child of <section>, not nested inside the max-w-5xl content
+    // wrapper — otherwise it would be clipped to the content column instead
+    // of spanning the section's true full width.
+    expect(decoration.parentElement).toBe(section);
+  });
 });

@@ -1,6 +1,7 @@
 'use client';
 
 import { m, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { TRAIL_GUTTER_CLASS } from '@/lib/trail-position';
 
 /**
  * Vertical trail line that extends from the hero down the page and
@@ -16,16 +17,13 @@ export function TrailExtension() {
   );
 
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none fixed inset-y-0 left-0 z-0 w-4 md:left-[max(0.5rem,calc((100vw-1280px)/2))] md:w-5"
-    >
+    <div aria-hidden className={TRAIL_GUTTER_CLASS}>
       <svg className="h-full w-full" viewBox="0 0 24 100" preserveAspectRatio="none">
         <m.path
           d="M 12 0 L 12 100"
           fill="none"
-          stroke="rgba(184,134,11,0.3)"
-          strokeWidth="2.5"
+          stroke="rgba(184,134,11,0.5)"
+          strokeWidth="3"
           strokeDasharray="6 6"
           strokeLinecap="round"
           style={{ pathLength }}

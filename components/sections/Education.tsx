@@ -38,7 +38,9 @@ function EducationRow({
         <GraduationCap className="text-gold h-5 w-5 shrink-0" />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-            <span className="text-forest font-serif text-lg font-semibold">{entry.degree}</span>
+            <span className="text-forest-deep font-serif text-lg font-semibold">
+              {entry.degree}
+            </span>
             <span className="text-bark text-sm" aria-hidden>
               —
             </span>
@@ -82,7 +84,7 @@ export function Education() {
 
   return (
     <Section variant="light" id="education" tone="dusk" nature={{ leaves: true, pines: true }}>
-      <AnimatedHeading sectionId="education" subtitle="V.">
+      <AnimatedHeading sectionId="education" subtitle={`V · ${messages.kickers.education}`}>
         {messages.sections.education}
       </AnimatedHeading>
 
@@ -104,8 +106,8 @@ export function Education() {
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
               variants={waypointPop}
-              transition={{ delay: education.length * 0.1 + i * 0.1 }}
-              className="border-bark/20 bg-sand inline-flex items-center gap-2 rounded-full border px-3 py-1.5"
+              transition={{ delay: education.length * 0.06 + i * 0.06 }}
+              className="border-bark/15 inline-flex items-center gap-2 rounded-full border bg-white/40 px-3 py-1.5"
             >
               <Award className="text-gold h-4 w-4 shrink-0" />
               <span className="text-bark text-sm font-medium">{cert.name}</span>

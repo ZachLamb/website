@@ -108,4 +108,35 @@ describe('Experience', () => {
     });
     window.matchMedia = undefined as any;
   });
+
+  it('renders each featured entry exactly once with a numbered marker', () => {
+    window.matchMedia = mockMatchMedia(false);
+    renderWithLocale(<Experience />);
+    const featured = experiences.filter((e) => e.featured);
+    for (const [i, entry] of featured.entries()) {
+      const cards = screen.getAllByTestId(`experience-card-${entry.id}`);
+      expect(cards).toHaveLength(1);
+      expect(screen.getByText(String(i + 1))).toBeInTheDocument();
+    }
+    window.matchMedia = undefined as any;
+  });
+
+  it('has no right-aligned prose', () => {
+    window.matchMedia = mockMatchMedia(false);
+    const { container } = renderWithLocale(<Experience />);
+    expect(container.querySelector('.text-right')).toBeNull();
+    window.matchMedia = undefined as any;
+  });
+
+  it('draws one continuous trail line spanning all featured entries, not one per entry', () => {
+    window.matchMedia = mockMatchMedia(false);
+    const { container } = renderWithLocale(<Experience />);
+    const featuredCount = experiences.filter((e) => e.featured).length;
+    // One line per entry would leave gaps at the flex gap-2 seams between
+    // rows; a single line drawn once behind the whole list stays unbroken.
+    const lines = container.querySelectorAll('.border-l.border-dashed.left-4');
+    expect(lines.length).toBe(1);
+    expect(featuredCount).toBeGreaterThan(1); // sanity: the test is meaningful
+    window.matchMedia = undefined as any;
+  });
 });

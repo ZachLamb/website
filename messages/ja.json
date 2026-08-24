@@ -79,6 +79,16 @@
     "services": "私の強み",
     "education": "資格"
   },
+  "kickers": {
+    "about": "登山口",
+    "experience": "山行記録",
+    "projects": "展望台",
+    "endorsements": "道中の声",
+    "skills": "装備",
+    "services": "山小屋",
+    "education": "登頂記録",
+    "contact": "終点"
+  },
   "projects": {
     "intro": "ユーザーのこと、きちんと届けること、そしてAIが本当に役立つ場所について、私の考え方を示すプロジェクトをいくつか。"
   },

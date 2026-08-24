@@ -117,7 +117,11 @@ export function Projects() {
   return (
     <Section variant="light" id="projects" mapFrame nature={{ leaves: true }}>
       <div ref={ref}>
-        <AnimatedHeading sectionId="projects" subtitle="IIb." className="mb-4">
+        <AnimatedHeading
+          sectionId="projects"
+          subtitle={`IIb · ${messages.kickers.projects}`}
+          className="mb-4"
+        >
           {messages.sections.projects}
         </AnimatedHeading>
         <p className="text-bark mb-10 max-w-2xl text-lg">{messages.projects.intro}</p>

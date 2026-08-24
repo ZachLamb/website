@@ -18,6 +18,14 @@ interface SectionProps {
     pines?: boolean;
     birds?: boolean;
   };
+  /**
+   * Decorative content rendered at the section's full width/height, behind
+   * the content column and outside its max-w-5xl clip — for background
+   * flourishes (watermarks, elevation profiles) that should fill the
+   * section's true dead space rather than being boxed into the content
+   * column's own bounds.
+   */
+  decoration?: React.ReactNode;
 }
 
 export function Section({
@@ -28,6 +36,7 @@ export function Section({
   tone,
   mapFrame,
   nature,
+  decoration,
 }: SectionProps) {
   const showLeaves = nature?.leaves ?? variant === 'light';
   const showFireflies = nature?.fireflies ?? variant === 'dark';
@@ -77,6 +86,7 @@ export function Section({
         </>
       )}
       {showBirds && <BirdSilhouettes count={2} />}
+      {decoration}
 
       <div className="relative z-10 mx-auto max-w-5xl min-w-0 px-4 sm:px-6">{children}</div>
     </section>

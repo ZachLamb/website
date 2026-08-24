@@ -48,4 +48,10 @@ describe('Skills', () => {
     const articles = document.querySelectorAll('[role="article"]');
     expect(articles).toHaveLength(0);
   });
+
+  it('renders category names as map-legend headers with rule lines', () => {
+    const { container } = renderWithLocale(<Skills />);
+    const header = container.querySelector('h3');
+    expect(header?.querySelector('[data-legend-rule]')).not.toBeNull();
+  });
 });

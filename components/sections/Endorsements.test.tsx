@@ -38,4 +38,9 @@ describe('Endorsements', () => {
     const { container } = renderWithLocale(<Endorsements />);
     expect(container.querySelector('#endorsements')).toBeInTheDocument();
   });
+
+  it('renders endorsement cards as map plates', () => {
+    const { container } = renderWithLocale(<Endorsements />);
+    expect(container.querySelectorAll('.bg-white\\/40').length).toBeGreaterThan(0);
+  });
 });

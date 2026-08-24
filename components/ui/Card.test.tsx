@@ -27,4 +27,19 @@ describe('Card', () => {
     const card = container.firstElementChild!;
     expect(card).toHaveClass('border-dashed', 'border-bark/20');
   });
+
+  it('applies plate variant (map-plate: light fill + gold corner tick)', () => {
+    const { container } = render(<Card variant="plate">Plate card</Card>);
+    const card = container.firstElementChild!;
+    expect(card).toHaveClass('bg-white/40', 'border-bark/15');
+    expect(card.className).toContain('before:bg-gold');
+  });
+
+  it('renders a faint corner-texture arc on the plate variant only', () => {
+    const { container: plate } = render(<Card variant="plate">Plate</Card>);
+    expect(plate.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
+
+    const { container: defaultCard } = render(<Card>Default</Card>);
+    expect(defaultCard.querySelector('svg')).toBeNull();
+  });
 });

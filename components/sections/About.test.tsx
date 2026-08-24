@@ -45,4 +45,12 @@ describe('About', () => {
     const paragraphs = document.querySelectorAll('p[aria-label]');
     expect(paragraphs).toHaveLength(0);
   });
+
+  it('renders stat tiles as map plates with gold-deep numerals', () => {
+    renderWithLocale(<About />);
+    const statValue = screen.getByText('10+');
+    expect(statValue).toHaveClass('text-gold-deep', 'font-serif');
+    // plate recipe applied to the tile container
+    expect(statValue.closest('.bg-white\\/40')).not.toBeNull();
+  });
 });

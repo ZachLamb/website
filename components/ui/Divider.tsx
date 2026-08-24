@@ -3,6 +3,11 @@
 import { useRef } from 'react';
 import { m, useInView } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import {
+  TRAIL_OFFSET_LEFT,
+  TRAIL_LINE_CENTER_INSET,
+  TRAIL_LINE_CENTER_INSET_MOBILE,
+} from '@/lib/trail-position';
 
 type DividerVariant = 'mountains' | 'treeline' | 'trail';
 
@@ -117,6 +122,26 @@ export function Divider({ className, variant = 'trail', flip = false }: DividerP
       {variant === 'mountains' && <MountainDivider flip={flip} />}
       {variant === 'treeline' && <TreelineDivider flip={flip} />}
       {variant === 'trail' && <TrailDivider isInView={isInView} />}
+      {(variant === 'mountains' || variant === 'treeline') && (
+        <>
+          {/* Mobile crossing dot */}
+          <div
+            data-trail-crossing
+            aria-hidden="true"
+            className="bg-gold/70 absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_0_4px_rgba(184,134,11,0.4)] md:hidden"
+            style={{ left: TRAIL_LINE_CENTER_INSET_MOBILE }}
+          />
+          {/* Desktop crossing dot */}
+          <div
+            data-trail-crossing
+            aria-hidden="true"
+            className="bg-gold/70 absolute top-1/2 hidden h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_0_4px_rgba(184,134,11,0.4)] md:block"
+            style={{
+              left: `calc(${TRAIL_OFFSET_LEFT} + ${TRAIL_LINE_CENTER_INSET})`,
+            }}
+          />
+        </>
+      )}
     </div>
   );
 }

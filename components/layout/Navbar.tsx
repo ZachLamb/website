@@ -25,6 +25,7 @@ export function Navbar() {
   const { locale, messages } = useLocaleContext();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const activeSection = useActiveSection();
   const menuRef = useRef<HTMLUListElement>(null);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
@@ -81,7 +82,12 @@ export function Navbar() {
     };
   }, [mobileOpen]);
 
-  const mounted = typeof document !== 'undefined';
+  // Hydration-safe portal gate: server and first client render agree (no
+  // portal); the portal mounts in an effect after hydration completes.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   const prevMobileOpen = useRef(false);
   // Focus first nav link when mobile menu opens; return focus to toggle when it closes

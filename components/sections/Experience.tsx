@@ -12,22 +12,25 @@ import { experiences } from '@/data/experience';
 import type { ExperienceEntry } from '@/data/experience';
 import { cn } from '@/lib/utils';
 
+function EntryMarker({ number }: { number: number }) {
+  return (
+    <div className="border-gold bg-parchment text-gold-deep relative z-10 mt-5 flex h-6 w-6 items-center justify-center rounded-full border font-serif text-xs font-semibold">
+      {number}
+    </div>
+  );
+}
+
 function TimelineCard({
   entry,
-  index,
+  number,
   onHover,
 }: {
   entry: (typeof experiences)[number];
-  index: number;
+  number: number;
   onHover: (e: ExperienceEntry | null) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
-  const isLeft = index % 2 === 0;
-
-  const cardContent = (
-    <CardContent entry={entry} align={isLeft ? 'right' : 'left'} isInView={isInView} />
-  );
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   const handleEnter = () => {
     if (typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches) {
@@ -37,132 +40,84 @@ function TimelineCard({
   const handleLeave = () => onHover(null);
 
   return (
-    <m.div
-      ref={ref}
-      className="group/timeline relative grid grid-cols-[24px_1fr] gap-x-4 md:grid-cols-[1fr_24px_1fr] md:gap-x-6"
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: '-80px' }}
-    >
-      {/* Left column: shows card for even indices on desktop, empty otherwise */}
+    <div ref={ref} className="group/timeline grid grid-cols-[32px_1fr] gap-x-4 md:gap-x-6">
+      {/* Numbered marker (the trail line itself is drawn once, continuously,
+          by the parent TimelineList — see its own comment for why) */}
+      <div className="relative flex justify-center">
+        <EntryMarker number={number} />
+      </div>
+
+      {/* Entry card */}
       <div
-        className="hidden md:block"
+        className="max-w-xl min-w-0"
         data-testid={`experience-card-${entry.id}`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
         onClick={handleEnter}
       >
-        {isLeft ? (
-          <m.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="transition-transform duration-300 group-hover/timeline:translate-x-1"
-          >
-            <Card variant="map" className="text-right">
-              {cardContent}
-            </Card>
-          </m.div>
-        ) : null}
-      </div>
-
-      {/* Center trail line + waypoint marker */}
-      <div className="relative flex justify-center">
-        <div className="absolute inset-0 flex justify-center">
-          <m.div
-            className="border-gold/40 w-px border-l border-dashed"
-            initial={{ scaleY: 0 }}
-            animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            style={{ transformOrigin: 'top' }}
-          />
-        </div>
         <m.div
-          initial={{ opacity: 0, scale: 0 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-          transition={{ duration: 0.4, delay: 0.2, type: 'spring', stiffness: 200 }}
-          whileHover={{ scale: 1.15 }}
-          className="ring-offset-parchment group-hover/timeline:ring-gold/30 relative z-10 mt-5 cursor-default rounded-full ring-2 ring-transparent ring-offset-2 transition-shadow duration-300"
+          initial={{ opacity: 0, y: 12 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+          transition={{ duration: 0.35 }}
+          className="transition-transform duration-300 group-hover/timeline:translate-x-1"
         >
-          <svg viewBox="0 0 20 20" className="text-gold h-5 w-5">
-            <circle
-              cx="10"
-              cy="10"
-              r="8"
-              fill="var(--color-parchment)"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M10 5 C12 7 13 9 12.5 12 C11.5 14 10 15 10 15 C10 15 8.5 14 7.5 12 C7 9 8 7 10 5Z"
-              fill="currentColor"
-              opacity="0.5"
-            />
-          </svg>
+          <Card variant="plate">
+            <CardContent entry={entry} isInView={isInView} />
+          </Card>
         </m.div>
       </div>
+    </div>
+  );
+}
 
-      {/* Right column: shows card for odd indices on desktop, all cards on mobile */}
+/**
+ * Wraps a group of TimelineCards with one continuous dashed trail line
+ * behind them. Drawing the line once here — instead of one segment per
+ * entry — keeps it visually unbroken across the `gap-2` seams between
+ * entries; a per-entry `inset-y-0` line only spans its own row's box and
+ * leaves an 8px break at every gap.
+ */
+function TimelineList({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={cn('relative', className)}>
       <div
-        className="min-w-0"
-        data-testid={!isLeft ? `experience-card-${entry.id}` : undefined}
-        onMouseEnter={!isLeft ? handleEnter : undefined}
-        onMouseLeave={!isLeft ? handleLeave : undefined}
-        onClick={!isLeft ? handleEnter : undefined}
-      >
-        {isLeft ? (
-          <m.div
-            className="transition-transform duration-300 group-hover/timeline:translate-x-1 md:hidden"
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <Card variant="map">
-              <CardContent entry={entry} align="left" isInView={isInView} />
-            </Card>
-          </m.div>
-        ) : (
-          <m.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="transition-transform duration-300 group-hover/timeline:-translate-x-1"
-          >
-            <Card variant="map">
-              <CardContent entry={entry} align="left" isInView={isInView} />
-            </Card>
-          </m.div>
-        )}
-      </div>
-    </m.div>
+        aria-hidden="true"
+        className="border-gold/40 absolute inset-y-0 left-4 w-px -translate-x-1/2 border-l border-dashed"
+      />
+      {children}
+    </div>
   );
 }
 
 function CardContent({
   entry,
-  align,
   isInView,
 }: {
   entry: (typeof experiences)[number];
-  align: 'left' | 'right';
   isInView: boolean;
 }) {
-  const isRight = align === 'right';
-
   return (
-    <div className={isRight ? 'text-right' : ''}>
-      <h3 className="text-forest font-serif text-xl font-semibold">{entry.company}</h3>
+    <div>
+      <h3 className="text-forest-deep font-serif text-xl font-semibold">{entry.company}</h3>
       <p className="text-bark text-sm">{entry.position}</p>
-      <p className="text-stone text-xs">
-        {entry.startDate} — {entry.endDate}
+      {/* Trail-distance date range */}
+      <p className="text-stone flex items-center gap-1.5 text-xs">
+        {entry.startDate}
+        <span aria-hidden="true" className="bg-gold/40 inline-block h-px w-6" />
+        <span
+          aria-hidden="true"
+          className="border-gold/40 -ml-1.5 inline-block border-y-2 border-l-4 border-y-transparent"
+        />
+        {entry.endDate}
       </p>
 
       <ul className="text-bark mt-3 list-inside list-disc space-y-1 text-sm leading-relaxed">
         {entry.description.slice(0, 3).map((item, i) => (
           <m.li
             key={item}
-            initial={{ opacity: 0, x: isRight ? 8 : -8 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isRight ? 8 : -8 }}
-            transition={{ duration: 0.35, delay: 0.2 + i * 0.08 }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+            transition={{ duration: 0.3, delay: 0.05 + i * 0.06 }}
           >
             {item}
           </m.li>
@@ -170,13 +125,13 @@ function CardContent({
       </ul>
 
       {entry.techStack.length > 0 && (
-        <div className={`mt-3 flex flex-wrap gap-2 ${isRight ? 'justify-end' : ''}`}>
+        <div className="mt-3 flex flex-wrap gap-2">
           {entry.techStack.map((tech, j) => (
             <m.span
               key={tech}
               initial={{ opacity: 0, scale: 0.85 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
-              transition={{ duration: 0.3, delay: 0.35 + j * 0.05 }}
+              transition={{ duration: 0.25, delay: 0.15 + j * 0.04 }}
               whileHover={{ scale: 1.05 }}
               className="inline-block"
             >
@@ -334,7 +289,11 @@ export function Experience() {
   return (
     <Section variant="light" id="experience" mapFrame nature={{ leaves: true, pines: true }}>
       <div className="bg-parchment/95 sticky top-16 z-30 -mx-4 mb-12 px-4 py-2 backdrop-blur-sm sm:-mx-6 sm:px-6 md:static md:mx-0 md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
-        <AnimatedHeading sectionId="experience" subtitle="II." className="md:mb-0">
+        <AnimatedHeading
+          sectionId="experience"
+          subtitle={`II · ${messages.kickers.experience}`}
+          className="md:mb-0"
+        >
           {messages.sections.experience}
         </AnimatedHeading>
       </div>
@@ -344,17 +303,17 @@ export function Experience() {
           <ExperienceDetailPanel
             key={hoveredEntry.id}
             entry={hoveredEntry}
-            side={experiences.indexOf(hoveredEntry) % 2 === 0 ? 'right' : 'left'}
+            side="right"
             moreLabel={messages.experience.more}
           />
         )}
       </AnimatePresence>
 
-      <div className="flex flex-col gap-8">
+      <TimelineList className="flex flex-col gap-2">
         {featuredExperiences.map((entry, i) => (
-          <TimelineCard key={entry.id} entry={entry} index={i} onHover={setHoveredEntry} />
+          <TimelineCard key={entry.id} entry={entry} number={i + 1} onHover={setHoveredEntry} />
         ))}
-      </div>
+      </TimelineList>
 
       {olderExperiences.length > 0 && (
         <div className="mt-8">
@@ -374,16 +333,16 @@ export function Experience() {
 
           <AutoHeight>
             {showHistory && (
-              <div className="mt-8 flex flex-col gap-8">
+              <TimelineList className="mt-8 flex flex-col gap-2">
                 {olderExperiences.map((entry, i) => (
                   <TimelineCard
                     key={entry.id}
                     entry={entry}
-                    index={featuredExperiences.length + i}
+                    number={featuredExperiences.length + i + 1}
                     onHover={setHoveredEntry}
                   />
                 ))}
-              </div>
+              </TimelineList>
             )}
           </AutoHeight>
         </div>

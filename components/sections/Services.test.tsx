@@ -28,4 +28,11 @@ describe('Services', () => {
     const { container } = renderWithLocale(<Services />);
     expect(container.querySelector('#services')).toBeInTheDocument();
   });
+
+  it('renders services in a grid of plate cards, all left-aligned', () => {
+    const { container } = renderWithLocale(<Services />);
+    expect(container.querySelector('.md\\:grid-cols-2')).not.toBeNull();
+    expect(container.querySelector('.md\\:text-right')).toBeNull();
+    expect(container.querySelectorAll('.bg-white\\/40').length).toBeGreaterThanOrEqual(4);
+  });
 });
