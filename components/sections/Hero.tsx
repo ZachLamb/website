@@ -397,7 +397,7 @@ export function Hero() {
                     initial: { pathLength: 0 },
                     animate: { pathLength: 1 },
                     transition: {
-                      duration: i === 0 ? 1.5 : 1.5,
+                      duration: 1.5,
                       ease: 'easeInOut',
                       delay: i === 0 ? 0.4 : 0.6,
                     },
