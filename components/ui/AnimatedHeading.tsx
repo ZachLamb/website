@@ -68,9 +68,11 @@ export function AnimatedHeading({
   return (
     <div ref={ref} className={cn('space-y-2', className)}>
       {subtitle && (
-        // aria-hidden: subtitle is a decorative section marker (e.g. "I.", "IIb.").
-        // Screen readers announce these as ambiguous text ("I dot, II b dot…").
-        // The real semantic title sits in the <MotionTag> below.
+        // aria-hidden: subtitle is a decorative section kicker (e.g. "I · the
+        // trailhead"). It's presentational flourish alongside the numeral,
+        // not a substitute for the section title — the real semantic title
+        // sits in the <MotionTag> below, so hiding this avoids double-
+        // announcing similar text to screen reader users.
         <m.p
           aria-hidden="true"
           initial={{ opacity: 0, y: 12 }}
