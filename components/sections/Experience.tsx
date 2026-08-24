@@ -49,7 +49,7 @@ function TimelineCard({
 
       {/* Entry card */}
       <div
-        className="max-w-3xl min-w-0"
+        className="max-w-xl min-w-0"
         data-testid={`experience-card-${entry.id}`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
