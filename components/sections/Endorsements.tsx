@@ -43,7 +43,10 @@ function EndorsementCard({
       aria-label={`${index + 1} of ${totalCount}`}
       className="w-[85vw] shrink-0 px-3 md:w-[400px]"
     >
-      <Card className="group hover:border-gold/40 relative overflow-hidden transition-all duration-300">
+      <Card
+        variant="plate"
+        className="group hover:border-gold/40 relative overflow-hidden transition-all duration-300"
+      >
         <div className="relative">
           <Quote className="text-gold/30 group-hover:text-gold/40 absolute -top-1 right-2 h-10 w-10 transition-transform duration-300 group-hover:scale-110" />
           <blockquote className="text-bark relative pr-8 text-base leading-relaxed">
@@ -157,7 +160,7 @@ export function Endorsements() {
           className="relative"
         >
           {/* Desktop: auto-scrolling marquee */}
-          <div className="hidden overflow-hidden md:block">
+          <div className="hidden overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] md:block">
             <div
               className="flex focus-within:[animation-play-state:paused] hover:[animation-play-state:paused]"
               style={{
