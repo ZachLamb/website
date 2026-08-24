@@ -108,4 +108,23 @@ describe('Experience', () => {
     });
     window.matchMedia = undefined as any;
   });
+
+  it('renders each featured entry exactly once with a numbered marker', () => {
+    window.matchMedia = mockMatchMedia(false);
+    renderWithLocale(<Experience />);
+    const featured = experiences.filter((e) => e.featured);
+    for (const [i, entry] of featured.entries()) {
+      const cards = screen.getAllByTestId(`experience-card-${entry.id}`);
+      expect(cards).toHaveLength(1);
+      expect(screen.getByText(String(i + 1))).toBeInTheDocument();
+    }
+    window.matchMedia = undefined as any;
+  });
+
+  it('has no right-aligned prose', () => {
+    window.matchMedia = mockMatchMedia(false);
+    const { container } = renderWithLocale(<Experience />);
+    expect(container.querySelector('.text-right')).toBeNull();
+    window.matchMedia = undefined as any;
+  });
 });
