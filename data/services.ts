@@ -11,27 +11,27 @@ export const services: ServiceEntry[] = [
     title: 'Technical Product Strategy',
     icon: 'compass',
     description:
-      "I own the roadmap from discovery to delivery, balancing technical constraints with business outcomes. I've consolidated 400+ backlog items into structured projects and built dual roadmaps spanning multiple teams.",
+      'I own the roadmap from discovery through delivery. At Circadence that meant turning 409 loose backlog items into ten projects a team could actually plan against.',
   },
   {
     id: 'ai-augmented-engineering',
     title: 'AI-Augmented Engineering',
     icon: 'sparkles',
     description:
-      'I embed AI tooling into team workflows — Claude Code in grooming, MCP for roadmap surfacing, shared agent configs — so quality scales without bottlenecking on review.',
+      'I put AI tooling where the team already works: Claude Code in grooming sessions, MCP for surfacing roadmap context, shared agent configs so nobody starts from scratch.',
   },
   {
     id: 'process-delivery',
     title: 'Process & Delivery',
     icon: 'users',
     description:
-      "Certified ScrumMaster who builds the sprint cadence, retros, and cross-functional rhythms that let teams ship reliably. I've designed hiring processes adopted company-wide.",
+      "Certified ScrumMaster. I set up the sprint cadence and retros that make delivery predictable, and I've built hiring processes that got adopted company-wide.",
   },
   {
     id: 'engineering-product-bridge',
     title: 'Engineering ↔ Product Bridge',
     icon: 'code',
     description:
-      'I go deep on React, TypeScript, and system architecture when the work calls for it, so product decisions stay technically grounded.',
+      "When the work calls for it I'm still in React and TypeScript myself, which keeps product decisions honest about what the build actually costs.",
   },
 ];
