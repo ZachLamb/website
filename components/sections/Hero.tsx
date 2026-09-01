@@ -152,15 +152,16 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="bg-forest text-parchment relative flex min-h-[100dvh] min-h-screen flex-col items-center justify-center overflow-x-hidden"
+      className="bg-forest text-parchment relative flex min-h-fit flex-col items-center justify-center overflow-x-hidden sm:min-h-[80vh] md:min-h-[100dvh]"
     >
       {/* Background layer: clip decorations only so content is never clipped */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* Full trail map: visible on md and up only */}
         <svg
           viewBox="0 0 800 750"
           fill="none"
           preserveAspectRatio="xMidYMid slice"
-          className="absolute inset-0 h-full w-full"
+          className="absolute inset-0 hidden h-full w-full md:block"
           aria-hidden
         >
           {/* Trail map label */}
@@ -426,12 +427,112 @@ export function Hero() {
                 })}
           />
         </svg>
-        <MountainBackdrop prefersReducedMotion={prefersReducedMotion} />
-        <MistLayer />
+
+        {/* Simplified mobile compass icon */}
+        <svg
+          viewBox="0 0 200 200"
+          fill="none"
+          className="absolute inset-0 flex h-full w-full items-center justify-center md:hidden"
+          aria-hidden
+          style={{ pointerEvents: 'none' }}
+        >
+          <m.g
+            transform="translate(100, 100)"
+            {...(prefersReducedMotion
+              ? {}
+              : {
+                  initial: { opacity: 0, scale: 0.5 },
+                  animate: { opacity: 1, scale: 1 },
+                  transition: { duration: 0.8, delay: 0.3 },
+                })}
+          >
+            {/* Outer circle */}
+            <circle
+              cx="0"
+              cy="0"
+              r="45"
+              fill="none"
+              stroke="rgba(245,240,232,0.2)"
+              strokeWidth="1.5"
+            />
+            <circle
+              cx="0"
+              cy="0"
+              r="35"
+              fill="none"
+              stroke="rgba(245,240,232,0.15)"
+              strokeWidth="1"
+            />
+
+            {/* Cardinal directions with compass rose */}
+            <text
+              x="0"
+              y="-45"
+              textAnchor="middle"
+              fill="rgba(245,240,232,0.4)"
+              fontSize="14"
+              fontFamily="var(--font-serif)"
+              fontWeight="bold"
+            >
+              N
+            </text>
+            <text
+              x="45"
+              y="5"
+              textAnchor="start"
+              fill="rgba(245,240,232,0.3)"
+              fontSize="12"
+              fontFamily="var(--font-serif)"
+            >
+              E
+            </text>
+            <text
+              x="0"
+              y="52"
+              textAnchor="middle"
+              fill="rgba(245,240,232,0.3)"
+              fontSize="12"
+              fontFamily="var(--font-serif)"
+            >
+              S
+            </text>
+            <text
+              x="-45"
+              y="5"
+              textAnchor="end"
+              fill="rgba(245,240,232,0.3)"
+              fontSize="12"
+              fontFamily="var(--font-serif)"
+            >
+              W
+            </text>
+
+            {/* North arrow (thicker) */}
+            <path d="M 0 -30 L -4 -8 L 0 -12 L 4 -8 Z" fill="rgba(184,134,11,0.6)" />
+
+            {/* Mountain peak in center */}
+            <path
+              d="M -8 0 L 0 -15 L 8 0 L 4 0 L 4 8 L -4 8 L -4 0 Z"
+              fill="rgba(245,240,232,0.25)"
+            />
+
+            {/* Center dot */}
+            <circle cx="0" cy="0" r="2" fill="rgba(184,134,11,0.8)" />
+          </m.g>
+        </svg>
+
+        {/* Full decorations: visible on md and up only */}
+        <div className="hidden md:block">
+          <MountainBackdrop prefersReducedMotion={prefersReducedMotion} />
+          <MistLayer />
+        </div>
       </div>
 
-      {/* Transition ridge into next section */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-20">
+      {/* Transition ridge into next section (desktop only) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 hidden md:block"
+      >
         <svg
           viewBox="0 0 1200 40"
           preserveAspectRatio="none"
@@ -449,7 +550,7 @@ export function Hero() {
         variants={stagger}
         initial="hidden"
         animate="visible"
-        className="relative z-10 mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col items-center justify-center px-4 py-12 text-center sm:px-6 md:px-8"
+        className="relative z-10 mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col items-center justify-center px-4 py-8 text-center sm:px-6 sm:py-12 md:px-8 md:py-16"
       >
         <m.p
           variants={fadeUp}
@@ -469,7 +570,7 @@ export function Hero() {
 
         <m.h1
           variants={fadeUp}
-          className="text-parchment mt-4 text-center font-serif text-6xl font-bold break-words md:text-8xl"
+          className="text-parchment mt-4 text-center font-serif text-4xl font-bold break-words sm:text-5xl md:text-7xl lg:text-8xl"
           style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
         >
           {messages.hero.title}
@@ -532,11 +633,11 @@ export function Hero() {
                   rel="noopener noreferrer"
                   aria-label={`${link.platform} (opens in new tab)`}
                   className={cn(
-                    'text-stone hover:text-gold focus-visible:ring-gold flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                    'text-stone hover:text-gold focus-visible:ring-gold flex min-h-12 min-w-12 touch-manipulation items-center justify-center rounded-full transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                     link.icon === 'linkedin' && 'hover:shadow-[0_0_12px_rgba(184,134,11,0.3)]',
                   )}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-6 w-6" />
                 </a>
               );
             })}

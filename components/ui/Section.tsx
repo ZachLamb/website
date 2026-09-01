@@ -54,7 +54,7 @@ export function Section({
       aria-labelledby={id ? `${id}-heading` : undefined}
       data-map-frame={mapFrame ?? undefined}
       className={cn(
-        'relative overflow-hidden py-16 md:py-24',
+        'relative overflow-hidden py-12 sm:py-16 md:py-24',
         // Suppress the focus ring that tabIndex=-1 would otherwise paint when
         // we programmatically move focus here — it's not a tabstop, it's an
         // anchor target. Outline:none is fine here because real focusable
@@ -71,21 +71,24 @@ export function Section({
         className,
       )}
     >
-      {showLeaves && (
-        <FloatingLeaves
-          count={6}
-          color={variant === 'dark' ? 'text-moss/10' : 'text-moss/15'}
-          seed={id ? id.charCodeAt(0) * 7 : 42}
-        />
-      )}
-      {showFireflies && <Fireflies count={10} />}
-      {showPines && (
-        <>
-          <PineTreeSilhouette position="left" />
-          <PineTreeSilhouette position="right" />
-        </>
-      )}
-      {showBirds && <BirdSilhouettes count={2} />}
+      {/* Decorative elements hidden on mobile; visible on tablet+ */}
+      <div className="hidden md:block">
+        {showLeaves && (
+          <FloatingLeaves
+            count={6}
+            color={variant === 'dark' ? 'text-moss/10' : 'text-moss/15'}
+            seed={id ? id.charCodeAt(0) * 7 : 42}
+          />
+        )}
+        {showFireflies && <Fireflies count={10} />}
+        {showPines && (
+          <>
+            <PineTreeSilhouette position="left" />
+            <PineTreeSilhouette position="right" />
+          </>
+        )}
+        {showBirds && <BirdSilhouettes count={2} />}
+      </div>
       {decoration}
 
       <div className="relative z-10 mx-auto max-w-5xl min-w-0 px-4 sm:px-6">{children}</div>

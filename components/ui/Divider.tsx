@@ -23,7 +23,7 @@ function MountainDivider({ flip }: { flip: boolean }) {
       viewBox="0 0 1200 80"
       preserveAspectRatio="none"
       className={cn('block w-full', flip && '-scale-y-100')}
-      style={{ height: '60px' }}
+      style={{ height: 'clamp(30px, 8vw, 60px)' }}
     >
       <path
         d="M0 80 L0 55 L80 35 L150 50 L220 20 L300 45 L380 15 L440 40 L520 10 L600 38 L680 18 L750 42 L830 8 L900 35 L960 22 L1040 40 L1120 25 L1200 45 L1200 80Z"
@@ -43,7 +43,7 @@ function TreelineDivider({ flip }: { flip: boolean }) {
       viewBox="0 0 1200 60"
       preserveAspectRatio="none"
       className={cn('block w-full', flip && '-scale-y-100')}
-      style={{ height: '50px' }}
+      style={{ height: 'clamp(25px, 6vw, 50px)' }}
     >
       {/* Tree silhouettes along a gentle ridge */}
       <path
