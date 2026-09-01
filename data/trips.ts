@@ -2,14 +2,7 @@
  * Trail map marker icon identifiers (used in the hero trail map).
  */
 export type MarkerIcon =
-  | 'peak'
-  | 'pine'
-  | 'compass'
-  | 'lake'
-  | 'campfire'
-  | 'elk'
-  | 'columbine'
-  | 'flag';
+  'peak' | 'pine' | 'compass' | 'lake' | 'campfire' | 'elk' | 'columbine' | 'flag';
 
 export interface TripMarker {
   x: number;
