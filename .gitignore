@@ -38,3 +38,7 @@ Thumbs.db
 # Misc
 .eslintcache
 .vercel
+
+# Next.js agent files (auto-generated)
+AGENTS.md
+CLAUDE.md
