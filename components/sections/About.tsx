@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { m, useInView } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
@@ -12,9 +12,12 @@ export function About() {
   const { messages } = useLocaleContext();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [showAllFocusAreas, setShowAllFocusAreas] = useState(false);
 
   const pullQuote = messages.about.body[0] ?? '';
   const focusAreas = messages.about.focusAreas.split(' · ').filter(Boolean);
+  const displayedAreas = showAllFocusAreas ? focusAreas : focusAreas.slice(0, 3);
+  const hasMoreAreas = focusAreas.length > 3;
 
   return (
     <Section
@@ -69,13 +72,13 @@ export function About() {
           initial={{ opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
           transition={{ duration: 0.35, delay: 0.05 }}
-          className="text-bark border-gold max-w-3xl border-l-2 pl-4 text-xl leading-relaxed break-words md:text-2xl"
+          className="text-bark border-gold max-w-3xl border-l-2 pl-4 text-lg leading-relaxed break-words sm:text-xl md:text-2xl"
         >
           {pullQuote}
         </m.p>
 
         {/* Stats as map plates */}
-        <div className="mt-8 grid max-w-3xl grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="mt-8 grid max-w-3xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
           {messages.about.stats.map((stat, i) => (
             <m.div
               key={stat.label}
@@ -84,9 +87,16 @@ export function About() {
               variants={waypointPop}
               transition={{ delay: 0.1 + i * 0.06 }}
             >
-              <Card variant="plate" className="px-4 py-3 text-center">
-                <div className="text-gold-deep font-serif text-4xl font-bold">{stat.value}</div>
-                <div className="text-forest-deep mt-1 text-xs">{stat.label}</div>
+              <Card
+                variant="plate"
+                className="flex flex-col items-center justify-center px-3 py-4 text-center sm:px-4 sm:py-3"
+              >
+                <div className="text-gold-deep font-serif text-3xl font-bold sm:text-4xl">
+                  {stat.value}
+                </div>
+                <div className="text-forest-deep mt-1.5 text-xs leading-tight sm:mt-1">
+                  {stat.label}
+                </div>
               </Card>
             </m.div>
           ))}
@@ -109,7 +119,7 @@ export function About() {
           transition={{ duration: 0.35, delay: 0.3 }}
           className="mt-6 flex max-w-3xl flex-wrap gap-2"
         >
-          {focusAreas.map((area) => (
+          {displayedAreas.map((area) => (
             <span
               key={area}
               className="border-bark/20 bg-sand text-bark inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs"
@@ -117,6 +127,16 @@ export function About() {
               {area}
             </span>
           ))}
+          {hasMoreAreas && (
+            <button
+              type="button"
+              onClick={() => setShowAllFocusAreas(!showAllFocusAreas)}
+              className="border-bark/20 text-bark hover:bg-sand/50 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors"
+            >
+              {showAllFocusAreas ? '−' : '+'}
+              {showAllFocusAreas ? ' Hide' : ` ${focusAreas.length - 3} more`}
+            </button>
+          )}
         </m.div>
       </div>
     </Section>
