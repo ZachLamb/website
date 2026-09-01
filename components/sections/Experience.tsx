@@ -96,9 +96,16 @@ function CardContent({
   entry: (typeof experiences)[number];
   isInView: boolean;
 }) {
+  const visibleBullets = 2;
+  const visibleBadges = 3;
+  const hasMoreBullets = entry.description.length > visibleBullets;
+  const hasMoreBadges = entry.techStack.length > visibleBadges;
+
   return (
     <div>
-      <h3 className="text-forest-deep font-serif text-xl font-semibold">{entry.company}</h3>
+      <h3 className="text-forest-deep font-serif text-lg font-semibold sm:text-xl">
+        {entry.company}
+      </h3>
       <p className="text-bark text-sm">{entry.position}</p>
       {/* Trail-distance date range */}
       <p className="text-stone flex items-center gap-1.5 text-xs">
@@ -112,7 +119,7 @@ function CardContent({
       </p>
 
       <ul className="text-bark mt-3 list-inside list-disc space-y-1 text-sm leading-relaxed">
-        {entry.description.slice(0, 3).map((item, i) => (
+        {entry.description.slice(0, visibleBullets).map((item, i) => (
           <m.li
             key={item}
             initial={{ opacity: 0, y: 8 }}
@@ -122,11 +129,14 @@ function CardContent({
             {item}
           </m.li>
         ))}
+        {hasMoreBullets && (
+          <li className="text-stone text-xs">+{entry.description.length - visibleBullets} more</li>
+        )}
       </ul>
 
       {entry.techStack.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">
-          {entry.techStack.map((tech, j) => (
+          {entry.techStack.slice(0, visibleBadges).map((tech, j) => (
             <m.span
               key={tech}
               initial={{ opacity: 0, scale: 0.85 }}
@@ -138,15 +148,20 @@ function CardContent({
               <Badge>{tech}</Badge>
             </m.span>
           ))}
+          {hasMoreBadges && (
+            <span className="text-stone flex items-center text-xs font-medium">
+              +{entry.techStack.length - visibleBadges}
+            </span>
+          )}
         </div>
       )}
 
-      {/* Inline trail elevation profile */}
-      <div className="border-bark/10 mt-3 overflow-hidden rounded-md border">
+      {/* Inline trail elevation profile (hidden on mobile to save space) */}
+      <div className="border-bark/10 mt-3 hidden overflow-hidden rounded-md border sm:block">
         <TrailProfileGraph
           id={`inline-${entry.id}`}
           count={entry.description.length + entry.techStack.length}
-          className="h-10"
+          className="h-8"
         />
       </div>
     </div>
