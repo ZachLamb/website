@@ -6,29 +6,10 @@ vi.mock('@/components/ui/NatureElements', () => ({
   MistLayer: () => null,
 }));
 
-import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { renderWithLocale } from '@/lib/test-utils';
 import { experiences } from '@/data/experience';
 import { Experience } from './Experience';
-
-function mockMatchMedia(matches: boolean): (query: string) => MediaQueryList {
-  return vi.fn(
-    (query: string) =>
-      Object.assign(
-        {
-          matches,
-          media: query,
-          onchange: null,
-          addEventListener: vi.fn(),
-          removeEventListener: vi.fn(),
-          addListener: vi.fn(),
-          removeListener: vi.fn(),
-          dispatchEvent: vi.fn(),
-        },
-        {},
-      ) as MediaQueryList,
-  );
-}
 
 describe('Experience', () => {
   it('renders "Trail Log" heading', () => {
@@ -51,66 +32,15 @@ describe('Experience', () => {
     expect(container.querySelector('#experience')).toBeInTheDocument();
   });
 
-  it('shows detail panel on desktop when hovering a card', async () => {
-    window.matchMedia = mockMatchMedia(true);
-    renderWithLocale(<Experience />);
-    await waitFor(() => {
-      const card = screen.getByTestId('experience-card-circadence');
-      expect(card).toBeInTheDocument();
-    });
-    const card = screen.getByTestId('experience-card-circadence');
-    fireEvent.mouseEnter(card);
-    await waitFor(() => {
-      const panels = document.querySelectorAll('[aria-hidden="true"]');
-      const panel = Array.from(panels).find((el) => el.textContent?.includes('Circadence'));
-      expect(panel).toBeInTheDocument();
-    });
-    expect(screen.getAllByText('Circadence').length).toBeGreaterThanOrEqual(1);
-    const firstDescription = experiences.find((e) => e.id === 'circadence')!.description[0];
-    expect(
-      screen.getAllByText((content) => content.includes(firstDescription)).length,
-    ).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('TypeScript').length).toBeGreaterThanOrEqual(1);
-    window.matchMedia = undefined as any;
-  });
-
-  it('initializes isDesktop to false (SSR-safe)', () => {
-    // Mock matchMedia to return false (mobile) — isDesktop starts as false
-    window.matchMedia = mockMatchMedia(false);
-    renderWithLocale(<Experience />);
-    // ExperienceDetailPanel only renders when isDesktop && hoveredEntry.
-    // Since isDesktop initializes to false, no fixed detail panel appears.
-    const detailPanels = document.querySelectorAll('[aria-hidden="true"].fixed');
-    expect(detailPanels).toHaveLength(0);
-    window.matchMedia = undefined as any;
-  });
-
   it('does not render manual bullet characters in list items', () => {
-    window.matchMedia = mockMatchMedia(false);
     renderWithLocale(<Experience />);
     const listItems = document.querySelectorAll('li');
     listItems.forEach((li) => {
       expect(li.textContent).not.toMatch(/^[•·‣▪]\s/);
     });
-    window.matchMedia = undefined as any;
-  });
-
-  it('detail panel has aria-hidden for accessibility', async () => {
-    window.matchMedia = mockMatchMedia(true);
-    renderWithLocale(<Experience />);
-    await waitFor(() =>
-      expect(screen.getByTestId('experience-card-circadence')).toBeInTheDocument(),
-    );
-    fireEvent.mouseEnter(screen.getByTestId('experience-card-circadence'));
-    await waitFor(() => {
-      const panels = document.querySelectorAll('[aria-hidden="true"]');
-      expect(panels.length).toBeGreaterThanOrEqual(1);
-    });
-    window.matchMedia = undefined as any;
   });
 
   it('renders each featured entry exactly once with a numbered marker', () => {
-    window.matchMedia = mockMatchMedia(false);
     renderWithLocale(<Experience />);
     const featured = experiences.filter((e) => e.featured);
     for (const [i, entry] of featured.entries()) {
@@ -118,18 +48,14 @@ describe('Experience', () => {
       expect(cards).toHaveLength(1);
       expect(screen.getByText(String(i + 1))).toBeInTheDocument();
     }
-    window.matchMedia = undefined as any;
   });
 
   it('has no right-aligned prose', () => {
-    window.matchMedia = mockMatchMedia(false);
     const { container } = renderWithLocale(<Experience />);
     expect(container.querySelector('.text-right')).toBeNull();
-    window.matchMedia = undefined as any;
   });
 
   it('draws one continuous trail line spanning all featured entries, not one per entry', () => {
-    window.matchMedia = mockMatchMedia(false);
     const { container } = renderWithLocale(<Experience />);
     const featuredCount = experiences.filter((e) => e.featured).length;
     // One line per entry would leave gaps at the flex gap-2 seams between
@@ -137,6 +63,19 @@ describe('Experience', () => {
     const lines = container.querySelectorAll('.border-l.border-dashed.left-4');
     expect(lines.length).toBe(1);
     expect(featuredCount).toBeGreaterThan(1); // sanity: the test is meaningful
-    window.matchMedia = undefined as any;
+  });
+
+  it('reveals the remaining bullets and tech badges beyond the mobile-truncated preview', () => {
+    renderWithLocale(<Experience />);
+    const entry = experiences.find((e) => e.id === 'circadence')!;
+    // The mobile-truncated items are still in the DOM (hidden via CSS below
+    // the `sm` breakpoint) rather than removed, so desktop sees the full
+    // list without a hover-only reveal.
+    for (const item of entry.description) {
+      expect(screen.getAllByText(item).length).toBeGreaterThanOrEqual(1);
+    }
+    for (const tech of entry.techStack) {
+      expect(screen.getAllByText(tech).length).toBeGreaterThanOrEqual(1);
+    }
   });
 });

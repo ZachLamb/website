@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { m, useInView, AnimatePresence } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { m, useInView } from 'framer-motion';
 import { AutoHeight } from '@/components/ui/AutoHeight';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
@@ -9,7 +9,6 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { experiences } from '@/data/experience';
-import type { ExperienceEntry } from '@/data/experience';
 import { cn } from '@/lib/utils';
 
 function EntryMarker({ number }: { number: number }) {
@@ -20,24 +19,9 @@ function EntryMarker({ number }: { number: number }) {
   );
 }
 
-function TimelineCard({
-  entry,
-  number,
-  onHover,
-}: {
-  entry: (typeof experiences)[number];
-  number: number;
-  onHover: (e: ExperienceEntry | null) => void;
-}) {
+function TimelineCard({ entry, number }: { entry: (typeof experiences)[number]; number: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
-
-  const handleEnter = () => {
-    if (typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches) {
-      onHover(entry);
-    }
-  };
-  const handleLeave = () => onHover(null);
 
   return (
     <div ref={ref} className="group/timeline grid grid-cols-[32px_1fr] gap-x-4 md:gap-x-6">
@@ -48,13 +32,7 @@ function TimelineCard({
       </div>
 
       {/* Entry card */}
-      <div
-        className="max-w-xl min-w-0"
-        data-testid={`experience-card-${entry.id}`}
-        onMouseEnter={handleEnter}
-        onMouseLeave={handleLeave}
-        onClick={handleEnter}
-      >
+      <div className="min-w-0" data-testid={`experience-card-${entry.id}`}>
         <m.div
           initial={{ opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
@@ -119,9 +97,10 @@ function CardContent({
       </p>
 
       <ul className="text-bark mt-3 list-inside list-disc space-y-1 text-sm leading-relaxed">
-        {entry.description.slice(0, visibleBullets).map((item, i) => (
+        {entry.description.map((item, i) => (
           <m.li
             key={item}
+            className={i >= visibleBullets ? 'hidden sm:list-item' : undefined}
             initial={{ opacity: 0, y: 8 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{ duration: 0.3, delay: 0.05 + i * 0.06 }}
@@ -130,26 +109,28 @@ function CardContent({
           </m.li>
         ))}
         {hasMoreBullets && (
-          <li className="text-stone text-xs">+{entry.description.length - visibleBullets} more</li>
+          <li className="text-stone text-xs sm:hidden">
+            +{entry.description.length - visibleBullets} more
+          </li>
         )}
       </ul>
 
       {entry.techStack.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">
-          {entry.techStack.slice(0, visibleBadges).map((tech, j) => (
+          {entry.techStack.map((tech, j) => (
             <m.span
               key={tech}
+              className={j >= visibleBadges ? 'hidden sm:inline-block' : 'inline-block'}
               initial={{ opacity: 0, scale: 0.85 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
               transition={{ duration: 0.25, delay: 0.15 + j * 0.04 }}
               whileHover={{ scale: 1.05 }}
-              className="inline-block"
             >
               <Badge>{tech}</Badge>
             </m.span>
           ))}
           {hasMoreBadges && (
-            <span className="text-stone flex items-center text-xs font-medium">
+            <span className="text-stone flex items-center text-xs font-medium sm:hidden">
               +{entry.techStack.length - visibleBadges}
             </span>
           )}
@@ -213,86 +194,9 @@ function TrailProfileGraph({
   );
 }
 
-function ExperienceDetailPanel({
-  entry,
-  side,
-  moreLabel,
-}: {
-  entry: ExperienceEntry;
-  side: 'left' | 'right';
-  moreLabel: string;
-}) {
-  return (
-    <m.div
-      initial={{ opacity: 0, x: side === 'left' ? -24 : 24 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: side === 'left' ? -24 : 24 }}
-      transition={{ duration: 0.25 }}
-      className="border-bark/15 bg-parchment/95 pointer-events-none fixed top-1/2 z-40 w-[min(calc(50vw-3rem),calc(100vw-2rem))] max-w-[min(30rem,calc(100vw-2rem))] min-w-72 -translate-y-1/2 rounded-lg border border-dashed p-6 shadow-xl backdrop-blur-sm"
-      style={
-        side === 'left'
-          ? { left: 'max(1rem, calc((100vw - 1280px) / 2 + 1rem))' }
-          : { right: 'max(1rem, calc((100vw - 1280px) / 2 + 1rem))' }
-      }
-      aria-hidden
-    >
-      <p className="text-forest font-serif text-xl font-semibold">{entry.company}</p>
-      <p className="text-bark mt-0.5 text-sm">{entry.position}</p>
-      <p className="text-stone mt-1 text-xs">
-        {entry.startDate} — {entry.endDate}
-      </p>
-
-      <div className="border-bark/10 mt-4 overflow-hidden rounded-md border">
-        <TrailProfileGraph
-          id={entry.id}
-          count={entry.description.length + entry.techStack.length}
-        />
-      </div>
-
-      <ul className="text-bark mt-3 list-inside list-disc space-y-1 text-sm leading-relaxed">
-        {entry.description.slice(0, 4).map((item, i) => (
-          <li key={i}>{item}</li>
-        ))}
-        {entry.description.length > 4 && (
-          <li className="text-stone text-xs">
-            +{entry.description.length - 4} {moreLabel}
-          </li>
-        )}
-      </ul>
-
-      {entry.techStack.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {entry.techStack.map((tech) => (
-            <Badge key={tech}>{tech}</Badge>
-          ))}
-        </div>
-      )}
-    </m.div>
-  );
-}
-
 export function Experience() {
   const { messages } = useLocaleContext();
-  const [hoveredEntry, setHoveredEntry] = useState<ExperienceEntry | null>(null);
-  const [isDesktop, setIsDesktop] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    const handler = () => setIsDesktop(mq.matches);
-    mq.addEventListener('change', handler);
-    handler();
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-
-  useEffect(() => {
-    if (!hoveredEntry) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setHoveredEntry(null);
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [hoveredEntry]);
 
   const featuredExperiences = experiences.filter((e) => e.featured);
   const olderExperiences = experiences.filter((e) => !e.featured);
@@ -313,20 +217,9 @@ export function Experience() {
         </AnimatedHeading>
       </div>
 
-      <AnimatePresence>
-        {isDesktop && hoveredEntry && (
-          <ExperienceDetailPanel
-            key={hoveredEntry.id}
-            entry={hoveredEntry}
-            side="right"
-            moreLabel={messages.experience.more}
-          />
-        )}
-      </AnimatePresence>
-
       <TimelineList className="flex flex-col gap-2">
         {featuredExperiences.map((entry, i) => (
-          <TimelineCard key={entry.id} entry={entry} number={i + 1} onHover={setHoveredEntry} />
+          <TimelineCard key={entry.id} entry={entry} number={i + 1} />
         ))}
       </TimelineList>
 
@@ -354,7 +247,6 @@ export function Experience() {
                     key={entry.id}
                     entry={entry}
                     number={featuredExperiences.length + i + 1}
-                    onHover={setHoveredEntry}
                   />
                 ))}
               </TimelineList>
