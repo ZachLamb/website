@@ -23,6 +23,7 @@ function EndorsementCard({
   linkedInUrl,
   messages,
   locale,
+  duplicate = false,
 }: {
   endorsement: (typeof endorsements)[number];
   index: number;
@@ -30,6 +31,7 @@ function EndorsementCard({
   linkedInUrl: string;
   messages: Messages['endorsements'];
   locale: Locale;
+  duplicate?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
   const quoteLong = endorsement.quote.length > 180;
@@ -38,9 +40,11 @@ function EndorsementCard({
 
   return (
     <div
-      role="group"
-      aria-roledescription="slide"
-      aria-label={`${index + 1} of ${totalCount}`}
+      role={duplicate ? undefined : 'group'}
+      aria-roledescription={duplicate ? undefined : 'slide'}
+      aria-label={duplicate ? undefined : `${index + 1} of ${totalCount}`}
+      aria-hidden={duplicate || undefined}
+      inert={duplicate || undefined}
       className="w-[85vw] shrink-0 px-3 md:w-[400px]"
     >
       <Card
@@ -90,7 +94,7 @@ function EndorsementCard({
               )}
             </button>
           )}
-          <footer className="border-bark/10 mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 border-t pt-4">
+          <div className="border-bark/10 mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 border-t pt-4">
             <cite className="text-forest font-semibold not-italic">{endorsement.author}</cite>
             {endorsement.role && <span className="text-stone text-sm">— {endorsement.role}</span>}
             {endorsement.context && (
@@ -106,7 +110,7 @@ function EndorsementCard({
               <LinkedinIcon className="h-4 w-4" />
               {messages.viewOnLinkedIn}
             </a>
-          </footer>
+          </div>
         </div>
       </Card>
     </div>
@@ -178,6 +182,7 @@ export function Endorsements() {
                   linkedInUrl={linkedInRecommendationsUrl}
                   messages={messages.endorsements}
                   locale={locale}
+                  duplicate={i >= totalCount}
                 />
               ))}
             </div>
