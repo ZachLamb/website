@@ -16,7 +16,7 @@ export const siteConfig = {
   name: 'Zach Lamb',
   title: 'Lead Full-Stack Developer',
   description:
-    'Lead Full-Stack Developer shipping production React, TypeScript, and the systems behind them — with technical product management folded into the role at Circadence: roadmap ownership, delivery, and cross-team coordination. AI-powered product development, human-centered design background, Certified ScrumMaster.',
+    'Lead Full-Stack Developer at Circadence. I ship production React and TypeScript and own the roadmap that decides what gets built next.',
   url: 'https://zachlamb.io',
   ogImage: '/og.png',
   availability: 'Open to remote',

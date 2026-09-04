@@ -11,21 +11,21 @@ export const services: ServiceEntry[] = [
     title: 'Full-Stack Architecture & Delivery',
     icon: 'code',
     description:
-      'I build and ship production React, TypeScript, and the systems behind them — architecture, performance, and the day-to-day delivery that gets features out the door.',
+      'I build and ship production React and TypeScript, along with the architecture and performance work that keeps features shipping on schedule.',
   },
   {
     id: 'ai-augmented-engineering',
     title: 'AI-Augmented Engineering',
     icon: 'sparkles',
     description:
-      'I embed AI tooling into team workflows — Claude Code in grooming, MCP for roadmap surfacing, shared agent configs — so quality scales without bottlenecking on review.',
+      'I embed AI tooling into team workflows: Claude Code in grooming, MCP for roadmap surfacing, shared agent configs. Quality scales without bottlenecking on review.',
   },
   {
     id: 'product-roadmap-strategy',
     title: 'Product & Roadmap Strategy',
     icon: 'compass',
     description:
-      "At Circadence, I own the roadmap alongside the engineering work — from discovery to delivery, balancing technical constraints with business outcomes. I've consolidated 400+ backlog items into structured projects and built dual roadmaps spanning multiple teams.",
+      "At Circadence, I own the roadmap alongside the engineering work, from discovery through delivery. I've consolidated 400+ loose backlog items into structured projects and built dual roadmaps spanning multiple teams.",
   },
   {
     id: 'process-delivery',

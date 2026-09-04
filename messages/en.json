@@ -5,7 +5,7 @@
   "site": {
     "name": "Zach Lamb",
     "title": "Lead Full-Stack Developer",
-    "description": "Lead Full-Stack Developer shipping production React, TypeScript, and the systems behind them — with technical product management folded into the role at Circadence: roadmap ownership, delivery, and cross-team coordination. AI-powered product development, human-centered design background, Certified ScrumMaster."
+    "description": "Lead Full-Stack Developer at Circadence. I ship production React and TypeScript and own the roadmap that decides what gets built next."
   },
   "nav": {
     "trailGuide": "Trail Guide",
@@ -37,7 +37,7 @@
   "about": {
     "heading": "Trail Guide",
     "body": [
-      "I'm a Lead Full-Stack Developer — React, TypeScript, and the backend systems behind them. At Circadence, that also means owning product strategy and roadmap: I bridge engineering and product so decisions stay technically grounded."
+      "I'm a Lead Full-Stack Developer, working across React, TypeScript, and the backend systems behind them. At Circadence, that also means owning product strategy and roadmap, so I can sit in a planning meeting and a code review on the same afternoon and be useful in both."
     ],
     "stats": [
       { "value": "10+", "label": "Years Building" },
@@ -57,7 +57,7 @@
   },
   "contact": {
     "heading": "Leave a Note at Camp",
-    "intro": "Whether it's about code, the trail ahead, or Oreos — drop a note and I'll get back to you from base camp. I typically reply within a day.",
+    "intro": "Drop a note and I'll get back to you from base camp, usually within a day. There's no wrong reason to reach out.",
     "name": "Name",
     "email": "Email",
     "message": "Message",
@@ -92,7 +92,7 @@
     "contact": "end of trail"
   },
   "projects": {
-    "intro": "A handful of projects that show how I think about users, shipping, and where AI earns its keep."
+    "intro": "A few projects worth showing, with notes on what I was solving and how AI fit into it."
   },
   "endorsements": {
     "intro": "What fellow hikers have said about working with me.",
@@ -114,7 +114,7 @@
     "certifications": "Certifications & Training"
   },
   "skills": {
-    "intro": "The tools and practices I reach for — trail-tested and production-ready."
+    "intro": "The tools I've actually shipped with, not the ones I've just read about."
   },
   "privacy": {
     "pageTitle": "Privacy Policy",
