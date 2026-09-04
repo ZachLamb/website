@@ -18,13 +18,13 @@ describe('Button', () => {
   it('applies primary variant styles by default', () => {
     render(<Button>Primary</Button>);
     const button = screen.getByRole('button', { name: 'Primary' });
-    expect(button).toHaveClass('bg-gold', 'text-parchment');
+    expect(button).toHaveClass('bg-gold-light', 'text-charcoal');
   });
 
   it('applies secondary variant styles', () => {
     render(<Button variant="secondary">Secondary</Button>);
     const button = screen.getByRole('button', { name: 'Secondary' });
-    expect(button).toHaveClass('border', 'text-gold');
+    expect(button).toHaveClass('border', 'text-gold-light');
   });
 
   it('accepts custom className', () => {

@@ -27,7 +27,7 @@ function ProjectLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-gold hover:text-copper focus-visible:ring-gold focus-visible:ring-offset-parchment inline-flex items-center gap-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+      className="text-gold-deep hover:text-bark focus-visible:ring-gold focus-visible:ring-offset-parchment inline-flex items-center gap-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       {icon}
       {label}
@@ -53,7 +53,7 @@ function ProjectCard({
     >
       <Card variant="map" className="flex h-full flex-col">
         <h3 className="text-forest font-serif text-xl font-semibold">{project.title}</h3>
-        <p className="text-stone mt-1 text-sm">{project.tagline}</p>
+        <p className="text-slate mt-1 text-sm">{project.tagline}</p>
         <p className="text-bark mt-3 text-sm leading-relaxed">{project.description}</p>
 
         {project.stack.length > 0 && (

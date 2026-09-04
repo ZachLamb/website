@@ -86,7 +86,7 @@ function CardContent({
       </h3>
       <p className="text-bark text-sm">{entry.position}</p>
       {/* Trail-distance date range */}
-      <p className="text-stone flex items-center gap-1.5 text-xs">
+      <p className="text-slate flex items-center gap-1.5 text-xs">
         {entry.startDate}
         <span aria-hidden="true" className="bg-gold/40 inline-block h-px w-6" />
         <span
@@ -109,7 +109,7 @@ function CardContent({
           </m.li>
         ))}
         {hasMoreBullets && (
-          <li className="text-stone text-xs sm:hidden">
+          <li className="text-slate text-xs sm:hidden">
             +{entry.description.length - visibleBullets} more
           </li>
         )}
@@ -130,7 +130,7 @@ function CardContent({
             </m.span>
           ))}
           {hasMoreBadges && (
-            <span className="text-stone flex items-center text-xs font-medium sm:hidden">
+            <span className="text-slate flex items-center text-xs font-medium sm:hidden">
               +{entry.techStack.length - visibleBadges}
             </span>
           )}
@@ -170,7 +170,7 @@ function TrailProfileGraph({
   return (
     <svg
       viewBox="0 0 100 100"
-      className={cn('text-gold w-full', className ?? 'h-14')}
+      className={cn('text-gold-deep w-full', className ?? 'h-14')}
       preserveAspectRatio="none"
       aria-hidden
     >
@@ -223,20 +223,20 @@ export function Experience() {
         ))}
       </TimelineList>
 
-      <p className="text-stone mt-4 text-xs italic">{messages.experience.tenureNote}</p>
+      <p className="text-slate mt-4 text-xs italic">{messages.experience.tenureNote}</p>
 
       {olderExperiences.length > 0 && (
         <div className="mt-8">
           <button
             type="button"
             onClick={() => setShowHistory((prev) => !prev)}
-            className="border-gold/40 text-gold hover:border-gold/60 focus-visible:ring-gold flex w-full items-center justify-between rounded-lg border border-dashed px-5 py-3 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="border-gold-deep/40 text-gold-deep hover:border-gold-deep/60 focus-visible:ring-gold flex w-full items-center justify-between rounded-lg border border-dashed px-5 py-3 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <span className="font-medium">
               {showHistory ? '▾' : '▸'}{' '}
               {showHistory ? messages.experience.hideHistory : messages.experience.viewFullHistory}
             </span>
-            <span className="text-stone text-sm">
+            <span className="text-slate text-sm">
               {olderExperiences.length} {messages.experience.earlierRoles} · {olderDateRange}
             </span>
           </button>

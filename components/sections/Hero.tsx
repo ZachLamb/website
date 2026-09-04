@@ -554,7 +554,7 @@ export function Hero() {
       >
         <m.p
           variants={fadeUp}
-          className="text-gold text-center font-sans text-sm tracking-widest break-words uppercase"
+          className="text-gold-light text-center font-sans text-sm tracking-widest break-words uppercase"
         >
           {messages.hero.subtitle}
         </m.p>
@@ -562,7 +562,7 @@ export function Hero() {
         {siteConfig.availability && (
           <m.span
             variants={fadeUp}
-            className="border-gold/40 bg-gold/10 text-gold mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-medium tracking-wide"
+            className="border-gold-light/40 bg-gold-light/10 text-gold-light mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-medium tracking-wide"
           >
             {siteConfig.availability}
           </m.span>
@@ -615,7 +615,7 @@ export function Hero() {
               href={siteConfig.links.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-stone hover:text-gold focus-visible:ring-gold decoration-gold/30 hover:decoration-gold rounded text-sm font-medium underline underline-offset-2 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="text-stone hover:text-gold-light focus-visible:ring-gold decoration-gold/30 hover:decoration-gold-light rounded text-sm font-medium underline underline-offset-2 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
               aria-label={messages.hero.viewResume}
             >
               {messages.hero.resume}
@@ -633,7 +633,7 @@ export function Hero() {
                   rel="noopener noreferrer"
                   aria-label={`${link.platform} (opens in new tab)`}
                   className={cn(
-                    'text-stone hover:text-gold focus-visible:ring-gold flex min-h-12 min-w-12 touch-manipulation items-center justify-center rounded-full transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                    'text-stone hover:text-gold-light focus-visible:ring-gold flex min-h-12 min-w-12 touch-manipulation items-center justify-center rounded-full transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                     link.icon === 'linkedin' && 'hover:shadow-[0_0_12px_rgba(184,134,11,0.3)]',
                   )}
                 >

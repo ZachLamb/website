@@ -54,7 +54,7 @@ export function LanguageDropdown({
         onChange={handleChange}
         aria-label={label}
         className={cn(
-          'border-bark/20 bg-parchment/80 text-bark hover:border-gold/40 hover:text-gold focus:border-gold focus:ring-gold/50 cursor-pointer appearance-none rounded-md border py-1.5 pr-8 pl-3 text-sm font-medium transition-colors focus:ring-2 focus:ring-offset-1 focus:outline-none',
+          'border-bark/20 bg-parchment/80 text-bark hover:border-gold-deep/40 hover:text-gold-deep focus:border-gold-deep focus:ring-gold-deep/50 cursor-pointer appearance-none rounded-md border py-1.5 pr-8 pl-3 text-sm font-medium transition-colors focus:ring-2 focus:ring-offset-1 focus:outline-none',
           compact ? 'w-full max-w-40' : 'min-w-28',
         )}
       >

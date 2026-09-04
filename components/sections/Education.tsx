@@ -48,7 +48,7 @@ function EducationRow({
             {entry.field && <Badge className="text-xs">{entry.field}</Badge>}
           </div>
         </div>
-        <span className="text-stone shrink-0 text-xs tabular-nums">
+        <span className="text-slate shrink-0 text-xs tabular-nums">
           {entry.startYear}–{entry.endYear}
         </span>
         {hasDetails && (
@@ -111,7 +111,7 @@ export function Education() {
             >
               <Award className="text-gold h-4 w-4 shrink-0" />
               <span className="text-bark text-sm font-medium">{cert.name}</span>
-              {cert.issuer && <span className="text-stone text-xs">· {cert.issuer}</span>}
+              {cert.issuer && <span className="text-slate text-xs">· {cert.issuer}</span>}
             </m.div>
           ))}
         </div>

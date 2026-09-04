@@ -128,7 +128,7 @@ export function Navbar() {
             className="group text-forest hover:text-forest/80 flex items-center gap-2 font-serif text-xl font-semibold transition-colors"
             aria-label={messages.nav.backToTop}
           >
-            <Compass className="text-gold h-5 w-5 transition-transform duration-500 group-hover:rotate-45" />
+            <Compass className="text-gold-deep h-5 w-5 transition-transform duration-500 group-hover:rotate-45" />
             {messages.site.name}
           </a>
 
@@ -144,8 +144,8 @@ export function Navbar() {
                     className={cn(
                       'relative text-sm whitespace-nowrap transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-px after:transition-all after:duration-300 hover:after:w-full',
                       isActive
-                        ? 'text-gold after:bg-gold font-medium after:w-full'
-                        : 'text-bark after:bg-gold hover:text-gold after:w-0 hover:after:w-full',
+                        ? 'text-gold-deep after:bg-gold-deep font-medium after:w-full'
+                        : 'text-bark after:bg-gold-deep hover:text-gold-deep after:w-0 hover:after:w-full',
                     )}
                     aria-current={isActive ? 'location' : undefined}
                   >
@@ -172,7 +172,7 @@ export function Navbar() {
             <Compass
               className={cn(
                 'h-6 w-6 transition-transform duration-500',
-                mobileOpen ? 'text-gold rotate-[360deg]' : '',
+                mobileOpen ? 'text-gold-deep rotate-[360deg]' : '',
               )}
             />
           </button>
@@ -201,7 +201,7 @@ export function Navbar() {
             {/* Close button — same position as toggle */}
             <button
               type="button"
-              className="text-parchment hover:text-gold absolute top-[env(safe-area-inset-top)] right-0 flex min-h-11 min-w-11 touch-manipulation items-center justify-center p-6"
+              className="text-parchment hover:text-gold-light absolute top-[env(safe-area-inset-top)] right-0 flex min-h-11 min-w-11 touch-manipulation items-center justify-center p-6"
               onClick={() => setMobileOpen(false)}
               aria-label={messages.nav.closeMenu}
             >
@@ -220,7 +220,7 @@ export function Navbar() {
                 >
                   <a
                     href={link.href}
-                    className="text-parchment hover:text-gold focus-visible:ring-gold flex min-h-11 touch-manipulation items-center rounded-md px-4 py-2 font-serif text-xl transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                    className="text-parchment hover:text-gold-light focus-visible:ring-gold flex min-h-11 touch-manipulation items-center rounded-md px-4 py-2 font-serif text-xl transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                     onClick={() => setMobileOpen(false)}
                   >
                     {link.label}

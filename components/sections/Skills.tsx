@@ -44,12 +44,12 @@ export function Skills() {
       <AnimatedHeading
         sectionId="skills"
         subtitle={`III · ${messages.kickers.skills}`}
-        className="[&_p]:text-gold [&_h2]:text-parchment"
+        className="[&_p]:text-gold-light [&_h2]:text-parchment"
       >
         {messages.sections.skills}
       </AnimatedHeading>
 
-      <p className="text-stone/90 mt-4 max-w-2xl text-base">{messages.skills.intro}</p>
+      <p className="text-stone mt-4 max-w-2xl text-base">{messages.skills.intro}</p>
 
       <div ref={ref} className="mt-10 grid grid-cols-1 gap-8 sm:gap-10 md:grid-cols-2">
         {skillCategories.map((category, i) => (
@@ -59,7 +59,7 @@ export function Skills() {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.35, delay: i * 0.06 }}
           >
-            <h3 className="text-gold mb-3 flex items-center gap-3 text-sm font-semibold tracking-wider uppercase">
+            <h3 className="text-gold-light mb-3 flex items-center gap-3 text-sm font-semibold tracking-wider uppercase">
               <span data-legend-rule aria-hidden="true" className="bg-gold/40 h-px w-6" />
               {category.name}
               <span aria-hidden="true" className="bg-gold/40 h-px flex-1" />

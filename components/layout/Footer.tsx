@@ -49,7 +49,7 @@ export function Footer() {
           <a
             href={`${basePath}#hero`}
             aria-label={messages.footer.backToTop}
-            className="text-stone/60 hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="text-stone hover:text-gold-light focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {messages.footer.backToTop}
           </a>
@@ -59,20 +59,20 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={messages.footer.viewResume}
-              className="text-stone/60 hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="text-stone hover:text-gold-light focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               {messages.footer.resume}
             </a>
           )}
           <a
             href={`${basePath}/privacy`}
-            className="text-stone/60 hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="text-stone hover:text-gold-light focus-visible:ring-gold focus-visible:ring-offset-charcoal rounded text-xs font-medium tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {messages.footer.privacy}
           </a>
         </div>
 
-        <p className="text-stone/60 flex flex-wrap items-center justify-center gap-3 text-xs tracking-[0.25em] uppercase">
+        <p className="text-stone flex flex-wrap items-center justify-center gap-3 text-xs tracking-[0.25em] uppercase">
           <m.span
             initial={{ width: 0 }}
             animate={isInView ? { width: 32 } : { width: 0 }}
@@ -123,7 +123,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${link.platform} (opens in new tab)`}
-                className="text-stone hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                className="text-stone hover:text-gold-light focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-full transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
               >
                 <Icon className="h-5 w-5" />
               </a>

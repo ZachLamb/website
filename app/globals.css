@@ -12,7 +12,12 @@
   --color-gold-light: #d4a843;
   --color-moss: #6b7f5e;
   --color-charcoal: #2d2926;
-  --color-stone: #8b8680;
+  /* Muted text on dark backgrounds (Hero, Skills, Contact, Footer). Lightened
+     from the original #8b8680 to clear WCAG AA (4.5:1) against forest/charcoal. */
+  --color-stone: #a9a49c;
+  /* Muted text on light backgrounds (Experience, Projects, Endorsements,
+     Education). Original --color-stone read at only ~3.2:1 on parchment. */
+  --color-slate: #605b54;
   --color-copper: #b87333;
   --color-parchment-cool: #f0f0e8;
   --color-parchment-warm: #e8ddd0;

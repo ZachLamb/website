@@ -82,7 +82,7 @@ function TrailDivider({ isInView }: { isInView: boolean }) {
           initial={{ opacity: 0, scale: 0.5 }}
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-gold h-5 w-5"
+          className="text-gold-deep h-5 w-5"
           fill="none"
           stroke="currentColor"
           strokeWidth={1.5}

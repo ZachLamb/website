@@ -81,7 +81,7 @@ function EndorsementCard({
             <button
               type="button"
               onClick={() => setExpanded((e) => !e)}
-              className="text-gold hover:text-copper focus-visible:ring-gold mt-2 flex min-h-11 touch-manipulation items-center gap-1 rounded px-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="text-gold-deep hover:text-bark focus-visible:ring-gold mt-2 flex min-h-11 touch-manipulation items-center gap-1 rounded px-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               {expanded ? (
                 <>
@@ -96,16 +96,16 @@ function EndorsementCard({
           )}
           <div className="border-bark/10 mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 border-t pt-4">
             <cite className="text-forest font-semibold not-italic">{endorsement.author}</cite>
-            {endorsement.role && <span className="text-stone text-sm">— {endorsement.role}</span>}
+            {endorsement.role && <span className="text-slate text-sm">— {endorsement.role}</span>}
             {endorsement.context && (
-              <span className="text-stone/80 block w-full text-xs">{endorsement.context}</span>
+              <span className="text-slate block w-full text-xs">{endorsement.context}</span>
             )}
             <a
               href={linkedInUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={messages.viewOnLinkedInAria}
-              className="text-gold hover:text-copper focus-visible:ring-gold focus-visible:ring-offset-parchment mt-2 inline-flex min-h-11 touch-manipulation items-center gap-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="text-gold-deep hover:text-bark focus-visible:ring-gold focus-visible:ring-offset-parchment mt-2 inline-flex min-h-11 touch-manipulation items-center gap-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               <LinkedinIcon className="h-4 w-4" />
               {messages.viewOnLinkedIn}
@@ -149,7 +149,7 @@ export function Endorsements() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={messages.endorsements.viewAllOnLinkedInAria}
-            className="text-gold hover:text-copper focus-visible:ring-gold inline-flex items-center gap-2 rounded font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="text-gold-deep hover:text-bark focus-visible:ring-gold inline-flex items-center gap-2 rounded font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <LinkedinIcon className="h-5 w-5" />
             {messages.endorsements.viewAllOnLinkedIn}

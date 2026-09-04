@@ -25,7 +25,9 @@
     "title": "Zach Lamb",
     "subtitle": "Lead Full-Stack Developer",
     "taglines": [
-      "Ich baue Werkzeuge für Menschen — und bin immer offen für ein Gespräch über Code, die Natur oder Oreos."
+      "Ich leite das Frontend für RangeGPT, eine KI-Plattform, die reale Cyberangriffe auf echter Hardware simuliert.",
+      "Meine Frontend-Arbeit reicht von UI-Migrationen über State-Management bis zur Datenschicht, immer mit einem Blick darauf, was sich als Nächstes verändert.",
+      "Ich führe die Umsetzung wie ein Agile Coach. Ich suche ständig nach Werkzeugen und Prozessen, die das Team effektiver machen, vom Neuaufbau unseres Workflows in Linear bis zur Einbindung von KI-Tools in den Arbeitsalltag."
     ],
     "getInTouch": "Kontakt aufnehmen",
     "learnMore": "Mehr erfahren",

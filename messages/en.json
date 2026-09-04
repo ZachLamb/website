@@ -25,9 +25,9 @@
     "title": "Zach Lamb",
     "subtitle": "Lead Full-Stack Developer",
     "taglines": [
-      "React, TypeScript, and full-stack systems are the day job. Product and roadmap ownership are part of how I lead at Circadence.",
-      "React, TypeScript, and LLM apps — I know what to build and how to ship it.",
-      "Always up for a conversation about code, AI, the outdoors, or Oreos."
+      "I lead frontend for RangeGPT, an AI platform that simulates real cyberattacks on live hardware.",
+      "My frontend work spans React and TypeScript, from UI migrations to state management to the data layer, always with an eye on what's about to change underneath it.",
+      "I run delivery like an Agile Coach should. I'm constantly looking for tools and processes that make the team more effective, from rebuilding delivery in Linear to embedding AI tooling into daily workflow."
     ],
     "getInTouch": "Get in Touch",
     "learnMore": "Learn More",

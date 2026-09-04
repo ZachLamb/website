@@ -2,8 +2,12 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 const variants = {
-  primary: 'bg-gold text-parchment hover:bg-copper',
-  secondary: 'border border-gold text-gold hover:bg-gold/10',
+  // charcoal-on-gold-light clears WCAG AA (6.5:1); the original
+  // parchment-on-gold combination read at only ~2.9:1. Hover uses the base
+  // gold shade (still 4.4:1 with charcoal text) instead of copper, which
+  // drops below AA against charcoal.
+  primary: 'bg-gold-light text-charcoal hover:bg-gold',
+  secondary: 'border border-gold-light text-gold-light hover:bg-gold-light/10',
 } as const;
 
 type ButtonProps = {

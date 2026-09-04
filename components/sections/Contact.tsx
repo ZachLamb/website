@@ -142,7 +142,7 @@ export function Contact() {
       <AnimatedHeading
         sectionId="contact"
         subtitle={`VI · ${messages.kickers.contact}`}
-        className="[&_h2]:text-parchment [&_p]:text-gold"
+        className="[&_h2]:text-parchment [&_p]:text-gold-light"
       >
         {messages.contact.heading}
       </AnimatedHeading>
@@ -176,7 +176,7 @@ export function Contact() {
             >
               <p className="sr-only">{messages.contact.messageSent}</p>
               <m.div
-                className="text-gold mb-4 flex justify-center"
+                className="text-gold-light mb-4 flex justify-center"
                 initial={prefersReducedMotion ? false : { y: 0, opacity: 1, rotate: 0, x: 0 }}
                 animate={
                   prefersReducedMotion
@@ -362,9 +362,9 @@ export function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${link.platform} (opens in new tab)`}
-                  className="text-parchment hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 touch-manipulation items-center gap-3 rounded-md py-3 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  className="text-parchment hover:text-gold-light focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 touch-manipulation items-center gap-3 rounded-md py-3 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
-                  <Icon className="text-gold h-5 w-5 shrink-0" />
+                  <Icon className="text-gold-light h-5 w-5 shrink-0" />
                   <span className="font-medium">{link.platform}</span>
                 </a>
               );
@@ -373,9 +373,9 @@ export function Contact() {
             <a
               href={`mailto:${contactEmail}`}
               aria-label={`Email ${contactEmail}`}
-              className="text-parchment hover:text-gold focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 touch-manipulation items-center gap-3 rounded-md py-3 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="text-parchment hover:text-gold-light focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 touch-manipulation items-center gap-3 rounded-md py-3 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              <Mail className="text-gold h-5 w-5 shrink-0" />
+              <Mail className="text-gold-light h-5 w-5 shrink-0" />
               <span className="font-medium">{contactEmail}</span>
             </a>
           </div>
