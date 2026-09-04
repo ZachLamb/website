@@ -223,6 +223,8 @@ export function Experience() {
         ))}
       </TimelineList>
 
+      <p className="text-stone mt-4 text-xs italic">{messages.experience.tenureNote}</p>
+
       {olderExperiences.length > 0 && (
         <div className="mt-8">
           <button

@@ -14,9 +14,9 @@ interface SiteConfigShape {
 
 export const siteConfig = {
   name: 'Zach Lamb',
-  title: 'Technical Product Manager',
+  title: 'Lead Full-Stack Developer',
   description:
-    'Technical Product Manager who owns the roadmap, runs the team, and goes deep on the technical decisions that matter. React, TypeScript, and AI-powered product development. Certified ScrumMaster with a Human Centered Computing background.',
+    'Lead Full-Stack Developer shipping production React, TypeScript, and the systems behind them — with technical product management folded into the role at Circadence: roadmap ownership, delivery, and cross-team coordination. AI-powered product development, human-centered design background, Certified ScrumMaster.',
   url: 'https://zachlamb.io',
   ogImage: '/og.png',
   availability: 'Open to remote',

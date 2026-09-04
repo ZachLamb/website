@@ -27,6 +27,13 @@ describe('Experience', () => {
     expect(screen.getByText(/View full trail history/)).toBeInTheDocument();
   });
 
+  it('renders the tenure note explaining the short Sana/StellarFi stints', () => {
+    renderWithLocale(<Experience />);
+    expect(
+      screen.getByText(/Sana Benefits and StellarFi were both company-wide layoffs/),
+    ).toBeInTheDocument();
+  });
+
   it('has the experience section id', () => {
     const { container } = renderWithLocale(<Experience />);
     expect(container.querySelector('#experience')).toBeInTheDocument();

@@ -4,8 +4,8 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "Technical Product Manager",
-    "description": "Technical Product Manager specializzato in React, TypeScript e sviluppo di prodotti basati su IA. ScrumMaster certificato che costruisce strumenti di cybersecurity su scala, guida team di ingegneria e gestisce partnership tecniche. Formazione in Human Centered Computing."
+    "title": "Lead Full-Stack Developer",
+    "description": "Lead Full-Stack Developer che porta in produzione React, TypeScript e i sistemi che li sostengono — in Circadence, la gestione tecnica del prodotto è parte integrante del ruolo: responsabilità della roadmap, delivery e coordinamento tra team. Sviluppo di prodotto potenziato dall'IA, formazione in progettazione centrata sull'utente, ScrumMaster certificato."
   },
   "nav": {
     "trailGuide": "Guida del sentiero",
@@ -23,7 +23,7 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "Technical Product Manager",
+    "subtitle": "Lead Full-Stack Developer",
     "taglines": [
       "Costruisco strumenti per le persone — e sono sempre disponibile per una chiacchierata su codice, natura o Oreo."
     ],
@@ -35,7 +35,7 @@
   "about": {
     "heading": "Guida del Sentiero",
     "body": [
-      "Sono un Technical Product Manager con background in ingegneria frontend, il che significa che gestisco la roadmap, guido il team e posso ancora approfondire le decisioni tecniche che contano davvero."
+      "Sono un Lead Full-Stack Developer — React, TypeScript e i sistemi di backend che li sostengono. In Circadence questo include anche la strategia di prodotto e la roadmap: faccio da ponte tra ingegneria e prodotto perché le decisioni restino tecnicamente solide."
     ],
     "stats": [
       { "value": "10+", "label": "Anni di Esperienza" },
@@ -44,7 +44,7 @@
       { "value": "IC↔PM", "label": "Doppio Ruolo" }
     ],
     "personalNote": "Quando non sono alla scrivania, insegno yoga, percorro i sentieri del Colorado o cerco di risolvere una volta per tutte il dibattito sugli Oreo.",
-    "focusAreas": "Gestione Tecnica del Prodotto · Gestione Roadmap · React e TypeScript · Integrazione AI/LLM · Leadership Interfunzionale · Certified ScrumMaster"
+    "focusAreas": "React e TypeScript · Architettura Full-Stack · Integrazione AI/LLM · Leadership Interfunzionale · Gestione Prodotto e Roadmap · Certified ScrumMaster"
   },
   "footer": {
     "backToTop": "Torna in alto",
@@ -105,10 +105,11 @@
     "more": "altri",
     "viewFullHistory": "Mostra tutto il percorso",
     "hideHistory": "Nascondi ruoli precedenti",
-    "earlierRoles": "ruoli precedenti"
+    "earlierRoles": "ruoli precedenti",
+    "tenureNote": "I periodi brevi in Sana Benefits e StellarFi sono stati licenziamenti collettivi aziendali, non questioni di performance."
   },
   "education": {
-    "certifications": "Certificazioni"
+    "certifications": "Certificazioni e Formazione"
   },
   "skills": {
     "intro": "Gli strumenti e le pratiche che utilizzo — testati sul campo e pronti per la produzione."

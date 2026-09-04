@@ -4,8 +4,8 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "技术产品经理",
-    "description": "技术产品经理，专注于 React、TypeScript 与 AI 驱动的产品开发。认证 ScrumMaster，构建大规模网络安全工具，领导工程团队，管理技术合作伙伴关系。具备以人为中心的计算背景。"
+    "title": "全栈开发负责人",
+    "description": "全栈开发负责人，将 React、TypeScript 及其背后的系统落地到生产环境——在 Circadence，技术产品管理也是这个角色的一部分：负责路线图、交付与跨团队协调。AI 驱动的产品开发经验，以人为中心的设计背景，认证 ScrumMaster。"
   },
   "nav": {
     "trailGuide": "步道指南",
@@ -23,7 +23,7 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "技术产品经理",
+    "subtitle": "全栈开发负责人",
     "taglines": ["我为人们打造工具 —— 也随时乐意聊聊代码、户外或奥利奥。"],
     "getInTouch": "联系我",
     "learnMore": "了解更多",
@@ -33,7 +33,7 @@
   "about": {
     "heading": "向导",
     "body": [
-      "我是一名具有前端工程背景的技术产品经理，这意味着我负责路线图、管理团队，并能深入参与真正重要的技术决策。"
+      "我是一名全栈开发负责人——负责 React、TypeScript 及其背后的后端系统。在 Circadence，这也包括产品策略与路线图负责：我在工程与产品之间搭建桥梁，确保决策始终有扎实的技术依据。"
     ],
     "stats": [
       { "value": "10+", "label": "年开发经验" },
@@ -42,7 +42,7 @@
       { "value": "IC↔PM", "label": "双轨角色" }
     ],
     "personalNote": "不在办公桌前时，我会教瑜伽、徒步科罗拉多的步道，或者试图一劳永逸地解决奥利奥之争。",
-    "focusAreas": "技术产品管理 · 路线图负责 · React 和 TypeScript · AI/LLM 集成 · 跨职能领导 · 认证 ScrumMaster"
+    "focusAreas": "React 和 TypeScript · 全栈架构 · AI/LLM 集成 · 跨职能领导 · 产品与路线图负责 · 认证 ScrumMaster"
   },
   "footer": {
     "backToTop": "返回顶部",
@@ -103,10 +103,11 @@
     "more": "更多",
     "viewFullHistory": "查看完整经历",
     "hideHistory": "隐藏早期经历",
-    "earlierRoles": "早期经历"
+    "earlierRoles": "早期经历",
+    "tenureNote": "在 Sana Benefits 和 StellarFi 任职时间较短，均因公司裁员，并非绩效问题。"
   },
   "education": {
-    "certifications": "认证"
+    "certifications": "认证与培训"
   },
   "skills": {
     "intro": "我常用的工具和实践 —— 经实战验证，可用于生产环境。"

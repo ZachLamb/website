@@ -18,10 +18,10 @@ describe('Services', () => {
 
   it('renders all 4 service titles', () => {
     renderWithLocale(<Services />);
-    expect(screen.getByText('Technical Product Strategy')).toBeInTheDocument();
+    expect(screen.getByText('Full-Stack Architecture & Delivery')).toBeInTheDocument();
     expect(screen.getByText('AI-Augmented Engineering')).toBeInTheDocument();
+    expect(screen.getByText('Product & Roadmap Strategy')).toBeInTheDocument();
     expect(screen.getByText('Process & Delivery')).toBeInTheDocument();
-    expect(screen.getByText('Engineering ↔ Product Bridge')).toBeInTheDocument();
   });
 
   it('has the services section id', () => {

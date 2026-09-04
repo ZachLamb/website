@@ -4,8 +4,8 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "Technical Product Manager",
-    "description": "Technical Product Manager who owns the roadmap, runs the team, and goes deep on the technical decisions that matter. React, TypeScript, and AI-powered product development. Certified ScrumMaster with a Human Centered Computing background."
+    "title": "Lead Full-Stack Developer",
+    "description": "Lead Full-Stack Developer shipping production React, TypeScript, and the systems behind them — with technical product management folded into the role at Circadence: roadmap ownership, delivery, and cross-team coordination. AI-powered product development, human-centered design background, Certified ScrumMaster."
   },
   "nav": {
     "trailGuide": "Trail Guide",
@@ -23,9 +23,9 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "Technical Product Manager",
+    "subtitle": "Lead Full-Stack Developer",
     "taglines": [
-      "Technical product lead with an engineering background. I own the roadmap, run the team, and keep both from drifting apart.",
+      "React, TypeScript, and full-stack systems are the day job. Product and roadmap ownership are part of how I lead at Circadence.",
       "React, TypeScript, and LLM apps — I know what to build and how to ship it.",
       "Always up for a conversation about code, AI, the outdoors, or Oreos."
     ],
@@ -37,7 +37,7 @@
   "about": {
     "heading": "Trail Guide",
     "body": [
-      "I'm a Technical Product Manager with a frontend engineering background, which means I own the roadmap, run the team, and can still go deep on the technical decisions that actually matter."
+      "I'm a Lead Full-Stack Developer — React, TypeScript, and the backend systems behind them. At Circadence, that also means owning product strategy and roadmap: I bridge engineering and product so decisions stay technically grounded."
     ],
     "stats": [
       { "value": "10+", "label": "Years Building" },
@@ -46,7 +46,7 @@
       { "value": "IC↔PM", "label": "Dual Track" }
     ],
     "personalNote": "When I'm not at my desk, I'm teaching yoga, hiking Colorado's trails, or trying to settle the Oreo debate once and for all.",
-    "focusAreas": "Technical Product Management · Roadmap Ownership · React & TypeScript · AI/LLM Integration · Cross-functional Leadership · Certified ScrumMaster"
+    "focusAreas": "React & TypeScript · Full-Stack Architecture · AI/LLM Integration · Cross-functional Leadership · Product & Roadmap Ownership · Certified ScrumMaster"
   },
   "footer": {
     "backToTop": "Back to top",
@@ -107,10 +107,11 @@
     "more": "more",
     "viewFullHistory": "View full trail history",
     "hideHistory": "Hide earlier roles",
-    "earlierRoles": "earlier roles"
+    "earlierRoles": "earlier roles",
+    "tenureNote": "Short stints at Sana Benefits and StellarFi were both company-wide layoffs, not performance."
   },
   "education": {
-    "certifications": "Certifications"
+    "certifications": "Certifications & Training"
   },
   "skills": {
     "intro": "The tools and practices I reach for — trail-tested and production-ready."

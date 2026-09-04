@@ -24,9 +24,9 @@ describe('About', () => {
     expect(screen.getByText('IC↔PM')).toBeInTheDocument();
   });
 
-  it('renders bio text mentioning Technical Product Manager', () => {
+  it('renders bio text mentioning Lead Full-Stack Developer', () => {
     renderWithLocale(<About />);
-    expect(screen.getByText(/Technical Product Manager/)).toBeInTheDocument();
+    expect(screen.getByText(/Lead Full-Stack Developer/)).toBeInTheDocument();
   });
 
   it('has the about section id', () => {
@@ -36,7 +36,7 @@ describe('About', () => {
 
   it('renders pull-quote and personal note', () => {
     renderWithLocale(<About />);
-    expect(screen.getByText(/I'm a Technical Product Manager/)).toBeInTheDocument();
+    expect(screen.getByText(/I'm a Lead Full-Stack Developer/)).toBeInTheDocument();
     expect(screen.getByText(/Oreo debate/)).toBeInTheDocument();
   });
 

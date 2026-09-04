@@ -4,8 +4,8 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "Technical Product Manager",
-    "description": "Technical Product Manager mit Schwerpunkt React, TypeScript und KI-gestützte Produktentwicklung. Zertifizierter ScrumMaster, der hochskalierbare Cybersicherheits-Tools entwickelt, Engineering-Teams leitet und technische Partnerschaften verantwortet. Hintergrund in Human Centered Computing."
+    "title": "Lead Full-Stack Developer",
+    "description": "Lead Full-Stack Developer, der React, TypeScript und die Systeme dahinter in Produktion bringt — bei Circadence gehört technisches Produktmanagement mit zur Rolle: Roadmap-Verantwortung, Delivery und teamübergreifende Koordination. KI-gestützte Produktentwicklung, Hintergrund in Human Centered Computing, zertifizierter ScrumMaster."
   },
   "nav": {
     "trailGuide": "Wegweiser",
@@ -23,7 +23,7 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "Technical Product Manager",
+    "subtitle": "Lead Full-Stack Developer",
     "taglines": [
       "Ich baue Werkzeuge für Menschen — und bin immer offen für ein Gespräch über Code, die Natur oder Oreos."
     ],
@@ -35,7 +35,7 @@
   "about": {
     "heading": "Wegweiser",
     "body": [
-      "Ich bin Technical Product Manager mit Frontend-Engineering-Hintergrund — das heißt, ich verantworte die Roadmap, leite das Team und kann trotzdem bei den technischen Entscheidungen in die Tiefe gehen, die wirklich zählen."
+      "Ich bin Lead Full-Stack Developer — React, TypeScript und die Backend-Systeme dahinter. Bei Circadence gehört dazu auch die Produktstrategie und Roadmap-Verantwortung: Ich verbinde Engineering und Produkt, damit Entscheidungen technisch fundiert bleiben."
     ],
     "stats": [
       { "value": "10+", "label": "Jahre Erfahrung" },
@@ -44,7 +44,7 @@
       { "value": "IC↔PM", "label": "Doppelrolle" }
     ],
     "personalNote": "Wenn ich nicht am Schreibtisch sitze, unterrichte ich Yoga, wandere auf Colorados Trails oder versuche, die Oreo-Debatte ein für alle Mal zu klären.",
-    "focusAreas": "Technisches Produktmanagement · Roadmap-Verantwortung · React & TypeScript · AI/LLM-Integration · Bereichsübergreifende Führung · Certified ScrumMaster"
+    "focusAreas": "React & TypeScript · Full-Stack-Architektur · AI/LLM-Integration · Bereichsübergreifende Führung · Produkt- & Roadmap-Verantwortung · Certified ScrumMaster"
   },
   "footer": {
     "backToTop": "Nach oben",
@@ -105,10 +105,11 @@
     "more": "weitere",
     "viewFullHistory": "Vollständigen Werdegang anzeigen",
     "hideHistory": "Frühere Rollen ausblenden",
-    "earlierRoles": "frühere Rollen"
+    "earlierRoles": "frühere Rollen",
+    "tenureNote": "Die kurzen Stationen bei Sana Benefits und StellarFi waren beide unternehmensweite Stellenabbauten, kein Leistungsproblem."
   },
   "education": {
-    "certifications": "Zertifizierungen"
+    "certifications": "Zertifizierungen & Weiterbildung"
   },
   "skills": {
     "intro": "Die Werkzeuge und Praktiken, auf die ich setze — wegerprobt und produktionsreif."
