@@ -109,7 +109,7 @@ styles = {
 
 # --- content ---
 NAME = "Zach Lamb"
-TITLE = "Senior Software Engineer"
+TITLE = "Lead Full-Stack Developer"
 AVAILABILITY = "Open to remote"
 CONTACT = (
     "zachlamb.io &nbsp;·&nbsp; "
@@ -118,25 +118,26 @@ CONTACT = (
 )
 
 SUMMARY = (
-    "Full-stack engineer with a product manager's instinct. Specializing in React, "
-    "TypeScript, and LLM-powered tools. Certified ScrumMaster with a Human-Centered "
-    "Computing background, shipping performant apps from cybersecurity platforms to "
-    "e-commerce at scale."
+    "Lead Full-Stack Developer shipping production React, TypeScript, and the systems "
+    "behind them — with technical product management folded into the role at "
+    "Circadence: roadmap ownership, delivery, and cross-team coordination. AI-powered "
+    "product development, human-centered design background, Certified ScrumMaster."
 )
 
-# Full experience list — everything in data/experience.ts verbatim.
+# Full experience list — mirrors data/experience.ts verbatim.
 EXPERIENCE = [
     {
         "company": "Circadence",
-        "position": "Sr. Software Engineer",
+        "position": "Technical Product Manager",
         "start": "Sep 2025",
         "end": "Present",
         "bullets": [
-            "Building LLM-powered web tools that speed up threat analysis and incident response for cybersecurity professionals",
-            "Splitting the role between engineering and product: scoping features with stakeholders, shaping the roadmap, and translating security workflows into shippable UX",
-            "Architecting React and TypeScript frontends for mission-critical security apps, integrating generative AI where it measurably improves analyst workflows",
+            "Build LLM-powered web tools that speed up threat analysis and incident response for cybersecurity professionals — full-stack delivery as IC (React, TypeScript) while also owning product strategy and roadmap for the team",
+            "Rebuilt delivery infrastructure: consolidated 409 backlog items into 10 structured Linear projects, established the first reliable sprint cadence and retro process",
+            "Primary technical counterpart for the NTT Data Japan enterprise partnership, coordinating across two software teams and a hardware team toward the June 2026 deliverable",
+            "Introduced AI-augmented engineering practices: Claude Code in grooming, MCP tooling for roadmaps, shared agent configs across the team",
         ],
-        "stack": "TypeScript · React · AI/LLM",
+        "stack": "React · TypeScript · Full-Stack Development · AI/LLM · Roadmap Ownership",
     },
     {
         "company": "Starbucks",
@@ -156,12 +157,13 @@ EXPERIENCE = [
         "start": "May 2023",
         "end": "Jan 2024",
         "bullets": [
-            "Created a new design system for a brand refresh, driving 100 new users per week improvement",
             "Pair-programmed an API and UI table with my manager to show users how their monthly membership payments were being reported to credit bureaus",
+            "Created a new design system for a brand refresh, driving 100 new users per week improvement",
             "Built an E2E testing framework that uncovered two major regression bugs in the production account-creation flow",
             "Initiated and facilitated bi-weekly retrospectives for the engineering team, leading to a documentation-focused sprint and broader process improvements",
         ],
-        "stack": "TypeScript · React · E2E Testing",
+        "stack": "TypeScript · React · API Development · E2E Testing",
+        "note": "Company-wide layoff, not performance.",
     },
     {
         "company": "Sana Benefits",
@@ -174,6 +176,7 @@ EXPERIENCE = [
             "Created standardized testing process improving code reliability",
         ],
         "stack": "React · Jest · SASS · Ruby on Rails",
+        "note": "Company-wide layoff, not performance.",
     },
     {
         "company": "Purple",
@@ -270,6 +273,8 @@ def build_story():
         ]
         if job.get("stack"):
             job_block.append(Paragraph(job["stack"], styles["job_meta"]))
+        if job.get("note"):
+            job_block.append(Paragraph(job["note"], styles["job_meta"]))
         for b in job["bullets"]:
             job_block.append(Paragraph(f"•&nbsp;&nbsp;{b}", styles["bullet"]))
         # Keep the first job line + at least one bullet together to avoid orphans.
@@ -323,7 +328,7 @@ def build_story():
             story.append(Paragraph(e["notes"], styles["job_meta"]))
 
     # Certifications
-    story.append(Paragraph("CERTIFICATIONS", styles["section_header"]))
+    story.append(Paragraph("CERTIFICATIONS & TRAINING", styles["section_header"]))
     story.append(section_rule())
     for name, issuer, date in CERTIFICATIONS:
         suffix = f" &nbsp;·&nbsp; {date}" if date else ""
@@ -349,7 +354,7 @@ def main():
         bottomMargin=0.55 * inch,
         title="Zach Lamb — Resume",
         author="Zach Lamb",
-        subject="Senior Software Engineer",
+        subject="Lead Full-Stack Developer",
     )
     doc.build(build_story())
     print(f"Wrote {output_path}")
