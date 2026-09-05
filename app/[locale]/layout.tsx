@@ -7,7 +7,6 @@ import { Navbar } from '@/components/layout/Navbar';
 import { ScrollProgressBar } from '@/components/ui/ScrollProgressBar';
 import { Footer } from '@/components/layout/Footer';
 import { TrailExtension } from '@/components/ui/TrailExtension';
-import { TrailWaypoints } from '@/components/ui/TrailWaypoints';
 import { BackToTopButton } from '@/components/ui/BackToTopButton';
 import { LocaleProvider } from '@/components/providers/LocaleProvider';
 import { MotionProvider } from '@/components/providers/MotionProvider';
@@ -86,7 +85,6 @@ export default async function LocaleLayout({ children, params }: Props) {
           {messages.common.skipToContent}
         </a>
         <TrailExtension />
-        <TrailWaypoints />
         <Navbar />
         <ScrollProgressBar />
         <main id="main-content">{children}</main>

@@ -1,6 +1,7 @@
 /**
- * Shared positioning for the trail through-line (TrailExtension) and its
- * waypoints (TrailWaypoints). One constant so the two can't drift apart.
+ * Shared positioning for the trail through-line (TrailExtension) — the
+ * winding gutter line that "draws" as the page scrolls. One constant so
+ * other elements that need to align to it can't drift apart from it.
  * Desktop: sits just left of the max-w-5xl (1024px) content column.
  * Mobile: hugs the viewport's left edge.
  *
@@ -12,10 +13,12 @@
  * `md:left-[...]` class string (see the comment above it for why it can't
  * just interpolate this constant).
  *
- * The line itself is drawn at the horizontal center of the gutter box (the
- * gutter is `w-5`/`md:w-6`; the SVG path sits at x=12 of a 0-24 viewBox, i.e.
- * exactly centered), so a consumer aligning to the *line* rather than the
- * gutter's left edge should add `TRAIL_LINE_CENTER_INSET`:
+ * The gutter box is `w-5`/`md:w-6` and the SVG path winds within a 0-24
+ * viewBox centered on x=12, entering and exiting at x=12 (top and bottom)
+ * but zigzagging off-center in between — so a consumer aligning to the
+ * *line* rather than the gutter's left edge should add
+ * `TRAIL_LINE_CENTER_INSET` for the gutter's horizontal center (the line's
+ * average position, not a guarantee of touching it at every scroll depth):
  * `calc(${TRAIL_OFFSET_LEFT} + ${TRAIL_LINE_CENTER_INSET})`.
  */
 export const TRAIL_OFFSET_LEFT = 'max(0.5rem,calc((100vw-1024px)/2-2.5rem))';
@@ -35,15 +38,3 @@ export const TRAIL_LINE_CENTER_INSET_MOBILE = '0.625rem';
 // by hand — the duplication is required, not accidental.
 export const TRAIL_GUTTER_CLASS =
   'pointer-events-none fixed inset-y-0 left-0 z-30 w-5 md:left-[max(0.5rem,calc((100vw-1024px)/2-2.5rem))] md:w-6';
-
-/** Numerals match the section kickers ("I · the trailhead" etc.). */
-export const SECTION_NUMERALS: Record<string, string> = {
-  about: 'I',
-  experience: 'II',
-  projects: 'IIb',
-  endorsements: 'IIc',
-  skills: 'III',
-  services: 'IV',
-  education: 'V',
-  contact: 'VI',
-};

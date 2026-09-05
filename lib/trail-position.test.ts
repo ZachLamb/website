@@ -1,17 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { TRAIL_GUTTER_CLASS, TRAIL_OFFSET_LEFT, SECTION_NUMERALS } from './trail-position';
-import { SECTION_IDS } from '@/hooks/useActiveSection';
+import { TRAIL_GUTTER_CLASS, TRAIL_OFFSET_LEFT } from './trail-position';
 
 describe('trail-position', () => {
   it('positions the trail against the content column, not the viewport edge', () => {
     expect(TRAIL_GUTTER_CLASS).toContain('1024px'); // max-w-5xl
-  });
-
-  it('has a numeral for every non-hero section', () => {
-    for (const id of SECTION_IDS.filter((s) => s !== 'hero')) {
-      expect(SECTION_NUMERALS[id]).toBeTruthy();
-    }
   });
 
   it('embeds TRAIL_GUTTER_CLASS as a literal string, not an interpolation of TRAIL_OFFSET_LEFT', () => {
