@@ -1,6 +1,6 @@
 import path from 'node:path';
 import type { NextConfig } from 'next';
-import { withSentryConfig } from '@sentry/nextjs';
+import { withSentryConfig } from '@sentry/nextjs/config';
 
 // Content Security Policy.
 // - 'unsafe-inline' is needed for styles because Next/Tailwind inject inline
