@@ -7,7 +7,7 @@ if (dsn) {
     dsn,
     tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
     environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV,
-    // Don't send default PII (cookies, request body) — contact-form body has user email + message
-    sendDefaultPii: false,
+    // Don't collect PII (user info, cookies, request bodies) — contact-form body has user email + message
+    dataCollection: { userInfo: false, cookies: false, httpBodies: [] },
   });
 }
