@@ -21,14 +21,14 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@sentry/nextjs": "^11.8.0",
+    "@sentry/nextjs": "^11.9.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@upstash/redis": "^1.39.0",
     "@vercel/analytics": "^2.0.1",
     "clsx": "^2.1.1",
     "framer-motion": "^14.6.0",
     "lucide-react": "^1.61.0",
-    "next": "^16.4.2",
+    "next": "^16.4.3",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "resend": "^6.34.1",
