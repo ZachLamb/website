@@ -91,7 +91,7 @@ export function About() {
                 variant="plate"
                 className="flex flex-col items-center justify-center px-3 py-4 text-center sm:px-4 sm:py-3"
               >
-                <div className="text-gold-deep font-serif text-3xl font-bold sm:text-4xl">
+                <div className="text-gold-deep font-serif text-3xl font-bold lining-nums sm:text-4xl">
                   {stat.value}
                 </div>
                 <div className="text-forest-deep mt-1.5 text-xs leading-tight sm:mt-1">

@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { m, useInView, useReducedMotion } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
+import { usePrefersReducedMotion } from '@/hooks/useHydrated';
 import { Send, Mail } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
@@ -80,7 +81,7 @@ export function Contact() {
   const { messages } = useLocaleContext();
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     if (status === 'success' || status === 'error') {

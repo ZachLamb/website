@@ -1,6 +1,7 @@
 'use client';
 
-import { m, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { m, useScroll, useTransform } from 'framer-motion';
+import { usePrefersReducedMotion } from '@/hooks/useHydrated';
 import { TRAIL_GUTTER_CLASS } from '@/lib/trail-position';
 
 /**
@@ -11,13 +12,9 @@ import { TRAIL_GUTTER_CLASS } from '@/lib/trail-position';
  * lightning bolt.
  */
 export function TrailExtension() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll();
-  const pathLength = useTransform(
-    scrollYProgress,
-    [0, 0.05, 0.5, 1],
-    prefersReducedMotion ? [1, 1, 1, 1] : [0, 0.05, 0.5, 1],
-  );
+  const pathLength = useTransform(scrollYProgress, [0, 0.05, 0.5, 1], [0, 0.05, 0.5, 1]);
 
   return (
     <div aria-hidden className={TRAIL_GUTTER_CLASS}>
@@ -29,7 +26,11 @@ export function TrailExtension() {
           strokeWidth="3"
           strokeDasharray="6 6"
           strokeLinecap="round"
-          style={{ pathLength }}
+          // With reduced motion the whole dashed trail shows, no scroll-draw.
+          // Keyed so the path remounts without framer's pathLength dash
+          // attributes when the preference becomes known after hydration.
+          key={prefersReducedMotion ? 'static' : 'draw'}
+          style={prefersReducedMotion ? undefined : { pathLength }}
         />
       </svg>
     </div>

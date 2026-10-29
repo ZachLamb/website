@@ -1,6 +1,8 @@
 'use client';
 
-import { m, useReducedMotion } from 'framer-motion';
+import { useId } from 'react';
+import { m, type Transition } from 'framer-motion';
+import { usePrefersReducedMotion } from '@/hooks/useHydrated';
 import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/Button';
@@ -58,6 +60,61 @@ function TrailSignDiamond() {
     <g stroke="currentColor" fill="currentColor" fillOpacity="0.12" strokeWidth="0.8">
       <path d="M0 -12 L7 0 L0 12 L-7 0 Z" />
     </g>
+  );
+}
+
+/**
+ * A dashed path that draws itself on. Animating pathLength on the dashed path
+ * itself doesn't work: framer drives pathLength through stroke-dasharray, so
+ * the dashes were replaced and every trail rendered as a solid line. Instead
+ * a solid stroke grows inside a mask and reveals the dashed path beneath it.
+ */
+function DrawnDashedPath({
+  d,
+  stroke,
+  strokeWidth,
+  dash,
+  transition,
+  animate,
+}: {
+  d: string;
+  stroke: string;
+  strokeWidth: number;
+  dash: string;
+  transition: Transition;
+  animate: boolean;
+}) {
+  const maskId = `trail-draw-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+  const dashed = (
+    <path
+      d={d}
+      stroke={stroke}
+      strokeWidth={strokeWidth}
+      strokeDasharray={dash}
+      strokeLinecap="round"
+      fill="none"
+      mask={animate ? `url(#${maskId})` : undefined}
+    />
+  );
+  if (!animate) return dashed;
+  return (
+    <>
+      {/* userSpaceOnUse: a straight vertical segment has a zero-width bounding
+          box, which the default objectBoundingBox mask would clip to nothing. */}
+      <mask id={maskId} maskUnits="userSpaceOnUse" x="-50" y="-50" width="900" height="900">
+        <m.path
+          d={d}
+          stroke="white"
+          strokeWidth={strokeWidth + 2}
+          strokeLinecap="round"
+          fill="none"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={transition}
+        />
+      </mask>
+      {dashed}
+    </>
   );
 }
 
@@ -147,15 +204,21 @@ export function Hero() {
   // animation end-state with no initial/animate/transition. See the doc comment
   // at the top of this file for why this is explicit instead of relying on
   // MotionConfig alone.
-  const prefersReducedMotion = useReducedMotion() ?? false;
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
     <section
       id="hero"
       className="bg-forest text-parchment relative flex min-h-fit flex-col items-center justify-center overflow-x-hidden sm:min-h-[80vh] md:min-h-[100dvh]"
     >
-      {/* Background layer: clip decorations only so content is never clipped */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Background layer: clip decorations only so content is never clipped.
+          Keyed on the motion preference so it remounts in its static form
+          after hydration instead of keeping half-applied animation state. */}
+      <div
+        key={prefersReducedMotion ? 'static' : 'animated'}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
         {/* Full trail map: visible on md and up only */}
         <svg
           viewBox="0 0 800 750"
@@ -165,89 +228,86 @@ export function Hero() {
           aria-hidden
         >
           {/* Trail map label */}
-          <m.g
-            transform="translate(48, 52)"
-            {...(prefersReducedMotion
-              ? {}
-              : {
-                  initial: { opacity: 0, y: -4 },
-                  animate: { opacity: 1, y: 0 },
-                  transition: { duration: 0.8, delay: 0.6 },
-                })}
-          >
-            <rect
-              x="0"
-              y="-6"
-              width="88"
-              height="20"
-              rx="3"
-              fill="rgba(245,240,232,0.06)"
-              stroke="rgba(245,240,232,0.12)"
-              strokeWidth="0.8"
-            />
-            <text
-              x="44"
-              y="6"
-              textAnchor="middle"
-              fill="rgba(245,240,232,0.5)"
-              fontSize="9"
-              fontFamily="var(--font-serif)"
-              letterSpacing="0.15em"
+          <g transform="translate(48, 52)">
+            <m.g
+              {...(prefersReducedMotion
+                ? {}
+                : {
+                    initial: { opacity: 0, y: -4 },
+                    animate: { opacity: 1, y: 0 },
+                    transition: { duration: 0.8, delay: 0.6 },
+                  })}
             >
-              TRAIL MAP
-            </text>
-            <path d="M68 0 L72 0 L70 -3 Z" fill="rgba(245,240,232,0.35)" />
-          </m.g>
-          <m.path
+              <rect
+                x="0"
+                y="-6"
+                width="88"
+                height="20"
+                rx="3"
+                fill="rgba(245,240,232,0.06)"
+                stroke="rgba(245,240,232,0.12)"
+                strokeWidth="0.8"
+              />
+              <text
+                x="44"
+                y="6"
+                textAnchor="middle"
+                fill="rgba(245,240,232,0.5)"
+                fontSize="9"
+                fontFamily="var(--font-serif)"
+                letterSpacing="0.15em"
+              >
+                TRAIL MAP
+              </text>
+              <path d="M68 0 L72 0 L70 -3 Z" fill="rgba(245,240,232,0.35)" />
+            </m.g>
+          </g>
+          <DrawnDashedPath
             d={demoTrip.trailPath}
             stroke="rgba(245,240,232,0.33)"
-            strokeWidth="2.5"
-            strokeDasharray="8 6"
-            strokeLinecap="round"
-            fill="none"
-            {...(prefersReducedMotion
-              ? {}
-              : {
-                  initial: { pathLength: 0 },
-                  animate: { pathLength: 1 },
-                  transition: { duration: 1.7, ease: 'easeInOut', delay: 0.3 },
-                })}
+            strokeWidth={2.5}
+            dash="8 6"
+            animate={!prefersReducedMotion}
+            transition={{ duration: 1.7, ease: 'easeInOut', delay: 0.3 }}
           />
 
           {demoTrip.markers.map((marker) => {
             const Icon = markerIcons[marker.icon];
             return (
-              <m.g
-                key={`${marker.x}-${marker.y}`}
-                transform={`translate(${marker.x}, ${marker.y})`}
-                className="text-parchment/30"
-                {...(prefersReducedMotion
-                  ? {}
-                  : {
-                      initial: { opacity: 0, scale: 0.4 },
-                      animate: { opacity: 1, scale: 1 },
-                      transition: {
-                        duration: 0.6,
-                        delay: Math.min(marker.delay * 0.5, 1.6),
-                        ease: 'easeOut',
-                      },
-                    })}
-              >
-                <Icon />
-                {marker.label && (
-                  <text
-                    y={20}
-                    textAnchor="middle"
-                    fill="currentColor"
-                    fontSize="9"
-                    fontFamily="var(--font-serif)"
-                    letterSpacing="0.05em"
-                    opacity="0.85"
-                  >
-                    {marker.label}
-                  </text>
-                )}
-              </m.g>
+              // Position lives on a plain <g>: framer writes its animated
+              // scale/opacity as a CSS transform on the m.g, which replaced
+              // the translate attribute and piled every marker at 0,0.
+              <g key={`${marker.x}-${marker.y}`} transform={`translate(${marker.x}, ${marker.y})`}>
+                <m.g
+                  className="text-parchment/30"
+                  {...(prefersReducedMotion
+                    ? {}
+                    : {
+                        initial: { opacity: 0, scale: 0.4 },
+                        animate: { opacity: 1, scale: 1 },
+                        transition: {
+                          duration: 0.6,
+                          delay: Math.min(marker.delay * 0.5, 1.6),
+                          ease: 'easeOut',
+                        },
+                      })}
+                >
+                  <Icon />
+                  {marker.label && (
+                    <text
+                      y={20}
+                      textAnchor="middle"
+                      fill="currentColor"
+                      fontSize="9"
+                      fontFamily="var(--font-serif)"
+                      letterSpacing="0.05em"
+                      opacity="0.85"
+                    >
+                      {marker.label}
+                    </text>
+                  )}
+                </m.g>
+              </g>
             );
           })}
 
@@ -384,25 +444,14 @@ export function Hero() {
 
           {/* Secondary trail paths (dotted, decoration) */}
           {(demoTrip.secondaryTrailPaths ?? []).map((pathD, i) => (
-            <m.path
+            <DrawnDashedPath
               key={i}
               d={pathD}
               stroke="rgba(245,240,232,0.11)"
-              strokeWidth="1.5"
-              strokeDasharray={i === 0 ? '4 8' : '6 6'}
-              strokeLinecap="round"
-              fill="none"
-              {...(prefersReducedMotion
-                ? {}
-                : {
-                    initial: { pathLength: 0 },
-                    animate: { pathLength: 1 },
-                    transition: {
-                      duration: 1.5,
-                      ease: 'easeInOut',
-                      delay: i === 0 ? 0.4 : 0.6,
-                    },
-                  })}
+              strokeWidth={1.5}
+              dash={i === 0 ? '4 8' : '6 6'}
+              animate={!prefersReducedMotion}
+              transition={{ duration: 1.5, ease: 'easeInOut', delay: i === 0 ? 0.4 : 0.6 }}
             />
           ))}
           {/* Trail continues down off the map — follow the path.
@@ -411,114 +460,109 @@ export function Hero() {
               overlapping the tail of the main trail's draw so the visual
               narrative reads "main trail draws, line continues off the map."
               All draw-on work finishes by ~2.0s. End-state visual unchanged. */}
-          <m.path
+          <DrawnDashedPath
             d="M 220 660 L 220 760"
             stroke="rgba(245,240,232,0.18)"
-            strokeWidth="1.5"
-            strokeDasharray="6 6"
-            strokeLinecap="round"
-            fill="none"
-            {...(prefersReducedMotion
-              ? {}
-              : {
-                  initial: { pathLength: 0 },
-                  animate: { pathLength: 1 },
-                  transition: { duration: 0.8, ease: 'easeOut', delay: 1.2 },
-                })}
+            strokeWidth={1.5}
+            dash="6 6"
+            animate={!prefersReducedMotion}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 1.2 }}
           />
         </svg>
 
-        {/* Simplified mobile compass icon */}
+        {/* Simplified mobile compass icon. Faded to a watermark: it sits
+            directly behind the name and tagline. */}
         <svg
           viewBox="0 0 200 200"
           fill="none"
-          className="absolute inset-0 flex h-full w-full items-center justify-center md:hidden"
+          className="absolute inset-0 flex h-full w-full items-center justify-center opacity-40 md:hidden"
           aria-hidden
           style={{ pointerEvents: 'none' }}
         >
-          <m.g
-            transform="translate(100, 100)"
-            {...(prefersReducedMotion
-              ? {}
-              : {
-                  initial: { opacity: 0, scale: 0.5 },
-                  animate: { opacity: 1, scale: 1 },
-                  transition: { duration: 0.8, delay: 0.3 },
-                })}
-          >
-            {/* Outer circle */}
-            <circle
-              cx="0"
-              cy="0"
-              r="45"
-              fill="none"
-              stroke="rgba(245,240,232,0.2)"
-              strokeWidth="1.5"
-            />
-            <circle
-              cx="0"
-              cy="0"
-              r="35"
-              fill="none"
-              stroke="rgba(245,240,232,0.15)"
-              strokeWidth="1"
-            />
-
-            {/* Cardinal directions with compass rose */}
-            <text
-              x="0"
-              y="-45"
-              textAnchor="middle"
-              fill="rgba(245,240,232,0.4)"
-              fontSize="14"
-              fontFamily="var(--font-serif)"
-              fontWeight="bold"
+          <g transform="translate(100, 100)">
+            <m.g
+              {...(prefersReducedMotion
+                ? {}
+                : {
+                    initial: { opacity: 0, scale: 0.5 },
+                    animate: { opacity: 1, scale: 1 },
+                    transition: { duration: 0.8, delay: 0.3 },
+                  })}
             >
-              N
-            </text>
-            <text
-              x="45"
-              y="5"
-              textAnchor="start"
-              fill="rgba(245,240,232,0.3)"
-              fontSize="12"
-              fontFamily="var(--font-serif)"
-            >
-              E
-            </text>
-            <text
-              x="0"
-              y="52"
-              textAnchor="middle"
-              fill="rgba(245,240,232,0.3)"
-              fontSize="12"
-              fontFamily="var(--font-serif)"
-            >
-              S
-            </text>
-            <text
-              x="-45"
-              y="5"
-              textAnchor="end"
-              fill="rgba(245,240,232,0.3)"
-              fontSize="12"
-              fontFamily="var(--font-serif)"
-            >
-              W
-            </text>
+              {/* Outer circle */}
+              <circle
+                cx="0"
+                cy="0"
+                r="45"
+                fill="none"
+                stroke="rgba(245,240,232,0.2)"
+                strokeWidth="1.5"
+              />
+              <circle
+                cx="0"
+                cy="0"
+                r="35"
+                fill="none"
+                stroke="rgba(245,240,232,0.15)"
+                strokeWidth="1"
+              />
 
-            {/* North arrow (thicker) */}
-            <path d="M 0 -30 L -4 -8 L 0 -12 L 4 -8 Z" fill="rgba(184,134,11,0.6)" />
+              {/* Cardinal directions with compass rose */}
+              <text
+                x="0"
+                y="-45"
+                textAnchor="middle"
+                fill="rgba(245,240,232,0.4)"
+                fontSize="14"
+                fontFamily="var(--font-serif)"
+                fontWeight="bold"
+              >
+                N
+              </text>
+              <text
+                x="45"
+                y="5"
+                textAnchor="start"
+                fill="rgba(245,240,232,0.3)"
+                fontSize="12"
+                fontFamily="var(--font-serif)"
+              >
+                E
+              </text>
+              <text
+                x="0"
+                y="52"
+                textAnchor="middle"
+                fill="rgba(245,240,232,0.3)"
+                fontSize="12"
+                fontFamily="var(--font-serif)"
+              >
+                S
+              </text>
+              <text
+                x="-45"
+                y="5"
+                textAnchor="end"
+                fill="rgba(245,240,232,0.3)"
+                fontSize="12"
+                fontFamily="var(--font-serif)"
+              >
+                W
+              </text>
 
-            {/* Mountain peak in center */}
-            <path
-              d="M -8 0 L 0 -15 L 8 0 L 4 0 L 4 8 L -4 8 L -4 0 Z"
-              fill="rgba(245,240,232,0.25)"
-            />
+              {/* North arrow (thicker) */}
+              <path d="M 0 -30 L -4 -8 L 0 -12 L 4 -8 Z" fill="rgba(184,134,11,0.6)" />
 
-            {/* Center dot */}
-            <circle cx="0" cy="0" r="2" fill="rgba(184,134,11,0.8)" />
-          </m.g>
+              {/* Mountain peak in center */}
+              <path
+                d="M -8 0 L 0 -15 L 8 0 L 4 0 L 4 8 L -4 8 L -4 0 Z"
+                fill="rgba(245,240,232,0.25)"
+              />
+
+              {/* Center dot */}
+              <circle cx="0" cy="0" r="2" fill="rgba(184,134,11,0.8)" />
+            </m.g>
+          </g>
         </svg>
 
         {/* Full decorations: visible on md and up only */}
@@ -526,6 +570,17 @@ export function Hero() {
           <MountainBackdrop prefersReducedMotion={prefersReducedMotion} />
           <MistLayer />
         </div>
+
+        {/* Scrim behind the text column: the trail line, contours and map
+            labels otherwise run straight through the tagline. Desktop only,
+            since the map is. */}
+        <div
+          className="absolute inset-0 hidden md:block"
+          style={{
+            background:
+              'radial-gradient(ellipse 42% 38% at 50% 48%, var(--color-forest) 35%, transparent 100%)',
+          }}
+        />
       </div>
 
       {/* Transition ridge into next section (desktop only) */}

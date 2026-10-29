@@ -56,16 +56,14 @@ describe('TrailExtension', () => {
     expect(container.querySelector('svg path')).toBeInTheDocument();
   });
 
-  it('passes a static [1,1,1,1] output range to useTransform when reduced', () => {
+  it('shows the whole dashed trail, not a scroll-drawn one, when reduced', () => {
     motionMocks.useReducedMotion.mockReturnValue(true);
-    render(<TrailExtension />);
-    // 3rd arg is the output range — under reduced motion the trail is
-    // drawn fully on every scroll position so nothing animates.
-    expect(motionMocks.useTransform).toHaveBeenCalledWith(
-      expect.anything(),
-      [0, 0.05, 0.5, 1],
-      [1, 1, 1, 1],
-    );
+    const { container } = render(<TrailExtension />);
+    const path = container.querySelector('svg path');
+    // No pathLength style: the dashes come straight from the attribute, so
+    // the trail is fully visible at every scroll position.
+    expect(path).not.toHaveAttribute('style');
+    expect(path).toHaveAttribute('stroke-dasharray', '6 6');
   });
 
   it('passes a scroll-driven output range to useTransform by default', () => {

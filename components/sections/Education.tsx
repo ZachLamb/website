@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/Badge';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { education, certifications } from '@/data/education';
 import { trailFadeUp, waypointPop } from '@/lib/trail-animations';
+import { cn } from '@/lib/utils';
 
 function EducationRow({
   entry,
@@ -21,6 +22,7 @@ function EducationRow({
 }) {
   const [expanded, setExpanded] = useState(false);
   const hasDetails = entry.details.length > 0;
+  const RowTag = hasDetails ? 'button' : 'div';
 
   return (
     <m.div
@@ -29,11 +31,21 @@ function EducationRow({
       variants={trailFadeUp}
       transition={{ delay: index * 0.1 }}
     >
-      <button
-        type="button"
-        onClick={() => hasDetails && setExpanded((e) => !e)}
-        disabled={!hasDetails}
-        className="group hover:bg-sand/50 flex w-full items-center gap-3 rounded-lg px-2 py-3 text-left transition-colors disabled:cursor-default disabled:hover:bg-transparent"
+      {/* Only a row with details is a button. A row without them used to be a
+          disabled button, which screen readers announce as an unavailable
+          control. */}
+      <RowTag
+        {...(hasDetails
+          ? {
+              type: 'button' as const,
+              onClick: () => setExpanded((e) => !e),
+              'aria-expanded': expanded,
+            }
+          : {})}
+        className={cn(
+          'flex w-full items-center gap-3 rounded-lg px-2 py-3 text-left',
+          hasDetails && 'group hover:bg-sand/50 cursor-pointer transition-colors',
+        )}
       >
         <GraduationCap className="text-gold h-5 w-5 shrink-0" />
         <div className="min-w-0 flex-1">
@@ -41,10 +53,12 @@ function EducationRow({
             <span className="text-forest-deep font-serif text-lg font-semibold">
               {entry.degree}
             </span>
-            <span className="text-bark text-sm" aria-hidden>
+            {/* On a phone the institution wraps to its own line, which left
+                the dash dangling at the end of the degree. */}
+            <span className="text-bark hidden text-sm sm:inline" aria-hidden>
               —
             </span>
-            <span className="text-bark text-sm">{entry.institution}</span>
+            <span className="text-bark basis-full text-sm sm:basis-auto">{entry.institution}</span>
             {entry.field && <Badge className="text-xs">{entry.field}</Badge>}
           </div>
         </div>
@@ -52,11 +66,11 @@ function EducationRow({
           {entry.startYear}–{entry.endYear}
         </span>
         {hasDetails && (
-          <span className="text-gold shrink-0">
+          <span className="text-gold shrink-0" aria-hidden>
             {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </span>
         )}
-      </button>
+      </RowTag>
 
       <AnimatePresence>
         {expanded && hasDetails && (
@@ -107,11 +121,15 @@ export function Education() {
               animate={isInView ? 'visible' : 'hidden'}
               variants={waypointPop}
               transition={{ delay: education.length * 0.06 + i * 0.06 }}
-              className="border-bark/15 inline-flex items-center gap-2 rounded-full border bg-white/40 px-3 py-1.5"
+              className="border-bark/15 inline-flex items-center gap-2 rounded-2xl border bg-white/40 px-3 py-1.5"
             >
               <Award className="text-gold h-4 w-4 shrink-0" />
-              <span className="text-bark text-sm font-medium">{cert.name}</span>
-              {cert.issuer && <span className="text-slate text-xs">· {cert.issuer}</span>}
+              <span className="text-bark text-sm font-medium">
+                <span>{cert.name}</span>
+                {cert.issuer && (
+                  <span className="text-slate text-xs font-normal"> · {cert.issuer}</span>
+                )}
+              </span>
             </m.div>
           ))}
         </div>

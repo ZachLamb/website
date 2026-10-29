@@ -28,6 +28,10 @@
 /* Single scroll context: viewport scrolls; body clips horizontal overflow (fixes multiple scroll bars on desktop) */
 html {
   scroll-behavior: smooth;
+  /* The sticky navbar is h-16 plus its 1px border and the notch inset. Without this, anchor links
+     and mobile scroll-snap put each section's top 65px under the bar; on load,
+     snap even scrolled the hero's job title out of view. */
+  scroll-padding-top: calc(4rem + 1px + env(safe-area-inset-top));
 }
 
 body {
