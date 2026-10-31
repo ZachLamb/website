@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AnimatePresence, m, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { AutoHeight } from '@/components/ui/AutoHeight';
+import { usePrefersReducedMotion } from '@/hooks/useHydrated';
 
 type Props = {
   taglines: readonly string[];
@@ -26,7 +27,9 @@ type Props = {
  * average pace, and pause-on-hover/focus is a working secondary control.
  */
 export function TaglineCycler({ taglines, intervalMs = 6000, className }: Props) {
-  const prefersReducedMotion = useReducedMotion();
+  // False until hydrated: the server always renders the cycling markup, and
+  // the stacked list replaces it once the preference is known.
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 

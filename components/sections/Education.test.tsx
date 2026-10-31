@@ -7,6 +7,7 @@ vi.mock('@/components/ui/NatureElements', () => ({
 }));
 
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithLocale } from '@/lib/test-utils';
 import { Education } from './Education';
 
@@ -34,6 +35,18 @@ describe('Education', () => {
   it('has the education section id', () => {
     const { container } = renderWithLocale(<Education />);
     expect(container.querySelector('#education')).toBeInTheDocument();
+  });
+
+  it('makes only rows with details expandable, and reports their state', async () => {
+    const user = userEvent.setup();
+    renderWithLocale(<Education />);
+    const buttons = screen.getAllByRole('button', { expanded: false });
+    expect(buttons).toHaveLength(1);
+    expect(buttons[0]).toHaveTextContent('University of Colorado Boulder');
+    // Front Range has no details: plain row, not a disabled button.
+    expect(screen.getByText('Front Range Community College').closest('button')).toBeNull();
+    await user.click(buttons[0]);
+    expect(buttons[0]).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('renders certification chips with plate styling', () => {

@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { m, useInView, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { m, useInView, AnimatePresence } from 'framer-motion';
+import { usePrefersReducedMotion } from '@/hooks/useHydrated';
 import { Quote, ChevronDown, ChevronUp } from 'lucide-react';
 import { LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Section } from '@/components/ui/Section';
@@ -122,7 +123,7 @@ export function Endorsements() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
   const scrollRef = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const totalCount = endorsements.length;
   const duplicatedEndorsements = [...endorsements, ...endorsements];

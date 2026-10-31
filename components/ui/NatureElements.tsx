@@ -1,6 +1,7 @@
 'use client';
 
-import { m, useReducedMotion } from 'framer-motion';
+import { m } from 'framer-motion';
+import { usePrefersReducedMotion } from '@/hooks/useHydrated';
 
 function LeafSVG({ variant = 0 }: { variant?: number }) {
   if (variant === 1) {
@@ -77,7 +78,7 @@ export function FloatingLeaves({
   color?: string;
   seed?: number;
 }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   if (prefersReducedMotion) return null;
 
   const leaves = generateLeaves(count, seed);
@@ -108,7 +109,7 @@ export function FloatingLeaves({
 }
 
 export function BirdSilhouettes({ count = 3 }: { count?: number }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   if (prefersReducedMotion) return null;
 
   const birds = Array.from({ length: count }, (_, i) => ({
@@ -176,7 +177,7 @@ export function PineTreeSilhouette({
 }
 
 export function Fireflies({ count = 12 }: { count?: number }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   if (prefersReducedMotion) return null;
 
   const dots = Array.from({ length: count }, (_, i) => ({
@@ -212,7 +213,7 @@ export function Fireflies({ count = 12 }: { count?: number }) {
 }
 
 export function MistLayer({ className = '' }: { className?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
     <div
