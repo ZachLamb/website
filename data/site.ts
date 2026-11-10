@@ -14,9 +14,9 @@ interface SiteConfigShape {
 
 export const siteConfig = {
   name: 'Zach Lamb',
-  title: 'Lead Full-Stack Developer',
+  title: 'Lead UI Developer',
   description:
-    'Lead Full-Stack Developer at Circadence. I ship production React and TypeScript and own the roadmap that decides what gets built next.',
+    'Lead UI Developer at Circadence. I lead the UI engineering team, run our agile process, help shape the product roadmap, and ship full-stack features in React and TypeScript.',
   url: 'https://zachlamb.io',
   ogImage: '/og.png',
   availability: 'Open to remote',

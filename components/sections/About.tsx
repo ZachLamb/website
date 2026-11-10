@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { m, useInView } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
@@ -12,52 +12,11 @@ export function About() {
   const { messages } = useLocaleContext();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const [showAllFocusAreas, setShowAllFocusAreas] = useState(false);
 
   const pullQuote = messages.about.body[0] ?? '';
-  const focusAreas = messages.about.focusAreas.split(' · ').filter(Boolean);
-  const displayedAreas = showAllFocusAreas ? focusAreas : focusAreas.slice(0, 3);
-  const hasMoreAreas = focusAreas.length > 3;
 
   return (
-    <Section
-      variant="light"
-      id="about"
-      nature={{ leaves: true, birds: true }}
-      className="md:pb-16"
-      decoration={
-        // Section-level (not content-column-clipped) so this can use the
-        // true page margin outside the max-w-5xl column on wide viewports,
-        // rather than being boxed into the same 1024px column as the prose
-        // it would otherwise overlap. `right` grows with viewport width
-        // past the column (mirrors the pattern used by
-        // ExperienceDetailPanel's column-relative anchoring), so the
-        // watermark only appears once real dead space exists.
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 100 100"
-          className="text-bark pointer-events-none absolute top-24 hidden h-52 w-52 opacity-[0.06] lg:block"
-          style={{ right: 'max(2rem, calc((100vw - 1024px) / 2 + 3rem))' }}
-        >
-          <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="1" />
-          <circle cx="50" cy="50" r="34" fill="none" stroke="currentColor" strokeWidth="0.5" />
-          <path d="M50 6 L54 46 L50 42 L46 46 Z" fill="currentColor" />
-          <path d="M50 94 L54 54 L50 58 L46 54 Z" fill="currentColor" opacity="0.5" />
-          <path d="M6 50 L46 46 L42 50 L46 54 Z" fill="currentColor" opacity="0.5" />
-          <path d="M94 50 L54 46 L58 50 L54 54 Z" fill="currentColor" opacity="0.5" />
-          <text
-            x="50"
-            y="16"
-            textAnchor="middle"
-            fontSize="8"
-            fill="currentColor"
-            fontFamily="var(--font-serif)"
-          >
-            N
-          </text>
-        </svg>
-      }
-    >
+    <Section variant="light" id="about" nature={{ leaves: true, birds: true }} className="md:pb-16">
       <AnimatedHeading
         sectionId="about"
         subtitle={`I · ${messages.kickers.about}`}
@@ -66,19 +25,35 @@ export function About() {
         {messages.about.heading}
       </AnimatedHeading>
 
-      <div ref={ref}>
-        {/* Pull-quote: sentence 1 at display size with gold left accent */}
-        <m.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-          transition={{ duration: 0.35, delay: 0.05 }}
-          className="text-bark border-gold max-w-3xl border-l-2 pl-4 text-lg leading-relaxed break-words sm:text-xl md:text-2xl"
-        >
-          {pullQuote}
-        </m.p>
+      {/* Two columns from lg up: the statement on the left, the stat plates
+          as a 2x2 block on the right. Below lg the plates drop under the
+          statement, so the right half of the section is never left empty. */}
+      <div
+        ref={ref}
+        className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start lg:gap-12"
+      >
+        <div>
+          <m.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+            transition={{ duration: 0.35, delay: 0.05 }}
+            className="text-bark border-gold border-l-2 pl-4 text-lg leading-relaxed break-words sm:text-xl"
+          >
+            {pullQuote}
+          </m.p>
+
+          <m.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+            transition={{ duration: 0.35, delay: 0.25 }}
+            className="text-slate mt-6 pl-4 text-sm italic sm:text-base"
+          >
+            {messages.about.personalNote}
+          </m.p>
+        </div>
 
         {/* Stats as map plates */}
-        <div className="mt-8 grid max-w-3xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           {messages.about.stats.map((stat, i) => (
             <m.div
               key={stat.label}
@@ -86,58 +61,22 @@ export function About() {
               animate={isInView ? 'visible' : 'hidden'}
               variants={waypointPop}
               transition={{ delay: 0.1 + i * 0.06 }}
+              className="h-full"
             >
               <Card
                 variant="plate"
-                className="flex flex-col items-center justify-center px-3 py-4 text-center sm:px-4 sm:py-3"
+                className="flex h-full flex-col items-center justify-center px-3 py-5 text-center"
               >
                 <div className="text-gold-deep font-serif text-3xl font-bold lining-nums sm:text-4xl">
                   {stat.value}
                 </div>
-                <div className="text-forest-deep mt-1.5 text-xs leading-tight sm:mt-1">
+                <div className="text-forest-deep mt-1.5 text-xs leading-tight sm:text-sm">
                   {stat.label}
                 </div>
               </Card>
             </m.div>
           ))}
         </div>
-
-        {/* Personal closer */}
-        <m.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-          transition={{ duration: 0.35, delay: 0.25 }}
-          className="text-bark mt-6 max-w-3xl text-sm italic"
-        >
-          {messages.about.personalNote}
-        </m.p>
-
-        {/* Focus area pills */}
-        <m.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-          transition={{ duration: 0.35, delay: 0.3 }}
-          className="mt-6 flex max-w-3xl flex-wrap gap-2"
-        >
-          {displayedAreas.map((area) => (
-            <span
-              key={area}
-              className="border-bark/20 bg-sand text-bark inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs"
-            >
-              {area}
-            </span>
-          ))}
-          {hasMoreAreas && (
-            <button
-              type="button"
-              onClick={() => setShowAllFocusAreas(!showAllFocusAreas)}
-              className="border-bark/20 text-bark hover:bg-sand/50 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors"
-            >
-              {showAllFocusAreas ? '−' : '+'}
-              {showAllFocusAreas ? ' Hide' : ` ${focusAreas.length - 3} more`}
-            </button>
-          )}
-        </m.div>
       </div>
     </Section>
   );

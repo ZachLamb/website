@@ -4,16 +4,16 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "全栈开发负责人",
-    "description": "全栈开发负责人，将 React、TypeScript 及其背后的系统落地到生产环境——在 Circadence，技术产品管理也是这个角色的一部分：负责路线图、交付与跨团队协调。AI 驱动的产品开发经验，以人为中心的设计背景，认证 ScrumMaster。"
+    "title": "UI 开发负责人",
+    "description": "Circadence 的 UI 开发负责人。我带领 UI 工程团队，主持团队的敏捷流程，参与制定产品路线图，并使用 React 和 TypeScript 交付全栈功能。"
   },
   "nav": {
-    "trailGuide": "步道指南",
-    "trailLog": "步道日志",
+    "trailGuide": "关于",
+    "trailLog": "经历",
     "selectedWork": "精选作品",
     "recommendations": "推荐",
-    "gear": "装备",
-    "lodge": "营地",
+    "gear": "技能",
+    "lodge": "我的工作",
     "credentials": "资历",
     "contact": "联系",
     "backToTop": "Zach Lamb – 返回顶部",
@@ -23,26 +23,42 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "全栈开发负责人",
-    "taglines": ["我为人们打造工具 —— 也随时乐意聊聊代码、户外或奥利奥。"],
+    "subtitle": "UI 开发负责人",
+    "lede": "我带领 UI 工程团队，主持团队的敏捷流程，同时仍在亲手交付全栈功能。",
+    "taglines": [
+      "我负责 RangeGPT 的前端，这是一个在真实硬件上模拟真实网络攻击的 AI 平台。",
+      "我主持交付流程：冲刺节奏、回顾会议，以及将 400 条待办事项重组为十个 Linear 项目。",
+      "我与产品团队一起确定接下来做什么，然后用 React 和 TypeScript 把它做出来。"
+    ],
     "getInTouch": "联系我",
-    "learnMore": "了解更多",
+    "learnMore": "查看我的经历",
     "resume": "简历",
     "viewResume": "查看简历（在新标签页中打开）"
   },
   "about": {
-    "heading": "向导",
+    "heading": "关于",
     "body": [
-      "我是一名全栈开发负责人——负责 React、TypeScript 及其背后的后端系统。在 Circadence，这也包括产品策略与路线图负责：我在工程与产品之间搭建桥梁，确保决策始终有扎实的技术依据。"
+      "我是 Circadence 的 UI 开发负责人。日常工作包括带领 UI 团队、主持我们的敏捷流程，并协助产品团队决定接下来做什么。我也仍在写代码，把新功能从 React 前端一路做到 API。"
     ],
     "stats": [
-      { "value": "10+", "label": "年开发经验" },
-      { "value": "5", "label": "个行业" },
-      { "value": "CSM", "label": "认证" },
-      { "value": "IC↔PM", "label": "双轨角色" }
+      {
+        "value": "10+",
+        "label": "年开发经验"
+      },
+      {
+        "value": "5",
+        "label": "个行业"
+      },
+      {
+        "value": "CSM",
+        "label": "认证 ScrumMaster"
+      },
+      {
+        "value": "409→10",
+        "label": "待办事项整理为项目"
+      }
     ],
-    "personalNote": "不在办公桌前时，我会教瑜伽、徒步科罗拉多的步道，或者试图一劳永逸地解决奥利奥之争。",
-    "focusAreas": "React 和 TypeScript · 全栈架构 · AI/LLM 集成 · 跨职能领导 · 产品与路线图负责 · 认证 ScrumMaster"
+    "personalNote": "不在办公桌前时，我会教瑜伽、徒步科罗拉多的步道，或者试图一劳永逸地解决奥利奥之争。"
   },
   "footer": {
     "backToTop": "返回顶部",
@@ -52,13 +68,13 @@
     "privacy": "Privacy"
   },
   "contact": {
-    "heading": "在营地留言",
-    "intro": "无论是代码、前方的步道还是奥利奥 —— 留个言，我会从大本营回复。通常一天内回复。",
+    "heading": "联系我",
+    "intro": "有职位、项目，或者关于带领前端团队的问题？给我留言，我通常会在一天内回复。",
     "name": "姓名",
     "email": "邮箱",
     "message": "留言",
-    "namePlaceholder": "同路人",
-    "emailPlaceholder": "hiker@example.cn",
+    "namePlaceholder": "你的名字",
+    "emailPlaceholder": "you@example.cn",
     "messagePlaceholder": "想说什么？",
     "send": "发送",
     "sending": "发送中…",
@@ -70,11 +86,11 @@
     "messageSent": "已发送！"
   },
   "sections": {
-    "experience": "步道日志",
+    "experience": "经历",
     "projects": "精选作品",
     "endorsements": "推荐",
-    "skills": "装备",
-    "services": "我的优势",
+    "skills": "技能",
+    "services": "我的工作",
     "education": "资历"
   },
   "kickers": {
@@ -91,20 +107,17 @@
     "intro": "几个项目，展现我如何思考用户、交付以及 AI 真正发挥作用的地方。"
   },
   "endorsements": {
-    "intro": "同路人对我与他们的合作是怎么说的。",
+    "intro": "上司和同事对与我共事的评价。",
     "showLess": "收起",
     "readMore": "阅读更多",
-    "viewOnLinkedIn": "在 LinkedIn 上查看",
-    "viewOnLinkedInAria": "在 LinkedIn 上查看此推荐（在新标签页中打开）",
     "viewAllOnLinkedIn": "在 LinkedIn 上查看全部推荐",
     "viewAllOnLinkedInAria": "在 LinkedIn 上查看全部推荐（在新标签页中打开）"
   },
   "experience": {
-    "more": "更多",
     "viewFullHistory": "查看完整经历",
     "hideHistory": "隐藏早期经历",
     "earlierRoles": "早期经历",
-    "tenureNote": "在 Sana Benefits 和 StellarFi 任职时间较短，均因公司裁员，并非绩效问题。"
+    "tenureNote": "我在 Sana Benefits 和 StellarFi 的任职均因公司范围的裁员而结束。"
   },
   "education": {
     "certifications": "认证与培训"

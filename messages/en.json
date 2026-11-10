@@ -4,16 +4,16 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "Lead Full-Stack Developer",
-    "description": "Lead Full-Stack Developer at Circadence. I ship production React and TypeScript and own the roadmap that decides what gets built next."
+    "title": "Lead UI Developer",
+    "description": "Lead UI Developer at Circadence. I lead the UI engineering team, run our agile process, help shape the product roadmap, and ship full-stack features in React and TypeScript."
   },
   "nav": {
-    "trailGuide": "Trail Guide",
-    "trailLog": "Trail Log",
+    "trailGuide": "About",
+    "trailLog": "Experience",
     "selectedWork": "Selected Work",
     "recommendations": "Recommendations",
-    "gear": "Gear",
-    "lodge": "Lodge",
+    "gear": "Skills",
+    "lodge": "What I Do",
     "credentials": "Credentials",
     "contact": "Contact",
     "backToTop": "Zach Lamb – back to top",
@@ -23,30 +23,42 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "Lead Full-Stack Developer",
+    "subtitle": "Lead UI Developer",
+    "lede": "I lead a UI engineering team, run its agile process, and still ship full-stack features.",
     "taglines": [
-      "I lead frontend for RangeGPT, an AI platform that simulates real cyberattacks on live hardware.",
-      "My frontend work spans React and TypeScript, from UI migrations to state management to the data layer, always with an eye on what's about to change underneath it.",
-      "I run delivery like an Agile Coach should. I'm constantly looking for tools and processes that make the team more effective, from rebuilding delivery in Linear to embedding AI tooling into daily workflow."
+      "Leading frontend for RangeGPT, an AI platform that simulates real cyberattacks on live hardware.",
+      "Running delivery: sprint cadence, retros, and a 400-item backlog rebuilt into ten Linear projects.",
+      "Working with product on what gets built next, then building it in React and TypeScript."
     ],
     "getInTouch": "Get in Touch",
-    "learnMore": "Learn More",
+    "learnMore": "See My Experience",
     "resume": "Resume",
     "viewResume": "View resume (opens in new tab)"
   },
   "about": {
-    "heading": "Trail Guide",
+    "heading": "About",
     "body": [
-      "I'm a Lead Full-Stack Developer, working across React, TypeScript, and the backend systems behind them. At Circadence, that also means owning product strategy and roadmap, so I can sit in a planning meeting and a code review on the same afternoon and be useful in both."
+      "I'm the Lead UI Developer at Circadence. Day to day, that means leading the UI team, running our agile process, and helping product decide what we build next. I still write code too, taking new features from the React front end through to the API."
     ],
     "stats": [
-      { "value": "10+", "label": "Years Building" },
-      { "value": "5", "label": "Industries" },
-      { "value": "CSM", "label": "Certified" },
-      { "value": "IC↔PM", "label": "Dual Track" }
+      {
+        "value": "10+",
+        "label": "Years Building"
+      },
+      {
+        "value": "5",
+        "label": "Industries"
+      },
+      {
+        "value": "CSM",
+        "label": "Certified ScrumMaster"
+      },
+      {
+        "value": "409→10",
+        "label": "Backlog Items to Projects"
+      }
     ],
-    "personalNote": "When I'm not at my desk, I'm teaching yoga, hiking Colorado's trails, or trying to settle the Oreo debate once and for all.",
-    "focusAreas": "React & TypeScript · Full-Stack Architecture · AI/LLM Integration · Cross-functional Leadership · Product & Roadmap Ownership · Certified ScrumMaster"
+    "personalNote": "When I'm not at my desk, I'm teaching yoga, hiking Colorado's trails, or trying to settle the Oreo debate once and for all."
   },
   "footer": {
     "backToTop": "Back to top",
@@ -56,13 +68,13 @@
     "privacy": "Privacy"
   },
   "contact": {
-    "heading": "Leave a Note at Camp",
-    "intro": "Drop a note and I'll get back to you from base camp, usually within a day. There's no wrong reason to reach out.",
+    "heading": "Get in Touch",
+    "intro": "Have a role, a project, or a question about leading frontend teams? Send a note. I usually reply within a day.",
     "name": "Name",
     "email": "Email",
     "message": "Message",
-    "namePlaceholder": "Fellow Hiker",
-    "emailPlaceholder": "hiker@trailmail.com",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@example.com",
     "messagePlaceholder": "What's on your mind?",
     "send": "Send Message",
     "sending": "Sending…",
@@ -74,11 +86,11 @@
     "messageSent": "Message sent!"
   },
   "sections": {
-    "experience": "Trail Log",
+    "experience": "Experience",
     "projects": "Selected Work",
     "endorsements": "Recommendations",
-    "skills": "Gear",
-    "services": "What I Bring",
+    "skills": "Skills",
+    "services": "What I Do",
     "education": "Credentials"
   },
   "kickers": {
@@ -95,20 +107,17 @@
     "intro": "A few projects worth showing, with notes on what I was solving and how AI fit into it."
   },
   "endorsements": {
-    "intro": "What fellow hikers have said about working with me.",
+    "intro": "What managers and teammates have said about working with me.",
     "showLess": "Show less",
     "readMore": "Read more",
-    "viewOnLinkedIn": "View on LinkedIn",
-    "viewOnLinkedInAria": "View this recommendation on LinkedIn (opens in new tab)",
     "viewAllOnLinkedIn": "View all recommendations on LinkedIn",
     "viewAllOnLinkedInAria": "View all recommendations on LinkedIn (opens in new tab)"
   },
   "experience": {
-    "more": "more",
     "viewFullHistory": "View full trail history",
     "hideHistory": "Hide earlier roles",
     "earlierRoles": "earlier roles",
-    "tenureNote": "Short stints at Sana Benefits and StellarFi were both company-wide layoffs, not performance."
+    "tenureNote": "My time at Sana Benefits and StellarFi both ended in company-wide layoffs."
   },
   "education": {
     "certifications": "Certifications & Training"

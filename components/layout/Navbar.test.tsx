@@ -20,11 +20,11 @@ describe('Navbar', () => {
   it('renders navigation links', () => {
     renderWithLocale(<Navbar />);
     const links = [
-      'Trail Guide',
-      'Trail Log',
+      'About',
+      'What I Do',
+      'Experience',
       'Recommendations',
-      'Gear',
-      'Lodge',
+      'Skills',
       'Credentials',
       'Contact',
     ];
@@ -71,7 +71,7 @@ describe('Navbar', () => {
     const matchMediaSpy = vi.spyOn(window, 'matchMedia').mockImplementation(
       (query: string) =>
         ({
-          matches: query.includes('max-width: 767px'),
+          matches: query.includes('max-width: 1023px'),
           media: query,
           onchange: null,
           addListener: vi.fn(),

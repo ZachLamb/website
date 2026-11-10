@@ -20,12 +20,12 @@ describe('skillCategories', () => {
     });
   });
 
-  it('should include Frontend, Backend, Tools & Infrastructure, and Practices', () => {
+  it('should include Frontend, Backend, Tools & Infrastructure, and Leadership & Practices', () => {
     const names = skillCategories.map((c) => c.name);
     expect(names).toContain('Frontend');
     expect(names).toContain('Backend');
     expect(names).toContain('Tools & Infrastructure');
-    expect(names).toContain('Practices');
+    expect(names).toContain('Leadership & Practices');
   });
 
   it('Frontend should include React and TypeScript', () => {

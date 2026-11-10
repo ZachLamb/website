@@ -119,7 +119,7 @@ export function Projects() {
       <div ref={ref}>
         <AnimatedHeading
           sectionId="projects"
-          subtitle={`IIb · ${messages.kickers.projects}`}
+          subtitle={`IIIb · ${messages.kickers.projects}`}
           className="mb-4"
         >
           {messages.sections.projects}

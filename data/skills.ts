@@ -15,6 +15,19 @@ export type SkillCategory = {
  */
 export const skillCategories: SkillCategory[] = [
   {
+    id: 'practices',
+    name: 'Leadership & Practices',
+    skills: [
+      { name: 'Agile/Scrum', years: 8 },
+      { name: 'Product Management', years: 1 },
+      { name: 'Cross-functional Leadership', years: 1 },
+      { name: 'Product Design', years: 6 },
+      { name: 'UI/UX', years: 10 },
+      { name: 'E2E Testing', years: 2 },
+      { name: 'AI/LLM Integration', years: 1 },
+    ],
+  },
+  {
     id: 'frontend',
     name: 'Frontend',
     skills: [
@@ -49,19 +62,6 @@ export const skillCategories: SkillCategory[] = [
       { name: 'Jest', years: 3 },
       { name: 'Cypress', years: 1 },
       { name: 'Webpack', years: 3 },
-    ],
-  },
-  {
-    id: 'practices',
-    name: 'Practices',
-    skills: [
-      { name: 'Agile/Scrum', years: 8 },
-      { name: 'Product Management', years: 1 },
-      { name: 'Cross-functional Leadership', years: 1 },
-      { name: 'Product Design', years: 6 },
-      { name: 'UI/UX', years: 10 },
-      { name: 'E2E Testing', years: 2 },
-      { name: 'AI/LLM Integration', years: 1 },
     ],
   },
 ];

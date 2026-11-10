@@ -25,13 +25,14 @@ describe('Endorsements', () => {
 
   it('renders endorsement cards from data', () => {
     renderWithLocale(<Endorsements />);
-    // Desktop marquee duplicates cards for seamless loop, so use getAllByText
+    // Each card renders twice (desktop grid + mobile carousel, one hidden by
+    // CSS at any width), so use getAllByText
     expect(screen.getAllByText('Kimball Heaton').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Katherine Liu').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Lia Young').length).toBeGreaterThanOrEqual(1);
     expect(
-      screen.getAllByLabelText(/View this recommendation on LinkedIn/i).length,
-    ).toBeGreaterThanOrEqual(3);
+      screen.getByRole('link', { name: /View all recommendations on LinkedIn/i }),
+    ).toBeInTheDocument();
   });
 
   it('has the endorsements section id', () => {

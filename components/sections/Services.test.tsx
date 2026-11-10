@@ -11,17 +11,17 @@ import { renderWithLocale } from '@/lib/test-utils';
 import { Services } from './Services';
 
 describe('Services', () => {
-  it('renders "What I Bring" heading', () => {
+  it('renders "What I Do" heading', () => {
     renderWithLocale(<Services />);
-    expect(screen.getByText('What I Bring')).toBeInTheDocument();
+    expect(screen.getByText('What I Do')).toBeInTheDocument();
   });
 
   it('renders all 4 service titles', () => {
     renderWithLocale(<Services />);
-    expect(screen.getByText('Full-Stack Architecture & Delivery')).toBeInTheDocument();
-    expect(screen.getByText('AI-Augmented Engineering')).toBeInTheDocument();
-    expect(screen.getByText('Product & Roadmap Strategy')).toBeInTheDocument();
-    expect(screen.getByText('Process & Delivery')).toBeInTheDocument();
+    expect(screen.getByText('Team Leadership')).toBeInTheDocument();
+    expect(screen.getByText('Agile Delivery')).toBeInTheDocument();
+    expect(screen.getByText('Product & Roadmap')).toBeInTheDocument();
+    expect(screen.getByText('Full-Stack Features')).toBeInTheDocument();
   });
 
   it('has the services section id', () => {
