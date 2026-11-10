@@ -1,17 +1,38 @@
 version: 2
 updates:
+  # npm: one grouped pull request a week covering every dependency
+  # (production and dev; patch, minor and major).
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
-    open-pull-requests-limit: 10
+      day: monday
+    open-pull-requests-limit: 5
     groups:
-      dev-dependencies:
-        dependency-type: development
-      production-dependencies:
-        dependency-type: production
+      npm-dependencies:
+        applies-to: version-updates
+        patterns:
+          - '*'
+      # Security fixes are opened as soon as an advisory lands rather than
+      # waiting for Monday, but they are also bundled into a single PR.
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - '*'
+    ignore:
+      # typescript-eslint refuses to load with TypeScript 7 (it needs the TS 6
+      # JS API; tracked in typescript-eslint/typescript-eslint#10940). Drop
+      # this once typescript-eslint supports TS 7.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
 
+  # GitHub Actions: one grouped pull request a week for workflow actions.
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+      day: monday
+    groups:
+      github-actions:
+        patterns:
+          - '*'
