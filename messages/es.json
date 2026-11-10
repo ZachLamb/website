@@ -4,16 +4,16 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "Lead Full-Stack Developer",
-    "description": "Lead Full-Stack Developer que lleva React, TypeScript y los sistemas detrás de ellos a producción — en Circadence, la gestión técnica de producto forma parte del rol: responsabilidad de roadmap, entrega y coordinación entre equipos. Desarrollo de producto potenciado por IA, formación en diseño centrado en el humano, ScrumMaster certificado."
+    "title": "Lead UI Developer",
+    "description": "Lead UI Developer en Circadence. Lidero el equipo de ingeniería de UI, dirijo nuestro proceso ágil, ayudo a definir el roadmap de producto y entrego funcionalidades full-stack en React y TypeScript."
   },
   "nav": {
-    "trailGuide": "Guía del sendero",
-    "trailLog": "Registro del sendero",
+    "trailGuide": "Sobre mí",
+    "trailLog": "Experiencia",
     "selectedWork": "Trabajos Destacados",
     "recommendations": "Recomendaciones",
-    "gear": "Equipo",
-    "lodge": "Refugio",
+    "gear": "Habilidades",
+    "lodge": "Lo que hago",
     "credentials": "Credenciales",
     "contact": "Contacto",
     "backToTop": "Zach Lamb – volver arriba",
@@ -23,30 +23,42 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "Lead Full-Stack Developer",
+    "subtitle": "Lead UI Developer",
+    "lede": "Lidero un equipo de ingeniería de UI, dirijo su proceso ágil y sigo entregando funcionalidades full-stack.",
     "taglines": [
       "Lidero el frontend de RangeGPT, una plataforma de IA que simula ciberataques reales en hardware real.",
-      "Mi trabajo en frontend abarca desde migraciones de UI hasta la gestión de estado y la capa de datos, siempre atento a lo que está por cambiar.",
-      "Dirijo la entrega como lo haría un Agile Coach. Siempre estoy buscando herramientas y procesos que hagan al equipo más efectivo, desde reconstruir nuestro flujo de trabajo en Linear hasta integrar herramientas de IA en el día a día."
+      "Dirijo la entrega: cadencia de sprints, retrospectivas y un backlog de 400 elementos reconstruido en diez proyectos de Linear.",
+      "Trabajo con producto en lo que se construye a continuación y luego lo desarrollo en React y TypeScript."
     ],
     "getInTouch": "Contactar",
-    "learnMore": "Saber más",
+    "learnMore": "Ver mi experiencia",
     "resume": "Currículum",
     "viewResume": "Ver currículum (se abre en nueva pestaña)"
   },
   "about": {
-    "heading": "Guía del Sendero",
+    "heading": "Sobre mí",
     "body": [
-      "Soy Lead Full-Stack Developer — React, TypeScript y los sistemas de backend detrás de ellos. En Circadence, eso también incluye la estrategia de producto y el roadmap: conecto ingeniería y producto para que las decisiones se mantengan técnicamente fundamentadas."
+      "Soy Lead UI Developer en Circadence. En el día a día, eso significa liderar el equipo de UI, dirigir nuestro proceso ágil y ayudar a producto a decidir qué construimos a continuación. También sigo escribiendo código y llevo las nuevas funcionalidades desde el frontend en React hasta la API."
     ],
     "stats": [
-      { "value": "10+", "label": "Años Construyendo" },
-      { "value": "5", "label": "Industrias" },
-      { "value": "CSM", "label": "Certificado" },
-      { "value": "IC↔PM", "label": "Doble Perfil" }
+      {
+        "value": "10+",
+        "label": "Años Construyendo"
+      },
+      {
+        "value": "5",
+        "label": "Industrias"
+      },
+      {
+        "value": "CSM",
+        "label": "ScrumMaster Certificado"
+      },
+      {
+        "value": "409→10",
+        "label": "Elementos de backlog a proyectos"
+      }
     ],
-    "personalNote": "Cuando no estoy en mi escritorio, enseño yoga, recorro los senderos de Colorado o intento resolver el debate de las Oreo de una vez por todas.",
-    "focusAreas": "React y TypeScript · Arquitectura Full-Stack · Integración AI/LLM · Liderazgo Interfuncional · Gestión de Producto y Roadmap · Certified ScrumMaster"
+    "personalNote": "Cuando no estoy en mi escritorio, enseño yoga, recorro los senderos de Colorado o intento resolver el debate de las Oreo de una vez por todas."
   },
   "footer": {
     "backToTop": "Volver arriba",
@@ -56,13 +68,13 @@
     "privacy": "Privacy"
   },
   "contact": {
-    "heading": "Deja una nota en el campamento",
-    "intro": "Ya sea sobre código, el sendero que sigue o las Oreos — deja una nota y te responderé desde el campamento base. Normalmente respondo en un día.",
+    "heading": "Ponte en contacto",
+    "intro": "¿Tienes un puesto, un proyecto o una pregunta sobre cómo liderar equipos de frontend? Envíame una nota. Normalmente respondo en un día.",
     "name": "Nombre",
     "email": "Correo electrónico",
     "message": "Mensaje",
-    "namePlaceholder": "Compañero de ruta",
-    "emailPlaceholder": "senderista@correo.com",
+    "namePlaceholder": "Tu nombre",
+    "emailPlaceholder": "tu@ejemplo.com",
     "messagePlaceholder": "¿Qué tienes en mente?",
     "send": "Enviar mensaje",
     "sending": "Enviando…",
@@ -74,11 +86,11 @@
     "messageSent": "¡Mensaje enviado!"
   },
   "sections": {
-    "experience": "Registro del sendero",
+    "experience": "Experiencia",
     "projects": "Trabajos Destacados",
     "endorsements": "Recomendaciones",
-    "skills": "Equipo",
-    "services": "Lo que aporto",
+    "skills": "Habilidades",
+    "services": "Lo que hago",
     "education": "Credenciales"
   },
   "kickers": {
@@ -95,20 +107,17 @@
     "intro": "Algunos proyectos que muestran cómo pienso en los usuarios, en entregar y en dónde la IA realmente aporta valor."
   },
   "endorsements": {
-    "intro": "Lo que otros senderistas han dicho sobre trabajar conmigo.",
+    "intro": "Lo que han dicho responsables y compañeros de equipo sobre trabajar conmigo.",
     "showLess": "Ver menos",
     "readMore": "Leer más",
-    "viewOnLinkedIn": "Ver en LinkedIn",
-    "viewOnLinkedInAria": "Ver esta recomendación en LinkedIn (se abre en nueva pestaña)",
     "viewAllOnLinkedIn": "Ver todas las recomendaciones en LinkedIn",
     "viewAllOnLinkedInAria": "Ver todas las recomendaciones en LinkedIn (se abre en nueva pestaña)"
   },
   "experience": {
-    "more": "más",
     "viewFullHistory": "Ver historial completo",
     "hideHistory": "Ocultar roles anteriores",
     "earlierRoles": "roles anteriores",
-    "tenureNote": "Los periodos breves en Sana Benefits y StellarFi fueron despidos masivos de la empresa, no por desempeño."
+    "tenureNote": "Mi paso por Sana Benefits y StellarFi terminó en ambos casos por despidos a nivel de toda la empresa."
   },
   "education": {
     "certifications": "Certificaciones y Formación"

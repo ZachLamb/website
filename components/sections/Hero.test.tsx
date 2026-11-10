@@ -52,9 +52,14 @@ describe('Hero', () => {
     expect(screen.getByText('Zach Lamb')).toBeInTheDocument();
   });
 
-  it('renders "Lead Full-Stack Developer" subtitle', () => {
+  it('renders "Lead UI Developer" subtitle', () => {
     renderWithLocale(<Hero />);
-    expect(screen.getByText('Lead Full-Stack Developer')).toBeInTheDocument();
+    expect(screen.getByText('Lead UI Developer')).toBeInTheDocument();
+  });
+
+  it('renders the fixed one-line pitch above the rotating tagline', () => {
+    renderWithLocale(<Hero />);
+    expect(screen.getByText(/I lead a UI engineering team/)).toBeInTheDocument();
   });
 
   it('renders "Get in Touch" primary CTA', () => {
@@ -62,9 +67,12 @@ describe('Hero', () => {
     expect(screen.getByRole('link', { name: /get in touch/i })).toBeInTheDocument();
   });
 
-  it('renders "Learn More" secondary CTA', () => {
+  it('renders the secondary CTA pointing at the experience section', () => {
     renderWithLocale(<Hero />);
-    expect(screen.getByRole('link', { name: /learn more/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /see my experience/i })).toHaveAttribute(
+      'href',
+      '/en#experience',
+    );
   });
 
   it('renders social links with accessible labels', () => {
@@ -82,7 +90,7 @@ describe('Hero', () => {
     motionMocks.useReducedMotion.mockReturnValue(true);
     renderWithLocale(<Hero />);
     expect(screen.getByText('Zach Lamb')).toBeInTheDocument();
-    expect(screen.getByText('Lead Full-Stack Developer')).toBeInTheDocument();
+    expect(screen.getByText('Lead UI Developer')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /get in touch/i })).toBeInTheDocument();
   });
 });

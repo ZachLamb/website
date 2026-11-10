@@ -1,8 +1,10 @@
 """Generate Zach Lamb's resume PDF from the portfolio's data files.
 
 Uses reportlab Platypus for flow-based layout with tight spacing.
-Output: /Users/zach/Code/website/public/zach-lamb-resume.pdf
+Output: public/zach-lamb-resume.pdf (relative to the repo root)
 """
+from pathlib import Path
+
 from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import inch
@@ -109,7 +111,7 @@ styles = {
 
 # --- content ---
 NAME = "Zach Lamb"
-TITLE = "Lead Full-Stack Developer"
+TITLE = "Lead UI Developer"
 AVAILABILITY = "Open to remote"
 CONTACT = (
     "zachlamb.io &nbsp;·&nbsp; "
@@ -118,26 +120,26 @@ CONTACT = (
 )
 
 SUMMARY = (
-    "Lead Full-Stack Developer shipping production React, TypeScript, and the systems "
-    "behind them — with technical product management folded into the role at "
-    "Circadence: roadmap ownership, delivery, and cross-team coordination. AI-powered "
-    "product development, human-centered design background, Certified ScrumMaster."
+    "Lead UI Developer at Circadence. I lead the UI engineering team, run our agile "
+    "process, help shape the product roadmap, and ship full-stack features in React "
+    "and TypeScript. Human-centered design background, Certified ScrumMaster."
 )
 
 # Full experience list — mirrors data/experience.ts verbatim.
 EXPERIENCE = [
     {
         "company": "Circadence",
-        "position": "Technical Product Manager",
+        "position": "Lead UI Developer",
         "start": "Sep 2025",
         "end": "Present",
         "bullets": [
-            "Build LLM-powered web tools that speed up threat analysis and incident response for cybersecurity professionals — full-stack delivery as IC (React, TypeScript) while also owning product strategy and roadmap for the team",
-            "Rebuilt delivery infrastructure: consolidated 409 backlog items into 10 structured Linear projects, established the first reliable sprint cadence and retro process",
-            "Primary technical counterpart for the NTT Data Japan enterprise partnership, coordinating across two software teams and a hardware team toward the June 2026 deliverable",
+            "Lead the UI engineering team behind RangeGPT, an AI platform that simulates real cyberattacks on live hardware, setting frontend direction and reviewing the team's work",
+            "Run the agile process: consolidated 409 backlog items into 10 structured Linear projects and established the first reliable sprint cadence and retros",
+            "Work with product on strategy and roadmap, and act as primary technical counterpart for the NTT Data Japan enterprise partnership across two software teams and a hardware team",
+            "Build full-stack features in React and TypeScript, including LLM-powered tools that speed up threat analysis and incident response for cybersecurity professionals",
             "Introduced AI-augmented engineering practices: Claude Code in grooming, MCP tooling for roadmaps, shared agent configs across the team",
         ],
-        "stack": "React · TypeScript · Full-Stack Development · AI/LLM · Roadmap Ownership",
+        "stack": "React · TypeScript · Full-Stack Development · AI/LLM · Team Leadership · Agile",
     },
     {
         "company": "Starbucks",
@@ -145,9 +147,9 @@ EXPERIENCE = [
         "start": "Feb 2024",
         "end": "Sep 2025",
         "bullets": [
-            "Developed message reply and edit features with TypeScript, React, and GraphQL",
-            "Upgraded UI libraries raising Lighthouse performance score from 65 to 90",
-            "Collaborated across teams on a new web application for store managers and developed Agile processes",
+            "Shipped message reply and edit features with TypeScript, React, and GraphQL",
+            "Upgraded UI libraries, raising the Lighthouse performance score from 65 to 90",
+            "Worked across teams to build a new web application for store managers, and developed Agile processes for the team",
         ],
         "stack": "TypeScript · React · GraphQL · Apollo Client",
     },
@@ -158,7 +160,7 @@ EXPERIENCE = [
         "end": "Jan 2024",
         "bullets": [
             "Pair-programmed an API and UI table with my manager to show users how their monthly membership payments were being reported to credit bureaus",
-            "Created a new design system for a brand refresh, driving 100 new users per week improvement",
+            "Created a new design system for a brand refresh that added roughly 100 new users per week",
             "Built an E2E testing framework that uncovered two major regression bugs in the production account-creation flow",
             "Initiated and facilitated bi-weekly retrospectives for the engineering team, leading to a documentation-focused sprint and broader process improvements",
         ],
@@ -217,7 +219,7 @@ SKILLS = [
     ("Frontend", "React, TypeScript, Next.js, Vue.js, GraphQL, Redux, HTML/CSS, SASS, Tailwind CSS"),
     ("Backend", "Node.js, Python, Django, Ruby on Rails"),
     ("Tools & Infrastructure", "Docker, AWS, Git, Jest, Cypress, Webpack"),
-    ("Practices", "Agile/Scrum, Product Design, UI/UX, E2E Testing, AI/LLM Integration"),
+    ("Leadership & Practices", "Agile/Scrum, Cross-functional Leadership, Product Management, Product Design, UI/UX, E2E Testing, AI/LLM Integration"),
 ]
 
 EDUCATION = [
@@ -344,7 +346,7 @@ def build_story():
 
 
 def main():
-    output_path = "/Users/zach/Code/website/public/zach-lamb-resume.pdf"
+    output_path = str(Path(__file__).resolve().parent.parent / "public" / "zach-lamb-resume.pdf")
     doc = SimpleDocTemplate(
         output_path,
         pagesize=LETTER,
@@ -354,7 +356,7 @@ def main():
         bottomMargin=0.55 * inch,
         title="Zach Lamb — Resume",
         author="Zach Lamb",
-        subject="Lead Full-Stack Developer",
+        subject=TITLE,
     )
     doc.build(build_story())
     print(f"Wrote {output_path}")

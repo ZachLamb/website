@@ -12,9 +12,9 @@ import { experiences } from '@/data/experience';
 import { Experience } from './Experience';
 
 describe('Experience', () => {
-  it('renders "Trail Log" heading', () => {
+  it('renders "Experience" heading', () => {
     renderWithLocale(<Experience />);
-    expect(screen.getByText('Trail Log')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'Experience' })).toBeInTheDocument();
   });
 
   it('renders 4 featured company names by default', () => {
@@ -30,8 +30,22 @@ describe('Experience', () => {
   it('renders the tenure note explaining the short Sana/StellarFi stints', () => {
     renderWithLocale(<Experience />);
     expect(
-      screen.getByText(/Sana Benefits and StellarFi were both company-wide layoffs/),
+      screen.getByText(/Sana Benefits and StellarFi both ended in company-wide layoffs/),
     ).toBeInTheDocument();
+  });
+
+  it('leads each card with the role as its heading', () => {
+    renderWithLocale(<Experience />);
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Lead UI Developer' }),
+    ).toBeInTheDocument();
+  });
+
+  it('shows every bullet of a role instead of truncating behind a "+N more" label', () => {
+    renderWithLocale(<Experience />);
+    const card = screen.getByTestId('experience-card-circadence');
+    expect(card.querySelectorAll('li')).toHaveLength(5);
+    expect(screen.queryByText(/^\+\d+ more$/)).not.toBeInTheDocument();
   });
 
   it('has the experience section id', () => {

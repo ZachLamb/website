@@ -12,11 +12,11 @@ import { hasPublishedProjects } from '@/data/projects';
 
 export const navLinkIds = [
   { key: 'trailGuide' as const, href: '#about', id: 'about' },
+  { key: 'lodge' as const, href: '#services', id: 'services' },
   { key: 'trailLog' as const, href: '#experience', id: 'experience' },
   { key: 'selectedWork' as const, href: '#projects', id: 'projects' },
   { key: 'recommendations' as const, href: '#endorsements', id: 'endorsements' },
   { key: 'gear' as const, href: '#skills', id: 'skills' },
-  { key: 'lodge' as const, href: '#services', id: 'services' },
   { key: 'credentials' as const, href: '#education', id: 'education' },
   { key: 'contact' as const, href: '#contact', id: 'contact' },
 ] as const;
@@ -35,7 +35,7 @@ export function Navbar() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    const isMobile = window.matchMedia('(max-width: 1023px)').matches;
     const shouldLock = mobileOpen && isMobile;
 
     if (shouldLock) {
@@ -47,7 +47,7 @@ export function Navbar() {
       document.body.style.width = '100%';
     }
 
-    const mq = window.matchMedia('(max-width: 767px)');
+    const mq = window.matchMedia('(max-width: 1023px)');
     const onResize = () => {
       if (!mq.matches) {
         setMobileOpen(false);
@@ -133,7 +133,7 @@ export function Navbar() {
           </a>
 
           {/* Desktop links + language dropdown */}
-          <ul className="hidden flex-wrap items-center gap-6 md:flex">
+          <ul className="hidden flex-wrap items-center gap-6 lg:flex">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -163,7 +163,7 @@ export function Navbar() {
           <button
             ref={toggleButtonRef}
             type="button"
-            className="text-bark flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-md md:hidden"
+            className="text-bark flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-md lg:hidden"
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label={mobileOpen ? messages.nav.closeMenu : messages.nav.openMenu}
             aria-expanded={mobileOpen}
@@ -188,7 +188,7 @@ export function Navbar() {
             aria-modal={mobileOpen ? 'true' : undefined}
             aria-label={mobileOpen ? messages.nav.openMenu : undefined}
             className={cn(
-              'bg-forest fixed inset-0 z-[60] flex flex-col items-center justify-center transition-opacity duration-300 md:hidden',
+              'bg-forest fixed inset-0 z-[60] flex flex-col items-center justify-center transition-opacity duration-300 lg:hidden',
               mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
             )}
             style={{

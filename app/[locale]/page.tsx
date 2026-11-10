@@ -16,6 +16,8 @@ export default function Home() {
       <Hero />
       <About />
       <Divider variant="mountains" />
+      <Services />
+      <Divider variant="trail" />
       <Experience />
       {/* Projects renders null when nothing is published; the surrounding
           divider would leave an awkward decorative gap, so it's gated too.
@@ -30,8 +32,6 @@ export default function Home() {
       <Endorsements />
       <Skills />
       <Divider variant="treeline" flip />
-      <Services />
-      <Divider variant="trail" />
       <Education />
       <Divider variant="mountains" flip />
       <Contact />

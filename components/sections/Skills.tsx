@@ -43,7 +43,7 @@ export function Skills() {
     >
       <AnimatedHeading
         sectionId="skills"
-        subtitle={`III · ${messages.kickers.skills}`}
+        subtitle={`V · ${messages.kickers.skills}`}
         className="[&_p]:text-gold-light [&_h2]:text-parchment"
       >
         {messages.sections.skills}

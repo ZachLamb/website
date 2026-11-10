@@ -4,16 +4,16 @@
   },
   "site": {
     "name": "Zach Lamb",
-    "title": "リードフルスタックデベロッパー",
-    "description": "React、TypeScript、そしてその基盤となるシステムを本番環境で開発するリードフルスタックデベロッパー。Circadenceでは、ロードマップの所有、デリバリー、チーム横断の調整といったテクニカルプロダクトマネジメントも役割の一部として担う。AI駆動のプロダクト開発、ヒューマンセンタードデザインのバックグラウンド、認定スクラムマスター。"
+    "title": "リードUIデベロッパー",
+    "description": "CircadenceのリードUIデベロッパー。UIエンジニアリングチームを率い、アジャイルプロセスを運営し、プロダクトロードマップの策定に関わりながら、ReactとTypeScriptでフルスタックの機能を開発しています。"
   },
   "nav": {
-    "trailGuide": "トレイルガイド",
-    "trailLog": "トレイルログ",
+    "trailGuide": "プロフィール",
+    "trailLog": "経歴",
     "selectedWork": "選りすぐりの仕事",
     "recommendations": "推薦",
-    "gear": "ギア",
-    "lodge": "ロッジ",
+    "gear": "スキル",
+    "lodge": "役割",
     "credentials": "資格",
     "contact": "お問い合わせ",
     "backToTop": "Zach Lamb – トップへ戻る",
@@ -23,28 +23,42 @@
   },
   "hero": {
     "title": "Zach Lamb",
-    "subtitle": "リードフルスタックデベロッパー",
+    "subtitle": "リードUIデベロッパー",
+    "lede": "UIエンジニアリングチームを率い、アジャイルプロセスを運営しながら、自らもフルスタックの機能開発を続けています。",
     "taglines": [
-      "人々のためのツールを作っています。コード、アウトドア、オレオについて話すのもいつでも歓迎です。"
+      "実機上で現実のサイバー攻撃をシミュレートするAIプラットフォーム、RangeGPTのフロントエンドを率いています。",
+      "デリバリーを運営しています。スプリントのリズム、レトロスペクティブ、そして400件のバックログを10のLinearプロジェクトに再編しました。",
+      "次に何を作るかをプロダクトチームと決め、ReactとTypeScriptで実装します。"
     ],
     "getInTouch": "お問い合わせ",
-    "learnMore": "詳しく見る",
+    "learnMore": "経歴を見る",
     "resume": "履歴書",
     "viewResume": "履歴書を見る（新しいタブで開く）"
   },
   "about": {
-    "heading": "トレイルガイド",
+    "heading": "プロフィール",
     "body": [
-      "私はリードフルスタックデベロッパーとして、React、TypeScript、そしてその基盤となるバックエンドシステムを開発しています。Circadenceでは、プロダクト戦略とロードマップの所有も担っており、エンジニアリングとプロダクトの橋渡し役として、意思決定が技術的に地に足のついたものであるようにしています。"
+      "CircadenceでリードUIデベロッパーを務めています。日々の仕事は、UIチームを率い、アジャイルプロセスを運営し、次に何を作るかをプロダクトチームと一緒に決めることです。今も自分でコードを書き、新機能をReactのフロントエンドからAPIまで一貫して開発しています。"
     ],
     "stats": [
-      { "value": "10年+", "label": "開発経験" },
-      { "value": "5", "label": "業界" },
-      { "value": "CSM", "label": "認定資格" },
-      { "value": "IC↔PM", "label": "二刀流" }
+      {
+        "value": "10年+",
+        "label": "開発経験"
+      },
+      {
+        "value": "5",
+        "label": "業界"
+      },
+      {
+        "value": "CSM",
+        "label": "認定スクラムマスター"
+      },
+      {
+        "value": "409→10",
+        "label": "バックログ項目をプロジェクトに整理"
+      }
     ],
-    "personalNote": "デスクを離れているときは、ヨガを教えたり、コロラドのトレイルをハイキングしたり、オレオ論争に決着をつけようとしています。",
-    "focusAreas": "React & TypeScript · フルスタックアーキテクチャ · AI/LLM統合 · 部門横断リーダーシップ · プロダクト＆ロードマップ管理 · 認定スクラムマスター"
+    "personalNote": "デスクを離れているときは、ヨガを教えたり、コロラドのトレイルをハイキングしたり、オレオ論争に決着をつけようとしています。"
   },
   "footer": {
     "backToTop": "トップへ戻る",
@@ -54,13 +68,13 @@
     "privacy": "Privacy"
   },
   "contact": {
-    "heading": "キャンプにメッセージを残す",
-    "intro": "コード、今後のトレイル、オレオについてでも — メッセージを残していただければ、ベースキャンプから返信します。通常1日以内に返信します。",
+    "heading": "お問い合わせ",
+    "intro": "採用のご相談、プロジェクトのご依頼、フロントエンドチームの運営についてのご質問など、お気軽にメッセージをお送りください。通常1日以内に返信します。",
     "name": "お名前",
     "email": "メールアドレス",
     "message": "メッセージ",
-    "namePlaceholder": "ハイカーの皆さん",
-    "emailPlaceholder": "hiker@example.jp",
+    "namePlaceholder": "お名前",
+    "emailPlaceholder": "you@example.jp",
     "messagePlaceholder": "ご用件は？",
     "send": "送信",
     "sending": "送信中…",
@@ -72,11 +86,11 @@
     "messageSent": "送信しました！"
   },
   "sections": {
-    "experience": "トレイルログ",
+    "experience": "経歴",
     "projects": "選りすぐりの仕事",
     "endorsements": "推薦",
-    "skills": "ギア",
-    "services": "私の強み",
+    "skills": "スキル",
+    "services": "役割",
     "education": "資格"
   },
   "kickers": {
@@ -93,20 +107,17 @@
     "intro": "ユーザーのこと、きちんと届けること、そしてAIが本当に役立つ場所について、私の考え方を示すプロジェクトをいくつか。"
   },
   "endorsements": {
-    "intro": "一緒に働いた仲間が私について語ってくれたこと。",
+    "intro": "上司や同僚が、私との仕事について語ってくれたこと。",
     "showLess": "折りたたむ",
     "readMore": "続きを読む",
-    "viewOnLinkedIn": "LinkedInで見る",
-    "viewOnLinkedInAria": "この推薦をLinkedInで見る（新しいタブで開く）",
     "viewAllOnLinkedIn": "LinkedInで全ての推薦を見る",
     "viewAllOnLinkedInAria": "LinkedInで全ての推薦を見る（新しいタブで開く）"
   },
   "experience": {
-    "more": "件",
     "viewFullHistory": "すべての経歴を表示",
     "hideHistory": "過去の経歴を非表示",
     "earlierRoles": "以前の経歴",
-    "tenureNote": "Sana BenefitsとStellarFiでの短い在籍期間は、いずれも会社都合のレイオフによるもので、業績によるものではありません。"
+    "tenureNote": "Sana BenefitsとStellarFiでの在籍は、いずれも全社的なレイオフにより終了しました。"
   },
   "education": {
     "certifications": "認定資格＆トレーニング"

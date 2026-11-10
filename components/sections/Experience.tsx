@@ -51,7 +51,7 @@ function TimelineCard({ entry, number }: { entry: (typeof experiences)[number]; 
 /**
  * Wraps a group of TimelineCards with one continuous dashed trail line
  * behind them. Drawing the line once here — instead of one segment per
- * entry — keeps it visually unbroken across the `gap-2` seams between
+ * entry — keeps it visually unbroken across the seams between
  * entries; a per-entry `inset-y-0` line only spans its own row's box and
  * leaves an 8px break at every gap.
  */
@@ -74,33 +74,37 @@ function CardContent({
   entry: (typeof experiences)[number];
   isInView: boolean;
 }) {
-  const visibleBullets = 2;
-  const visibleBadges = 3;
-  const hasMoreBullets = entry.description.length > visibleBullets;
-  const hasMoreBadges = entry.techStack.length > visibleBadges;
+  // A freelance stint has no separate employer, so company === position;
+  // printing both would just repeat the line.
+  const showCompany = entry.company !== entry.position;
 
   return (
     <div>
-      <h3 className="text-forest-deep font-serif text-lg font-semibold sm:text-xl">
-        {entry.company}
-      </h3>
-      <p className="text-bark text-sm">{entry.position}</p>
-      {/* Trail-distance date range */}
-      <p className="text-slate flex items-center gap-1.5 text-xs">
-        {entry.startDate}
-        <span aria-hidden="true" className="bg-gold/40 inline-block h-px w-6" />
-        <span
-          aria-hidden="true"
-          className="border-gold/40 -ml-1.5 inline-block border-y-2 border-l-4 border-y-transparent"
-        />
-        {entry.endDate}
-      </p>
+      {/* Role leads, employer follows, dates sit on the right from sm up so
+          the three facts a reader scans for are on one line. */}
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+        <div className="min-w-0">
+          <h3 className="text-forest-deep font-serif text-xl font-semibold sm:text-2xl">
+            {entry.position}
+          </h3>
+          {showCompany && <p className="text-gold-deep text-sm font-medium">{entry.company}</p>}
+        </div>
+        {/* Trail-distance date range */}
+        <p className="text-slate flex shrink-0 items-center gap-1.5 text-xs sm:text-sm">
+          {entry.startDate}
+          <span aria-hidden="true" className="bg-gold/40 inline-block h-px w-6" />
+          <span
+            aria-hidden="true"
+            className="border-gold/40 -ml-1.5 inline-block border-y-2 border-l-4 border-y-transparent"
+          />
+          {entry.endDate}
+        </p>
+      </div>
 
-      <ul className="text-bark mt-3 list-inside list-disc space-y-1 text-sm leading-relaxed">
+      <ul className="text-bark marker:text-gold mt-4 list-outside list-disc space-y-1.5 pl-5 text-sm leading-relaxed sm:text-base">
         {entry.description.map((item, i) => (
           <m.li
             key={item}
-            className={i >= visibleBullets ? 'hidden sm:list-item' : undefined}
             initial={{ opacity: 0, y: 8 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{ duration: 0.3, delay: 0.05 + i * 0.06 }}
@@ -108,89 +112,24 @@ function CardContent({
             {item}
           </m.li>
         ))}
-        {hasMoreBullets && (
-          <li className="text-slate text-xs sm:hidden">
-            +{entry.description.length - visibleBullets} more
-          </li>
-        )}
       </ul>
 
       {entry.techStack.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap gap-2">
           {entry.techStack.map((tech, j) => (
             <m.span
               key={tech}
-              className={j >= visibleBadges ? 'hidden sm:inline-block' : 'inline-block'}
+              className="inline-block"
               initial={{ opacity: 0, scale: 0.85 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
               transition={{ duration: 0.25, delay: 0.15 + j * 0.04 }}
-              whileHover={{ scale: 1.05 }}
             >
               <Badge>{tech}</Badge>
             </m.span>
           ))}
-          {hasMoreBadges && (
-            <span className="text-slate flex items-center text-xs font-medium sm:hidden">
-              +{entry.techStack.length - visibleBadges}
-            </span>
-          )}
         </div>
       )}
-
-      {/* Inline trail elevation profile (hidden on mobile to save space) */}
-      <div className="border-bark/10 mt-3 hidden overflow-hidden rounded-md border sm:block">
-        <TrailProfileGraph
-          id={`inline-${entry.id}`}
-          count={entry.description.length + entry.techStack.length}
-          className="h-8"
-        />
-      </div>
     </div>
-  );
-}
-
-/** Trail profile / elevation-style line (abstract "path" for this role) */
-function TrailProfileGraph({
-  count,
-  id,
-  className,
-}: {
-  count: number;
-  id: string;
-  className?: string;
-}) {
-  const points = 8;
-  const steps = Array.from({ length: points }, (_, i) => {
-    const t = i / (points - 1);
-    const y = 0.85 - 0.5 * Math.sin((i * ((count % 5) + 1)) / 2) * 0.4 - t * 0.3;
-    return [t * 100, y * 100];
-  });
-  const d = steps.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x} ${y}`).join(' ');
-  const gradId = `trail-profile-${id}`;
-  return (
-    <svg
-      viewBox="0 0 100 100"
-      className={cn('text-gold-deep w-full', className ?? 'h-14')}
-      preserveAspectRatio="none"
-      aria-hidden
-    >
-      <defs>
-        <linearGradient id={gradId} x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor="currentColor" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="currentColor" stopOpacity="0.4" />
-        </linearGradient>
-      </defs>
-      <path d={`${d} L 100 100 L 0 100 Z`} fill={`url(#${gradId})`} />
-      <path
-        d={d}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity={0.8}
-      />
-    </svg>
   );
 }
 
@@ -207,17 +146,17 @@ export function Experience() {
 
   return (
     <Section variant="light" id="experience" mapFrame nature={{ leaves: true, pines: true }}>
-      <div className="bg-parchment/95 sticky top-16 z-30 -mx-4 mb-12 px-4 py-2 backdrop-blur-sm sm:-mx-6 sm:px-6 md:static md:mx-0 md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
+      <div className="mb-8 md:mb-12">
         <AnimatedHeading
           sectionId="experience"
-          subtitle={`II · ${messages.kickers.experience}`}
+          subtitle={`III · ${messages.kickers.experience}`}
           className="md:mb-0"
         >
           {messages.sections.experience}
         </AnimatedHeading>
       </div>
 
-      <TimelineList className="flex flex-col gap-2">
+      <TimelineList className="flex flex-col gap-4">
         {featuredExperiences.map((entry, i) => (
           <TimelineCard key={entry.id} entry={entry} number={i + 1} />
         ))}
@@ -243,7 +182,7 @@ export function Experience() {
 
           <AutoHeight>
             {showHistory && (
-              <TimelineList className="mt-8 flex flex-col gap-2">
+              <TimelineList className="mt-8 flex flex-col gap-4">
                 {olderExperiences.map((entry, i) => (
                   <TimelineCard
                     key={entry.id}

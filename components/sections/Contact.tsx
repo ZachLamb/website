@@ -142,7 +142,7 @@ export function Contact() {
       <ConstellationBackground />
       <AnimatedHeading
         sectionId="contact"
-        subtitle={`VI · ${messages.kickers.contact}`}
+        subtitle={`VII · ${messages.kickers.contact}`}
         className="[&_h2]:text-parchment [&_p]:text-gold-light"
       >
         {messages.contact.heading}

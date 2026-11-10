@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react';
 export const SECTION_IDS = [
   'hero',
   'about',
+  'services',
   'experience',
   'projects',
   'endorsements',
   'skills',
-  'services',
   'education',
   'contact',
 ] as const;

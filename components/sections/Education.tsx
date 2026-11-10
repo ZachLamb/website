@@ -98,7 +98,7 @@ export function Education() {
 
   return (
     <Section variant="light" id="education" tone="dusk" nature={{ leaves: true, pines: true }}>
-      <AnimatedHeading sectionId="education" subtitle={`V · ${messages.kickers.education}`}>
+      <AnimatedHeading sectionId="education" subtitle={`VI · ${messages.kickers.education}`}>
         {messages.sections.education}
       </AnimatedHeading>
 

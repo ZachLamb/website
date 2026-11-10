@@ -607,41 +607,51 @@ export function Hero() {
         animate="visible"
         className="relative z-10 mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col items-center justify-center px-4 py-8 text-center sm:px-6 sm:py-12 md:px-8 md:py-16"
       >
-        <m.p
-          variants={fadeUp}
-          className="text-gold-light text-center font-sans text-sm tracking-widest break-words uppercase"
-        >
-          {messages.hero.subtitle}
-        </m.p>
+        {/* Soft scrim behind the copy: the trail-map lines run straight
+            through this column, and without it they cut across the text. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-[130%] -translate-y-1/2 bg-[radial-gradient(closest-side,rgba(44,62,45,0.92),rgba(44,62,45,0.7)_60%,transparent)]"
+        />
 
-        {siteConfig.availability && (
-          <m.span
-            variants={fadeUp}
-            className="border-gold-light/40 bg-gold-light/10 text-gold-light mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-medium tracking-wide"
-          >
-            {siteConfig.availability}
-          </m.span>
-        )}
+        <m.div
+          variants={fadeUp}
+          className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2"
+        >
+          <p className="text-gold-light font-sans text-sm tracking-widest break-words uppercase">
+            {messages.hero.subtitle}
+          </p>
+          {siteConfig.availability && (
+            <span className="border-gold-light/40 bg-gold-light/10 text-gold-light inline-flex rounded-full border px-3 py-1 text-xs font-medium tracking-wide">
+              {siteConfig.availability}
+            </span>
+          )}
+        </m.div>
 
         <m.h1
           variants={fadeUp}
-          className="text-parchment mt-4 text-center font-serif text-4xl font-bold break-words sm:text-5xl md:text-7xl lg:text-8xl"
+          className="text-parchment mt-4 text-center font-serif text-5xl font-bold break-words sm:text-6xl md:text-7xl lg:text-8xl"
           style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
         >
           {messages.hero.title}
         </m.h1>
 
-        <m.div variants={fadeUp} className="mt-6 w-full max-w-2xl">
+        {/* The one-sentence pitch stays put; only the supporting line below
+            it rotates, so the core message is readable at any moment. */}
+        <m.p
+          variants={fadeUp}
+          className="text-parchment mt-6 max-w-2xl text-center text-xl leading-snug font-medium text-balance break-words sm:text-2xl"
+        >
+          {messages.hero.lede}
+        </m.p>
+
+        <m.div variants={fadeUp} className="mt-4 w-full max-w-xl">
           <TaglineCycler
             taglines={messages.hero.taglines}
             // Default 6s; explicit here so the value is co-located with the
             // taglines content and easy to tune per-site if needed.
             intervalMs={6000}
-            // Reserve enough vertical space for the tallest variant so the
-            // CTA buttons below don't shift when the cycler rotates between
-            // 1, 2, and 3-line wrappings. ~3 lines @ 360px (mobile),
-            // ~2 lines @ ≥768px.
-            className="text-stone text-center text-lg break-words md:text-xl"
+            className="text-stone min-h-[4.5rem] text-center text-base text-balance break-words sm:min-h-[3.5rem] md:text-lg"
           />
         </m.div>
 
@@ -654,7 +664,7 @@ export function Hero() {
           </Button>
           <Button
             variant="secondary"
-            href={`${basePath}#about`}
+            href={`${basePath}#experience`}
             className="w-full sm:w-auto sm:min-w-0"
           >
             {messages.hero.learnMore}

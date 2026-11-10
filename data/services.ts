@@ -7,31 +7,31 @@ export type ServiceEntry = {
 
 export const services: ServiceEntry[] = [
   {
-    id: 'fullstack-architecture',
-    title: 'Full-Stack Architecture & Delivery',
-    icon: 'code',
-    description:
-      'I build and ship production React and TypeScript, along with the architecture and performance work that keeps features shipping on schedule.',
-  },
-  {
-    id: 'ai-augmented-engineering',
-    title: 'AI-Augmented Engineering',
-    icon: 'sparkles',
-    description:
-      'I embed AI tooling into team workflows: Claude Code in grooming, MCP for roadmap surfacing, shared agent configs. Quality scales without bottlenecking on review.',
-  },
-  {
-    id: 'product-roadmap-strategy',
-    title: 'Product & Roadmap Strategy',
-    icon: 'compass',
-    description:
-      "At Circadence, I own the roadmap alongside the engineering work, from discovery through delivery. I've consolidated 400+ loose backlog items into structured projects and built dual roadmaps spanning multiple teams.",
-  },
-  {
-    id: 'process-delivery',
-    title: 'Process & Delivery',
+    id: 'team-leadership',
+    title: 'Team Leadership',
     icon: 'users',
     description:
-      "Certified ScrumMaster who builds the sprint cadence, retros, and cross-functional rhythms that let teams ship reliably. I've designed hiring processes adopted company-wide.",
+      "I lead the UI team at Circadence: setting frontend direction, reviewing code, and clearing blockers so engineers can ship. I've also designed hiring processes that were adopted company-wide.",
+  },
+  {
+    id: 'agile-delivery',
+    title: 'Agile Delivery',
+    icon: 'repeat',
+    description:
+      "Certified ScrumMaster running the sprint cadence, retros, and backlog. At Circadence I turned 400+ loose backlog items into ten structured projects and set up the team's first reliable sprint rhythm.",
+  },
+  {
+    id: 'product-roadmap',
+    title: 'Product & Roadmap',
+    icon: 'compass',
+    description:
+      "I work alongside product from discovery through delivery and bring the engineering view into roadmap decisions. I've built dual roadmaps that keep software and hardware teams pointed at the same deliverable.",
+  },
+  {
+    id: 'fullstack-features',
+    title: 'Full-Stack Features',
+    icon: 'code',
+    description:
+      "I still build. New features go from React and TypeScript on the front end through to the services behind them, including LLM-powered tools, and I bring AI tooling like Claude Code and MCP into the team's daily workflow.",
   },
 ];

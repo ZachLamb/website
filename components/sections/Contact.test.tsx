@@ -11,9 +11,9 @@ import { renderWithLocale } from '@/lib/test-utils';
 import { Contact } from './Contact';
 
 describe('Contact', () => {
-  it('renders "Leave a Note at Camp" heading', () => {
+  it('renders "Get in Touch" heading', () => {
     renderWithLocale(<Contact />);
-    expect(screen.getByText('Leave a Note at Camp')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'Get in Touch' })).toBeInTheDocument();
   });
 
   it('renders name field', () => {

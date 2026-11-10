@@ -11,9 +11,9 @@ import { renderWithLocale } from '@/lib/test-utils';
 import { About } from './About';
 
 describe('About', () => {
-  it('renders "Trail Guide" heading', () => {
+  it('renders "About" heading', () => {
     renderWithLocale(<About />);
-    expect(screen.getByText('Trail Guide')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'About' })).toBeInTheDocument();
   });
 
   it('renders stats grid with 4 stat cards', () => {
@@ -21,12 +21,12 @@ describe('About', () => {
     expect(screen.getByText('10+')).toBeInTheDocument();
     expect(screen.getByText('Years Building')).toBeInTheDocument();
     expect(screen.getByText('CSM')).toBeInTheDocument();
-    expect(screen.getByText('IC↔PM')).toBeInTheDocument();
+    expect(screen.getByText('409→10')).toBeInTheDocument();
   });
 
-  it('renders bio text mentioning Lead Full-Stack Developer', () => {
+  it('renders bio text mentioning the Lead UI Developer title', () => {
     renderWithLocale(<About />);
-    expect(screen.getByText(/Lead Full-Stack Developer/)).toBeInTheDocument();
+    expect(screen.getByText(/Lead UI Developer/)).toBeInTheDocument();
   });
 
   it('has the about section id', () => {
@@ -36,7 +36,7 @@ describe('About', () => {
 
   it('renders pull-quote and personal note', () => {
     renderWithLocale(<About />);
-    expect(screen.getByText(/I'm a Lead Full-Stack Developer/)).toBeInTheDocument();
+    expect(screen.getByText(/I'm the Lead UI Developer at Circadence/)).toBeInTheDocument();
     expect(screen.getByText(/Oreo debate/)).toBeInTheDocument();
   });
 

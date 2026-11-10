@@ -11,9 +11,9 @@ import { renderWithLocale } from '@/lib/test-utils';
 import { Skills } from './Skills';
 
 describe('Skills', () => {
-  it('renders "Gear" heading', () => {
+  it('renders "Skills" heading', () => {
     renderWithLocale(<Skills />);
-    expect(screen.getByText('Gear')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'Skills' })).toBeInTheDocument();
   });
 
   it('renders all 4 category names', () => {
@@ -21,7 +21,7 @@ describe('Skills', () => {
     expect(screen.getByText('Frontend')).toBeInTheDocument();
     expect(screen.getByText('Backend')).toBeInTheDocument();
     expect(screen.getByText('Tools & Infrastructure')).toBeInTheDocument();
-    expect(screen.getByText('Practices')).toBeInTheDocument();
+    expect(screen.getByText('Leadership & Practices')).toBeInTheDocument();
   });
 
   it('renders individual skills with years', () => {

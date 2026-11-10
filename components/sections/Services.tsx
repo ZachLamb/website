@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { m, useInView } from 'framer-motion';
-import { Code, Sparkles, Users, Palette, Compass } from 'lucide-react';
+import { Code, Repeat, Users, Compass } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
 import { Card } from '@/components/ui/Card';
@@ -13,9 +13,8 @@ import type { LucideIcon } from 'lucide-react';
 
 const iconMap: Record<string, LucideIcon> = {
   code: Code,
-  sparkles: Sparkles,
+  repeat: Repeat,
   users: Users,
-  palette: Palette,
   compass: Compass,
 };
 
@@ -26,7 +25,7 @@ export function Services() {
 
   return (
     <Section variant="light" id="services" tone="dusk" mapFrame nature={{ leaves: true }}>
-      <AnimatedHeading sectionId="services" subtitle={`IV · ${messages.kickers.services}`}>
+      <AnimatedHeading sectionId="services" subtitle={`II · ${messages.kickers.services}`}>
         {messages.sections.services}
       </AnimatedHeading>
 
@@ -49,7 +48,9 @@ export function Services() {
                 <h3 className="text-forest-deep font-serif text-xl font-semibold">
                   {service.title}
                 </h3>
-                <p className="text-bark mt-2 text-sm">{service.description}</p>
+                <p className="text-bark mt-2 text-sm leading-relaxed sm:text-base">
+                  {service.description}
+                </p>
               </Card>
             </m.div>
           );

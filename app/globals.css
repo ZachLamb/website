@@ -196,15 +196,6 @@ html:lang(it) nav [data-nav-link] {
   }
 }
 
-@keyframes endorsement-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @keyframes topo-pulse {
   0% {
     box-shadow:
@@ -270,9 +261,5 @@ html:lang(it) nav [data-nav-link] {
   }
   section[id] {
     scroll-snap-align: start;
-  }
-  /* Experience has a sticky heading that conflicts with snap */
-  section#experience {
-    scroll-snap-align: none;
   }
 }
