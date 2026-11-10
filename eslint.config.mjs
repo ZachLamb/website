@@ -1,8 +1,13 @@
+import { createRequire } from 'node:module';
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import reactPlugin from 'eslint-plugin-react';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import nextPlugin from '@next/eslint-plugin-next';
+
+// eslint-plugin-react's `version: 'detect'` calls context.getFilename(), which
+// ESLint 10 removed, so the installed React version is read here instead.
+const reactVersion = createRequire(import.meta.url)('react/package.json').version;
 
 export default [
   js.configs.recommended,
@@ -23,7 +28,7 @@ export default [
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
     settings: {
-      react: { version: 'detect' },
+      react: { version: reactVersion },
     },
   },
   {

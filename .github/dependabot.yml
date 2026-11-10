@@ -5,6 +5,12 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
+    ignore:
+      # typescript-eslint refuses to load with TypeScript 7 (it needs the TS 6
+      # JS API; tracked in typescript-eslint/typescript-eslint#10940). Drop
+      # this once typescript-eslint supports TS 7.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
     groups:
       dev-dependencies:
         dependency-type: development
