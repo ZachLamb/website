@@ -18,13 +18,34 @@ describe('Button', () => {
   it('applies primary variant styles by default', () => {
     render(<Button>Primary</Button>);
     const button = screen.getByRole('button', { name: 'Primary' });
-    expect(button).toHaveClass('bg-gold-light', 'text-charcoal');
+    expect(button).toHaveClass('bg-blaze', 'text-paper');
   });
 
   it('applies secondary variant styles', () => {
     render(<Button variant="secondary">Secondary</Button>);
     const button = screen.getByRole('button', { name: 'Secondary' });
-    expect(button).toHaveClass('border', 'text-gold-light');
+    expect(button).toHaveClass('border', 'text-ink');
+  });
+
+  it('switches both variants to their night-surface colours', () => {
+    render(
+      <>
+        <Button onNight>Primary</Button>
+        <Button onNight variant="secondary">
+          Secondary
+        </Button>
+      </>,
+    );
+    expect(screen.getByRole('button', { name: 'Primary' })).toHaveClass(
+      'bg-blaze-bright',
+      'text-night',
+    );
+    expect(screen.getByRole('button', { name: 'Secondary' })).toHaveClass('text-paper');
+  });
+
+  it('is at least 44px tall for touch', () => {
+    render(<Button>Tap</Button>);
+    expect(screen.getByRole('button', { name: 'Tap' })).toHaveClass('min-h-12');
   });
 
   it('accepts custom className', () => {

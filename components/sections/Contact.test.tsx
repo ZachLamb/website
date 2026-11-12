@@ -1,11 +1,3 @@
-vi.mock('@/components/ui/NatureElements', () => ({
-  FloatingLeaves: () => null,
-  Fireflies: () => null,
-  PineTreeSilhouette: () => null,
-  BirdSilhouettes: () => null,
-  MistLayer: () => null,
-}));
-
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { renderWithLocale } from '@/lib/test-utils';
 import { Contact } from './Contact';

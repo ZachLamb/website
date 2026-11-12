@@ -1,38 +1,27 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { m, useInView, AnimatePresence } from 'framer-motion';
-import { GraduationCap, Award, ChevronDown, ChevronUp } from 'lucide-react';
+import { useId, useState } from 'react';
+import { Award, ChevronDown } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
-import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { Reveal } from '@/components/ui/Reveal';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { education, certifications } from '@/data/education';
-import { trailFadeUp, waypointPop } from '@/lib/trail-animations';
+import { waypointNumber } from '@/lib/waypoints';
 import { cn } from '@/lib/utils';
 
-function EducationRow({
-  entry,
-  index,
-  isInView,
-}: {
-  entry: (typeof education)[number];
-  index: number;
-  isInView: boolean;
-}) {
+function EducationRow({ entry }: { entry: (typeof education)[number] }) {
   const [expanded, setExpanded] = useState(false);
+  const detailsId = useId();
   const hasDetails = entry.details.length > 0;
   const RowTag = hasDetails ? 'button' : 'div';
 
   return (
-    <m.div
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={trailFadeUp}
-      transition={{ delay: index * 0.1 }}
-    >
-      {/* Only a row with details is a button. A row without them used to be a
-          disabled button, which screen readers announce as an unavailable
+    <li className="bg-paper-raised">
+      {/* Only a row with details is a button. A row without them used to be
+          a disabled button, which screen readers announce as an unavailable
           control. */}
       <RowTag
         {...(hasDetails
@@ -40,100 +29,97 @@ function EducationRow({
               type: 'button' as const,
               onClick: () => setExpanded((e) => !e),
               'aria-expanded': expanded,
+              'aria-controls': detailsId,
             }
           : {})}
         className={cn(
-          'flex w-full items-center gap-3 rounded-lg px-2 py-3 text-left',
-          hasDetails && 'group hover:bg-sand/50 cursor-pointer transition-colors',
+          // Years sit above the degree on a phone and in their own column
+          // from sm up, so neither has to share a cramped line.
+          'grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 gap-y-1 p-5 text-left sm:grid-cols-[7.5rem_minmax(0,1fr)_auto] sm:p-6',
+          hasDetails &&
+            'hover:bg-paper focus-visible:ring-blaze cursor-pointer touch-manipulation transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset',
         )}
       >
-        <GraduationCap className="text-gold h-5 w-5 shrink-0" />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-            <span className="text-forest-deep font-serif text-lg font-semibold">
-              {entry.degree}
-            </span>
-            {/* On a phone the institution wraps to its own line, which left
-                the dash dangling at the end of the degree. */}
-            <span className="text-bark hidden text-sm sm:inline" aria-hidden>
-              —
-            </span>
-            <span className="text-bark basis-full text-sm sm:basis-auto">{entry.institution}</span>
-            {entry.field && <Badge className="text-xs">{entry.field}</Badge>}
-          </div>
-        </div>
-        <span className="text-slate shrink-0 text-xs tabular-nums">
+        <span className="text-ink-soft col-span-2 font-mono text-xs tracking-wider tabular-nums sm:col-span-1 sm:pt-1.5">
           {entry.startYear}–{entry.endYear}
         </span>
-        {hasDetails && (
-          <span className="text-gold shrink-0" aria-hidden>
-            {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+        <span className="min-w-0">
+          <span className="text-ink block font-serif text-2xl leading-tight font-semibold">
+            {entry.degree}
           </span>
+          <span className="text-ink-soft mt-1 block text-base">{entry.institution}</span>
+          {entry.field && <Badge className="mt-2">{entry.field}</Badge>}
+        </span>
+        {hasDetails && (
+          <ChevronDown
+            aria-hidden="true"
+            className={cn(
+              'text-blaze mt-1.5 h-5 w-5 shrink-0 transition-transform duration-200',
+              expanded && 'rotate-180',
+            )}
+          />
         )}
       </RowTag>
 
-      <AnimatePresence>
-        {expanded && hasDetails && (
-          <m.ul
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="text-bark list-inside list-disc space-y-1 overflow-hidden pl-10 text-sm"
-          >
-            {entry.details.map((detail) => (
-              <li key={detail}>{detail}</li>
-            ))}
-          </m.ul>
-        )}
-      </AnimatePresence>
-    </m.div>
+      {hasDetails && (
+        <div id={detailsId}>
+          {expanded && (
+            <ul className="text-ink-soft marker:text-blaze list-outside list-disc space-y-1.5 px-5 pb-5 pl-10 text-base sm:px-6 sm:pb-6 sm:pl-[calc(7.5rem+2.75rem)]">
+              {entry.details.map((detail) => (
+                <li key={detail}>{detail}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </li>
   );
 }
 
 export function Education() {
   const { messages } = useLocaleContext();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
 
   return (
-    <Section variant="light" id="education" tone="dusk" nature={{ leaves: true, pines: true }}>
-      <AnimatedHeading sectionId="education" subtitle={`VI · ${messages.kickers.education}`}>
+    <Section id="education" surface="paper" after="night">
+      <SectionHeading
+        sectionId="education"
+        number={waypointNumber('education')}
+        kicker={messages.kickers.education}
+      >
         {messages.sections.education}
-      </AnimatedHeading>
+      </SectionHeading>
 
-      <div ref={ref} className="divide-bark/10 mt-8 divide-y">
-        {education.map((entry, i) => (
-          <EducationRow key={entry.id} entry={entry} index={i} isInView={isInView} />
-        ))}
-      </div>
+      <Reveal className="mt-8">
+        <Card as="div" className="bg-contour/40 overflow-hidden">
+          <ul className="flex flex-col gap-px">
+            {education.map((entry) => (
+              <EducationRow key={entry.id} entry={entry} />
+            ))}
+          </ul>
+        </Card>
+      </Reveal>
 
-      {/* Certifications as horizontal chips */}
-      <div className="mt-8">
-        <h3 className="text-forest mb-4 font-serif text-lg font-semibold">
+      <Reveal className="mt-10">
+        <h3 className="text-blaze flex items-center gap-3 font-mono text-xs font-medium tracking-[0.18em] uppercase">
           {messages.education.certifications}
+          <span aria-hidden="true" className="bg-contour/40 h-px flex-1" />
         </h3>
-        <div className="flex flex-wrap gap-3">
-          {certifications.map((cert, i) => (
-            <m.div
-              key={cert.id}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              variants={waypointPop}
-              transition={{ delay: education.length * 0.06 + i * 0.06 }}
-              className="border-bark/15 inline-flex items-center gap-2 rounded-2xl border bg-white/40 px-3 py-1.5"
-            >
-              <Award className="text-gold h-4 w-4 shrink-0" />
-              <span className="text-bark text-sm font-medium">
-                <span>{cert.name}</span>
-                {cert.issuer && (
-                  <span className="text-slate text-xs font-normal"> · {cert.issuer}</span>
-                )}
-              </span>
-            </m.div>
+        <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {certifications.map((cert) => (
+            <li key={cert.id}>
+              <Card className="flex h-full items-start gap-3 p-4">
+                <Award aria-hidden="true" className="text-blaze mt-0.5 h-5 w-5 shrink-0" />
+                <span className="min-w-0">
+                  <span className="text-ink block font-medium">{cert.name}</span>
+                  {cert.issuer && (
+                    <span className="text-ink-soft mt-0.5 block text-sm">{cert.issuer}</span>
+                  )}
+                </span>
+              </Card>
+            </li>
           ))}
-        </div>
-      </div>
+        </ul>
+      </Reveal>
     </Section>
   );
 }

@@ -1,19 +1,28 @@
 'use client';
 
-import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { m, useInView } from 'framer-motion';
+import { useState, type FormEvent } from 'react';
+import { m } from 'framer-motion';
 import { usePrefersReducedMotion } from '@/hooks/useHydrated';
 import { Send, Mail } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
-import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Card } from '@/components/ui/Card';
+import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { socialLinks } from '@/data/social';
 import { socialIconMap } from '@/lib/icons';
-import { elevationSlideLeft, elevationSlideRight } from '@/lib/trail-animations';
+import { waypointNumber } from '@/lib/waypoints';
 
+// text-base (16px) is load-bearing: iOS Safari zooms the page when a field
+// with smaller text takes focus.
 const inputClasses =
-  'w-full rounded-lg border border-bark/30 bg-charcoal px-4 py-3 text-parchment placeholder:text-stone/50 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gold focus:shadow-[0_0_12px_rgba(184,134,11,0.2)] transition-all';
+  'w-full rounded-md border border-paper/25 bg-night px-4 py-3 text-base text-paper placeholder:text-stone/60 transition-colors focus:border-blaze-bright focus:outline-none focus:ring-2 focus:ring-blaze-bright/60';
+
+const labelClasses = 'text-stone mb-2 block font-mono text-xs tracking-[0.18em] uppercase';
+
+const directLinkClasses =
+  'text-paper hover:text-blaze-bright focus-visible:ring-blaze-bright flex min-h-12 touch-manipulation items-center gap-3 rounded-sm py-2 transition-colors focus-visible:ring-2 focus-visible:outline-none';
 
 /** Mailto link and display: use NEXT_PUBLIC_CONTACT_EMAIL or fallback so form recipient and link stay in sync when set. */
 const contactEmail =
@@ -41,57 +50,11 @@ function PaperAirplaneIcon({ className }: { className?: string }) {
   );
 }
 
-function ConstellationBackground() {
-  const stars = Array.from({ length: 20 }, (_, i) => ({
-    left: `${(i * 37 + 13) % 100}%`,
-    top: `${(i * 53 + 7) % 100}%`,
-    size: 1 + (i % 3) * 0.5,
-    duration: 12 + (i % 5) * 4,
-    delay: (i % 7) * 2,
-    opacity: 0.04 + (i % 4) * 0.02,
-    dx: `${((i % 3) - 1) * 8}px`,
-    dy: `${(i % 2 === 0 ? -1 : 1) * 6}px`,
-  }));
-
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      {stars.map((star, i) => (
-        <div
-          key={i}
-          className="bg-parchment absolute rounded-full"
-          style={
-            {
-              left: star.left,
-              top: star.top,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              '--star-opacity': String(star.opacity),
-              '--star-dx': star.dx,
-              '--star-dy': star.dy,
-              animation: `star-drift ${star.duration}s ease-in-out ${star.delay}s infinite`,
-            } as React.CSSProperties
-          }
-        />
-      ))}
-    </div>
-  );
-}
-
 export function Contact() {
   const { messages } = useLocaleContext();
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    if (status === 'success' || status === 'error') {
-      const timer = setTimeout(() => {
-        setStatus('idle');
-        setErrorMessage(null);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [status]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -134,273 +97,200 @@ export function Contact() {
     }
   }
 
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
-
   return (
-    <Section variant="dark" id="contact" nature={{ fireflies: true }}>
-      <ConstellationBackground />
-      <AnimatedHeading
+    <Section id="contact" surface="night" after="paper">
+      <SectionHeading
         sectionId="contact"
-        subtitle={`VII · ${messages.kickers.contact}`}
-        className="[&_h2]:text-parchment [&_p]:text-gold-light"
+        number={waypointNumber('contact')}
+        kicker={messages.kickers.contact}
+        onNight
       >
         {messages.contact.heading}
-      </AnimatedHeading>
+      </SectionHeading>
 
-      <m.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="text-stone mt-4 text-lg"
-      >
-        {messages.contact.intro}
-      </m.p>
+      <p className="text-stone mt-4 max-w-2xl text-lg">{messages.contact.intro}</p>
 
-      <div ref={ref} className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-2">
-        <div className="relative min-h-[320px]">
-          {status === 'success' ? (
-            <m.div
-              key="success"
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: prefersReducedMotion ? 0 : 0.5,
-                type: 'spring',
-                stiffness: 400,
-                damping: 25,
-              }}
-              className="border-gold/20 bg-gold/5 flex flex-col items-center justify-center rounded-lg border py-12 text-center"
-              aria-live="polite"
-              aria-atomic="true"
-              role="status"
-            >
-              <p className="sr-only">{messages.contact.messageSent}</p>
-              <m.div
-                className="text-gold-light mb-4 flex justify-center"
-                initial={prefersReducedMotion ? false : { y: 0, opacity: 1, rotate: 0, x: 0 }}
-                animate={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        y: [0, -16, -96],
-                        x: [0, 0, 20],
-                        opacity: [1, 1, 0],
-                        rotate: [0, 5, 18],
-                        scale: [1, 1.15, 0.9],
-                      }
-                }
-                transition={{
-                  duration: 1.4,
-                  times: [0, 0.2, 1],
-                  ease: ['easeOut', 'easeOut', 'easeIn'],
-                }}
+      <div className="mt-8 grid grid-cols-1 gap-10 md:mt-10 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12">
+        <Reveal>
+          <Card onNight className="p-5 sm:p-6">
+            {status === 'success' ? (
+              <div
+                className="flex min-h-80 flex-col items-center justify-center py-6 text-center"
+                aria-live="polite"
+                aria-atomic="true"
+                role="status"
               >
-                <PaperAirplaneIcon className="h-12 w-12" />
-              </m.div>
-              <m.p
-                className="text-parchment font-serif text-xl font-semibold"
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
-                animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.4,
-                  delay: 0.35,
-                }}
-              >
-                {messages.contact.successTitle}
-              </m.p>
-              <m.p
-                className="text-stone mt-1 text-sm"
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
-                animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.35,
-                  delay: 0.55,
-                }}
-              >
-                {messages.contact.successSub}
-              </m.p>
-              <m.div
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
-                animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.35,
-                  delay: 0.75,
-                }}
-              >
+                <p className="sr-only">{messages.contact.messageSent}</p>
+                <m.div
+                  className="text-blaze-bright mb-4 flex justify-center"
+                  initial={prefersReducedMotion ? false : { y: 0, opacity: 1, rotate: 0, x: 0 }}
+                  animate={
+                    prefersReducedMotion
+                      ? {}
+                      : {
+                          y: [0, -16, -96],
+                          x: [0, 0, 20],
+                          opacity: [1, 1, 0],
+                          rotate: [0, 5, 18],
+                          scale: [1, 1.15, 0.9],
+                        }
+                  }
+                  transition={{
+                    duration: 1.4,
+                    times: [0, 0.2, 1],
+                    ease: ['easeOut', 'easeOut', 'easeIn'],
+                  }}
+                >
+                  <PaperAirplaneIcon className="h-12 w-12" />
+                </m.div>
+                <p className="text-paper font-serif text-2xl font-semibold">
+                  {messages.contact.successTitle}
+                </p>
+                <p className="text-stone mt-1 text-base">{messages.contact.successSub}</p>
                 <Button
                   type="button"
                   variant="secondary"
+                  onNight
                   className="mt-6"
                   onClick={() => setStatus('idle')}
                 >
                   {messages.contact.sendAnother}
                 </Button>
-              </m.div>
-            </m.div>
-          ) : (
-            <m.form
-              key="form"
-              onSubmit={handleSubmit}
-              className="space-y-6"
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              variants={elevationSlideLeft}
-            >
-              <div>
-                <label htmlFor="name" className="text-parchment mb-1 block text-sm font-medium">
-                  {messages.contact.name}
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  maxLength={200}
-                  placeholder={messages.contact.namePlaceholder}
-                  className={inputClasses}
-                />
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                  <label htmlFor="name" className={labelClasses}>
+                    {messages.contact.name}
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    maxLength={200}
+                    placeholder={messages.contact.namePlaceholder}
+                    className={inputClasses}
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="email" className="text-parchment mb-1 block text-sm font-medium">
-                  {messages.contact.email}
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  maxLength={320}
-                  placeholder={messages.contact.emailPlaceholder}
-                  className={inputClasses}
-                />
-              </div>
+                <div>
+                  <label htmlFor="email" className={labelClasses}>
+                    {messages.contact.email}
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    required
+                    maxLength={320}
+                    placeholder={messages.contact.emailPlaceholder}
+                    className={inputClasses}
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="message" className="text-parchment mb-1 block text-sm font-medium">
-                  {messages.contact.message}
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  required
-                  maxLength={5000}
-                  placeholder={messages.contact.messagePlaceholder}
-                  className={inputClasses}
-                />
-              </div>
+                <div>
+                  <label htmlFor="message" className={labelClasses}>
+                    {messages.contact.message}
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={5}
+                    required
+                    maxLength={5000}
+                    placeholder={messages.contact.messagePlaceholder}
+                    className={`${inputClasses} resize-y`}
+                  />
+                </div>
 
-              <Button type="submit" className="w-full gap-2" disabled={status === 'sending'}>
-                {status === 'sending' ? (
-                  <span className="flex items-center justify-center gap-2">
-                    {!prefersReducedMotion && (
-                      <span className="flex gap-1">
-                        {[0, 1, 2].map((i) => (
-                          <m.span
-                            key={i}
-                            className="h-1.5 w-1.5 rounded-full bg-current opacity-60"
-                            animate={{
-                              opacity: [0.4, 1, 0.4],
-                              scale: [0.9, 1.1, 0.9],
-                            }}
-                            transition={{
-                              duration: 0.8,
-                              repeat: Infinity,
-                              delay: i * 0.15,
-                            }}
-                          />
-                        ))}
-                      </span>
-                    )}
-                    {messages.contact.sending}
-                  </span>
-                ) : (
-                  <>
-                    {messages.contact.send}
-                    <Send className="h-4 w-4" />
-                  </>
-                )}
-              </Button>
+                <Button type="submit" onNight className="w-full" disabled={status === 'sending'}>
+                  {status === 'sending' ? (
+                    messages.contact.sending
+                  ) : (
+                    <>
+                      {messages.contact.send}
+                      <Send aria-hidden="true" className="h-4 w-4" />
+                    </>
+                  )}
+                </Button>
 
-              <div aria-live="polite" aria-atomic="true">
-                {/* Sending announcement — sr-only because the visible "Sending…"
-                    label sits in the disabled submit button, but screen readers
-                    don't re-announce a button's text change after it's already
-                    been read. Routing the state through this live region makes
-                    submit feedback audible to AT users. */}
-                {status === 'sending' && <p className="sr-only">{messages.contact.sending}</p>}
-                {status === 'error' && (
-                  <p className="text-center text-sm text-red-400">
-                    {errorMessage ?? messages.contact.fallbackError}
-                  </p>
-                )}
-              </div>
-            </m.form>
-          )}
-        </div>
+                <div aria-live="polite" aria-atomic="true">
+                  {/* Sending announcement — sr-only because the visible "Sending…"
+                      label sits in the disabled submit button, but screen readers
+                      don't re-announce a button's text change after it's already
+                      been read. Routing the state through this live region makes
+                      submit feedback audible to AT users. */}
+                  {status === 'sending' && <p className="sr-only">{messages.contact.sending}</p>}
+                  {/* Stays until the next attempt: an error that clears itself
+                      on a timer can vanish before it has been read. */}
+                  {status === 'error' && (
+                    <p className="text-center text-sm text-red-300">
+                      {errorMessage ?? messages.contact.fallbackError}
+                    </p>
+                  )}
+                </div>
+              </form>
+            )}
+          </Card>
+        </Reveal>
 
-        <m.div
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          variants={elevationSlideRight}
-        >
-          <h3 className="text-parchment mb-6 font-serif text-xl font-semibold">
+        <Reveal delay={0.08}>
+          <h3 className="text-blaze-bright flex items-center gap-3 font-mono text-xs font-medium tracking-[0.18em] uppercase">
             {messages.contact.orReachOut}
+            <span aria-hidden="true" className="bg-paper/20 h-px flex-1" />
           </h3>
 
-          <div className="space-y-1">
+          <ul className="divide-paper/10 mt-3 divide-y">
             {socialLinks.map((link) => {
               const Icon = socialIconMap[link.icon];
               if (!Icon) return null;
               return (
-                <a
-                  key={link.platform}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${link.platform} (opens in new tab)`}
-                  className="text-parchment hover:text-gold-light focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 touch-manipulation items-center gap-3 rounded-md py-3 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  <Icon className="text-gold-light h-5 w-5 shrink-0" />
-                  <span className="font-medium">{link.platform}</span>
-                </a>
+                <li key={link.platform}>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${link.platform} (opens in new tab)`}
+                    className={directLinkClasses}
+                  >
+                    <Icon className="text-blaze-bright h-5 w-5 shrink-0" />
+                    <span className="font-medium">{link.platform}</span>
+                  </a>
+                </li>
               );
             })}
+            <li>
+              <a
+                href={`mailto:${contactEmail}`}
+                aria-label={`Email ${contactEmail}`}
+                className={directLinkClasses}
+              >
+                <Mail aria-hidden="true" className="text-blaze-bright h-5 w-5 shrink-0" />
+                <span className="min-w-0 font-medium break-all">{contactEmail}</span>
+              </a>
+            </li>
+          </ul>
 
-            <a
-              href={`mailto:${contactEmail}`}
-              aria-label={`Email ${contactEmail}`}
-              className="text-parchment hover:text-gold-light focus-visible:ring-gold focus-visible:ring-offset-charcoal flex min-h-11 touch-manipulation items-center gap-3 rounded-md py-3 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              <Mail className="text-gold-light h-5 w-5 shrink-0" />
-              <span className="font-medium">{contactEmail}</span>
-            </a>
-          </div>
-
-          {/* End-of-trail cairn — designed terminus for the empty column space */}
-          <div
-            data-cairn
-            aria-hidden="true"
-            className="mt-12 hidden flex-col items-center gap-3 md:flex"
-          >
-            <svg viewBox="0 0 60 64" className="text-parchment/25 h-16 w-16">
+          {/* Summit cairn: the trail's last marker */}
+          <div data-cairn aria-hidden="true" className="mt-10 hidden items-end gap-4 md:flex">
+            <svg viewBox="0 0 60 64" className="text-paper/30 h-16 w-16 shrink-0">
               <ellipse cx="30" cy="58" rx="22" ry="6" fill="currentColor" opacity="0.5" />
               <ellipse cx="30" cy="48" rx="17" ry="7" fill="currentColor" opacity="0.7" />
               <ellipse cx="30" cy="37" rx="13" ry="6" fill="currentColor" opacity="0.85" />
               <ellipse cx="30" cy="27" rx="9" ry="5" fill="currentColor" />
               <ellipse cx="30" cy="19" rx="5" ry="3.5" fill="currentColor" />
             </svg>
-            <div className="text-stone flex items-center gap-3 text-xs tracking-[0.3em] uppercase">
-              <span className="bg-stone/40 h-px w-8" />
+            <p className="text-stone pb-1 font-mono text-[11px] leading-relaxed tracking-[0.18em] uppercase">
               {messages.footer.endOfTrail}
-              <span className="bg-stone/40 h-px w-8" />
-            </div>
+              <br />
+              40°15′N 105°37′W
+            </p>
           </div>
-        </m.div>
+        </Reveal>
       </div>
     </Section>
   );

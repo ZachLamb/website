@@ -4,9 +4,8 @@ import { Analytics } from '@vercel/analytics/react';
 import { siteConfig } from '@/data/site';
 import { socialLinks } from '@/data/social';
 import { Navbar } from '@/components/layout/Navbar';
-import { ScrollProgressBar } from '@/components/ui/ScrollProgressBar';
 import { Footer } from '@/components/layout/Footer';
-import { TrailExtension } from '@/components/ui/TrailExtension';
+import { TrailRail } from '@/components/ui/TrailRail';
 import { BackToTopButton } from '@/components/ui/BackToTopButton';
 import { LocaleProvider } from '@/components/providers/LocaleProvider';
 import { MotionProvider } from '@/components/providers/MotionProvider';
@@ -51,7 +50,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${messages.site.name} | ${messages.site.title}`,
       description: messages.site.description,
     },
-    other: { 'theme-color': '#2C3E2D' },
   };
 }
 
@@ -80,13 +78,17 @@ export default async function LocaleLayout({ children, params }: Props) {
         />
         <a
           href="#main-content"
-          className="focus:bg-gold focus:text-parchment sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:px-4 focus:py-2"
+          className="focus:bg-blaze focus:text-paper sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:px-4 focus:py-2"
         >
           {messages.common.skipToContent}
         </a>
-        <TrailExtension />
+        {/* Scroll reveals start hidden and are shown by script. Without
+            scripts, show everything. */}
+        <noscript>
+          <style>{'.reveal{opacity:1!important;transform:none!important}'}</style>
+        </noscript>
         <Navbar />
-        <ScrollProgressBar />
+        <TrailRail />
         <main id="main-content">{children}</main>
         <Footer />
         <BackToTopButton />

@@ -33,7 +33,9 @@
     "getInTouch": "Contattami",
     "learnMore": "Vedi la mia esperienza",
     "resume": "Curriculum",
-    "viewResume": "Vedi curriculum (si apre in nuova scheda)"
+    "viewResume": "Vedi curriculum (si apre in nuova scheda)",
+    "mapTitle": "Mappa del sentiero",
+    "mapLegend": "Sezioni di questa pagina"
   },
   "about": {
     "heading": "Chi sono",

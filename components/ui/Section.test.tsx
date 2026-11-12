@@ -1,80 +1,89 @@
-// framer-motion is mocked globally in vitest.setup.ts. NatureElements is a
-// per-file concern so we still mock it locally to avoid the floating-leaves /
-// fireflies SVG churn during Section unit tests.
-
-vi.mock('./NatureElements', () => ({
-  FloatingLeaves: () => null,
-  Fireflies: () => null,
-  PineTreeSilhouette: () => null,
-  BirdSilhouettes: () => null,
-}));
-
 import { render, screen } from '@testing-library/react';
 import { Section } from './Section';
 
 describe('Section', () => {
   it('renders children', () => {
-    render(
-      <Section>
-        <p>Section content</p>
-      </Section>,
-    );
+    render(<Section>Section content</Section>);
     expect(screen.getByText('Section content')).toBeInTheDocument();
   });
 
-  it('applies light variant by default (bg-parchment)', () => {
-    const { container } = render(<Section>Light</Section>);
-    const section = container.querySelector('section')!;
-    expect(section).toHaveClass('bg-parchment');
-    expect(section).not.toHaveClass('bg-charcoal');
-  });
-
-  it('applies dark variant (bg-charcoal, text-parchment)', () => {
-    const { container } = render(<Section variant="dark">Dark</Section>);
-    const section = container.querySelector('section')!;
-    expect(section).toHaveClass('bg-charcoal', 'text-parchment');
-    expect(section).not.toHaveClass('bg-parchment');
-  });
-
-  it('sets id prop on section element', () => {
-    const { container } = render(<Section id="about">About</Section>);
-    const section = container.querySelector('section')!;
+  it('renders as a <section> element with the given id', () => {
+    const { container } = render(<Section id="about">Content</Section>);
+    const section = container.querySelector('section');
+    expect(section).toBeInTheDocument();
     expect(section).toHaveAttribute('id', 'about');
   });
 
-  it('section is programmatically focusable for hash-jump anchors (tabIndex=-1)', () => {
-    // Hash-link nav (#projects) should be able to move keyboard focus to the
-    // section landmark — tabIndex=-1 enables that without making the section
-    // a tab stop in the normal Tab order.
-    const { container } = render(<Section id="about">About</Section>);
+  it('is labelled by its heading when it has an id', () => {
+    const { container } = render(<Section id="about">Content</Section>);
+    expect(container.querySelector('section')).toHaveAttribute('aria-labelledby', 'about-heading');
+  });
+
+  it('is focusable as an anchor target but is not a tab stop', () => {
+    const { container } = render(<Section id="about">Content</Section>);
+    expect(container.querySelector('section')).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('is the paper surface by default', () => {
+    const { container } = render(<Section>Content</Section>);
     const section = container.querySelector('section')!;
-    expect(section).toHaveAttribute('tabIndex', '-1');
+    expect(section).toHaveAttribute('data-surface', 'paper');
+    expect(section.className).toContain('bg-paper');
+    expect(section.className).toContain('text-ink');
+  });
+
+  it('applies the meadow and night surfaces', () => {
+    const { container: meadow } = render(<Section surface="meadow">Content</Section>);
+    expect(meadow.querySelector('section')!.className).toContain('bg-meadow');
+
+    const { container: night } = render(<Section surface="night">Content</Section>);
+    const section = night.querySelector('section')!;
+    expect(section.className).toContain('bg-night');
+    expect(section.className).toContain('text-paper');
+  });
+
+  it('draws no top edge when it does not follow another section', () => {
+    const { container } = render(<Section>Content</Section>);
+    expect(container.querySelector('[data-neatline]')).toBeNull();
+    expect(container.querySelector('[data-ridge]')).toBeNull();
+  });
+
+  it('rules a neatline between two light sections', () => {
+    const { container } = render(
+      <Section surface="meadow" after="paper">
+        Content
+      </Section>,
+    );
+    expect(container.querySelector('[data-neatline]')).toBeInTheDocument();
+    expect(container.querySelector('[data-ridge]')).toBeNull();
+  });
+
+  it('draws a ridge in the colour of the section above where light meets night', () => {
+    const { container: intoNight } = render(
+      <Section surface="night" after="meadow">
+        Content
+      </Section>,
+    );
+    const down = intoNight.querySelector('[data-ridge]');
+    expect(down).toHaveAttribute('data-ridge', 'meadow');
+    expect(down).toHaveAttribute('aria-hidden', 'true');
+    expect(intoNight.querySelector('[data-neatline]')).toBeNull();
+
+    const { container: outOfNight } = render(
+      <Section surface="paper" after="night">
+        Content
+      </Section>,
+    );
+    expect(outOfNight.querySelector('[data-ridge]')).toHaveAttribute('data-ridge', 'night');
+  });
+
+  it('does not clip its content: nothing inside can be cut off by the section', () => {
+    const { container } = render(<Section>Content</Section>);
+    expect(container.querySelector('section')!.className).not.toContain('overflow-hidden');
   });
 
   it('applies custom className', () => {
-    const { container } = render(<Section className="pt-0">Custom</Section>);
-    const section = container.querySelector('section')!;
-    expect(section).toHaveClass('pt-0');
-  });
-
-  it('applies map-frame border when mapFrame is true', () => {
-    const { container } = render(<Section mapFrame>Map section</Section>);
-    const section = container.querySelector('section')!;
-    expect(section).toHaveAttribute('data-map-frame', 'true');
-    expect(section).toHaveClass('border-t', 'border-b', 'border-bark/10');
-  });
-
-  it('renders decoration outside the content column, as a direct child of <section>', () => {
-    const { container } = render(
-      <Section decoration={<div data-testid="deco">watermark</div>}>
-        <p>Content</p>
-      </Section>,
-    );
-    const section = container.querySelector('section')!;
-    const decoration = screen.getByTestId('deco');
-    // A direct child of <section>, not nested inside the max-w-5xl content
-    // wrapper — otherwise it would be clipped to the content column instead
-    // of spanning the section's true full width.
-    expect(decoration.parentElement).toBe(section);
+    const { container } = render(<Section className="custom-section">Content</Section>);
+    expect(container.querySelector('section')!.className).toContain('custom-section');
   });
 });

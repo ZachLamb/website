@@ -33,7 +33,9 @@
     "getInTouch": "联系我",
     "learnMore": "查看我的经历",
     "resume": "简历",
-    "viewResume": "查看简历（在新标签页中打开）"
+    "viewResume": "查看简历（在新标签页中打开）",
+    "mapTitle": "路线图",
+    "mapLegend": "本页章节"
   },
   "about": {
     "heading": "关于",

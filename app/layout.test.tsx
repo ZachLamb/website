@@ -10,6 +10,7 @@ vi.mock('next/headers', () => ({
 vi.mock('@/lib/fonts', () => ({
   inter: { variable: '--font-inter' },
   cormorantGaramond: { variable: '--font-cormorant' },
+  plexMono: { variable: '--font-plex-mono' },
 }));
 
 import RootLayout from './layout';

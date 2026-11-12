@@ -1,17 +1,16 @@
 'use client';
 
-import { useRef } from 'react';
-import { m, useInView } from 'framer-motion';
 import { ExternalLink, FileText } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/BrandIcons';
 import { Section } from '@/components/ui/Section';
-import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Reveal } from '@/components/ui/Reveal';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { publishedProjects } from '@/data/projects';
 import type { Project } from '@/data/projects';
-import { trailFadeUp } from '@/lib/trail-animations';
+import { waypointNumber } from '@/lib/waypoints';
 
 function ProjectLink({
   href,
@@ -27,7 +26,7 @@ function ProjectLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-gold-deep hover:text-bark focus-visible:ring-gold focus-visible:ring-offset-parchment inline-flex items-center gap-1.5 rounded text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+      className="text-blaze hover:text-ink focus-visible:ring-blaze focus-visible:ring-offset-paper inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       {icon}
       {label}
@@ -35,45 +34,26 @@ function ProjectLink({
   );
 }
 
-function ProjectCard({
-  project,
-  index,
-  isInView,
-}: {
-  project: Project;
-  index: number;
-  isInView: boolean;
-}) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
-    <m.div
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={trailFadeUp}
-      transition={{ delay: index * 0.1 }}
-    >
-      <Card variant="map" className="flex h-full flex-col">
-        <h3 className="text-forest font-serif text-xl font-semibold">{project.title}</h3>
-        <p className="text-slate mt-1 text-sm">{project.tagline}</p>
-        <p className="text-bark mt-3 text-sm leading-relaxed">{project.description}</p>
+    <Reveal delay={index * 0.06}>
+      <Card className="flex h-full flex-col p-5 sm:p-6">
+        <h3 className="text-ink font-serif text-2xl leading-tight font-semibold">
+          {project.title}
+        </h3>
+        <p className="text-blaze mt-1 text-sm font-medium">{project.tagline}</p>
+        <p className="text-ink-soft mt-3 text-base leading-relaxed">{project.description}</p>
 
         {project.stack.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {project.stack.map((tech, j) => (
-              <m.span
-                key={tech}
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
-                transition={{ duration: 0.3, delay: 0.2 + j * 0.05 }}
-                className="inline-block"
-              >
-                <Badge>{tech}</Badge>
-              </m.span>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {project.stack.map((tech) => (
+              <Badge key={tech}>{tech}</Badge>
             ))}
           </div>
         )}
 
         {(project.links.live || project.links.repo || project.links.writeup) && (
-          <div className="border-bark/10 mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t pt-4">
+          <div className="border-contour/40 mt-5 flex flex-wrap gap-x-5 border-t pt-2">
             {project.links.live && (
               <ProjectLink
                 href={project.links.live}
@@ -98,39 +78,34 @@ function ProjectCard({
           </div>
         )}
       </Card>
-    </m.div>
+    </Reveal>
   );
 }
 
 export function Projects() {
   const { messages } = useLocaleContext();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   // Don't render the section at all when nothing is published. Avoids
   // shipping placeholder copy or an empty "intro + grid of nothing."
-  // app/[locale]/page.tsx and components/layout/Navbar.tsx use the same
-  // hasPublishedProjects flag so the divider above and the nav entry
-  // disappear in lockstep.
+  // lib/waypoints.ts reads the same hasPublishedProjects flag, so the nav
+  // entry, the map marker and the numbering all drop it in lockstep.
   if (publishedProjects.length === 0) return null;
 
   return (
-    <Section variant="light" id="projects" mapFrame nature={{ leaves: true }}>
-      <div ref={ref}>
-        <AnimatedHeading
-          sectionId="projects"
-          subtitle={`IIIb · ${messages.kickers.projects}`}
-          className="mb-4"
-        >
-          {messages.sections.projects}
-        </AnimatedHeading>
-        <p className="text-bark mb-10 max-w-2xl text-lg">{messages.projects.intro}</p>
+    <Section id="projects" surface="meadow" after="paper">
+      <SectionHeading
+        sectionId="projects"
+        number={waypointNumber('projects')}
+        kicker={messages.kickers.projects}
+      >
+        {messages.sections.projects}
+      </SectionHeading>
+      <p className="text-ink-soft mt-4 max-w-2xl text-lg">{messages.projects.intro}</p>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {publishedProjects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} isInView={isInView} />
-          ))}
-        </div>
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2">
+        {publishedProjects.map((project, i) => (
+          <ProjectCard key={project.id} project={project} index={i} />
+        ))}
       </div>
     </Section>
   );

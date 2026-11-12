@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { Section } from '@/components/ui/Section';
-import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import { BackToHomeLink } from '@/components/ui/BackToHomeLink';
 import { siteConfig } from '@/data/site';
 import { subProcessors } from '@/data/sub-processors';
@@ -58,22 +58,22 @@ export default async function PrivacyPage({ params }: Props) {
   const p = messages.privacy;
 
   return (
-    <Section variant="light" nature={{ leaves: false }}>
-      <AnimatedHeading as="h1" subtitle={p.lastUpdated} className="mb-8">
+    <Section surface="paper">
+      <SectionHeading as="h1" kicker={p.lastUpdated} className="mb-8">
         {p.pageTitle}
-      </AnimatedHeading>
+      </SectionHeading>
 
       {/* Language notice: served in English for every locale — see header comment above generateMetadata. */}
       <div
         role="note"
-        className="border-forest/40 bg-forest/5 text-bark mb-4 rounded-md border-l-4 px-4 py-3 text-sm"
+        className="border-blaze bg-paper-raised text-ink-soft mb-4 rounded-md border-l-4 px-4 py-3 text-sm"
       >
-        <strong className="text-forest font-semibold">Legal content displayed in English. </strong>
+        <strong className="text-ink font-semibold">Legal content displayed in English. </strong>
         This page is available at the same URL in every language but the policy itself is maintained
         in English for accuracy. If you need this information in another language, please contact{' '}
         <a
           href={`mailto:${PRIVACY_CONTACT_EMAIL}`}
-          className="text-forest hover:text-gold underline underline-offset-4"
+          className="text-blaze hover:text-ink underline underline-offset-4"
         >
           {PRIVACY_CONTACT_EMAIL}
         </a>
@@ -82,16 +82,16 @@ export default async function PrivacyPage({ params }: Props) {
 
       <div className="mb-6" />
 
-      <div className="text-bark max-w-3xl space-y-10 text-base leading-relaxed break-words">
+      <div className="text-ink-soft max-w-3xl space-y-10 text-base leading-relaxed break-words">
         <section aria-labelledby="privacy-at-glance">
-          <h2 id="privacy-at-glance" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-at-glance" className="text-ink mb-3 font-serif text-2xl font-semibold">
             {p.atGlance.heading}
           </h2>
           <p>{p.atGlance.body}</p>
         </section>
 
         <section aria-labelledby="privacy-what">
-          <h2 id="privacy-what" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-what" className="text-ink mb-3 font-serif text-2xl font-semibold">
             {p.whatICollect.heading}
           </h2>
           <ul className="list-disc space-y-2 pl-6">
@@ -101,7 +101,7 @@ export default async function PrivacyPage({ params }: Props) {
         </section>
 
         <section aria-labelledby="privacy-where">
-          <h2 id="privacy-where" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-where" className="text-ink mb-3 font-serif text-2xl font-semibold">
             {p.whereItGoes.heading}
           </h2>
           <p>
@@ -110,7 +110,7 @@ export default async function PrivacyPage({ params }: Props) {
               href="https://resend.com/legal/privacy-policy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-forest hover:text-gold underline underline-offset-4"
+              className="text-blaze hover:text-ink underline underline-offset-4"
             >
               Resend privacy policy
             </a>
@@ -119,7 +119,7 @@ export default async function PrivacyPage({ params }: Props) {
         </section>
 
         <section aria-labelledby="privacy-retention">
-          <h2 id="privacy-retention" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-retention" className="text-ink mb-3 font-serif text-2xl font-semibold">
             {p.retention.heading}
           </h2>
           <p>{p.retention.body}</p>
@@ -129,10 +129,7 @@ export default async function PrivacyPage({ params }: Props) {
             revisit if the site adds features that change the basis (e.g.
             marketing emails would shift to consent under Art. 6(1)(a)). */}
         <section aria-labelledby="privacy-lawful-basis">
-          <h2
-            id="privacy-lawful-basis"
-            className="text-forest mb-3 font-serif text-2xl font-semibold"
-          >
+          <h2 id="privacy-lawful-basis" className="text-ink mb-3 font-serif text-2xl font-semibold">
             Lawful basis
           </h2>
           <p>
@@ -150,7 +147,7 @@ export default async function PrivacyPage({ params }: Props) {
             any specific vendor, the right source is that vendor's own
             privacy/trust page (linked under "Third parties" below). */}
         <section aria-labelledby="privacy-transfers">
-          <h2 id="privacy-transfers" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-transfers" className="text-ink mb-3 font-serif text-2xl font-semibold">
             International transfers
           </h2>
           <p>
@@ -163,14 +160,14 @@ export default async function PrivacyPage({ params }: Props) {
         </section>
 
         <section aria-labelledby="privacy-rights">
-          <h2 id="privacy-rights" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-rights" className="text-ink mb-3 font-serif text-2xl font-semibold">
             {p.rights.heading}
           </h2>
           <p>
             {p.rights.body}{' '}
             <a
               href={`mailto:${PRIVACY_CONTACT_EMAIL}`}
-              className="text-forest hover:text-gold underline underline-offset-4"
+              className="text-blaze hover:text-ink underline underline-offset-4"
             >
               {PRIVACY_CONTACT_EMAIL}
             </a>
@@ -184,7 +181,7 @@ export default async function PrivacyPage({ params }: Props) {
               href="https://ico.org.uk/make-a-complaint/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-forest hover:text-gold underline underline-offset-4"
+              className="text-blaze hover:text-ink underline underline-offset-4"
             >
               ICO
             </a>
@@ -193,7 +190,7 @@ export default async function PrivacyPage({ params }: Props) {
               href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-forest hover:text-gold underline underline-offset-4"
+              className="text-blaze hover:text-ink underline underline-offset-4"
             >
               EDPB members list
             </a>
@@ -204,7 +201,7 @@ export default async function PrivacyPage({ params }: Props) {
         {/* Children — added per privacy review. Many regimes (GDPR Art. 8 +
             US COPPA among others) expect a clear "not for under-16s" line. */}
         <section aria-labelledby="privacy-minors">
-          <h2 id="privacy-minors" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-minors" className="text-ink mb-3 font-serif text-2xl font-semibold">
             Children
           </h2>
           <p>
@@ -213,7 +210,7 @@ export default async function PrivacyPage({ params }: Props) {
             contact form, email{' '}
             <a
               href={`mailto:${PRIVACY_CONTACT_EMAIL}`}
-              className="text-forest hover:text-gold underline underline-offset-4"
+              className="text-blaze hover:text-ink underline underline-offset-4"
             >
               {PRIVACY_CONTACT_EMAIL}
             </a>{' '}
@@ -227,7 +224,7 @@ export default async function PrivacyPage({ params }: Props) {
             apply. The affirmative no-sell/no-share clause is added as a
             trust signal beyond what's strictly required. */}
         <section aria-labelledby="privacy-ccpa">
-          <h2 id="privacy-ccpa" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-ccpa" className="text-ink mb-3 font-serif text-2xl font-semibold">
             California (CCPA)
           </h2>
           <p>
@@ -239,7 +236,7 @@ export default async function PrivacyPage({ params }: Props) {
         </section>
 
         <section aria-labelledby="privacy-cookies">
-          <h2 id="privacy-cookies" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-cookies" className="text-ink mb-3 font-serif text-2xl font-semibold">
             {p.cookies.heading}
           </h2>
           <p>{p.cookies.body}</p>
@@ -250,7 +247,7 @@ export default async function PrivacyPage({ params }: Props) {
               truth). To add a new processor to the disclosure, add it there. */}
           <h2
             id="privacy-third-parties"
-            className="text-forest mb-3 font-serif text-2xl font-semibold"
+            className="text-ink mb-3 font-serif text-2xl font-semibold"
           >
             {p.thirdParties.heading}
           </h2>
@@ -262,7 +259,7 @@ export default async function PrivacyPage({ params }: Props) {
                   href={proc.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-forest hover:text-gold underline underline-offset-4"
+                  className="text-blaze hover:text-ink underline underline-offset-4"
                 >
                   {proc.name}
                 </a>{' '}
@@ -274,14 +271,14 @@ export default async function PrivacyPage({ params }: Props) {
         </section>
 
         <section aria-labelledby="privacy-contact">
-          <h2 id="privacy-contact" className="text-forest mb-3 font-serif text-2xl font-semibold">
+          <h2 id="privacy-contact" className="text-ink mb-3 font-serif text-2xl font-semibold">
             {p.contact.heading}
           </h2>
           <p>
             {p.contact.body}{' '}
             <a
               href={`mailto:${PRIVACY_CONTACT_EMAIL}`}
-              className="text-forest hover:text-gold underline underline-offset-4"
+              className="text-blaze hover:text-ink underline underline-offset-4"
             >
               {PRIVACY_CONTACT_EMAIL}
             </a>
@@ -289,7 +286,7 @@ export default async function PrivacyPage({ params }: Props) {
           </p>
         </section>
 
-        <p className="text-stone text-sm">
+        <p className="text-ink-soft text-sm">
           {p.lastUpdated} (<time dateTime={LAST_UPDATED_ISO}>{LAST_UPDATED_ISO}</time>)
         </p>
 

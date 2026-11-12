@@ -7,33 +7,21 @@ import { Skills } from '@/components/sections/Skills';
 import { Services } from '@/components/sections/Services';
 import { Education } from '@/components/sections/Education';
 import { Contact } from '@/components/sections/Contact';
-import { Divider } from '@/components/ui/Divider';
-import { hasPublishedProjects } from '@/data/projects';
 
+// Each section draws its own top edge (see the `after` prop on Section), so
+// there are no separate divider elements between them. Projects renders
+// nothing until a project is published.
 export default function Home() {
   return (
     <>
       <Hero />
       <About />
-      <Divider variant="mountains" />
       <Services />
-      <Divider variant="trail" />
       <Experience />
-      {/* Projects renders null when nothing is published; the surrounding
-          divider would leave an awkward decorative gap, so it's gated too.
-          Navbar.tsx applies the same flag to its nav entry. */}
-      {hasPublishedProjects && (
-        <>
-          <Divider variant="trail" />
-          <Projects />
-        </>
-      )}
-      <Divider variant="treeline" />
+      <Projects />
       <Endorsements />
       <Skills />
-      <Divider variant="treeline" flip />
       <Education />
-      <Divider variant="mountains" flip />
       <Contact />
     </>
   );

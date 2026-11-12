@@ -1,11 +1,6 @@
-vi.mock('@/components/ui/NatureElements', () => ({
-  FloatingLeaves: () => null,
-  Fireflies: () => null,
-  PineTreeSilhouette: () => null,
-  BirdSilhouettes: () => null,
-}));
-
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { endorsements } from '@/data/endorsements';
 import { renderWithLocale } from '@/lib/test-utils';
 import { Endorsements } from './Endorsements';
 
@@ -25,11 +20,9 @@ describe('Endorsements', () => {
 
   it('renders endorsement cards from data', () => {
     renderWithLocale(<Endorsements />);
-    // Each card renders twice (desktop grid + mobile carousel, one hidden by
-    // CSS at any width), so use getAllByText
-    expect(screen.getAllByText('Kimball Heaton').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('Katherine Liu').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('Lia Young').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('Kimball Heaton')).toBeInTheDocument();
+    expect(screen.getByText('Katherine Liu')).toBeInTheDocument();
+    expect(screen.getByText('Lia Young')).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: /View all recommendations on LinkedIn/i }),
     ).toBeInTheDocument();
@@ -40,8 +33,26 @@ describe('Endorsements', () => {
     expect(container.querySelector('#endorsements')).toBeInTheDocument();
   });
 
-  it('renders endorsement cards as map plates', () => {
+  it('renders each recommendation once, in a list, with no sideways scroller', () => {
     const { container } = renderWithLocale(<Endorsements />);
-    expect(container.querySelectorAll('.bg-white\\/40').length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('listitem')).toHaveLength(endorsements.length);
+    for (const e of endorsements) expect(screen.getAllByText(e.quote)).toHaveLength(1);
+    expect(container.querySelector('[class*="overflow-x-auto"]')).toBeNull();
+    expect(container.querySelector('[class*="snap-"]')).toBeNull();
+  });
+
+  it('clamps a long quote on phones only, behind a toggle that reports its state', async () => {
+    const user = userEvent.setup();
+    renderWithLocale(<Endorsements />);
+    const quote = screen.getByText(endorsements[0].quote);
+    expect(quote).toHaveClass('line-clamp-6', 'md:line-clamp-none');
+
+    const toggle = screen.getAllByRole('button', { name: /read more/i })[0];
+    expect(toggle).toHaveClass('md:hidden');
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(quote).not.toHaveClass('line-clamp-6');
   });
 });

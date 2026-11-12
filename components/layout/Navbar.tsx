@@ -1,25 +1,37 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { usePathname } from 'next/navigation';
-import { X, Compass } from 'lucide-react';
+import { m, useScroll } from 'framer-motion';
+import { Compass, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { useActiveSection } from '@/hooks/useActiveSection';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { LanguageDropdown } from '@/components/ui/LanguageDropdown';
-import { hasPublishedProjects } from '@/data/projects';
+import { formatWaypoint, navLinkIds, waypoints } from '@/lib/waypoints';
 
-export const navLinkIds = [
-  { key: 'trailGuide' as const, href: '#about', id: 'about' },
-  { key: 'lodge' as const, href: '#services', id: 'services' },
-  { key: 'trailLog' as const, href: '#experience', id: 'experience' },
-  { key: 'selectedWork' as const, href: '#projects', id: 'projects' },
-  { key: 'recommendations' as const, href: '#endorsements', id: 'endorsements' },
-  { key: 'gear' as const, href: '#skills', id: 'skills' },
-  { key: 'credentials' as const, href: '#education', id: 'education' },
-  { key: 'contact' as const, href: '#contact', id: 'contact' },
-] as const;
+// Re-exported: lib/nav-section-contract.test.ts and other callers read the
+// nav list from here.
+export { navLinkIds };
+
+/**
+ * How far down the trail the reader is, as a route line along the bottom of
+ * the header. framer writes the transform straight to the element, so
+ * scrolling never re-renders React or restyles the document.
+ */
+function TrailProgress() {
+  const { scrollYProgress } = useScroll();
+  return (
+    <m.div
+      aria-hidden="true"
+      data-trail-progress
+      className="bg-blaze absolute inset-x-0 -bottom-px h-0.5 origin-left"
+      style={{ scaleX: scrollYProgress }}
+    />
+  );
+}
 
 export function Navbar() {
   const { locale, messages } = useLocaleContext();
@@ -27,58 +39,53 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const activeSection = useActiveSection();
-  const menuRef = useRef<HTMLUListElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
+  /** Section to scroll to once the menu has closed and the page can scroll. */
+  const pendingTarget = useRef<string | null>(null);
+  /** Set when a link closed the menu: focus belongs to its section then. */
+  const focusGoesToSection = useRef(false);
 
-  /* Lock scroll with a position:fixed pattern so iOS Safari preserves scroll position.
-     Setting overflow:hidden on <html> causes iOS to scroll to top on open and jank on close. */
+  const scrollToPending = useCallback(() => {
+    const id = pendingTarget.current;
+    pendingTarget.current = null;
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    // Next frame: the body has only just been unpinned in this one.
+    requestAnimationFrame(() => {
+      target.scrollIntoView();
+      target.focus({ preventScroll: true });
+    });
+  }, []);
+
+  useBodyScrollLock(mobileOpen, scrollToPending);
+
+  // While the menu is open: Escape closes it, the page behind is inert, and
+  // growing the window past the mobile breakpoint closes it.
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!mobileOpen) return;
 
-    const isMobile = window.matchMedia('(max-width: 1023px)').matches;
-    const shouldLock = mobileOpen && isMobile;
-
-    if (shouldLock) {
-      const savedScrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${savedScrollY}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.width = '100%';
-    }
-
-    const mq = window.matchMedia('(max-width: 1023px)');
-    const onResize = () => {
-      if (!mq.matches) {
-        setMobileOpen(false);
-      }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
     };
-
-    mq.addEventListener('change', onResize);
-
-    // Make page content inert while overlay is open (focus trap)
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const onBreakpoint = () => {
+      if (desktop.matches) setMobileOpen(false);
+    };
     const main = document.getElementById('main-content');
     const footer = document.querySelector('footer');
-    if (mobileOpen) {
-      main?.setAttribute('inert', '');
-      footer?.setAttribute('inert', '');
-    }
+
+    document.addEventListener('keydown', onKeyDown);
+    desktop.addEventListener('change', onBreakpoint);
+    main?.setAttribute('inert', '');
+    footer?.setAttribute('inert', '');
 
     return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      desktop.removeEventListener('change', onBreakpoint);
       main?.removeAttribute('inert');
       footer?.removeAttribute('inert');
-      // Restore on cleanup (also fires when mobileOpen flips to false).
-      // Do NOT touch document.documentElement — that was the iOS bug.
-      if (document.body.style.position === 'fixed') {
-        const restoreY = Math.abs(parseInt(document.body.style.top || '0', 10));
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.left = '';
-        document.body.style.right = '';
-        document.body.style.width = '';
-        window.scrollTo(0, restoreY);
-      }
-      mq.removeEventListener('change', onResize);
     };
   }, [mobileOpen]);
 
@@ -89,63 +96,84 @@ export function Navbar() {
     setMounted(true);
   }, []);
 
-  const prevMobileOpen = useRef(false);
-  // Focus first nav link when mobile menu opens; return focus to toggle when it closes
+  const wasOpen = useRef(false);
+  // Move focus into the menu when it opens; hand it back to the toggle when
+  // it closes, unless a link was chosen (focus then goes to that section).
   useEffect(() => {
-    if (mobileOpen && menuRef.current) {
-      const first = menuRef.current.querySelector<HTMLAnchorElement>('a[href]');
-      first?.focus();
-    } else if (prevMobileOpen.current && !mobileOpen && toggleButtonRef.current) {
-      toggleButtonRef.current.focus();
+    if (mobileOpen) {
+      menuRef.current
+        ?.querySelector<HTMLElement>('button, a[href]')
+        ?.focus({ preventScroll: true });
+    } else if (wasOpen.current && !focusGoesToSection.current) {
+      // preventScroll: the header is always on screen, and letting focus
+      // scroll here fights the scroll position the lock has just restored.
+      toggleButtonRef.current?.focus({ preventScroll: true });
     }
-    prevMobileOpen.current = mobileOpen;
+    focusGoesToSection.current = false;
+    wasOpen.current = mobileOpen;
   }, [mobileOpen]);
 
   const basePath = pathname?.startsWith('/')
     ? pathname.split('/').slice(0, 2).join('/')
     : `/${locale}`;
-  // Drop the Selected Work entry when no projects are published. Projects.tsx
-  // returns null in the same condition so the section + nav entry vanish in
-  // lockstep — no broken anchor link, no 9-item nav row that wraps on small
-  // laptops just to reach a section that isn't there.
-  const navLinks = navLinkIds
-    .filter((item) => hasPublishedProjects || item.id !== 'projects')
-    .map((item) => ({
-      label: messages.nav[item.key],
-      href: item.href,
-      id: item.id,
-    }));
+  // Sections only exist on the home page. From anywhere else (the privacy
+  // page) a bare "#about" would go nowhere, so links carry the home path.
+  const onHome = pathname === basePath || pathname === '/';
+  const navLinks = waypoints.map((item, i) => ({
+    label: messages.nav[item.key],
+    href: onHome ? item.href : `${basePath}${item.href}`,
+    id: item.id,
+    number: formatWaypoint(i + 1),
+  }));
+
+  function onMobileLinkClick(e: React.MouseEvent<HTMLAnchorElement>, id: string, href: string) {
+    if (!onHome) return; // a real navigation: let the browser do it
+    // The page is pinned while the menu is open, so the browser's own jump
+    // to the anchor would be measured against a frozen page. Close first,
+    // then scroll once the lock is released.
+    e.preventDefault();
+    pendingTarget.current = id;
+    focusGoesToSection.current = true;
+    window.history.pushState(null, '', href);
+    setMobileOpen(false);
+  }
 
   return (
     <>
-      <header className="bg-parchment/90 border-bark/10 sticky top-0 z-50 border-b pt-[env(safe-area-inset-top)] backdrop-blur-md">
+      <header
+        data-print-hidden
+        className="bg-paper/90 border-contour/40 sticky top-0 z-50 border-b pt-[env(safe-area-inset-top)] backdrop-blur-md"
+      >
         <nav
           aria-label="Main navigation"
-          className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6"
+          className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 pr-2 pl-5 sm:px-6"
         >
           <a
             href={`${basePath}#hero`}
-            className="group text-forest hover:text-forest/80 flex items-center gap-2 font-serif text-xl font-semibold transition-colors"
+            className="group text-ink focus-visible:ring-blaze flex min-h-11 items-center gap-2 rounded-sm font-serif text-xl font-semibold whitespace-nowrap focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             aria-label={messages.nav.backToTop}
           >
-            <Compass className="text-gold-deep h-5 w-5 transition-transform duration-500 group-hover:rotate-45" />
+            <Compass
+              aria-hidden="true"
+              className="text-blaze h-5 w-5 transition-transform duration-500 group-hover:rotate-45"
+            />
             {messages.site.name}
           </a>
 
           {/* Desktop links + language dropdown */}
-          <ul className="hidden flex-wrap items-center gap-6 lg:flex">
+          <ul className="hidden items-center gap-5 lg:flex xl:gap-6">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
-                <li key={link.href} className="shrink-0">
+                <li key={link.id} className="shrink-0">
                   <a
                     href={link.href}
                     data-nav-link
                     className={cn(
-                      'relative text-sm whitespace-nowrap transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-px after:transition-all after:duration-300 hover:after:w-full',
+                      'focus-visible:ring-blaze relative rounded-sm py-2 text-sm whitespace-nowrap transition-colors after:absolute after:bottom-0.5 after:left-0 after:h-0.5 after:transition-all after:duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                       isActive
-                        ? 'text-gold-deep after:bg-gold-deep font-medium after:w-full'
-                        : 'text-bark after:bg-gold-deep hover:text-gold-deep after:w-0 hover:after:w-full',
+                        ? 'text-ink after:bg-blaze font-medium after:w-full'
+                        : 'text-ink-soft after:bg-blaze hover:text-ink after:w-0 hover:after:w-full',
                     )}
                     aria-current={isActive ? 'location' : undefined}
                   >
@@ -159,86 +187,88 @@ export function Navbar() {
             </li>
           </ul>
 
-          {/* Mobile toggle – 44px min touch target */}
+          {/* Mobile toggle: 48px touch target */}
           <button
             ref={toggleButtonRef}
             type="button"
-            className="text-bark flex min-h-11 min-w-11 touch-manipulation items-center justify-center rounded-md lg:hidden"
-            onClick={() => setMobileOpen((prev) => !prev)}
-            aria-label={mobileOpen ? messages.nav.closeMenu : messages.nav.openMenu}
+            className="text-ink focus-visible:ring-blaze flex h-12 w-12 touch-manipulation items-center justify-center rounded-md focus-visible:ring-2 focus-visible:outline-none lg:hidden"
+            onClick={() => setMobileOpen(true)}
+            aria-label={messages.nav.openMenu}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
           >
-            <Compass
-              className={cn(
-                'h-6 w-6 transition-transform duration-500',
-                mobileOpen ? 'text-gold-deep rotate-[360deg]' : '',
-              )}
-            />
+            <Menu aria-hidden="true" className="h-6 w-6" />
           </button>
         </nav>
+        <TrailProgress />
       </header>
 
-      {/* Mobile fullscreen overlay — portaled to <body> so backdrop-blur on <header> doesn't create a containing block that traps the fixed positioning */}
+      {/* Mobile menu, portaled to <body>: backdrop-blur on the header makes
+          it the containing block for fixed descendants, which would trap
+          the overlay inside the 64px bar. */}
       {mounted &&
         createPortal(
           <div
             id="mobile-nav"
-            role={mobileOpen ? 'dialog' : undefined}
-            aria-modal={mobileOpen ? 'true' : undefined}
-            aria-label={mobileOpen ? messages.nav.openMenu : undefined}
+            ref={menuRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={messages.nav.openMenu}
+            // inert while closed: the links are invisible then, and must not
+            // stay reachable by Tab or by a screen reader.
+            inert={!mobileOpen}
             className={cn(
-              'bg-forest fixed inset-0 z-[60] flex flex-col items-center justify-center transition-opacity duration-300 lg:hidden',
-              mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
+              'bg-paper topo-paper fixed inset-0 z-[60] flex flex-col overflow-y-auto overscroll-contain transition-opacity duration-200 lg:hidden',
+              mobileOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
             )}
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 20h40M20 0v40' fill='none' stroke='%23f5f0e8' stroke-width='0.15' opacity='0.04'/%3E%3C/svg%3E")`,
-            }}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) setMobileOpen(false);
-            }}
           >
-            {/* Close button — same position as toggle */}
-            <button
-              type="button"
-              className="text-parchment hover:text-gold-light absolute top-[env(safe-area-inset-top)] right-0 flex min-h-11 min-w-11 touch-manipulation items-center justify-center p-6"
-              onClick={() => setMobileOpen(false)}
-              aria-label={messages.nav.closeMenu}
-            >
-              <X className="h-6 w-6" />
-            </button>
-            <ul ref={menuRef} className="flex flex-col items-center gap-6">
-              {navLinks.map((link, i) => (
-                <li
-                  key={link.href}
-                  style={{
-                    transitionDelay: mobileOpen ? `${i * 50}ms` : '0ms',
-                    opacity: mobileOpen ? 1 : 0,
-                    transform: mobileOpen ? 'translateY(0)' : 'translateY(16px)',
-                    transition: 'opacity 300ms ease, transform 300ms ease',
-                  }}
-                >
-                  <a
-                    href={link.href}
-                    className="text-parchment hover:text-gold-light focus-visible:ring-gold flex min-h-11 touch-manipulation items-center rounded-md px-4 py-2 font-serif text-xl transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-              <li
-                className="border-parchment/10 mt-4 border-t pt-4"
-                style={{
-                  transitionDelay: mobileOpen ? `${navLinks.length * 50}ms` : '0ms',
-                  opacity: mobileOpen ? 1 : 0,
-                  transform: mobileOpen ? 'translateY(0)' : 'translateY(16px)',
-                  transition: 'opacity 300ms ease, transform 300ms ease',
-                }}
+            {/* Same height and padding as the header, so the close button
+                lands exactly where the menu button was. */}
+            <div className="border-contour/40 box-content flex h-16 shrink-0 items-center justify-between border-b pt-[env(safe-area-inset-top)] pr-2 pl-5 sm:px-6">
+              <span className="text-ink flex items-center gap-2 font-serif text-xl font-semibold">
+                <Compass aria-hidden="true" className="text-blaze h-5 w-5" />
+                {messages.site.name}
+              </span>
+              <button
+                type="button"
+                className="text-ink focus-visible:ring-blaze flex h-12 w-12 touch-manipulation items-center justify-center rounded-md focus-visible:ring-2 focus-visible:outline-none"
+                onClick={() => setMobileOpen(false)}
+                aria-label={messages.nav.closeMenu}
               >
-                <LanguageDropdown compact id="language-select-mobile" />
-              </li>
+                <X aria-hidden="true" className="h-6 w-6" />
+              </button>
+            </div>
+
+            <ul className="px-5 pt-2 sm:px-6">
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.id;
+                return (
+                  <li key={link.id} className="border-contour/30 border-b">
+                    <a
+                      href={link.href}
+                      aria-current={isActive ? 'location' : undefined}
+                      onClick={(e) => onMobileLinkClick(e, link.id, link.href)}
+                      className="text-ink focus-visible:ring-blaze flex min-h-14 touch-manipulation items-center gap-4 rounded-sm py-2 focus-visible:ring-2 focus-visible:outline-none"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          'flex h-7 w-7 shrink-0 items-center justify-center rounded-full font-mono text-[11px] font-medium',
+                          isActive ? 'bg-blaze text-paper' : 'border-blaze text-blaze border',
+                        )}
+                      >
+                        {link.number}
+                      </span>
+                      <span className="font-serif text-2xl font-semibold">{link.label}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
+
+            <div className="mt-auto px-5 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-6">
+              <LanguageDropdown compact id="language-select-mobile" />
+            </div>
           </div>,
           document.body,
         )}

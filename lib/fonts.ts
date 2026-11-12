@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { Cormorant_Garamond, IBM_Plex_Mono, Inter } from 'next/font/google';
 
 // Font display: 'swap' shows fallback text immediately, swaps to web font
 // when loaded. This avoids FOIT (flash of invisible text) and keeps LCP fast.
@@ -16,4 +16,12 @@ export const cormorantGaramond = Cormorant_Garamond({
   display: 'swap',
   variable: '--font-serif',
   weight: ['400', '600', '700'],
+});
+
+// The map's data voice: waypoint numbers, dates, coordinates, legend keys.
+export const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+  weight: ['400', '500'],
 });

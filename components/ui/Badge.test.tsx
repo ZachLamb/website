@@ -17,6 +17,6 @@ describe('Badge', () => {
     render(<Badge>Styled</Badge>);
     const badge = screen.getByText('Styled');
     expect(badge.tagName).toBe('SPAN');
-    expect(badge).toHaveClass('inline-flex', 'items-center', 'rounded-full', 'text-xs');
+    expect(badge).toHaveClass('inline-flex', 'items-center', 'font-mono', 'text-xs');
   });
 });

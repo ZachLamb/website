@@ -33,7 +33,9 @@
     "getInTouch": "Contactar",
     "learnMore": "Ver mi experiencia",
     "resume": "Currículum",
-    "viewResume": "Ver currículum (se abre en nueva pestaña)"
+    "viewResume": "Ver currículum (se abre en nueva pestaña)",
+    "mapTitle": "Mapa de ruta",
+    "mapLegend": "Secciones de esta página"
   },
   "about": {
     "heading": "Sobre mí",

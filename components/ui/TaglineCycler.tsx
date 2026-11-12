@@ -1,9 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AnimatePresence, m } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { AutoHeight } from '@/components/ui/AutoHeight';
 import { usePrefersReducedMotion } from '@/hooks/useHydrated';
 
 type Props = {
@@ -13,22 +11,30 @@ type Props = {
 };
 
 /**
- * Cycles through a list of taglines with a fade/slide transition.
+ * Cycles through a list of taglines with a cross-fade.
+ *
+ * Every tagline is rendered at once, stacked in a single grid cell, and
+ * only the current one is visible. The cell is therefore always as tall as
+ * the longest line, so rotating never changes the height of the hero. (It
+ * used to: a tagline that wrapped to an extra line pushed the whole page
+ * down, and iOS Safari, which has no scroll anchoring, moved whatever the
+ * reader was looking at further down the page every few seconds.)
+ *
  * - Pauses on hover/focus so readers can dwell on one line.
- * - Respects prefers-reduced-motion: renders ALL variants stacked instead
- *   of cycling, so the full message is reachable without forcing the user
- *   to wait through animations they explicitly opted out of.
- * - Marks the cycling region with role="region" + aria-live="polite" so
- *   screen readers announce each new tagline as it rotates in.
+ * - Respects prefers-reduced-motion: renders ALL variants as a plain list
+ *   instead of cycling, so the full message is reachable without waiting
+ *   through animation the user opted out of.
+ * - aria-live="polite" announces each new tagline; the hidden ones are
+ *   aria-hidden so only the current line is read.
  * - A single-entry list also renders statically (no interval, no aria-live).
  *
  * Default intervalMs is 6000ms — slow enough to satisfy WCAG 2.2.2 (Pause,
- * Stop, Hide) given the longest English variant takes ~5.7s to read at the
- * average pace, and pause-on-hover/focus is a working secondary control.
+ * Stop, Hide) given the longest English variant takes ~5.7s to read, and
+ * pause-on-hover/focus is a working secondary control.
  */
 export function TaglineCycler({ taglines, intervalMs = 6000, className }: Props) {
   // False until hydrated: the server always renders the cycling markup, and
-  // the stacked list replaces it once the preference is known.
+  // the plain list replaces it once the preference is known.
   const prefersReducedMotion = usePrefersReducedMotion();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -42,11 +48,7 @@ export function TaglineCycler({ taglines, intervalMs = 6000, className }: Props)
   }, [intervalMs, paused, prefersReducedMotion, taglines.length]);
 
   const safeIndex = Math.min(index, Math.max(0, taglines.length - 1));
-  const current = taglines[safeIndex] ?? '';
 
-  // Reduced-motion or single-entry list: show every variant statically so the
-  // full message is reachable. Avoids the H1 a11y issue where reduced-motion
-  // users would only see the first (longest, densest) tagline.
   if (prefersReducedMotion || taglines.length <= 1) {
     return (
       <div className={className}>
@@ -61,15 +63,12 @@ export function TaglineCycler({ taglines, intervalMs = 6000, className }: Props)
 
   return (
     <div
-      // tabIndex=0 makes the cycler reachable by keyboard. Without it the
-      // existing onFocus/onBlur handlers can never fire for keyboard users,
-      // leaving them no way to pause auto-rotation (WCAG 2.2.2). The visible
-      // focus ring is gold-on-forest because the only mount point is Hero.
-      // Mouse users already have hover-pause via the events below.
+      // tabIndex=0 makes the cycler reachable by keyboard, so focus can
+      // pause the rotation (WCAG 2.2.2). Mouse users pause by hovering.
       tabIndex={0}
       className={cn(
+        'focus-visible:ring-blaze focus-visible:ring-offset-paper grid rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-offset-4',
         className,
-        'focus-visible:ring-gold focus-visible:ring-offset-forest rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
       )}
       role="region"
       aria-roledescription="rotating tagline"
@@ -80,19 +79,22 @@ export function TaglineCycler({ taglines, intervalMs = 6000, className }: Props)
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <AutoHeight>
-        <AnimatePresence mode="wait">
-          <m.p
-            key={safeIndex}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.35 }}
+      {taglines.map((t, i) => {
+        const current = i === safeIndex;
+        return (
+          <p
+            key={i}
+            aria-hidden={current ? undefined : true}
+            data-current={current}
+            className={cn(
+              'col-start-1 row-start-1 transition-opacity duration-500',
+              current ? 'opacity-100' : 'opacity-0',
+            )}
           >
-            {current}
-          </m.p>
-        </AnimatePresence>
-      </AutoHeight>
+            {t}
+          </p>
+        );
+      })}
     </div>
   );
 }

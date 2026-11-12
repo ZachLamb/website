@@ -9,7 +9,7 @@ export function Badge({ children, className }: BadgeProps) {
   return (
     <span
       className={cn(
-        'border-bark/20 bg-sand text-bark hover:border-gold/40 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs transition-all hover:shadow-[0_0_8px_rgba(184,134,11,0.15)]',
+        'border-contour/40 bg-paper text-ink-soft inline-flex items-center rounded-sm border px-2 py-0.5 font-mono text-xs',
         className,
       )}
     >

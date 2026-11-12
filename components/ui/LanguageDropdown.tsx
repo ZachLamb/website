@@ -44,7 +44,7 @@ export function LanguageDropdown({
   const label = messages.nav.selectLanguage;
 
   return (
-    <div className={cn('relative inline-block', className)}>
+    <div className={cn('relative', compact ? 'block' : 'inline-block', className)}>
       <label htmlFor={id} className="sr-only">
         {label}
       </label>
@@ -54,8 +54,11 @@ export function LanguageDropdown({
         onChange={handleChange}
         aria-label={label}
         className={cn(
-          'border-bark/20 bg-parchment/80 text-bark hover:border-gold-deep/40 hover:text-gold-deep focus:border-gold-deep focus:ring-gold-deep/50 cursor-pointer appearance-none rounded-md border py-1.5 pr-8 pl-3 text-sm font-medium transition-colors focus:ring-2 focus:ring-offset-1 focus:outline-none',
-          compact ? 'w-full max-w-40' : 'min-w-28',
+          // text-base below lg: iOS Safari zooms the whole page in when a
+          // form control with text smaller than 16px takes focus, and does
+          // not zoom back out afterwards.
+          'border-contour/50 bg-paper-raised text-ink hover:border-blaze focus-visible:ring-blaze min-h-11 cursor-pointer appearance-none rounded-md border py-1.5 pr-9 pl-3 text-base font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none lg:min-h-0 lg:text-sm',
+          compact ? 'w-full' : 'min-w-28',
         )}
       >
         {locales.map((l) => (
@@ -66,7 +69,7 @@ export function LanguageDropdown({
       </select>
       <ChevronDown
         aria-hidden
-        className="text-bark/60 pointer-events-none absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2"
+        className="text-ink-soft pointer-events-none absolute top-1/2 right-2.5 h-4 w-4 -translate-y-1/2"
       />
     </div>
   );
