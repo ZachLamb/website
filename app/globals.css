@@ -12,27 +12,38 @@
   --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-display: 'Big Shoulders', 'Arial Narrow', 'Helvetica Neue', Impact, sans-serif;
+
+  /* Screen-print palette: a handful of flat inks, as on a park poster. */
+  --color-cream: #f5e9cf;
+  --color-sand: #ead7ab;
+  --color-mustard: #f2b33d;
+  --color-tangerine: #e56b2e;
+  --color-rust: #b23c1f;
+  --color-maroon: #6e2530;
+  --color-teal: #1c5562;
+  --color-pine: #0f2f38;
 
   /* Surfaces */
-  --color-paper: #f4efe2;
-  --color-paper-raised: #faf7ee;
-  --color-meadow: #e7ecd7;
-  --color-night: #18221b;
-  --color-night-raised: #212d24;
+  --color-paper: #f5e9cf;
+  --color-paper-raised: #fbf3e0;
+  --color-meadow: #ead7ab;
+  --color-night: #0f2f38;
+  --color-night-raised: #17414c;
 
   /* Text. ink/ink-soft sit on paper and meadow; stone on night. All clear
      WCAG AA (4.5:1) on the surfaces they are used on. */
-  --color-ink: #1f2a22;
-  --color-ink-soft: #4b554a;
-  --color-stone: #adb1a3;
+  --color-ink: #0f2f38;
+  --color-ink-soft: #3d5158;
+  --color-stone: #b7c4bd;
 
-  /* Map inks */
+  /* Linework and accents */
   --color-contour: #a8743a;
-  --color-water: #2f6f8f;
-  /* blaze: 5.4:1 on paper, 5.2:1 on meadow. blaze-bright is its counterpart
-     for the night surface (5.3:1). */
-  --color-blaze: #a83c16;
-  --color-blaze-bright: #ee7b45;
+  --color-water: #1c5562;
+  /* blaze: rust, 5.3:1 on cream and 4.6:1 on sand. blaze-bright is its
+     counterpart for the night surface: mustard, 8:1 on pine. */
+  --color-blaze: #a8371b;
+  --color-blaze-bright: #f2b33d;
 
   --animate-rise: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
@@ -57,16 +68,10 @@ body {
   touch-action: manipulation;
 }
 
-/* Contour-line texture. One seamless tile per surface, drawn by
-   scripts/generate-topo.mjs. */
-.topo-paper {
-  background-image: url('/topo/contours-paper.svg');
-  background-size: 480px 480px;
-}
-
+/* Poster surfaces are flat ink. The class names remain as hooks. */
+.topo-paper,
 .topo-night {
-  background-image: url('/topo/contours-night.svg');
-  background-size: 480px 480px;
+  background-image: none;
 }
 
 /* Map neatline: the ticked border that frames a map sheet. Used as the rule

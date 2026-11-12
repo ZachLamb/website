@@ -1,6 +1,5 @@
-import { screen, within } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { renderWithLocale } from '@/lib/test-utils';
-import { waypoints } from '@/lib/waypoints';
 import { Hero } from './Hero';
 
 describe('Hero', () => {
@@ -50,13 +49,18 @@ describe('Hero', () => {
     expect(h1.style.opacity).toBe('');
   });
 
-  it('maps every section of the page as a numbered stop in the legend', () => {
+  it('draws the poster landscape as decoration, hidden from assistive tech', () => {
+    const { container } = renderWithLocale(<Hero />);
+    const scene = container.querySelector('svg[viewBox="0 0 1440 600"]');
+    expect(scene).toBeInTheDocument();
+    expect(scene).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('keeps the resume link in the caption band', () => {
     renderWithLocale(<Hero />);
-    const legend = screen.getByRole('list', { name: 'Sections on this page' });
-    const links = within(legend).getAllByRole('link');
-    expect(links).toHaveLength(waypoints.length);
-    expect(links[0]).toHaveAttribute('href', '#about');
-    expect(links[0]).toHaveTextContent('01About');
-    expect(links[links.length - 1]).toHaveAttribute('href', '#contact');
+    expect(screen.getByRole('link', { name: /view resume/i })).toHaveAttribute(
+      'href',
+      '/zach-lamb-resume.pdf',
+    );
   });
 });
