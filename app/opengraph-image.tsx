@@ -11,7 +11,7 @@ export default function OGImage() {
   return new ImageResponse(
     <div
       style={{
-        background: '#2C3E2D',
+        background: '#f4efe2',
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -34,7 +34,7 @@ export default function OGImage() {
             fontSize: '24px',
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: '#B8860B',
+            color: '#a83c16',
           }}
         >
           {siteConfig.title}
@@ -43,7 +43,7 @@ export default function OGImage() {
           style={{
             fontSize: '72px',
             fontWeight: 700,
-            color: '#F5F0E8',
+            color: '#1f2a22',
             lineHeight: 1.1,
           }}
         >
@@ -52,7 +52,7 @@ export default function OGImage() {
         <div
           style={{
             fontSize: '20px',
-            color: '#8B8680',
+            color: '#4b554a',
             maxWidth: '600px',
             textAlign: 'center',
             marginTop: '8px',
@@ -66,7 +66,7 @@ export default function OGImage() {
           position: 'absolute',
           bottom: '40px',
           fontSize: '18px',
-          color: '#6B7F5E',
+          color: '#a8743a',
           letterSpacing: '0.1em',
         }}
       >

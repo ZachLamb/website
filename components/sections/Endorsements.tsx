@@ -1,193 +1,115 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { m, useInView, AnimatePresence } from 'framer-motion';
-import { Quote, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { LinkedinIcon } from '@/components/ui/BrandIcons';
 import { Section } from '@/components/ui/Section';
-import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Card } from '@/components/ui/Card';
+import { Reveal } from '@/components/ui/Reveal';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
-import type { Locale, Messages } from '@/lib/i18n';
+import type { Messages } from '@/lib/i18n';
 import { endorsements } from '@/data/endorsements';
 import { socialLinks } from '@/data/social';
-import { trailFadeUp } from '@/lib/trail-animations';
+import { waypointNumber } from '@/lib/waypoints';
+import { cn } from '@/lib/utils';
 
 const linkedInUrl = socialLinks.find((l) => l.icon === 'linkedin')?.url ?? '';
 const linkedInRecommendationsUrl = `${linkedInUrl}details/recommendations/`;
 
+/** Quotes longer than this are clamped on a phone, with a toggle to open. */
+const CLAMP_OVER = 240;
+
 function EndorsementCard({
   endorsement,
-  index,
-  totalCount,
   messages,
-  locale,
-  layout,
 }: {
   endorsement: (typeof endorsements)[number];
-  index: number;
-  totalCount: number;
   messages: Messages['endorsements'];
-  locale: Locale;
-  /** `slide`: fixed-width carousel card with a clamped quote. `grid`: fills its column, full quote. */
-  layout: 'slide' | 'grid';
 }) {
   const [expanded, setExpanded] = useState(false);
-  const isSlide = layout === 'slide';
-  // Only the carousel clamps: a slide has to stay short enough to swipe
-  // past, while the desktop grid has room to show each quote whole.
-  const quoteLong = isSlide && endorsement.quote.length > 180;
-  const longTextLocales = new Set<Locale>(['es', 'it', 'de', 'ja', 'zh']);
-  const lineClampClass = longTextLocales.has(locale) ? 'line-clamp-5' : 'line-clamp-4';
+  const isLong = endorsement.quote.length > CLAMP_OVER;
 
   return (
-    <div
-      role={isSlide ? 'group' : undefined}
-      aria-roledescription={isSlide ? 'slide' : undefined}
-      aria-label={isSlide ? `${index + 1} of ${totalCount}` : undefined}
-      className={isSlide ? 'w-[85vw] shrink-0 px-3 sm:w-[340px]' : 'h-full'}
-    >
-      <Card
-        variant="plate"
-        className="group hover:border-gold/40 relative flex h-full flex-col overflow-hidden transition-all duration-300"
-      >
-        <Quote
-          aria-hidden="true"
-          className="text-gold/30 group-hover:text-gold/40 mb-3 h-8 w-8 shrink-0 transition-colors duration-300"
-        />
-        <blockquote className="text-bark relative flex-1 text-base leading-relaxed">
-          <AnimatePresence mode="wait">
-            {quoteLong && !expanded ? (
-              <m.p
-                key="short"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className={lineClampClass}
-              >
-                {endorsement.quote}
-              </m.p>
-            ) : (
-              <m.p
-                key="full"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                {endorsement.quote}
-              </m.p>
-            )}
-          </AnimatePresence>
-        </blockquote>
-        {quoteLong && (
-          <button
-            type="button"
-            onClick={() => setExpanded((e) => !e)}
-            className="text-gold-deep hover:text-bark focus-visible:ring-gold mt-2 -ml-2 flex min-h-11 touch-manipulation items-center gap-1 self-start rounded px-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-          >
-            {expanded ? (
-              <>
-                {messages.showLess} <ChevronUp className="h-4 w-4" />
-              </>
-            ) : (
-              <>
-                {messages.readMore} <ChevronDown className="h-4 w-4" />
-              </>
-            )}
-          </button>
+    <Card as="figure" className="flex h-full flex-col p-5 sm:p-6">
+      <span aria-hidden="true" className="text-blaze font-serif text-6xl leading-[0.6] font-bold">
+        &ldquo;
+      </span>
+      <blockquote className="text-ink flex-1 text-base leading-relaxed">
+        {/* The clamp applies below md only. From md up there is room for the
+            whole quote, so the toggle is hidden there too. */}
+        <p className={cn(isLong && !expanded && 'line-clamp-6 md:line-clamp-none')}>
+          {endorsement.quote}
+        </p>
+      </blockquote>
+      {isLong && (
+        <button
+          type="button"
+          onClick={() => setExpanded((e) => !e)}
+          aria-expanded={expanded}
+          className="text-blaze hover:text-ink focus-visible:ring-blaze -ml-2 flex min-h-11 touch-manipulation items-center gap-1 self-start rounded-sm px-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none md:hidden"
+        >
+          {expanded ? messages.showLess : messages.readMore}
+          <ChevronDown
+            aria-hidden="true"
+            className={cn('h-4 w-4 transition-transform duration-200', expanded && 'rotate-180')}
+          />
+        </button>
+      )}
+      <figcaption className="border-contour/40 mt-4 border-t pt-4">
+        <cite className="text-ink block font-serif text-xl font-semibold not-italic">
+          {endorsement.author}
+        </cite>
+        {endorsement.role && (
+          <span className="text-ink-soft mt-0.5 block text-sm">{endorsement.role}</span>
         )}
-        <div className="border-bark/10 mt-4 border-t pt-4">
-          <cite className="text-forest block font-semibold not-italic">{endorsement.author}</cite>
-          {endorsement.role && <span className="text-slate block text-sm">{endorsement.role}</span>}
-          {endorsement.context && (
-            <span className="text-slate mt-1 block text-xs">{endorsement.context}</span>
-          )}
-        </div>
-      </Card>
-    </div>
+        {endorsement.context && (
+          <span className="text-ink-soft mt-2 block font-mono text-[11px] tracking-wider uppercase">
+            {endorsement.context}
+          </span>
+        )}
+      </figcaption>
+    </Card>
   );
 }
 
 export function Endorsements() {
-  const { locale, messages } = useLocaleContext();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-60px' });
-
-  const totalCount = endorsements.length;
+  const { messages } = useLocaleContext();
 
   return (
-    <Section variant="light" id="endorsements" tone="cool" nature={{ leaves: true }}>
-      <div ref={ref}>
-        <AnimatedHeading
-          sectionId="endorsements"
-          subtitle={`IV · ${messages.kickers.endorsements}`}
-          className="mb-4"
-        >
-          {messages.sections.endorsements}
-        </AnimatedHeading>
-        <p className="text-bark mb-10 max-w-2xl text-lg">{messages.endorsements.intro}</p>
+    <Section id="endorsements" surface="meadow" after="paper">
+      <SectionHeading
+        sectionId="endorsements"
+        number={waypointNumber('endorsements')}
+        kicker={messages.kickers.endorsements}
+      >
+        {messages.sections.endorsements}
+      </SectionHeading>
+      <p className="text-ink-soft mt-4 max-w-2xl text-lg">{messages.endorsements.intro}</p>
 
-        {/* lg and up: every recommendation side by side, quoted in full. */}
-        <div className="hidden gap-6 lg:grid lg:grid-cols-3">
-          {endorsements.map((endorsement, i) => (
-            <m.div
-              key={endorsement.id}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              variants={trailFadeUp}
-              transition={{ delay: i * 0.06 }}
-            >
-              <EndorsementCard
-                endorsement={endorsement}
-                index={i}
-                totalCount={totalCount}
-                messages={messages.endorsements}
-                locale={locale}
-                layout="grid"
-              />
-            </m.div>
-          ))}
-        </div>
+      {/* A plain stack on phones and tablets, three across from lg. Every
+          recommendation is on the page at every width: no carousel, so no
+          sideways scroller competing with the page's own scroll. */}
+      <ul className="mt-8 grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-3">
+        {endorsements.map((endorsement, i) => (
+          <Reveal as="li" key={endorsement.id} delay={i * 0.06}>
+            <EndorsementCard endorsement={endorsement} messages={messages.endorsements} />
+          </Reveal>
+        ))}
+      </ul>
 
-        {/* Below lg: swipeable carousel with snap */}
-        <div
-          role="region"
-          aria-roledescription="carousel"
-          aria-label={messages.sections.endorsements}
-          className="-mx-4 flex snap-x snap-mandatory scrollbar-none overflow-x-auto px-1 sm:-mx-6 sm:px-3 lg:hidden"
+      <p className="mt-6">
+        <a
+          href={linkedInRecommendationsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={messages.endorsements.viewAllOnLinkedInAria}
+          className="text-blaze hover:text-ink focus-visible:ring-blaze inline-flex min-h-11 items-center gap-2 rounded-sm font-medium underline-offset-4 transition-colors hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
-          {endorsements.map((endorsement, i) => (
-            <div key={endorsement.id} className="snap-center">
-              <EndorsementCard
-                endorsement={endorsement}
-                index={i}
-                totalCount={totalCount}
-                messages={messages.endorsements}
-                locale={locale}
-                layout="slide"
-              />
-            </div>
-          ))}
-        </div>
-
-        <m.p
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          variants={trailFadeUp}
-          className="mt-8"
-        >
-          <a
-            href={linkedInRecommendationsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={messages.endorsements.viewAllOnLinkedInAria}
-            className="text-gold-deep hover:text-bark focus-visible:ring-gold inline-flex min-h-11 items-center gap-2 rounded font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-          >
-            <LinkedinIcon className="h-5 w-5" />
-            {messages.endorsements.viewAllOnLinkedIn}
-          </a>
-        </m.p>
-      </div>
+          <LinkedinIcon className="h-5 w-5 shrink-0" />
+          {messages.endorsements.viewAllOnLinkedIn}
+        </a>
+      </p>
     </Section>
   );
 }

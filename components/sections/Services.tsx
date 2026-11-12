@@ -1,15 +1,14 @@
 'use client';
 
-import { useRef } from 'react';
-import { m, useInView } from 'framer-motion';
 import { Code, Repeat, Users, Compass } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
-import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Card } from '@/components/ui/Card';
+import { Reveal } from '@/components/ui/Reveal';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { services } from '@/data/services';
-import { trailFadeUp } from '@/lib/trail-animations';
-import type { LucideIcon } from 'lucide-react';
+import { waypointNumber } from '@/lib/waypoints';
 
 const iconMap: Record<string, LucideIcon> = {
   code: Code,
@@ -20,42 +19,44 @@ const iconMap: Record<string, LucideIcon> = {
 
 export function Services() {
   const { messages } = useLocaleContext();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
 
   return (
-    <Section variant="light" id="services" tone="dusk" mapFrame nature={{ leaves: true }}>
-      <AnimatedHeading sectionId="services" subtitle={`II · ${messages.kickers.services}`}>
+    <Section id="services" surface="meadow" after="paper">
+      <SectionHeading
+        sectionId="services"
+        number={waypointNumber('services')}
+        kicker={messages.kickers.services}
+      >
         {messages.sections.services}
-      </AnimatedHeading>
+      </SectionHeading>
 
-      <div ref={ref} className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-        {services.map((service, i) => {
-          const Icon = iconMap[service.icon];
-
-          return (
-            <m.div
-              key={service.id}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              variants={trailFadeUp}
-              transition={{ delay: i * 0.06 }}
-            >
-              <Card variant="plate" className="h-full">
-                <div className="bg-gold/10 mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-                  {Icon && <Icon className="text-gold-deep h-6 w-6" />}
+      {/* A map legend: one ruled plate, each entry keyed by its symbol.
+          Rules come from 1px gaps over the plate's border colour. */}
+      <Reveal className="mt-8 md:mt-10">
+        <Card className="bg-contour/40 grid grid-cols-1 gap-px overflow-hidden md:grid-cols-2">
+          {services.map((service) => {
+            const Icon = iconMap[service.icon];
+            return (
+              <div key={service.id} className="bg-paper-raised flex gap-4 p-5 sm:p-6">
+                <div
+                  aria-hidden="true"
+                  className="border-blaze/50 text-blaze flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border"
+                >
+                  {Icon && <Icon className="h-5 w-5" />}
                 </div>
-                <h3 className="text-forest-deep font-serif text-xl font-semibold">
-                  {service.title}
-                </h3>
-                <p className="text-bark mt-2 text-sm leading-relaxed sm:text-base">
-                  {service.description}
-                </p>
-              </Card>
-            </m.div>
-          );
-        })}
-      </div>
+                <div className="min-w-0">
+                  <h3 className="text-ink font-serif text-xl leading-tight font-semibold sm:text-2xl">
+                    {service.title}
+                  </h3>
+                  <p className="text-ink-soft mt-2 text-base leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </Card>
+      </Reveal>
     </Section>
   );
 }

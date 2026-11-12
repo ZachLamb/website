@@ -1,12 +1,5 @@
 // framer-motion is mocked globally in vitest.setup.ts.
 
-vi.mock('@/components/ui/NatureElements', () => ({
-  FloatingLeaves: () => null,
-  Fireflies: () => null,
-  PineTreeSilhouette: () => null,
-  BirdSilhouettes: () => null,
-}));
-
 // Mock the projects data source so these tests stay decoupled from whatever
 // state data/projects.ts is in. The site auto-hides the section when nothing
 // is published, so the real export is empty by default — but the component's

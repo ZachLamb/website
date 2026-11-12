@@ -2,13 +2,6 @@
 // Projects.test.tsx — that's why the file is separate. framer-motion is
 // mocked globally in vitest.setup.ts.
 
-vi.mock('@/components/ui/NatureElements', () => ({
-  FloatingLeaves: () => null,
-  Fireflies: () => null,
-  PineTreeSilhouette: () => null,
-  BirdSilhouettes: () => null,
-}));
-
 vi.mock('@/data/projects', () => ({
   projects: [],
   publishedProjects: [],

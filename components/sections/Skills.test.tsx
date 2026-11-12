@@ -1,11 +1,3 @@
-vi.mock('@/components/ui/NatureElements', () => ({
-  FloatingLeaves: () => null,
-  Fireflies: () => null,
-  PineTreeSilhouette: () => null,
-  BirdSilhouettes: () => null,
-  MistLayer: () => null,
-}));
-
 import { screen } from '@testing-library/react';
 import { renderWithLocale } from '@/lib/test-utils';
 import { Skills } from './Skills';
@@ -24,18 +16,26 @@ describe('Skills', () => {
     expect(screen.getByText('Leadership & Practices')).toBeInTheDocument();
   });
 
-  it('renders individual skills with years', () => {
+  it('renders each skill with its years of use', () => {
     renderWithLocale(<Skills />);
-    expect(screen.getByText('React · 8y')).toBeInTheDocument();
-    expect(screen.getByText('TypeScript · 4y')).toBeInTheDocument();
-    expect(screen.getByText('Docker · 2y')).toBeInTheDocument();
-    expect(screen.getByText('Agile/Scrum · 8y')).toBeInTheDocument();
+    expect(screen.getByText('React').closest('li')).toHaveTextContent('React8y');
+    expect(screen.getByText('TypeScript').closest('li')).toHaveTextContent('TypeScript4y');
+    expect(screen.getByText('Docker').closest('li')).toHaveTextContent('Docker2y');
   });
 
-  it('shows years suffix on skill chips', () => {
+  it('grades chips by experience: 5+ years primary, a year or less emerging', () => {
     renderWithLocale(<Skills />);
-    expect(screen.getByText('React · 8y')).toBeInTheDocument();
-    expect(screen.getByText('TypeScript · 4y')).toBeInTheDocument();
+    expect(screen.getByText('React').closest('li')).toHaveAttribute('data-tier', 'primary');
+    expect(screen.getByText('TypeScript').closest('li')).toHaveAttribute('data-tier', 'working');
+    expect(screen.getByText('Cypress').closest('li')).toHaveAttribute('data-tier', 'emerging');
+  });
+
+  it('explains the three chip styles in a key', () => {
+    const { container } = renderWithLocale(<Skills />);
+    const key = container.querySelector('[data-skill-legend]');
+    expect(key).toHaveTextContent('5y+');
+    expect(key).toHaveTextContent('2–4y');
+    expect(key).toHaveTextContent('≤1y');
   });
 
   it('has the skills section id', () => {
@@ -49,9 +49,8 @@ describe('Skills', () => {
     expect(articles).toHaveLength(0);
   });
 
-  it('renders category names as map-legend headers with rule lines', () => {
-    const { container } = renderWithLocale(<Skills />);
-    const header = container.querySelector('h3');
-    expect(header?.querySelector('[data-legend-rule]')).not.toBeNull();
+  it('renders each category name as a level-3 heading', () => {
+    renderWithLocale(<Skills />);
+    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(4);
   });
 });

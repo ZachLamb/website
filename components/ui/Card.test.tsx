@@ -3,43 +3,42 @@ import { Card } from './Card';
 
 describe('Card', () => {
   it('renders children', () => {
-    render(
-      <Card>
-        <p>Card content</p>
-      </Card>,
-    );
+    render(<Card>Card content</Card>);
     expect(screen.getByText('Card content')).toBeInTheDocument();
   });
 
-  it('applies custom className', () => {
-    const { container } = render(<Card className="mt-8">Content</Card>);
-    expect(container.firstElementChild).toHaveClass('mt-8');
+  it('is a ruled paper plate by default', () => {
+    render(<Card>Styled</Card>);
+    const card = screen.getByText('Styled');
+    expect(card.className).toContain('rounded-md');
+    expect(card.className).toContain('border-contour/40');
+    expect(card.className).toContain('bg-paper-raised');
   });
 
-  it('has card base styles', () => {
-    const { container } = render(<Card>Styled card</Card>);
-    const card = container.firstElementChild!;
-    expect(card).toHaveClass('rounded-lg', 'border', 'p-6', 'transition-all');
+  it('switches to the night plate on the night surface', () => {
+    render(<Card onNight>Night</Card>);
+    const card = screen.getByText('Night');
+    expect(card.className).toContain('bg-night-raised');
+    expect(card.className).not.toContain('bg-paper-raised');
   });
 
-  it('applies map variant (dashed border)', () => {
-    const { container } = render(<Card variant="map">Map card</Card>);
-    const card = container.firstElementChild!;
-    expect(card).toHaveClass('border-dashed', 'border-bark/20');
+  it('has no hover movement: a plate is printed on the sheet, not a control', () => {
+    render(<Card>Flat</Card>);
+    expect(screen.getByText('Flat').className).not.toMatch(/hover:/);
   });
 
-  it('applies plate variant (map-plate: light fill + gold corner tick)', () => {
-    const { container } = render(<Card variant="plate">Plate card</Card>);
-    const card = container.firstElementChild!;
-    expect(card).toHaveClass('bg-white/40', 'border-bark/15');
-    expect(card.className).toContain('before:bg-gold');
+  it('renders as the requested element', () => {
+    render(<Card as="article">Entry</Card>);
+    expect(screen.getByText('Entry').tagName).toBe('ARTICLE');
   });
 
-  it('renders a faint corner-texture arc on the plate variant only', () => {
-    const { container: plate } = render(<Card variant="plate">Plate</Card>);
-    expect(plate.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
-
-    const { container: defaultCard } = render(<Card>Default</Card>);
-    expect(defaultCard.querySelector('svg')).toBeNull();
+  it('merges custom className and passes other attributes through', () => {
+    render(
+      <Card className="p-5" data-testid="plate">
+        Custom
+      </Card>,
+    );
+    const card = screen.getByTestId('plate');
+    expect(card.className).toContain('p-5');
   });
 });

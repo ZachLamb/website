@@ -33,7 +33,9 @@
     "getInTouch": "Kontakt aufnehmen",
     "learnMore": "Meine Erfahrung ansehen",
     "resume": "Lebenslauf",
-    "viewResume": "Lebenslauf ansehen (öffnet in neuem Tab)"
+    "viewResume": "Lebenslauf ansehen (öffnet in neuem Tab)",
+    "mapTitle": "Wanderkarte",
+    "mapLegend": "Abschnitte dieser Seite"
   },
   "about": {
     "heading": "Über mich",

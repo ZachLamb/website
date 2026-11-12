@@ -1,91 +1,84 @@
 'use client';
 
-import { useRef } from 'react';
-import { m, useInView } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
-import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Reveal } from '@/components/ui/Reveal';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
 import { skillCategories } from '@/data/skills';
+import { waypointNumber } from '@/lib/waypoints';
 import { cn } from '@/lib/utils';
+
+type Tier = 'primary' | 'working' | 'emerging';
+
+const tierOf = (years: number): Tier =>
+  years >= 5 ? 'primary' : years <= 1 ? 'emerging' : 'working';
+
+const chipClass: Record<Tier, string> = {
+  primary: 'border-blaze-bright/70 bg-blaze-bright/10 text-paper font-medium',
+  working: 'border-paper/25 text-paper/90',
+  emerging: 'border-paper/15 text-stone border-dashed',
+};
+
+/** Key to the three chip styles. Symbols and numbers only, so it needs no
+    translation. */
+const legend: { tier: Tier; label: string }[] = [
+  { tier: 'primary', label: '5y+' },
+  { tier: 'working', label: '2–4y' },
+  { tier: 'emerging', label: '≤1y' },
+];
 
 export function Skills() {
   const { messages } = useLocaleContext();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
-    <Section
-      variant="dark"
-      id="skills"
-      nature={{ fireflies: true }}
-      decoration={
-        // Section-level (not content-column-clipped) so this reaches the
-        // section's true bottom edge, below the py-24 padding — filling the
-        // actual dead space instead of stopping above it.
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 1200 100"
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-20 w-full"
-        >
-          <path
-            d="M0 100 L0 70 L120 45 L240 65 L360 30 L480 55 L600 20 L720 50 L840 35 L960 60 L1080 40 L1200 55 L1200 100 Z"
-            fill="rgba(245,240,232,0.06)"
-          />
-          <path
-            d="M0 70 L120 45 L240 65 L360 30 L480 55 L600 20 L720 50 L840 35 L960 60 L1080 40 L1200 55"
-            fill="none"
-            stroke="rgba(245,240,232,0.10)"
-            strokeWidth="1.5"
-          />
-        </svg>
-      }
-    >
-      <AnimatedHeading
+    <Section id="skills" surface="night" after="meadow">
+      <SectionHeading
         sectionId="skills"
-        subtitle={`V · ${messages.kickers.skills}`}
-        className="[&_p]:text-gold-light [&_h2]:text-parchment"
+        number={waypointNumber('skills')}
+        kicker={messages.kickers.skills}
+        onNight
       >
         {messages.sections.skills}
-      </AnimatedHeading>
+      </SectionHeading>
 
-      <p className="text-stone mt-4 max-w-2xl text-base">{messages.skills.intro}</p>
+      <p className="text-stone mt-4 max-w-2xl text-lg">{messages.skills.intro}</p>
 
-      <div ref={ref} className="mt-10 grid grid-cols-1 gap-8 sm:gap-10 md:grid-cols-2">
+      <ul
+        aria-hidden="true"
+        data-skill-legend
+        className="text-stone mt-5 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs"
+      >
+        {legend.map(({ tier, label }) => (
+          <li key={tier} className="flex items-center gap-2">
+            <span className={cn('h-3.5 w-6 rounded-sm border', chipClass[tier])} />
+            {label}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-2">
         {skillCategories.map((category, i) => (
-          <m.div
-            key={category.id}
-            initial={{ opacity: 0, y: 12 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-            transition={{ duration: 0.35, delay: i * 0.06 }}
-          >
-            <h3 className="text-gold-light mb-3 flex items-center gap-3 text-sm font-semibold tracking-wider uppercase">
-              <span data-legend-rule aria-hidden="true" className="bg-gold/40 h-px w-6" />
+          <Reveal key={category.id} delay={i * 0.05}>
+            <h3 className="text-blaze-bright flex items-center gap-3 font-mono text-xs font-medium tracking-[0.18em] uppercase">
               {category.name}
-              <span aria-hidden="true" className="bg-gold/40 h-px flex-1" />
+              <span aria-hidden="true" className="bg-paper/20 h-px flex-1" />
             </h3>
-            <div className="flex flex-wrap gap-2">
-              {category.skills.map((skill) => {
-                const isPrimary = skill.years >= 5;
-                const isEmerging = skill.years <= 1;
-                return (
-                  <span
-                    key={skill.name}
-                    className={cn(
-                      'rounded-md border px-3 py-1.5 text-sm',
-                      isPrimary
-                        ? 'border-gold/50 bg-gold/10 text-parchment font-medium'
-                        : isEmerging
-                          ? 'border-moss/20 bg-moss/10 text-parchment/60'
-                          : 'bg-moss/20 border-moss/30 text-parchment/85',
-                    )}
-                  >
-                    {skill.name} · {skill.years}y
-                  </span>
-                );
-              })}
-            </div>
-          </m.div>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {category.skills.map((skill) => (
+                <li
+                  key={skill.name}
+                  data-tier={tierOf(skill.years)}
+                  className={cn(
+                    'flex items-baseline gap-2 rounded-sm border px-2.5 py-1.5 text-sm',
+                    chipClass[tierOf(skill.years)],
+                  )}
+                >
+                  {skill.name}
+                  <span className="font-mono text-xs opacity-75">{skill.years}y</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         ))}
       </div>
     </Section>

@@ -1,18 +1,25 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
+// Every pairing clears WCAG AA: paper on blaze is 5.4:1, night on
+// blaze-bright 5.3:1. Hover moves to ink / paper rather than a lighter
+// blaze, which would drop below AA.
 const variants = {
-  // charcoal-on-gold-light clears WCAG AA (6.5:1); the original
-  // parchment-on-gold combination read at only ~2.9:1. Hover uses the base
-  // gold shade (still 4.4:1 with charcoal text) instead of copper, which
-  // drops below AA against charcoal.
-  primary: 'bg-gold-light text-charcoal hover:bg-gold',
-  secondary: 'border border-gold-light text-gold-light hover:bg-gold-light/10',
+  primary: {
+    paper: 'bg-blaze text-paper hover:bg-ink',
+    night: 'bg-blaze-bright text-night hover:bg-paper',
+  },
+  secondary: {
+    paper: 'border border-ink/70 text-ink hover:border-blaze hover:text-blaze',
+    night: 'border border-paper/60 text-paper hover:border-blaze-bright hover:text-blaze-bright',
+  },
 } as const;
 
 type ButtonProps = {
   children: React.ReactNode;
   variant?: keyof typeof variants;
+  /** Set when the button sits on the night surface. */
+  onNight?: boolean;
   className?: string;
   href?: string;
 } & (
@@ -21,10 +28,13 @@ type ButtonProps = {
 );
 
 export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
-  ({ children, variant = 'primary', className, href, ...props }, ref) => {
+  ({ children, variant = 'primary', onNight = false, className, href, ...props }, ref) => {
     const classes = cn(
-      'inline-flex min-h-11 min-w-[44px] items-center justify-center rounded-full px-6 py-3 font-medium transition-all duration-200 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-      variants[variant],
+      'inline-flex min-h-12 min-w-[44px] touch-manipulation items-center justify-center gap-2 rounded-md px-6 py-3 text-base font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+      onNight
+        ? 'focus-visible:ring-blaze-bright focus-visible:ring-offset-night'
+        : 'focus-visible:ring-blaze focus-visible:ring-offset-paper',
+      variants[variant][onNight ? 'night' : 'paper'],
       className,
     );
 

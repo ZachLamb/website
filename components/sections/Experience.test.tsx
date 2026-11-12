@@ -1,12 +1,5 @@
-vi.mock('@/components/ui/NatureElements', () => ({
-  FloatingLeaves: () => null,
-  Fireflies: () => null,
-  PineTreeSilhouette: () => null,
-  BirdSilhouettes: () => null,
-  MistLayer: () => null,
-}));
-
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithLocale } from '@/lib/test-utils';
 import { experiences } from '@/data/experience';
 import { Experience } from './Experience';
@@ -44,7 +37,9 @@ describe('Experience', () => {
   it('shows every bullet of a role instead of truncating behind a "+N more" label', () => {
     renderWithLocale(<Experience />);
     const card = screen.getByTestId('experience-card-circadence');
-    expect(card.querySelectorAll('li')).toHaveLength(5);
+    const lists = card.querySelectorAll('ul');
+    // First list: the role's bullets. Second: its tech badges.
+    expect(lists[0].querySelectorAll('li')).toHaveLength(5);
     expect(screen.queryByText(/^\+\d+ more$/)).not.toBeInTheDocument();
   });
 
@@ -61,14 +56,21 @@ describe('Experience', () => {
     });
   });
 
-  it('renders each featured entry exactly once with a numbered marker', () => {
-    renderWithLocale(<Experience />);
+  it('renders each featured entry exactly once, each with a marker on the trail line', () => {
+    const { container } = renderWithLocale(<Experience />);
     const featured = experiences.filter((e) => e.featured);
-    for (const [i, entry] of featured.entries()) {
-      const cards = screen.getAllByTestId(`experience-card-${entry.id}`);
-      expect(cards).toHaveLength(1);
-      expect(screen.getByText(String(i + 1))).toBeInTheDocument();
+    for (const entry of featured) {
+      expect(screen.getAllByTestId(`experience-card-${entry.id}`)).toHaveLength(1);
     }
+    expect(container.querySelectorAll('[data-trail-marker]')).toHaveLength(featured.length);
+  });
+
+  it('leaves entries unnumbered: numbers on this page identify sections', () => {
+    const { container } = renderWithLocale(<Experience />);
+    // The only number is the section's own waypoint badge.
+    expect(container.querySelectorAll('[data-waypoint-number]')).toHaveLength(1);
+    const card = screen.getByTestId('experience-card-circadence');
+    expect(within(card).queryByText(/^0\d$/)).not.toBeInTheDocument();
   });
 
   it('has no right-aligned prose', () => {
@@ -79,24 +81,45 @@ describe('Experience', () => {
   it('draws one continuous trail line spanning all featured entries, not one per entry', () => {
     const { container } = renderWithLocale(<Experience />);
     const featuredCount = experiences.filter((e) => e.featured).length;
-    // One line per entry would leave gaps at the flex gap-2 seams between
-    // rows; a single line drawn once behind the whole list stays unbroken.
+    // One line per entry would leave gaps at the seams between rows; a
+    // single line drawn once behind the whole list stays unbroken.
     const lines = container.querySelectorAll('.border-l.border-dashed.left-4');
     expect(lines.length).toBe(1);
     expect(featuredCount).toBeGreaterThan(1); // sanity: the test is meaningful
   });
 
-  it('reveals the remaining bullets and tech badges beyond the mobile-truncated preview', () => {
+  it('keeps the trail line off phones, where its width is needed for text', () => {
+    const { container } = renderWithLocale(<Experience />);
+    const line = container.querySelector('.border-l.border-dashed.left-4');
+    expect(line).toHaveClass('hidden', 'md:block');
+  });
+
+  it('shows every bullet and tech badge of a role', () => {
     renderWithLocale(<Experience />);
     const entry = experiences.find((e) => e.id === 'circadence')!;
-    // The mobile-truncated items are still in the DOM (hidden via CSS below
-    // the `sm` breakpoint) rather than removed, so desktop sees the full
-    // list without a hover-only reveal.
     for (const item of entry.description) {
-      expect(screen.getAllByText(item).length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByText(item)).toBeInTheDocument();
     }
+    const card = screen.getByTestId('experience-card-circadence');
     for (const tech of entry.techStack) {
-      expect(screen.getAllByText(tech).length).toBeGreaterThanOrEqual(1);
+      expect(within(card).getByText(tech)).toBeInTheDocument();
     }
+  });
+
+  it('opens and closes the earlier roles from a button that reports its state', async () => {
+    const user = userEvent.setup();
+    renderWithLocale(<Experience />);
+    const toggle = screen.getByRole('button', { name: /View full trail history/ });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    // The region it controls exists before it is opened.
+    expect(document.getElementById(toggle.getAttribute('aria-controls')!)).toBeInTheDocument();
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getAllByText('Purple').length).toBeGreaterThanOrEqual(1);
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByText('Purple')).not.toBeInTheDocument();
   });
 });

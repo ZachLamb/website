@@ -1,11 +1,3 @@
-vi.mock('@/components/ui/NatureElements', () => ({
-  FloatingLeaves: () => null,
-  Fireflies: () => null,
-  PineTreeSilhouette: () => null,
-  BirdSilhouettes: () => null,
-  MistLayer: () => null,
-}));
-
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithLocale } from '@/lib/test-utils';
@@ -49,8 +41,17 @@ describe('Education', () => {
     expect(buttons[0]).toHaveAttribute('aria-expanded', 'true');
   });
 
-  it('renders certification chips with plate styling', () => {
-    const { container } = renderWithLocale(<Education />);
-    expect(container.querySelectorAll('.border-bark\\/15').length).toBeGreaterThan(0);
+  it('shows the details of an expandable row only once it is opened', async () => {
+    const user = userEvent.setup();
+    renderWithLocale(<Education />);
+    expect(screen.queryByText(/Minor in Technology, Arts, and Media/)).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { expanded: false }));
+    expect(screen.getByText(/Minor in Technology, Arts, and Media/)).toBeInTheDocument();
+  });
+
+  it('lists each certification with its issuer', () => {
+    renderWithLocale(<Education />);
+    expect(screen.getByText('Scrum Alliance')).toBeInTheDocument();
+    expect(screen.getByText('Mountain Goat Software (Mike Cohn)')).toBeInTheDocument();
   });
 });

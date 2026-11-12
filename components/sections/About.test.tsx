@@ -1,11 +1,3 @@
-vi.mock('@/components/ui/NatureElements', () => ({
-  FloatingLeaves: () => null,
-  Fireflies: () => null,
-  PineTreeSilhouette: () => null,
-  BirdSilhouettes: () => null,
-  MistLayer: () => null,
-}));
-
 import { screen } from '@testing-library/react';
 import { renderWithLocale } from '@/lib/test-utils';
 import { About } from './About';
@@ -46,11 +38,18 @@ describe('About', () => {
     expect(paragraphs).toHaveLength(0);
   });
 
-  it('renders stat tiles as map plates with gold-deep numerals', () => {
+  it('prints the stats on one ruled board, numerals in blaze', () => {
     renderWithLocale(<About />);
-    const statValue = screen.getByText('10+');
-    expect(statValue).toHaveClass('text-gold-deep', 'font-serif');
-    // plate recipe applied to the tile container
-    expect(statValue.closest('.bg-white\\/40')).not.toBeNull();
+    const values = ['10+', '5', 'CSM', '409→10'].map((v) => screen.getByText(v));
+    expect(values[0]).toHaveClass('text-blaze', 'font-serif');
+    // All four cells share a single board rather than being separate cards.
+    const board = values[0].parentElement!.parentElement!;
+    for (const value of values) expect(board).toContainElement(value);
+    expect(board).toHaveClass('grid-cols-2');
+  });
+
+  it('numbers the section as the first waypoint', () => {
+    const { container } = renderWithLocale(<About />);
+    expect(container.querySelector('[data-waypoint-number]')).toHaveTextContent('01');
   });
 });

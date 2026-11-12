@@ -33,7 +33,9 @@
     "getInTouch": "Get in Touch",
     "learnMore": "See My Experience",
     "resume": "Resume",
-    "viewResume": "View resume (opens in new tab)"
+    "viewResume": "View resume (opens in new tab)",
+    "mapTitle": "Trail map",
+    "mapLegend": "Sections on this page"
   },
   "about": {
     "heading": "About",

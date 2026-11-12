@@ -33,7 +33,9 @@
     "getInTouch": "お問い合わせ",
     "learnMore": "経歴を見る",
     "resume": "履歴書",
-    "viewResume": "履歴書を見る（新しいタブで開く）"
+    "viewResume": "履歴書を見る（新しいタブで開く）",
+    "mapTitle": "トレイルマップ",
+    "mapLegend": "このページのセクション"
   },
   "about": {
     "heading": "プロフィール",

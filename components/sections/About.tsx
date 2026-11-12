@@ -1,82 +1,55 @@
 'use client';
 
-import { useRef } from 'react';
-import { m, useInView } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
-import { AnimatedHeading } from '@/components/ui/AnimatedHeading';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Card } from '@/components/ui/Card';
+import { Reveal } from '@/components/ui/Reveal';
 import { useLocaleContext } from '@/components/providers/LocaleProvider';
-import { waypointPop } from '@/lib/trail-animations';
+import { waypointNumber } from '@/lib/waypoints';
 
 export function About() {
   const { messages } = useLocaleContext();
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  const pullQuote = messages.about.body[0] ?? '';
+  const statement = messages.about.body[0] ?? '';
 
   return (
-    <Section variant="light" id="about" nature={{ leaves: true, birds: true }} className="md:pb-16">
-      <AnimatedHeading
+    <Section id="about" surface="paper" after="paper">
+      <SectionHeading
         sectionId="about"
-        subtitle={`I · ${messages.kickers.about}`}
-        className="mb-8"
+        number={waypointNumber('about')}
+        kicker={messages.kickers.about}
       >
         {messages.about.heading}
-      </AnimatedHeading>
+      </SectionHeading>
 
-      {/* Two columns from lg up: the statement on the left, the stat plates
-          as a 2x2 block on the right. Below lg the plates drop under the
-          statement, so the right half of the section is never left empty. */}
-      <div
-        ref={ref}
-        className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start lg:gap-12"
-      >
-        <div>
-          <m.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-            transition={{ duration: 0.35, delay: 0.05 }}
-            className="text-bark border-gold border-l-2 pl-4 text-lg leading-relaxed break-words sm:text-xl"
-          >
-            {pullQuote}
-          </m.p>
-
-          <m.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-            transition={{ duration: 0.35, delay: 0.25 }}
-            className="text-slate mt-6 pl-4 text-sm italic sm:text-base"
-          >
+      {/* Two columns from lg up: the statement on the left, the stat board
+          on the right. Below lg the board drops under the statement. */}
+      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start lg:gap-12">
+        <Reveal>
+          <p className="text-ink text-lg leading-relaxed break-words sm:text-xl">{statement}</p>
+          <p className="text-ink-soft border-contour/50 mt-6 border-l-2 pl-4 text-base italic">
             {messages.about.personalNote}
-          </m.p>
-        </div>
+          </p>
+        </Reveal>
 
-        {/* Stats as map plates */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          {messages.about.stats.map((stat, i) => (
-            <m.div
-              key={stat.label}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              variants={waypointPop}
-              transition={{ delay: 0.1 + i * 0.06 }}
-              className="h-full"
-            >
-              <Card
-                variant="plate"
-                className="flex h-full flex-col items-center justify-center px-3 py-5 text-center"
+        {/* Stats as one ruled board, like the figures on a trailhead sign.
+            The 1px gaps show the board's border colour through as rules. */}
+        <Reveal delay={0.08}>
+          <Card className="bg-contour/40 grid grid-cols-2 gap-px overflow-hidden">
+            {messages.about.stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="bg-paper-raised flex min-w-0 flex-col justify-center px-4 py-5 sm:px-5 sm:py-6"
               >
-                <div className="text-gold-deep font-serif text-3xl font-bold lining-nums sm:text-4xl">
+                <div className="text-blaze font-serif text-4xl leading-none font-bold whitespace-nowrap lining-nums">
                   {stat.value}
                 </div>
-                <div className="text-forest-deep mt-1.5 text-xs leading-tight sm:text-sm">
+                <div className="text-ink-soft mt-2 font-mono text-[11px] leading-snug tracking-wider break-words uppercase">
                   {stat.label}
                 </div>
-              </Card>
-            </m.div>
-          ))}
-        </div>
+              </div>
+            ))}
+          </Card>
+        </Reveal>
       </div>
     </Section>
   );
