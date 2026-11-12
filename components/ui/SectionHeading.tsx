@@ -36,7 +36,7 @@ export function SectionHeading({
         <p
           aria-hidden="true"
           className={cn(
-            'flex items-center gap-3 font-mono text-xs tracking-[0.18em] uppercase',
+            'font-display flex items-center gap-3 text-base font-extrabold tracking-[0.18em] uppercase sm:text-lg',
             onNight ? 'text-blaze-bright' : 'text-blaze',
           )}
         >
@@ -44,7 +44,7 @@ export function SectionHeading({
             <span
               data-waypoint-number
               className={cn(
-                'flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-medium tracking-normal',
+                'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-base font-black tracking-normal',
                 onNight ? 'bg-blaze-bright text-night' : 'bg-blaze text-paper',
               )}
             >
@@ -63,7 +63,7 @@ export function SectionHeading({
       <Tag
         id={sectionId ? `${sectionId}-heading` : undefined}
         className={cn(
-          'mt-3 font-serif text-4xl leading-[1.05] font-semibold text-balance break-words sm:text-5xl',
+          'font-display mt-2 text-6xl leading-[0.88] font-black tracking-tight text-balance break-words uppercase sm:text-7xl lg:text-8xl',
           onNight ? 'text-paper' : 'text-ink',
         )}
       >
